@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2ab23b0-93b5-4786-9170-d09c1c1e1de1" name="Changes" comment="first commit">
-      <change afterPath="$PROJECT_DIR$/backend/routes/medications.js" afterDir="false" />
+    <list default="true" id="b2ab23b0-93b5-4786-9170-d09c1c1e1de1" name="Changes" comment="Frontend: slight changes to code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Schemas/medication.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Schemas/medication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Schemas/medicationTimeStamp.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Schemas/medicationTimeStamp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Schemas/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Schemas/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="JavaScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -49,6 +38,12 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/backend/Schemas/medicationTimeStamp.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/backend/Schemas/medication.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/backend/app.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/backend/routes/medications.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1yQ4Iyebv04R9K4KhcvUdNVu8q2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -62,7 +57,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="Z:\STANDARD FILES\Desktop\Personal Projects\React\MoonMeds\frontend\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -72,7 +67,7 @@
       <recent name="Z:\STANDARD FILES\Desktop\Personal Projects\React\MoonMeds\frontend\src\Pages\Startup" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Frontend">
+  <component name="RunManager" selected="npm.Backend">
     <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
       <method v="2" />
     </configuration>
@@ -113,7 +108,7 @@
       <workItem from="1632170402827" duration="662000" />
       <workItem from="1632171439258" duration="68000" />
       <workItem from="1632171518868" duration="25296000" />
-      <workItem from="1632244616365" duration="20820000" />
+      <workItem from="1632244616365" duration="34617000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1632243139435</created>
@@ -143,7 +138,70 @@
       <option name="project" value="LOCAL" />
       <updated>1632244815696</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="first commit">
+      <created>1632331259188</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1632331259188</updated>
+    </task>
+    <task id="LOCAL-00006" summary="unneeded">
+      <created>1632331344255</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1632331344255</updated>
+    </task>
+    <task id="LOCAL-00007" summary="updated gitignore">
+      <created>1632331432111</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1632331432111</updated>
+    </task>
+    <task id="LOCAL-00008" summary="updated gitignore">
+      <created>1632331584159</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1632331584159</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated gitignore">
+      <created>1632331612779</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1632331612779</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Backend: Started express session">
+      <created>1632344318872</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1632344318872</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Frontend: signs user out and redirects them to the homepage">
+      <created>1632344359247</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1632344359247</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Frontend: moved code around and now it displays login error message">
+      <created>1632344389323</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1632344389323</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Frontend: slight changes to code">
+      <created>1632344409002</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1632344409002</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,6 +225,12 @@
       <path value="$PROJECT_DIR$/frontend" />
     </ignored-roots>
     <MESSAGE value="first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
+    <MESSAGE value="unneeded" />
+    <MESSAGE value="updated gitignore" />
+    <MESSAGE value="Backend: Started express session" />
+    <MESSAGE value="Frontend: signs user out and redirects them to the homepage" />
+    <MESSAGE value="Frontend: moved code around and now it displays login error message" />
+    <MESSAGE value="Frontend: slight changes to code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Frontend: slight changes to code" />
   </component>
 </project>
