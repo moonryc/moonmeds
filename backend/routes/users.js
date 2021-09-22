@@ -1,16 +1,51 @@
 var express = require('express');
-
+var sessions = require('express-session')
 const app = require("../app");
 const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser')
 const userSchema = require("../Schemas/user");
 var router = express.Router();
 
+var session;
+
+
+//region Homepage
+
+router.post('/', (req, res, next) => {
+    session = req.session;
+    if(session.userid){
+        //TODO I DONT FUCKING KNOW
+    }
+});
+
+//endregion
 
 //region Login
 
 router.post('/submitLogin', (req, res, next) => {
-//TODO complete login
+    userSchema.findOne({email:req.body.email, password:req.body.password}, async (err, doc) => {
+        //if error
+        if (err) {
+            throw err;
+        }
+        //if username and password are correct
+        if (doc) {
+            session=req.session;
+            session.userid=req.body.email;
+            console.log(req.session)
+            res.send({
+                error:false,
+            })
+        }
+        //if user does not exist/ password is incorrect
+        if (!doc) {
+            res.send({
+                error:true,
+                message: 'Username or password is incorrect'
+            })
+            console.log("Username or password is incorrect")
+        }
+    })
 });
 
 //endregion
@@ -50,6 +85,16 @@ router.post('/submitSignup', (req, res, next) => {
     })
 })
 
+
+//endregion
+
+//region Logout
+
+router.get('/submitlogout', (req, res, next) => {
+    req.session.destroy();
+    console.log("session destroyed");
+    res.send({message:"session destroyed"})
+});
 
 //endregion
 

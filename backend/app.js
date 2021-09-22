@@ -47,7 +47,14 @@ var db = mongoose.connection;
 //endregion
 
 //region Express session
-var session = require('express-session')
+var sessions = require('express-session')
+const oneDay = 1000*60*60*24;
+app.use(sessions({
+    secret: process.env.SESSION_SECRET, // used to authenticate a session
+    saveUninitialized: true, // allows an unmodified yet created session to be added to the store
+    cookie: {maxAge: oneDay}, // when the cookie expires
+    resave: false // no idea
+}))
 
 //endregion
 
