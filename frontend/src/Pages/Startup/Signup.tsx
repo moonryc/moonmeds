@@ -6,17 +6,15 @@ import {useHistory} from "react-router-dom";
 
 const Signup = () => {
     const history = useHistory();
-    const navigateToPage = ()=> history.push('/login')
+    const navigateToLoginPage = ()=> history.push('/login')
 
     const [user, setUser] = useState({email: "", password: ""})
 
     const handleEmailCallBack = (e:React.ChangeEvent<HTMLInputElement>) => {
         setUser(user => ({...user, email: e.target.value}))
-        console.log("Email: " + e.target.value);
     }
     const handlePasswordCallBack = (e:React.ChangeEvent<HTMLInputElement>) => {
         setUser(user => ({...user, password: e.target.value}))
-        console.log("password: " + e.target.value);
     }
 
     const submitSignup = async (data:{} = {})=>{
@@ -47,7 +45,7 @@ const Signup = () => {
             <h3>Password</h3>
             <FormInput type={"password"} value={user.password} onChange={handlePasswordCallBack}/><br/><br/>
             <button type={"button"} onClick={()=>submitSignup(user)}>Submit</button><br/><br/>
-            <button type={"button"} onClick={()=>navigateToPage()}>Login</button>
+            <button type={"button"} onClick={()=>navigateToLoginPage()}>Login</button>
         </div>
     );
 };
