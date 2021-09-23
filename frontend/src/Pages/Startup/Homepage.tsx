@@ -13,7 +13,6 @@ const Homepage = (props:any) => {
             <UserContext.Provider value={props.auth}>
                 <AppbarTop/>
                 <BackDrop/>
-                <QuickRefill/>
             </UserContext.Provider>
         </div>
     )
