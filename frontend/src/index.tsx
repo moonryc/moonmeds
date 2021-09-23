@@ -5,13 +5,29 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Router} from "react-router";
 import {createBrowserHistory} from "history";
+import {createTheme} from "@material-ui/core";
+import {ThemeProvider} from '@material-ui/styles';
 
 const customHistory = createBrowserHistory();
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#242526'
+        },
+        text: {
+            primary: '#E4E6EB',
+            secondary: '#B0B3B8'
+        }
+    }}
+);
 
 ReactDOM.render(
     <React.StrictMode>
         <Router history={customHistory}>
-            <App/>
+            <ThemeProvider theme={theme}>
+                <App/>
+            </ThemeProvider>
         </Router>
     </React.StrictMode>,
     document.getElementById('root')
