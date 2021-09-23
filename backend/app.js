@@ -7,18 +7,18 @@ if(process.env.NODE_ENV !== 'production'){
 //endregion
 
 //region Imports
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var medicationRouter = require('./routes/medications');
-
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const medicationRouter = require('./routes/medications');
 //endregion
 
-var app = express();
+const app = express();
 
 //region View handler setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,33 +31,60 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 //region Middleware
+
+//region Middleware imports
 const mongoose = require("mongoose");
+const session = require('cookie-session');
+const helmet = require('helmet');
+const hpp = require('hpp');
+const csurf = require('csurf');
+const passport = require('./passport/setup');
+const rateLimit = require('express-rate-limit');
+//endregion
 
 //region Mongoose
 let url = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.pdwgv.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
-console.log(url);
 const connection = mongoose.connect(url,{useNewUrlParser: true, useUnifiedTopology: true});
 const collections = Object.keys(mongoose.connection.collections);
 console.log(collections);
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 //endregion
 
-//region Express session
-var sessions = require('express-session')
-const oneDay = 1000*60*60*24;
-app.use(sessions({
-    secret: process.env.SESSION_SECRET, // used to authenticate a session
-    saveUninitialized: true, // allows an unmodified yet created session to be added to the store
-    cookie: {maxAge: oneDay}, // when the cookie expires
-    resave: false // no idea
-}))
-
+//region cookie
+/* Set Cookie Settings */
+app.use(
+    session({
+        name: 'MoonMedsCookie',
+        secret: process.env.COOKIE_SECRET,
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+    })
+);
 //endregion
 
+//region Security
+/* Set Security Configs */
+app.use(helmet());
+app.use(hpp());
+app.use(csurf());
+//endregion
+
+//TODO UNDERSTAND
+// region limiter
+/* Rate Limiter */
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+});
+app.use(limiter);
+//endregion
+
+
+
+//Passport
+app.use(passport.initialize());
 
 //#region app.use(cors)
 //cors to allow cross origin resource sharing
@@ -68,19 +95,17 @@ app.use(
       credentials: true,
     }));
 //#endregion
+
 //endregion
 
 //region routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/medication', medicationRouter);
+app.use('/auth', authRouter);
 //endregion
 
-
-
-
-
-
+//region Views
 
 //region 404 Catcher
 // catch 404 and forward to error handler
@@ -88,6 +113,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 //endregion
+
 //region ERROR HANDLER
 // error handler
 app.use(function(err, req, res, next) {
@@ -99,6 +125,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+//endregion
+
 //endregion
 
 const port = 3001

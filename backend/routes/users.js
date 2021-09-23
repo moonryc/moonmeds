@@ -13,6 +13,7 @@ var session;
 
 router.post('/', (req, res, next) => {
     session = req.session;
+    console.log(session)
     if(session.userid){
         //TODO I DONT FUCKING KNOW
     }
@@ -32,9 +33,13 @@ router.post('/submitLogin', (req, res, next) => {
         if (doc) {
             session=req.session;
             session.userid=req.body.email;
-            console.log(req.session)
+            let cookie =
+            console.log(session.cookie)
+            console.log(session.sessionToken)
             res.send({
                 error:false,
+                userId:session.userid,
+                cookie:session.cookie,
             })
         }
         //if user does not exist/ password is incorrect
