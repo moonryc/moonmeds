@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import FormInput from "../../Components/Misc/FormInput";
 import {useHistory} from "react-router-dom";
 import LogoutButton from "../../Components/Misc/LogoutButton";
+import LoginButton from "../../Components/Misc/LoginButton";
 
 const LoginPage = () => {
     const history = useHistory();
@@ -54,6 +55,7 @@ const LoginPage = () => {
             <br/><br/>
             <button onClick={()=>navigateToSignup()}>Create an account</button>
             <LogoutButton/>
+            <LoginButton/>
         </div>
     );
 };

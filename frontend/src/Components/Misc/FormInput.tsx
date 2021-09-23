@@ -4,7 +4,7 @@ const FormInput = (props: React.HTMLProps<HTMLInputElement>) => {
 
     return(
         <>
-            <input style={{backgroundColor:"red"}} {...props}/>
+            <input {...props}/>
         </>
         )
 

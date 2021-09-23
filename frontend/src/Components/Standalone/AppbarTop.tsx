@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@material-ui/core";
+import LoginButton from "../Misc/LoginButton";
+import LogoutButton from "../Misc/LogoutButton";
+import UserContext from "../../Context/UserContext";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -14,6 +17,11 @@ const useStyles = makeStyles((theme?: any) => ({
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
+
+
+    const user = useContext(UserContext);
+    console.log(user)
+
     return(
         <>
             <AppBar position="static">
@@ -26,8 +34,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         <Button color="inherit" onClick={() => { console.log(window.location.href)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>
-                        <Button>Login</Button>
-                        <Button>Sign up</Button>
+                        {user != true ? <LoginButton/>:<><>Welcome {user}</> <LogoutButton/> </>}
                     </Box>
 
                 </Toolbar>
