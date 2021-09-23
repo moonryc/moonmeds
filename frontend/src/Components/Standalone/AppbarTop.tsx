@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme?: any) => ({
     rightToolbar: {
         marginLeft: "auto",
         marginRight: 0
+    },
+    appBar:{
+        flex: 0
     }
 }));
 
@@ -24,7 +27,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
     return(
         <>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
 
                     <Typography variant="h6" className={classes.title}>

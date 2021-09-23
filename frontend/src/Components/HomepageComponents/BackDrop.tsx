@@ -5,12 +5,17 @@ import BackDropImg from '../../Images/Homepage/BackDropImg.png';
 const useStyles = makeStyles((theme?: any) => ({
 
     boxFilter: {
-        height: '100%',
-        backgroundColor: theme.palette.primary.main
+        flex: 1,
+        backgroundColor: theme.palette.primary.main,
+        width: '100%',
+        height: '90%',
+
     },
     imgFilter:{
         opacity: .5,
+        width: '100%',
         height: '100%',
+        overflow: 'hidden'
     }
 }));
 const BackDrop: React.FC<{[key: string]: any}> = () => {

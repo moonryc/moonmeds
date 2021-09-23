@@ -3,13 +3,22 @@ import AppbarTop from "../../Components/Standalone/AppbarTop";
 import BackDrop from "../../Components/HomepageComponents/BackDrop";
 import LoginButton from "../../Components/Misc/LoginButton";
 import UserContext from "../../Context/UserContext";
+import {makeStyles} from "@material-ui/core";
 
+const useStyles = makeStyles((theme?: any) => ({
+    wrapper:{
+        height: '100vh',
+        display:'flex',
+        flexDirection: 'column'
+    }
+}));
 
 //This Page is displayed at '/'
-//TODO fix TS-ignore
+//TODO fix props any
 const Homepage = (props:any) => {
+    const classes = useStyles();
     return (
-        <div>
+        <div className={classes.wrapper}>
             <UserContext.Provider value={props.auth}>
                 <AppbarTop/>
                 <BackDrop/>
