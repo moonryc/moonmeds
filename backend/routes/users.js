@@ -9,17 +9,7 @@ var router = express.Router();
 var session;
 
 
-//region Homepage
 
-router.post('/', (req, res, next) => {
-    session = req.session;
-    console.log(session)
-    if(session.userid){
-        //TODO I DONT FUCKING KNOW
-    }
-});
-
-//endregion
 
 //region Login
 
@@ -51,54 +41,6 @@ router.post('/submitLogin', (req, res, next) => {
             console.log("Username or password is incorrect")
         }
     })
-});
-
-//endregion
-
-//region Signup
-
-router.post('/submitSignup', (req, res, next) => {
-
-    userSchema.findOne({email:req.body.email}, async (err, doc) => {
-        //if error
-        if (err) {
-            throw err;
-        }
-        //if user already exists
-        if (doc) {
-            res.send({
-                createdNewUser: false,
-                message: 'User already exist'
-            })
-            console.log("user exists")
-        }
-        //if user does nto already exist
-        if (!doc) {
-            const hashedPassword = req.body.password
-            //TODO hash the password
-            // const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            const newUser = new userSchema({
-                email: req.body.email,
-                password: hashedPassword
-            });
-            await newUser.save();
-            res.send({
-                createdNewUser: true
-            })
-            console.log("user is new")
-        }
-    })
-})
-
-
-//endregion
-
-//region Logout
-
-router.get('/submitlogout', (req, res, next) => {
-    req.session.destroy();
-    console.log("session destroyed");
-    res.send({message:"session destroyed"})
 });
 
 //endregion

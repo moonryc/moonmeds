@@ -71,16 +71,15 @@ app.use(hpp());
 app.use(csurf());
 //endregion
 
-//TODO UNDERSTAND
-// region limiter
-/* Rate Limiter */
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-});
-app.use(limiter);
-//endregion
-
+// //TODO UNDERSTAND
+// // region limiter
+// /* Rate Limiter */
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+// });
+// app.use(limiter);
+// //endregion
 
 
 //Passport

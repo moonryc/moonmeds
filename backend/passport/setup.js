@@ -2,7 +2,6 @@ const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const JwtStrategy = require('passport-jwt').Strategy;
 
-//TODO UNDERSTAND FINISH THIS PAGE
 
 const auth0Strategy = new Auth0Strategy(
     {
