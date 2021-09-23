@@ -3,16 +3,17 @@ import AppbarTop from "../../Components/Standalone/AppbarTop";
 import BackDrop from "../../Components/HomepageComponents/BackDrop";
 import LoginButton from "../../Components/Misc/LoginButton";
 import UserContext from "../../Context/UserContext";
+import QuickRefill from "../../Components/LoggedInHomePageComponets/QuickRefill";
 
 
 //This Page is displayed at '/'
-//TODO fix TS-ignore
 const Homepage = (props:any) => {
     return (
         <div>
             <UserContext.Provider value={props.auth}>
                 <AppbarTop/>
                 <BackDrop/>
+                <QuickRefill/>
             </UserContext.Provider>
         </div>
     )

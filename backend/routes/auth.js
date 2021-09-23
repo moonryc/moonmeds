@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-//TODO UNDERSTAND THIS ENTIRE PAGE/ FINSIHED THE PAGE
-
 //Login redirects user to the Auth0 screen
 router.get('/login', (req, res, next) => {
         next();
