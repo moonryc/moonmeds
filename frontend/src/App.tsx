@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Homepage from "./Pages/Startup/Homepage";
 import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
