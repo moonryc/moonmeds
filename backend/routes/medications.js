@@ -43,12 +43,12 @@ router.post('/submitNewMedication', (req, res, next) => {
 
 router.post('/submitEditOldMedication', (req, res, next) => {
 
-    //TODO make existing data in the database editable
+    //TODO(Moon) make existing data in the database editable
 })
 
 router.post('/submitMedicationTimeStamp', (req, res, next) => {
 
-    //TODO add time property to this
+    //TODO(Moon) add time property to this
     medicationTimeStampSchema.findOne({email:req.body.email, medicationName:req.body.medicationName}, async (err, doc) => {
         //if error
         if (err) {
@@ -78,7 +78,7 @@ router.post('/submitMedicationTimeStamp', (req, res, next) => {
 
 router.post('/submitEditMedicationTimeStamp', (req, res, next) => {
 
-    //TODO make existing time stamp
+    //TODO(Moon) make existing time stamp
 })
 
 module.exports = router;

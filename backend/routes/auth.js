@@ -44,7 +44,7 @@ router.get('/logout', (req, res) => {
     );
 });
 
-//TODO understand the point of private routes
+//TODO(Moon) understand the point of private routes
 //region private routes
 const jwtRequired = passport.authenticate('jwt', {session: false});
 
