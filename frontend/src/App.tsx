@@ -3,8 +3,6 @@ import './App.css';
 import Homepage from "./Pages/Startup/Homepage";
 import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
 
-
-
 function App() {
 
     //if we change this value we get different pages
