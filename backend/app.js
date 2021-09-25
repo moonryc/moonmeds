@@ -86,6 +86,16 @@ app.use(
 
 //endregion
 
+//TODO UNDERSTAND
+// region limiter
+/* Rate Limiter */
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+});
+app.use(limiter);
+//endregion
+
 //region routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
