@@ -2,8 +2,7 @@ import React, {useContext, useState} from 'react';
 import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@material-ui/core";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
-import UserContext from "../../Context/UserContext";
-import TestPrivateRoute from "../Misc/TestPrivateRoute";
+import {UserContext} from "../Misc/UserContext";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -24,6 +23,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
 
     const user = useContext(UserContext);
+    console.log(user)
 
     return(
         <>
@@ -34,12 +34,12 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         Moons Meds {'>'}:)
                     </Typography>
                     <Container maxWidth="sm">
-                        <Button color="inherit" onClick={() => { console.log(window.location.href)}}>console.log</Button>
+                        <Button color="inherit" onClick={() => { console.log(user)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>
-                        {user != true ? <LoginButton/>:<><>Welcome {user}</> <LogoutButton/> </>}
+                        <LoginButton/>
                     </Box>
-                    <TestPrivateRoute/>
+
                 </Toolbar>
             </AppBar>
         </>

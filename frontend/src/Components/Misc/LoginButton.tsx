@@ -1,11 +1,13 @@
 import React from 'react';
+import {Button} from "@material-ui/core";
+import LoginIcon from '@mui/icons-material/Login';
 
 const LoginButton = () => {
 
     return (
         <div>
             <form action={"/auth/login"}>
-                <button type={"submit"} value={"login"}>Login</button>
+                <Button type={"submit"} value={"login"}> <LoginIcon style={{marginRight: '15px'}}/>Login/ Sign up </Button>
             </form>
         </div>
     );

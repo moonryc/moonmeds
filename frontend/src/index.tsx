@@ -7,6 +7,7 @@ import {Router} from "react-router";
 import {createBrowserHistory} from "history";
 import {createTheme} from "@material-ui/core";
 import {ThemeProvider} from '@material-ui/styles';
+import {UserContainer} from "./Components/Misc/UserContext";
 
 const customHistory = createBrowserHistory();
 
@@ -26,7 +27,9 @@ ReactDOM.render(
     <React.StrictMode>
         <Router history={customHistory}>
             <ThemeProvider theme={theme}>
-                <App/>
+                <UserContainer>
+                    <App/>
+                </UserContainer>
             </ThemeProvider>
         </Router>
     </React.StrictMode>,
