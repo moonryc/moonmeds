@@ -21,10 +21,13 @@ const useStyles = makeStyles((theme?: any) => ({
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
+    const loggedIn = useContext(UserContext);
+    const renderLogButton = (loggedIn: any) => {
+        if (loggedIn===true){return <LogoutButton />}
+        if (loggedIn===false){ return<LoginButton />}
+    }
 
 
-    const user = useContext(UserContext);
-    console.log(user)
 
     return(
         <>
@@ -35,10 +38,10 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         Moons Meds {'>'}:)
                     </Typography>
                     <Container maxWidth="sm">
-                        <Button color="inherit" onClick={() => { console.log(user)}}>console.log</Button>
+                        <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>
-                        <LoginButton/>
+                        {renderLogButton(loggedIn)}
                     </Box>
                 </Toolbar>
             </AppBar>
