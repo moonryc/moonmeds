@@ -3,6 +3,7 @@ import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
+import TestPrivateRoute from "../Misc/TestPrivateRoute";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -39,7 +40,6 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     <Box className={classes.rightToolbar}>
                         <LoginButton/>
                     </Box>
-
                 </Toolbar>
             </AppBar>
         </>

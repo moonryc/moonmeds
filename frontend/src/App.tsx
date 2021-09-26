@@ -10,9 +10,8 @@ function App() {
     const [auth, setAuth] = useState();
 
 
-    const test = useContext<any>(UserContext);
-    console.log(test)
-    const { loggedIn, setLoggedIn } = test;
+    const user = useContext<any>(UserContext);
+    const { userId, setUserId } = user;
     //region FETCH
     const checkIfLoggedIn = async ()=>{
         let url='/auth/current-session';
@@ -24,6 +23,7 @@ function App() {
             .then(data => {
                 if(data){
                     setAuth(data);
+                    setUserId(data.userId)
                         console.log("User data below: ");
                         console.log(data);
                 }
