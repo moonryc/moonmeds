@@ -29,9 +29,9 @@ router.get('/callback', (req, res, next) => {
 
         //if user exists
         const userReturnObject = {
-
+            email: user.email,
             picture: user.picture,
-            email: user.user_id,
+            userId: user.user_id.replace("auth0|",""),
         };
         console.log("user return obect"+userReturnObject.user_metadata);
         req.session.jwt = jwt.sign(userReturnObject, process.env.JWT_SECRET_KEY);

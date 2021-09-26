@@ -1,8 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const medicationSchema = require("../../Schemas/medication");
-
+const userSchema = require("../../Schemas/user")
 const router = express.Router();
 
 
@@ -11,7 +10,7 @@ const router = express.Router();
 //region private routes
 const jwtRequired = passport.authenticate('jwt', {session: false});
 
-router.get('/getuserdata', (req, res,next) => {
+router.post('/getuserdata', (req, res) => {
 
     let userReturnObject ={email:null,picture:null}
     passport.authenticate('jwt',{session:false},(err,user)=>{
@@ -21,7 +20,20 @@ router.get('/getuserdata', (req, res,next) => {
         }
 
         else{
-            return res.send(user)
+            userSchema.findById(req.body, async (err,doc)=>{
+                if(err){
+                    return res.send(err)
+                }
+                if(!doc){
+                    return res.send("user does not exist")
+                }
+
+                if(doc){
+                    return res.send(doc)
+                }
+
+
+            })
         }
     })(req,res)
     // return res.send(userReturnObject);
