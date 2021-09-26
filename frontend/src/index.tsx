@@ -12,15 +12,16 @@ import {UserContainer} from "./Components/Misc/UserContext";
 const customHistory = createBrowserHistory();
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#242526'
-        },
-        text: {
-            primary: '#E4E6EB',
-            secondary: '#B0B3B8'
+        palette: {
+            primary: {
+                main: '#242526'
+            },
+            text: {
+                primary: '#E4E6EB',
+                secondary: '#B0B3B8'
+            }
         }
-    }}
+    }
 );
 
 ReactDOM.render(
