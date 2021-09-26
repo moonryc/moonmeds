@@ -1,13 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './App.css';
 import Homepage from "./Pages/Startup/Homepage";
 import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
+import {UserContext} from "./Components/Misc/UserContext";
 
 function App() {
 
     //if we change this value we get different pages
     const [auth, setAuth] = useState();
 
+
+    const test = useContext<any>(UserContext);
+    console.log(test)
+    const { loggedIn, setLoggedIn } = test;
     //region FETCH
     const checkIfLoggedIn = async ()=>{
         let url='/auth/current-session';

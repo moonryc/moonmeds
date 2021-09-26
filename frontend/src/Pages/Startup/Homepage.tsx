@@ -2,9 +2,8 @@ import React from 'react';
 import AppbarTop from "../../Components/Standalone/AppbarTop";
 import BackDrop from "../../Components/HomepageComponents/BackDrop";
 import LoginButton from "../../Components/Misc/LoginButton";
-import UserContext from "../../Context/UserContext";
 import {makeStyles} from "@material-ui/core";
-
+import {UserContext} from "../../Components/Misc/UserContext"
 const useStyles = makeStyles((theme?: any) => ({
     wrapper:{
         height: '100vh',
