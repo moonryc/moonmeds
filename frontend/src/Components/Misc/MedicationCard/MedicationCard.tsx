@@ -204,11 +204,12 @@ const MedicationCard = (props: any) => {
                 <Collapse in={expandedEdit} timeout="auto" unmountOnExit>
                     <CardContent>
                         <Divider/>
-                        <MedicationCardEditDetails name={medicationDetails.prescriptionName}
-                                                   remainingDosages={medicationDetails.remainingDosages}
-                                                   userNotes={medicationDetails.userNotes}
-                                                   updateMedicationDetails={updateMedicationDetails}
-                                                   prescriptionDosage={medicationDetails.prescriptionDosage}/>
+                        <MedicationCardEditDetails
+                            remainingDosages={medicationDetails.remainingDosages}
+                            userNotes={medicationDetails.userNotes}
+                            updateMedicationDetails={updateMedicationDetails}
+                            prescriptionDosage={medicationDetails.prescriptionDosage}
+                            name={medicationDetails.prescriptionName}/>
                         <Divider/>
                         <MedicationCardAddDosages updateMedicationDosages={updateMedicationDosages}
                                                   dosageDetails={medicationDetails.dosages}/>

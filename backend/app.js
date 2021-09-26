@@ -15,7 +15,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const medicationRouter = require('./routes/medications');
+const medicationRouter = require('./routes/PrivateRoutes/medication');
+const userDataRouter = require('./routes/PrivateRoutes/userdata');
 //endregion
 
 const app = express();
@@ -101,6 +102,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/medication', medicationRouter);
 app.use('/auth', authRouter);
+app.use('/userdata', userDataRouter);
 //endregion
 
 //region Views

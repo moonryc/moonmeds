@@ -3,6 +3,7 @@ import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import UserContext from "../../Context/UserContext";
+import TestPrivateRoute from "../Misc/TestPrivateRoute";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -23,7 +24,6 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
 
     const user = useContext(UserContext);
-    console.log(user)
 
     return(
         <>
@@ -39,7 +39,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     <Box className={classes.rightToolbar}>
                         {user != true ? <LoginButton/>:<><>Welcome {user}</> <LogoutButton/> </>}
                     </Box>
-
+                    <TestPrivateRoute/>
                 </Toolbar>
             </AppBar>
         </>

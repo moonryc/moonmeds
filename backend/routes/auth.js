@@ -29,8 +29,11 @@ router.get('/callback', (req, res, next) => {
 
         //if user exists
         const userReturnObject = {
-            nickname: user.nickname,
+
+            picture: user.picture,
+            email: user.user_id,
         };
+        console.log("user return obect"+userReturnObject.user_metadata);
         req.session.jwt = jwt.sign(userReturnObject, process.env.JWT_SECRET_KEY);
         return res.redirect('/');
     })(req, res, next);
@@ -44,14 +47,7 @@ router.get('/logout', (req, res) => {
     );
 });
 
-//TODO(Moon) understand the point of private routes
-//region private routes
-const jwtRequired = passport.authenticate('jwt', {session: false});
 
-router.get('/private-route', jwtRequired, (req, res) => {
-    return res.send('This is a private route');
-});
-//endregion
 
 //checks to see if the user is logged in based on the jwt token from the client
 router.get('/current-session', (req, res) => {

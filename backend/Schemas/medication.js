@@ -7,7 +7,7 @@ const medicationSchema = new Schema({
     dosage:Number,
     remainingDosages: Number,
     nextFillDate: Date,
-    timeToTake:[] //place time of days that the medication should be taken
+    timeStamps:[] //place time of days that the medication should be taken
 })
 
 module.exports = mongoose.model("medicationsForUser",medicationSchema)

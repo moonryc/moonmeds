@@ -19,7 +19,8 @@ function App() {
             .then(data => {
                 if(data){
                     setAuth(data);
-                    console.log(data);
+                        console.log("User data below: ");
+                        console.log(data);
                 }
             })
             .catch((error) => {
