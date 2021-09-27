@@ -6,12 +6,8 @@ import {UserContext} from "./Components/Misc/UserContext";
 
 function App() {
 
-    //if we change this value we get different pages
-    const [auth, setAuth] = useState();
+    const { setUserId, loggedIn, setLoggedIn } = useContext<any>(UserContext);
 
-
-    const user = useContext<any>(UserContext);
-    const { setUserId, setLoggedIn } = user;
     //region FETCH
     const checkIfLoggedIn = async ()=>{
         let url='/auth/current-session';
@@ -21,14 +17,13 @@ function App() {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 if(data){
-                    setAuth(data);
                     setLoggedIn(true)
-                    setUserId(data.userId)
+                    setUserId(data)
                         console.log("User data below: ");
-                        console.log(data);
                 }else{
-                    setUserId("")
+                    setUserId()
                     setLoggedIn(false)
                 }
             })
@@ -44,13 +39,9 @@ function App() {
     },[])
 
 
-    if(auth){
-        //TODO FIX THIS TS-IGNORE
-        // @ts-ignore
+    if(loggedIn){
         return <LoggedInHomePage/>
     }else{
-        //TODO FIX THIS TS-IGNORE
-        // @ts-ignore
         return <Homepage/>
     }
 
