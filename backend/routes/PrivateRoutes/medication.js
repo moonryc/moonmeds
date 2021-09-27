@@ -1,13 +1,9 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const medicationTimeStampSchema = require("../../Schemas/medicationTimeStamp");
-const medicationSchema = require("../../Schemas/medication");
-
+const medicationSchema = require('../../Schemas/medication')
+const medicationTimeStampSchema = require('../../Schemas/medicationTimeStamp')
 const router = express.Router();
-
-
-
 
 
 const jwtRequired = passport.authenticate('jwt', {session: false});
@@ -37,36 +33,32 @@ router.get('/getmedications', jwtRequired, (req, res) => {
 });
 
 //add new medication
-router.get('/addnewmedication', jwtRequired, (req, res) => {
-
+router.post('/addnewmedication', jwtRequired, (req, res) => {
+    console.log(req.body)
 
     passport.authenticate('jwt',{session:false},(err,user)=>{
         //if error
         if(err || !user){
+            console.log("error:" + err)
             return res.send(err)
-        }
-
-        else{
-            medicationSchema.findOne({email:req.body.email,medicationName:req.body.medicationName}, async (err,doc)=>{
+        }else{
+            medicationSchema.findOne({userId:user.userId,medicationName:req.body.medicationDetails.prescriptionName}, async (err,doc)=>{
                 if(err){
+                    console.log("err "+err)
                     throw err;
                 }
                 if(doc){
+                    console.log("doc medication"+doc)
                     return res.send("You have already added this Medication")
                 }else{
-                    const {email,medicationObject} = req.body
                     const newMedication = new medicationSchema({
-                        email: email,
-                        // medicationName: req.body.medicationName,
-                        // dosage:req.body.dosage,
-                        // remainingDosages: req.body.remainingDosages,
-                        // nextFillDate: req.body.nextFillDate,
-                        // timeStamps:[]
-                        medicationName: medicationObject.medicationName,
-                        dosage:medicationObject.dosage,
-                        remainingDosages: medicationObject.remainingDosages,
-                        nextFillDate: medicationObject.nextFillDate,
-                        timeStamps:[]
+                        userId: user.userId,
+                        medicationName: req.body.medicationDetails.prescriptionName,
+                        dosage:req.body.medicationDetails.prescriptionDosage,
+                        remainingDosages: req.body.medicationDetails.remainingDosages,
+                        nextFillDate: req.body.medicationDetails.userNotes,
+                        userNotes: req.body.medicationDetails.userNotes,
+                        doses: req.body.dosageDetails
                     });
                     await newMedication.save();
                     res.send({
@@ -74,6 +66,28 @@ router.get('/addnewmedication', jwtRequired, (req, res) => {
                     })
                 }
             })
+
+            // medicationTimeStampSchema.findOne({userId:user.userId,medicationName:req.body.medicationDetails.prescriptionName}, async (err,doc)=>{
+            //     if(err){
+            //         console.log("err "+err)
+            //         throw err;
+            //     }
+            //     if(doc){
+            //         console.log("doc timestamp"+doc)
+            //         return res.send("You have already added this Medication")
+            //     }else{
+            //         const newDosage = new medicationTimeStampSchema({
+            //             userId:user.userId,
+            //             medicationName:req.body.medicationDetails.prescriptionName,
+            //             dosages: req.body.dosageDetails,
+            //             medicationDays:req.body.dosageDetails.medicationDays
+            //         });
+            //         await newDosage.save();
+            //         res.send({
+            //             message: "successfully created medication dosage"
+            //         })
+            //     }
+            // })
         }
     })(req,res)
     // return res.send(userReturnObject);

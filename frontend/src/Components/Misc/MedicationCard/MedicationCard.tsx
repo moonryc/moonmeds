@@ -20,7 +20,25 @@ import MedicationCardEditDetails from "./MedicationCardEditDetails";
 
 export interface IDosagesDetails {
     amount: number,
-    time: Date
+    time: Date,
+    medicationDays: IMedicationDays
+}
+
+export interface IMedicationDays {
+    everyMonday: boolean,
+    monday: boolean,
+    everyTuesday: boolean,
+    tuesday: boolean,
+    everyWednesday: boolean,
+    wednesday: boolean,
+    everyThursday: boolean,
+    thursday: boolean,
+    everyFriday: boolean,
+    friday: boolean,
+    everySaturday: boolean,
+    saturday: boolean,
+    everySunday: boolean,
+    sunday: boolean,
 }
 
 export interface IMedicationDetails {
@@ -80,7 +98,24 @@ const MedicationCard = (props: any) => {
             remainingDosages: 2,
             nextFillDay: new Date(),
             dosages: [
-                {amount: 0, time: new Date()}
+                {
+                    amount: 0, time: new Date(), medicationDays: {
+                        everyMonday:false,
+                        monday: false,
+                        everyTuesday: false,
+                        tuesday: false,
+                        everyWednesday:false,
+                        wednesday: false,
+                        everyThursday: false,
+                        thursday: false,
+                        everyFriday: false,
+                        friday: false,
+                        everySaturday: false,
+                        saturday: false,
+                        everySunday: false,
+                        sunday: false,
+                    }
+                }
             ],
             userNotes: "This is a test note"
         }

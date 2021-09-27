@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const medicationSchema = new Schema({
-    email: String,
+    userId: String,
     medicationName: String,
-    dosage:Number,
+    dosage: Number,
     remainingDosages: Number,
     nextFillDate: Date,
-    timeStamps:[] //place time of days that the medication should be taken
+    userNotes: String, //place time of days that the medication should be taken
+    doses: [],
 })
 
-module.exports = mongoose.model("medicationsForUser",medicationSchema)
+module.exports = mongoose.model("medicationsForUser", medicationSchema)

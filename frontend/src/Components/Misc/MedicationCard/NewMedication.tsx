@@ -39,6 +39,9 @@ const NewMedication = () => {
 
     //TODO(Moon): connect this to the backend to update and or create a new medication
     const submitUpdatedMedication = async () => {
+
+        const {prescriptionName, prescriptionDosage, remainingDosages, nextFillDay, userNotes, dosages} = medicationDetails
+
         let url = "/medication/addnewmedication"
         const response = await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -53,8 +56,16 @@ const NewMedication = () => {
             },
             // redirect: 'follow', // manual, *follow, error
             // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({medicationDetails:medicationDetails}) // body data type must match "Content-Type" header
-        }).then(response=>response);
+            body: JSON.stringify({
+                medicationDetails: {
+                    prescriptionName:prescriptionName,
+                    prescriptionDosage:prescriptionDosage,
+                    remainingDosages:remainingDosages,
+                    nextFillDay:nextFillDay,
+                    userNotes:userNotes},
+                dosageDetails: dosages
+            }) // body data type must match "Content-Type" header
+        }).then(response => response);
         return response.json(); // parses JSON response into native JavaScript objects
     };
 
@@ -64,10 +75,29 @@ const NewMedication = () => {
             prescriptionDosage: 0,
             remainingDosages: 0,
             nextFillDay: new Date(),
+            userNotes: "",
             dosages: [
-                {amount: 0, time: new Date()}
+                {
+                    amount: 0,
+                    time: new Date(),
+                    medicationDays: {
+                        everyMonday: false,
+                        monday: false,
+                        everyTuesday: false,
+                        tuesday: false,
+                        everyWednesday: false,
+                        wednesday: false,
+                        everyThursday: false,
+                        thursday: false,
+                        everyFriday: false,
+                        friday: false,
+                        everySaturday: false,
+                        saturday: false,
+                        everySunday: false,
+                        sunday: false,
+                    }
+                }
             ],
-            userNotes: ""
         }
     );
 
@@ -76,6 +106,7 @@ const NewMedication = () => {
         const tempMedicationDetails = medicationDetails
         tempMedicationDetails.dosages = listOfDosages
         setMedicationDetails(tempMedicationDetails);
+        console.log(medicationDetails)
     }
     //This updates the medication details
     const updateMedicationDetails = (prescriptionName: string, remainingDosages: number, userNotes: string, prescriptionDosage: number) => {
@@ -85,6 +116,7 @@ const NewMedication = () => {
         tempMedicationDetails.prescriptionDosage = prescriptionDosage
         tempMedicationDetails.userNotes = userNotes
         setMedicationDetails(tempMedicationDetails);
+        console.log(medicationDetails)
     }
 
 

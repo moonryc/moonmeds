@@ -47,9 +47,7 @@ router.get('/logout', (req, res) => {
     );
 });
 
-
-
-//checks to see if the user is logged in based on the jwt token from the client
+//get a current jwtToken
 router.get('/current-session', (req, res) => {
     passport.authenticate('jwt', {session: false}, (err, user) => {
         //if error or not signed in
@@ -58,9 +56,22 @@ router.get('/current-session', (req, res) => {
         }
         //if signed in
         else {
-            res.send(user);
+            //returns the current jwt token
+            res.send({message:req.session.jwt});
         }
     })(req, res);
 });
+
+
+const jwtRequired = passport.authenticate('jwt', { session: false });
+
+router.post('/private-routetoken', jwtRequired, (req, res) => {
+    return res.send({message:'This is a private route'});
+});
+
+router.post('/private-routenotoken', (req, res) => {
+    return res.send({message:'This is a private route'});
+});
+
 
 module.exports = router;

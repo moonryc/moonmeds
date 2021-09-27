@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
-import {IDosagesDetails} from "./MedicationCard";
+import {IDosagesDetails, IMedicationDays} from "./MedicationCard";
 
 export interface IMedicationCardAddDosagesProps {
     dosageDetails: IDosagesDetails[],
@@ -9,14 +9,32 @@ export interface IMedicationCardAddDosagesProps {
     updateMedicationDosages(listOfDosages: IDosagesDetails[]): void
 }
 
-{/*TODO(Spotexx): theming*/}
+{/*TODO(Spotexx): theming*/
+}
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
 
     const [dosages, setDosages] = useState<IDosagesDetails[]>(props.dosageDetails);
 
 
     const newDosage = () => {
-        setDosages(dosages => [...dosages, {amount: 0, time: new Date()}])
+        setDosages(dosages => [...dosages, {
+            amount: 0, time: new Date(), medicationDays: {
+                everyMonday: false,
+                monday: false,
+                everyTuesday: false,
+                tuesday: false,
+                everyWednesday: false,
+                wednesday: false,
+                everyThursday: false,
+                thursday: false,
+                everyFriday: false,
+                friday: false,
+                everySaturday: false,
+                saturday: false,
+                everySunday: false,
+                sunday: false,
+            }
+        }])
     }
     const deleteDosage = (dosageIndex: number) => {
         let tempDosages = [...dosages];
@@ -34,10 +52,16 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
         setDosages(tempDosages)
     }
 
+    const getDosageDetails = (details: IMedicationDays, index: number) => {
+        let tempDosages = [...dosages];
+        tempDosages[index].medicationDays = details
+        setDosages(tempDosages);
+    }
+
     //TODO(Moon) this function is not yet finished
     useEffect(() => {
         props.updateMedicationDosages(dosages);
-    },[dosages])
+    }, [dosages])
 
 
     return (
@@ -51,7 +75,7 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
                         deleteDosage={deleteDosage}
                         getDosage={getDosage}
                         getDosageTime={getDosageTime}
-                    />)
+                     getDosageDetails={getDosageDetails}/>)
                 }
                 <br/>
                 <Button onClick={newDosage} size={"small"} variant="contained">Add a Dosage</Button>

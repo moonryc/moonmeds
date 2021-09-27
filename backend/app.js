@@ -54,6 +54,21 @@ const db = mongoose.connection;
 
 //endregion
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://www.domainA.com');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    next();
+});
+app.options('*', (req, res) => {
+    res.json({
+        status: 'OK'
+    });
+});
+
 //region cookie
 /* Set Cookie Settings */
 app.use(
@@ -69,7 +84,7 @@ app.use(
 /* Set Security Configs */
 app.use(helmet());
 app.use(hpp());
-app.use(csurf());
+// app.use(csurf({cookie:true}));
 //endregion
 
 //Passport
