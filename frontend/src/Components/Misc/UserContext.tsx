@@ -4,7 +4,7 @@ interface UserContextState{
     loggedIn:boolean,
     setLoggedIn:(state:boolean) => void,
     userId:string,
-    setUserId:(state:string) => void
+    setUserId:(state:string) => void,
 
 }
 

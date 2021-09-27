@@ -1,9 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@material-ui/core";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
 import TestPrivateRoute from "../Misc/TestPrivateRoute";
+import {Login} from "@mui/icons-material";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -21,12 +22,8 @@ const useStyles = makeStyles((theme?: any) => ({
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
-    const loggedIn = useContext(UserContext);
-    const renderLogButton = (loggedIn: any) => {
-        if (loggedIn===true){return <LogoutButton />}
-        if (loggedIn===false){ return<LoginButton />}
-    }
 
+    let {loggedIn:loggedIn} = useContext(UserContext);
 
 
     return(
@@ -41,7 +38,8 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>
-                        {renderLogButton(loggedIn)}
+                        {/*{renderLogButton(loggedIn)}                     */}
+                        {loggedIn ? <LogoutButton/>:<LoginButton/>}
                     </Box>
                 </Toolbar>
             </AppBar>
