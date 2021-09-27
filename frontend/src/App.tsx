@@ -1,8 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import './App.css';
 import Homepage from "./Pages/Startup/Homepage";
 import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
 import {UserContext} from "./Components/Misc/UserContext";
+import CalendarOverViewPage from "./Pages/CalenderOverviewPage";
+import ErrorPage from "./Pages/ErrorPage";
+import MedicationPage from "./Pages/MedicationPage";
+import {Route} from "react-router-dom";
+
 
 function App() {
 
@@ -39,11 +44,17 @@ function App() {
     },[])
 
 
-    if(loggedIn){
-        return <LoggedInHomePage/>
-    }else{
-        return <Homepage/>
-    }
+
+    return (
+    <>
+        <Route exact path="/" component={loggedIn? LoggedInHomePage : Homepage} />
+        <Route exact path="/CalendarOverview" component={CalendarOverViewPage} />
+        <Route exact path="/Err" component={ErrorPage} />
+        <Route exact path="/MedicationPage" component={loggedIn? LoggedInHomePage : Homepage} />
+    </>
+
+    )
+
 
 }
 

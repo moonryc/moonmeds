@@ -12,8 +12,7 @@ const LoggedInHomePage = () => {
             <AppbarTop/>
             <MissedMedication/>
             {/*<UpcomingRefills/>*/}
-            <LogoutButton/>
-            {/*<MedicationCard/>*/}
+            <MedicationCard/>
         </div>
     );
 };
