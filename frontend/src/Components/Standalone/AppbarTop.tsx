@@ -5,6 +5,7 @@ import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
 import TestPrivateRoute from "../Misc/TestPrivateRoute";
 import {Login} from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -34,7 +35,12 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     <Typography variant="h6" className={classes.title}>
                         Moons Meds {'>'}:)
                     </Typography>
-                    <Container maxWidth="sm">
+                    <Container maxWidth="sm"> {/*temporary testing buttons*/}
+                        <Button color="inherit" onClick={() => { window.location.href = "/" }}>home</Button>
+                        <Button color="inherit" onClick={() => { window.location.href = "/CalendarOverview" }}>CalendarOverview</Button>
+                        <Button color="inherit" onClick={() => { window.location.href = "/Err" }}>Errorpage (testing right now)</Button>
+                        <Button color="inherit" onClick={() => { window.location.href = "/MedicationPage" }}>Medicationpage</Button>
+
                         <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>
