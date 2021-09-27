@@ -1,6 +1,6 @@
 import React,{createContext, useState,} from 'react'
 
-interface UserContextState{
+interface IUserContextState{
     loggedIn:boolean,
     setLoggedIn:(state:boolean) => void,
     userId:string,
@@ -8,7 +8,7 @@ interface UserContextState{
 
 }
 
-export const UserContext = createContext<UserContextState>({
+export const UserContext = createContext<IUserContextState>({
     loggedIn:false,
     setLoggedIn:(state:boolean)=>{},
     userId:'test',
@@ -20,7 +20,7 @@ export const UserContainer= (props:any) => {
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>('test');
 
-    //@ts-ignore TODO fix this tsignore
+
     return (
         <UserContext.Provider value = {{loggedIn, setLoggedIn, userId, setUserId}}>
             {children}

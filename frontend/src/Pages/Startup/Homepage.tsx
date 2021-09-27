@@ -17,10 +17,8 @@ const Homepage = (props:any) => {
     const classes = useStyles();
     return (
         <div className={classes.wrapper}>
-            <UserContext.Provider value={props.auth}>
                 <AppbarTop/>
                 <BackDrop/>
-            </UserContext.Provider>
         </div>
     )
 };

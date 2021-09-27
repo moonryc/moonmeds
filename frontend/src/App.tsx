@@ -11,7 +11,7 @@ function App() {
 
 
     const user = useContext<any>(UserContext);
-    const { userId, setUserId } = user;
+    const { setUserId, setLoggedIn } = user;
     //region FETCH
     const checkIfLoggedIn = async ()=>{
         let url='/auth/current-session';
@@ -23,9 +23,13 @@ function App() {
             .then(data => {
                 if(data){
                     setAuth(data);
+                    setLoggedIn(true)
                     setUserId(data.userId)
                         console.log("User data below: ");
                         console.log(data);
+                }else{
+                    setUserId("")
+                    setLoggedIn(false)
                 }
             })
             .catch((error) => {
@@ -43,11 +47,11 @@ function App() {
     if(auth){
         //TODO FIX THIS TS-IGNORE
         // @ts-ignore
-        return <LoggedInHomePage auth={auth}/>
+        return <LoggedInHomePage/>
     }else{
         //TODO FIX THIS TS-IGNORE
         // @ts-ignore
-        return <Homepage auth={false}/>
+        return <Homepage/>
     }
 
 }
