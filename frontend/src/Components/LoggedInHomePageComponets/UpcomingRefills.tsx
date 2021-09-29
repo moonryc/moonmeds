@@ -1,12 +1,12 @@
 import React from 'react';
+import {Typography} from "@material-ui/core";
 
 const UpcomingRefills = () => {
 
     return (
         <div>
-            <>This will display if a user has any upcoming refills within the next 2 weeks if not it will display an all
-                good message
-            </>
+            <Typography>test message
+            </Typography>
         </div>
     );
 };

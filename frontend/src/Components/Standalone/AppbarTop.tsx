@@ -8,13 +8,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import MedicationIcon from '@mui/icons-material/Medication';
-import {MediaBluetoothOn} from "@mui/icons-material";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
         background: theme.palette.primary.main,
         color: theme.palette.text.primary,
-        paddingLeft: '64px'
+        paddingLeft: '64px',
+        maxHeight: '55px'
     },
     rightToolbar: {
         marginLeft: "auto",
@@ -36,7 +37,8 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const actions = [
         { icon: <HomeIcon />, name: "Home", path: "/" },
         { icon: <DateRangeIcon />, name: "Calendar Overview", path: '/CalendarOverview' },
-        { icon: <MedicationIcon />, name: "Medication", path: '/MedicationPage' }
+        { icon: <MedicationIcon />, name: "Medication", path: '/MedicationPage' },
+        { icon: <ErrorOutlineIcon />, name: "Error/ Testing", path: '/Err' }
     ];
 
     let {loggedIn:loggedIn} = useContext(UserContext);
@@ -73,9 +75,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     <Typography variant="h6" className={classes.title}>
                         Moons Meds {'>'}:)
                     </Typography>
-                    <Container maxWidth="lg"> {/*temporary testing buttons*/}
-                        <Button color="inherit" onClick={() => { window.location.href = "/Err" }}>Error page (testing right now)</Button>
-
+                    <Container maxWidth="sm"> {/*temporary testing buttons*/}
                         <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
                     </Container>
                     <Box className={classes.rightToolbar}>

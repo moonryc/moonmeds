@@ -7,6 +7,7 @@ import CalendarOverViewPage from "./Pages/CalenderOverviewPage";
 import ErrorPage from "./Pages/ErrorPage";
 import MedicationPage from "./Pages/MedicationPage";
 import {Route} from "react-router-dom";
+import SendToLogin from "./Components/Misc/SendToLogin";
 
 
 function App() {
@@ -43,12 +44,17 @@ function App() {
         checkIfLoggedIn();
     },[])
 
-
+    const sendToLogin = async () => {
+        let url = '/auth/login'
+        fetch(url,{method:('GET')})
+            .then(response=>response.json)
+            .then(data=>data)
+    }
 
     return (
     <>
         <Route exact path="/" component={loggedIn? LoggedInHomePage : Homepage} />
-        <Route exact path="/CalendarOverview" component={CalendarOverViewPage} />
+        <Route exact path="/CalendarOverview" component={loggedIn? CalendarOverViewPage: CalendarOverViewPage} />
         <Route exact path="/Err" component={ErrorPage} />
         <Route exact path="/MedicationPage" component={loggedIn? LoggedInHomePage : Homepage} />
     </>
