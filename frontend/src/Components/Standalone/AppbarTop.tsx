@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {AppBar, Box, Button, Container, makeStyles, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import MedicationIcon from '@mui/icons-material/Medication';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -19,16 +20,18 @@ const useStyles = makeStyles((theme?: any) => ({
     },
     rightToolbar: {
         marginLeft: "auto",
-        marginRight: 0
+        marginRight: 0,
+        color: '#f60000'
     },
     appBar:{
+        background: theme.palette.primary.main,
         height: '60px',
-        position: 'relative'
+        position: 'relative',
 
     },
     speeddial:{
-        color: theme.palette.secondary.main,
         overflow: 'visible',
+        background: '#f60000',
     }
 }));
 
@@ -54,17 +57,19 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     {/*test speed dial*/}
                     <SpeedDial
                         ariaLabel="SpeedDial playground example"
-                        icon={<MenuIcon/>}
+                        icon={<MenuIcon className={classes.speeddial}/>}
                         direction='down'
                         sx={{ position: 'absolute', top: 0, left: 0}}
+
+
                     >
                         {actions.map((action) => (
                             <SpeedDialAction
                                 key={action.name}
                                 icon={action.icon}
                                 tooltipTitle={action.name}
-                                sx={{color:'primary.main'}}
                                 onClick={() => { window.location.href = action.path }}
+
                             />
                         ))}
                     </SpeedDial>
@@ -75,11 +80,11 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                     <Typography variant="h6" className={classes.title}>
                         Moons Meds {'>'}:)
                     </Typography>
-                    <Container maxWidth="sm"> {/*temporary testing buttons*/}
+                    <Container maxWidth="sm">
                         <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
                     </Container>
-                    <Box className={classes.rightToolbar}>
-                        {loggedIn ? <LogoutButton/>:<LoginButton/>}
+                    <Box>
+                        {loggedIn ? <LogoutButton />:<LoginButton />}
                     </Box>
                 </Toolbar>
             </AppBar>

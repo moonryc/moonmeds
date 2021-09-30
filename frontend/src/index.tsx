@@ -5,10 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Router} from "react-router";
 import {createBrowserHistory} from "history";
-import {createTheme} from "@material-ui/core";
-import {ThemeProvider} from '@material-ui/styles';
 import {UserContainer} from "./Components/Misc/UserContext";
-
+import {createTheme} from "@mui/material";
+import {ThemeProvider} from "@mui/styles";
+import { StyledEngineProvider } from "@mui/material/styles";
 const customHistory = createBrowserHistory();
 
 
@@ -33,7 +33,9 @@ ReactDOM.render(
         <Router history={customHistory}>
             <ThemeProvider theme={theme}>
                 <UserContainer>
-                    <App/>
+                    <StyledEngineProvider injectFirst>
+                        <App/>
+                    </StyledEngineProvider>
                 </UserContainer>
             </ThemeProvider>
         </Router>
