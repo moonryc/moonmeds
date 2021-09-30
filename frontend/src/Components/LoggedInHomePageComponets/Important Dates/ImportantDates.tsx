@@ -20,7 +20,7 @@ const bull = (
 );
 
 
-const MissedMedication = () => {
+const ImportantDates = () => {
     return (
         <div>
             {/*<Box sx={{minWidth: 275}}>*/}
@@ -32,7 +32,7 @@ const MissedMedication = () => {
                                 <MoreVert/>
                             </IconButton>
                         }
-                        title="Missed Medication"
+                        title="Important Dates"
                     />
 
                     <Collapse in={true}>
@@ -64,4 +64,4 @@ const MissedMedication = () => {
     );
 };
 
-export default MissedMedication;
+export default ImportantDates;
