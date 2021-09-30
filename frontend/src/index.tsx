@@ -30,6 +30,7 @@ const theme = createTheme({
 
 ReactDOM.render(
     <React.StrictMode>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Router history={customHistory}>
             <ThemeProvider theme={theme}>
                 <UserContainer>
@@ -37,6 +38,7 @@ ReactDOM.render(
                 </UserContainer>
             </ThemeProvider>
         </Router>
+        </LocalizationProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
