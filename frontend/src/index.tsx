@@ -8,6 +8,8 @@ import {createBrowserHistory} from "history";
 import {createTheme} from "@material-ui/core";
 import {ThemeProvider} from '@material-ui/styles';
 import {UserContainer} from "./Components/Misc/UserContext";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/lab";
 
 const customHistory = createBrowserHistory();
 
