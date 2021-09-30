@@ -130,53 +130,78 @@ const MedicationCard = (props: IMedicationCardProps) => {
         setValue(newValue);
     };
 
+    //creates a new medication
+    const submitNewMedication = async () => {
 
-    // //TODO(Moon): connect this to the backend to update and or create a new medication
-    // const submitUpdatedMedication = async () => {
-    //     handleEditExpandClick()
-    //
-    //     const {
-    //         prescriptionName,
-    //         prescriptionDosage,
-    //         remainingDosages,
-    //         nextFillDay,
-    //         userNotes,
-    //         dosages
-    //     } = medicationDetails
-    //
-    //     let url = "/medication/updatemedication"
-    //     const response = await fetch(url, {
-    //         method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-    //         mode: 'cors', // no-cors, *cors, same-origin
-    //         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    //         credentials: 'same-origin', // include, *same-origin, omit
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': `Bearer ${userId}`
-    //             // 'Content-Type': 'application/x-www-form-urlencoded',
-    //         },
-    //         // redirect: 'follow', // manual, *follow, error
-    //         // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    //         body: JSON.stringify({
-    //             medicationId: props.medicationId,
-    //             medicationDetails: {
-    //                 prescriptionName: prescriptionName,
-    //                 prescriptionDosage: prescriptionDosage,
-    //                 remainingDosages: remainingDosages,
-    //                 nextFillDay: nextFillDay,
-    //                 userNotes: userNotes
-    //             },
-    //             dosageDetails: dosages
-    //         }) // body data type must match "Content-Type" header
-    //     }).then(response => response);
-    //     return response.json(); // parses JSON response into native JavaScript objects
-    // };
-    //
+        const {prescriptionName, prescriptionDosage, remainingDosages, nextFillDay, userNotes, dosages} = medicationDetails
 
+        let url = "/medication/addnewmedication"
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${userId}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            // redirect: 'follow', // manual, *follow, error
+            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify({
+                medicationDetails: {
+                    prescriptionName:prescriptionName,
+                    prescriptionDosage:prescriptionDosage,
+                    remainingDosages:remainingDosages,
+                    nextFillDay:nextFillDay,
+                    userNotes:userNotes},
+                dosageDetails: dosages
+            }) // body data type must match "Content-Type" header
+        }).then(response => response);
+        return response.json(); // parses JSON response into native JavaScript objects
+    };
+    //updates medication
+    const submitUpdatedMedication = async () => {
+        setIsEditing(false)
 
+        const {
+            prescriptionName,
+            prescriptionDosage,
+            remainingDosages,
+            nextFillDay,
+            userNotes,
+            dosages
+        } = medicationDetails
 
-
+        let url = "/medication/updatemedication"
+        const response = await fetch(url, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${userId}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            // redirect: 'follow', // manual, *follow, error
+            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify({
+                medicationId: props.medicationId,
+                medicationDetails: {
+                    prescriptionName: prescriptionName,
+                    prescriptionDosage: prescriptionDosage,
+                    remainingDosages: remainingDosages,
+                    nextFillDay: nextFillDay,
+                    userNotes: userNotes
+                },
+                dosageDetails: dosages
+            }) // body data type must match "Content-Type" header
+        }).then(response => response);
+        return response.json(); // parses JSON response into native JavaScript objects
+    };
 
     return (
         <div>
@@ -213,10 +238,10 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 <Divider/>
                 {props.isNewCard ?
                     <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
-                        <BottomNavigationAction label={"Add Medication"} icon={<EditIcon/>}/>
+                        <BottomNavigationAction label={"Add Medication"} icon={<EditIcon/>} onClick={()=>submitNewMedication()}/>
                     </BottomNavigation> :
                     <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
-                        <BottomNavigationAction label={"Update Card"} icon={<EditIcon/>}/>
+                        <BottomNavigationAction label={"Update Card"} icon={<EditIcon onClick={()=>submitUpdatedMedication()}/>}/>
                         <BottomNavigationAction onClick={()=>handleDiscardClick()} label={"Discard Changed"} icon={<DeleteForever/>}/>
                     </BottomNavigation>
                 }
