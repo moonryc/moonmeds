@@ -37,7 +37,9 @@ ReactDOM.render(
         <Router history={customHistory}>
             <ThemeProvider theme={theme}>
                 <UserContainer>
-                    <App/>
+                    <StyledEngineProvider injectFirst>
+                        <App/>
+                    </StyledEngineProvider>
                 </UserContainer>
             </ThemeProvider>
         </Router>

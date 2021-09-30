@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
@@ -29,9 +29,10 @@ const useStyles = makeStyles((theme?: any) => ({
         position: 'relative',
 
     },
-    speeddial:{
-        overflow: 'visible',
-        background: '#f60000',
+    menu:{
+        color: theme.palette.text.primary,
+        marginRight: '15px',
+        background: theme.palette.primary.main
     }
 }));
 
@@ -46,33 +47,48 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
     let {loggedIn:loggedIn} = useContext(UserContext);
 
-
+    const [anchorEl, setAnchorEl] = React.useState<any>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    };
+    const handleClose = () => {
+        setAnchorEl(null)
+    };
 
     return(
         <>
             <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
 
-
-                    {/*test speed dial*/}
-                    <SpeedDial
-                        ariaLabel="SpeedDial playground example"
-                        icon={<MenuIcon className={classes.speeddial}/>}
-                        direction='down'
-                        sx={{ position: 'absolute', top: 0, left: 0}}
-
-
+                    <Button
+                        id="basic-button"
+                        aria-controls="basic-menu"
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                        className={classes.menu}
                     >
-                        {actions.map((action) => (
-                            <SpeedDialAction
-                                key={action.name}
-                                icon={action.icon}
-                                tooltipTitle={action.name}
-                                onClick={() => { window.location.href = action.path }}
+                        Dashboard
+                    </Button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
 
-                            />
-                        ))}
-                    </SpeedDial>
+                        open={open}
+                        onClose={handleClose}
+
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+
+                        <MenuItem onClick={handleClose}><HomeIcon className={classes.menu}/> </MenuItem>
+
+                    </Menu>
+                    {/*test speed dial*/}
+
+
 
 
 
