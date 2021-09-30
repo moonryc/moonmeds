@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
-import {IDosagesDetails, IMedicationDays} from "./MedicationCard";
+import {IDosagesDetails, IMedicationDays, IMedicationDetails} from "./MedicationCard";
 
 export interface IMedicationCardAddDosagesProps {
-    dosageDetails: IDosagesDetails[],
+    medicationDetails: IMedicationDetails
 
     updateMedicationDosages(listOfDosages: IDosagesDetails[]): void
 }
+
+
 
 {/*TODO(Spotexx): theming*/
 }
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
 
-    const [dosages, setDosages] = useState<IDosagesDetails[]>(props.dosageDetails);
+    const [dosages, setDosages] = useState<IDosagesDetails[]>(props.medicationDetails.dosages);
 
 
     const newDosage = () => {
