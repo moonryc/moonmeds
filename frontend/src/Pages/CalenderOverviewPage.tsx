@@ -12,6 +12,8 @@ import DisplayMedicationList from "../Components/CalendarPageComponets/Medicatio
 import MedicationCard from "../Components/Misc/MedicationCard/MedicationCard";
 import DisplayDateDetails from "../Components/CalendarPageComponets/DateDetails/DisplayDateDetails";
 import {Card, Grid} from "@mui/material";
+import {useContext, useEffect, useState} from "react";
+import {UserContext} from "../Components/Misc/UserContext";
 
 
 
@@ -53,6 +55,38 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const CalendarOverViewPage = () => {
 
+    const {userId,selectedDay} = useContext(UserContext);
+    const [userMedications, setUserMedications] = useState<[]|null>(null);
+
+    const getMedications = async () => {
+        let url='/medication/userMedications';
+        // Default options are marked with *
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${userId}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            method: 'GET', // or 'PUT'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setUserMedications(data)
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
+        return response;
+    }
+
+    useEffect(() => {
+        if(userMedications == null){
+            getMedications()
+        }
+    }, [userMedications]);
+
+    
+    
 
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
@@ -88,7 +122,7 @@ const CalendarOverViewPage = () => {
                                 aria-label="full width tabs example"
                             >
                                 <Tab label="Date Details" {...a11yProps(0)} />
-                                <Tab label="Medications" {...a11yProps(1)} />
+                                <Tab label="Medications" onClick={()=>getMedications()} {...a11yProps(1)} />
                                 <Tab label="Add A Medication" {...a11yProps(2)} />
                             </Tabs>
                         </AppBar>
@@ -98,10 +132,10 @@ const CalendarOverViewPage = () => {
                             onChangeIndex={handleChangeIndex}
                         >
                             <TabPanel value={value} index={0} dir={theme.direction}>
-                            <DisplayDateDetails/>
+                            <DisplayDateDetails selectedDate={{index:0,date:selectedDay}}/>
                             </TabPanel>
                             <TabPanel value={value} index={1} dir={theme.direction}>
-                            <DisplayMedicationList/>
+                            <DisplayMedicationList medicationsArray={userMedications}/>
                             </TabPanel>
                             <TabPanel value={value} index={2} dir={theme.direction}>
                                 <MedicationCard
