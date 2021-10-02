@@ -5,13 +5,27 @@ import UpcomingRefills from "../../Components/LoggedInHomePageComponets/Upcoming
 import MedicationCard from "../../Components/Misc/MedicationCard/MedicationCard";
 import ImportantDates from "../../Components/LoggedInHomePageComponets/Important Dates/ImportantDates";
 import HomepageCards from "../../Components/LoggedInHomePageComponets/HomepageCards";
+import {makeStyles} from "@mui/styles";
 
+const useStyles = makeStyles((theme?: any) => ({
+    wrapper: {
+        background: theme.palette.primary.main,
+        color: theme.palette.text.primary,
+        height: '100vmin'
+    },
+    cardHolder:{
+        paddingTop: '600px',
+        background: theme.palette.primary.dark
+    }
+}));
 
 const LoggedInHomePage = () => {
+    const classes = useStyles();
+
     return (
-        <div>
-            <AppbarTop/>
-            <HomepageCards/>
+        <div className={classes.wrapper}>
+            <AppbarTop />
+            <HomepageCards className={classes.cardHolder}/>
         </div>
     );
 };

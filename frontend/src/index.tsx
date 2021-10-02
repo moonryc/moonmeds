@@ -8,12 +8,14 @@ import {createBrowserHistory} from "history";
 import {UserContainer} from "./Components/Misc/UserContext";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {LocalizationProvider} from "@mui/lab";
-
+import { PaletteMode } from "@mui/material";
 import {createTheme} from "@mui/material";
 import {ThemeProvider} from "@mui/styles";
-import { StyledEngineProvider } from "@mui/material/styles";
-const customHistory = createBrowserHistory();
+import {StyledEngineProvider} from "@mui/material/styles";
 
+
+
+const customHistory = createBrowserHistory();
 
 const theme = createTheme({
         palette: {
@@ -26,23 +28,30 @@ const theme = createTheme({
             text: {
                 primary: '#E4E6EB',
                 secondary: '#B0B3B8',
-            }
+            },
+            background: {
+                default: '#242526',
+                paper: '#242526',
+            },
         }
     }
 );
 
+
+
+
 ReactDOM.render(
     <React.StrictMode>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Router history={customHistory}>
-            <ThemeProvider theme={theme}>
-                <UserContainer>
-                    <StyledEngineProvider injectFirst>
-                        <App/>
-                    </StyledEngineProvider>
-                </UserContainer>
-            </ThemeProvider>
-        </Router>
+            <Router history={customHistory}>
+                <ThemeProvider theme={theme}>
+                    <UserContainer>
+                        <StyledEngineProvider injectFirst>
+                            <App/>
+                        </StyledEngineProvider>
+                    </UserContainer>
+                </ThemeProvider>
+            </Router>
         </LocalizationProvider>
     </React.StrictMode>,
     document.getElementById('root')

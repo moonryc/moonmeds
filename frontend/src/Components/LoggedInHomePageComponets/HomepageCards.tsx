@@ -17,21 +17,25 @@ import Container from '@mui/material/Container';
 import ImportantDates from "./Important Dates/ImportantDates";
 
 
-export default function HomepageCards() {
+const HomepageCards: React.FC<React.HTMLProps<HTMLDivElement>> = ({children, ...props}) => {
     return (
-        <Container>
-            <Grid container spacing={5} alignItems="flex-end">
+        <div {...props}>
+            <Container>
+                <Grid container spacing={5} alignItems="flex-end">
 
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates/>
+                    </Grid>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates/>
+                    </Grid>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates/>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
-                </Grid>
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
-                </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </div>
     );
 }
+
+export default HomepageCards
