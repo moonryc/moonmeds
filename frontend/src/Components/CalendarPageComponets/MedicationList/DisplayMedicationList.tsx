@@ -4,45 +4,48 @@ import {Button} from "@mui/material";
 import {UserContext} from "../../Misc/UserContext";
 import MedicationCard, {IMedicationCardProps} from "../../Misc/MedicationCard/MedicationCard";
 
-const DisplayMedicationList = () => {
 
-    const [medicationsArray, setMedicationsArray] = useState<[]>();
+interface IDisplayMedicationList {
+    medicationsArray:[]|null,
+}
+
+
+const DisplayMedicationList = (props:IDisplayMedicationList) => {
+
+    const [medicationsArray, setMedicationsArray] = useState<[]|null>(props.medicationsArray);
 
     const {userId} = useContext(UserContext);
 
+    //TODO need to update the emdications array when the add new medication button is clicked
     useEffect(()=>{
-        console.log(medicationsArray)
     },[medicationsArray])
 
-    const getListOfMedications = async () => {
-            let url='/medication/userMedications';
-            // Default options are marked with *
-            const response = await fetch(url, {
-                headers: {
-                    'Authorization': `Bearer ${userId}`
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                method: 'GET', // or 'PUT'
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    setMedicationsArray(data);
-                })
-                .catch((error) => {
-                    console.error('Error: ', error);
-                });
-            return response;
-    }
-    
-    
-    
-    
+    // const getListOfMedications = async () => {
+    //         let url='/medication/userMedications';
+    //         // Default options are marked with *
+    //         const response = await fetch(url, {
+    //             headers: {
+    //                 'Authorization': `Bearer ${userId}`
+    //                 // 'Content-Type': 'application/x-www-form-urlencoded',
+    //             },
+    //             method: 'GET', // or 'PUT'
+    //         })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 console.log(data)
+    //                 setMedicationsArray(data);
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error: ', error);
+    //             });
+    //         return response;
+    // }
+
     return (
         <div>
             <Card>
-                <Button onClick={()=>getListOfMedications()}>Load Medications</Button>
-                {medicationsArray ? medicationsArray.map((medication: IMedicationCardProps) =>
+                <br/>
+                {medicationsArray==null ? <>Click the "Add A Medication" to add a new medication</>: medicationsArray.map((medication: IMedicationCardProps) =>
                     <><MedicationCard
                         medicationId={medication.medicationId}
                         prescriptionName={medication.prescriptionName}
@@ -51,7 +54,7 @@ const DisplayMedicationList = () => {
                         nextFillDay={medication.nextFillDay}
                         dosages={medication.dosages}
                         userNotes={medication.userNotes} isNewCard={false}/><br/>
-                    </>): <></>}
+                    </>)}
 
 
             </Card>
