@@ -15,23 +15,40 @@ import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import ImportantDates from "./Important Dates/ImportantDates";
+import {makeStyles} from "@mui/styles";
 
+const useStyles = makeStyles((theme?: any) => ({
+    wrapper: {
+        background: theme.palette.primary.main,
+        color: theme.palette.text.primary,
+        height: '100vmin'
+    },
+    cardHolder:{
+        paddingTop: '30vh',
+        background: theme.palette.primary.dark
+    }
+}));
 
-export default function HomepageCards() {
+const HomepageCards: React.FC<React.HTMLProps<HTMLDivElement>> = ({children, ...props}) => {
+    const classes = useStyles();
     return (
-        <Container>
-            <Grid container spacing={5} alignItems="flex-end">
+        <div {...props}>
+            <Container>
+                <Grid container spacing={5} alignItems="flex-end">
 
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates />
+                    </Grid>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates/>
+                    </Grid>
+                    <Grid item xs={12} md={4} >
+                        <ImportantDates/>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
-                </Grid>
-                <Grid item xs={12} md={4} >
-                    <ImportantDates/>
-                </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </div>
     );
 }
+
+export default HomepageCards

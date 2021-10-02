@@ -3,7 +3,6 @@ import {AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography} fro
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
-import {SpeedDial, SpeedDialAction} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
@@ -29,21 +28,10 @@ const useStyles = makeStyles((theme?: any) => ({
         position: 'relative',
 
     },
-    menu:{
-        color: theme.palette.text.primary,
-        marginRight: '15px',
-        background: theme.palette.primary.main
-    }
 }));
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
-    const actions = [
-        { icon: <HomeIcon />, name: "Home", path: "/" },
-        { icon: <DateRangeIcon />, name: "Calendar Overview", path: '/CalendarOverview' },
-        { icon: <MedicationIcon />, name: "Medication", path: '/MedicationPage' },
-        { icon: <ErrorOutlineIcon />, name: "Error/ Testing", path: '/Err' }
-    ];
 
     let {loggedIn:loggedIn} = useContext(UserContext);
 
@@ -58,7 +46,9 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
     return(
         <>
-            <AppBar position="static" className={classes.appBar}>
+            <AppBar position="static"
+                    className={classes.appBar}
+            >
                 <Toolbar>
 
                     <Button
@@ -67,23 +57,21 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClick}
-                        className={classes.menu}
+                        sx={{color:'text.primary'}}
                     >
                         Dashboard
                     </Button>
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorEl}
-
                         open={open}
                         onClose={handleClose}
-
                         MenuListProps={{
                             'aria-labelledby': 'basic-button',
                         }}
                     >
 
-                        <MenuItem onClick={handleClose}><HomeIcon className={classes.menu}/> </MenuItem>
+                        <MenuItem onClick={handleClose} ><HomeIcon /> </MenuItem>
 
                     </Menu>
                     {/*test speed dial*/}
