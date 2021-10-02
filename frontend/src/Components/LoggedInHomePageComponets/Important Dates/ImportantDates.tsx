@@ -9,24 +9,36 @@ import {red} from "@mui/material/colors";
 import {Avatar, CardHeader, Collapse} from "@mui/material";
 import IconButton, {IconButtonProps} from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
+import {makeStyles} from "@mui/styles";
+import Calendar from 'react-calendar';
+import moment from "moment";
+import 'react-calendar/dist/Calendar.css'
 
-const bull = (
-    <Box
-        component="span"
-        sx={{display: 'inline-block', mx: '2px', transform: 'scale(0.8)'}}
-    >
-        •
-    </Box>
-);
-
+const useStyles = makeStyles((theme?: any) => ({
+    title: {
+        color: theme.palette.text.primary
+    },
+    highlight:{
+        color: 'red'
+    }
+}));
 
 const ImportantDates = () => {
+
+
+    const mark = [
+        '04-03-2020',
+        '03-03-2020',
+        '05-03-2020'
+    ]
+    const classes = useStyles();
     return (
         <div>
             {/*<Box sx={{minWidth: 275}}>*/}
                 <Card variant="outlined">
 
                     <CardHeader
+                        className={classes.title}
                         action={
                             <IconButton aria-label="settings">
                                 <MoreVert/>
@@ -38,20 +50,10 @@ const ImportantDates = () => {
                     <Collapse in={true}>
 
                         <CardContent>
-                            {/*<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>*/}
-                                Word of the Day
-                            {/*</Typography>*/}
-                            <Typography variant="h5" component="div">
-                                be{bull}nev{bull}o{bull}lent
-                            </Typography>
-                            <Typography sx={{mb: 1.5}} color="text.secondary">
-                                adjective
-                            </Typography>
-                            <Typography variant="body2">
-                                well meaning and kindly.
-                                <br/>
-                                {'"a benevolent smile"'}
-                            </Typography>
+                            <Calendar
+                                tileClassName="content"
+                            />
+
                         </CardContent>
                         <CardActions>
                             <Button size="small">Learn More</Button>

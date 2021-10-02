@@ -10,7 +10,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {LocalizationProvider} from "@mui/lab";
 import { PaletteMode } from "@mui/material";
 import {createTheme} from "@mui/material";
-import {ThemeProvider} from "@mui/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import {StyledEngineProvider} from "@mui/material/styles";
 
 

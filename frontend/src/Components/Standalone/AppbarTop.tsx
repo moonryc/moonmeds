@@ -28,11 +28,6 @@ const useStyles = makeStyles((theme?: any) => ({
         position: 'relative',
 
     },
-    // menu:{
-    //     color: theme.palette.text.primary,
-    //     marginRight: '15px',
-    //     background: theme.palette.primary.main
-    // }
 }));
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
@@ -62,7 +57,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClick}
-
+                        sx={{color:'text.primary'}}
                     >
                         Dashboard
                     </Button>
