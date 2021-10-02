@@ -21,7 +21,7 @@ const TimePickerComponent = (props: ITimePickerComponentProps) => {
 
     return (
         <div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+
                 {/*<Stack spacing={3}>*/}
                 <MobileTimePicker
                     label={props.label}
@@ -32,7 +32,7 @@ const TimePickerComponent = (props: ITimePickerComponentProps) => {
                     renderInput={(params) => <TextField size={"small"} label={"Time of Dosage"} {...params} />}
                 />
                 {/*</Stack>*/}
-            </LocalizationProvider>
+
         </div>
     );
 };
