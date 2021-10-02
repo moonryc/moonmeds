@@ -1,20 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {Divider, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {IMedicationDetails} from "./MedicationCard";
+import {IMedication} from "../../../Types/MedicationType";
+
 
 interface IMedicationCardEditDetails {
-    medicationDetails: IMedicationDetails,
+    medication: IMedication,
     updateMedicationDetails(name:string,remainingDosages:number, userNotes:string,prescriptionDosage:number):void
 }
 {/*TODO(Spotexx): theming*/}
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
 
-    const [prescriptionName, setPrescriptionName] = useState(props.medicationDetails.prescriptionName);
-    const [prescriptionDosage, setPrescriptionDosage] = useState(props.medicationDetails.prescriptionDosage);
-    const [remainingDosages, setRemainingDosages] = useState(props.medicationDetails.remainingDosages);
-    const [userNotes, setUserNotes] = useState(props.medicationDetails.userNotes);
+    const [prescriptionName, setPrescriptionName] = useState<string>(props.medication.prescriptionName);
+    const [prescriptionDosage, setPrescriptionDosage] = useState<number>(props.medication.prescriptionDosage);
+    const [remainingDosages, setRemainingDosages] = useState<number>(props.medication.remainingDosages);
+    const [userNotes, setUserNotes] = useState<string>(props.medication.userNotes);
 
     const handlePrescriptionNameOnChange = (e: any) => {
         setPrescriptionName(e.target.value)
@@ -42,7 +43,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                            onChange={(e) => handlePrescriptionNameOnChange(e)}
                            id="outlined-number"
                            label={"Prescription Name"} type="text" InputLabelProps={{shrink: true,}}
-                defaultValue={props.medicationDetails.prescriptionName}/>
+                defaultValue={props.medication.prescriptionName}/>
             </Typography>
 
 
@@ -53,7 +54,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                            onChange={(e) => handlePrescriptionDosageOnChange(e)}
                            id="outlined-number"
                            label={"Prescription Dosage"} type="number" InputLabelProps={{shrink: true,}}
-                defaultValue={props.medicationDetails.prescriptionDosage}/>
+                defaultValue={props.medication.prescriptionDosage}/>
                 <br/>
             </Typography>
             <Divider/>
@@ -63,7 +64,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                            onChange={(e) => handleRemainingDosagesOnChange(e)}
                            id="outlined-number"
                            label={"Remaining Doses"} type="number" InputLabelProps={{shrink: true,}}
-                defaultValue={props.medicationDetails.remainingDosages}/>
+                defaultValue={props.medication.remainingDosages}/>
                 <br/>
             </Typography>
             <Divider/>
@@ -76,7 +77,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     rows={4}
                     onChange={(e)=>handleUserNotesChange(e)}
                     InputLabelProps={{shrink: true,}}
-                    defaultValue={props.medicationDetails.userNotes}
+                    defaultValue={props.medication.userNotes}
                 />
                 <br/>
                 <br/>

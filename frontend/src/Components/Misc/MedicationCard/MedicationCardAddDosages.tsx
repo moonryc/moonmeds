@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
-import {IDosagesDetails, IMedicationDays, IMedicationDetails} from "./MedicationCard";
+import {ICustomDays, IDosagesDetails, IMedication} from "../../../Types/MedicationType";
 
 export interface IMedicationCardAddDosagesProps {
-    medicationDetails: IMedicationDetails
-
+    medication: IMedication
+    isNewCard:boolean,
     updateMedicationDosages(listOfDosages: IDosagesDetails[]): void
 }
 
@@ -15,25 +15,26 @@ export interface IMedicationCardAddDosagesProps {
 }
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
 
-    const [dosages, setDosages] = useState<IDosagesDetails[]>(props.medicationDetails.dosages);
+    const [dosages, setDosages] = useState<IDosagesDetails[]>(props.medication.dosages);
 
 
     const newDosage = () => {
         setDosages(dosages => [...dosages, {
-            amount: 0, time: new Date(), medicationDays: {
-                everyMonday: false,
+            amount: 0,
+            time: new Date(),
+            isDaily: false,
+            isWeekly: false,
+            isMonthly: false,
+            isCustom: false,
+            customDays: {
+                startDate: new Date(),
+                endDate: new Date(),
                 monday: false,
-                everyTuesday: false,
                 tuesday: false,
-                everyWednesday: false,
                 wednesday: false,
-                everyThursday: false,
                 thursday: false,
-                everyFriday: false,
                 friday: false,
-                everySaturday: false,
                 saturday: false,
-                everySunday: false,
                 sunday: false,
             }
         }])
@@ -53,14 +54,12 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
         tempDosages[index].time = time;
         setDosages(tempDosages)
     }
-
-    const getDosageDetails = (details: IMedicationDays, index: number) => {
+    const getDosageDetails = (details: ICustomDays, index: number) => {
         let tempDosages = [...dosages];
-        tempDosages[index].medicationDays = details
+        tempDosages[index].customDays = details
         setDosages(tempDosages);
     }
 
-    //TODO(Moon) this function is not yet finished
     useEffect(() => {
         props.updateMedicationDosages(dosages);
     }, [dosages])
@@ -74,6 +73,7 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
                     < DosageTimeStamp
                         index={dosages.indexOf(dose)}
                         dosageDetails={dose}
+                        isNewCard={props.isNewCard}
                         deleteDosage={deleteDosage}
                         getDosage={getDosage}
                         getDosageTime={getDosageTime}

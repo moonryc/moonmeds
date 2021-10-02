@@ -4,12 +4,12 @@ import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import {Info} from "@mui/icons-material";
 import CardHeader from "@mui/material/CardHeader";
-import {IMedicationDetails} from "./MedicationCard";
+import {IMedication} from "../../../Types/MedicationType";
 
 interface IMedicationCardHeaderProps {
     isNewCard: boolean
     isEditing: boolean,
-    medicationDetails: IMedicationDetails
+    medication: IMedication
     handleIsShowingDetailsClick:()=>void
 }
 
@@ -20,7 +20,7 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
             <CardHeader
                 avatar={
                     <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                        {props.medicationDetails.prescriptionName[0]}
+                        {props.medication.prescriptionName[0]}
                     </Avatar>
                 }
                 action={
@@ -30,7 +30,7 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                         </IconButton>}
                     </div>
                 }
-                title={props.medicationDetails.prescriptionName}/>
+                title={props.medication.prescriptionName}/>
             }
         </div>
     );

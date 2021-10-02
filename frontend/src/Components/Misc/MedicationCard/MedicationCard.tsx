@@ -18,41 +18,10 @@ import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import {UserContext} from "../UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
+import {IDosagesDetails, IMedication} from "../../../Types/MedicationType";
 
 
-export interface IDosagesDetails {
-    amount: number,
-    time: Date,
-    medicationDays: IMedicationDays
-}
-
-export interface IMedicationDays {
-    everyMonday: boolean,
-    monday: boolean,
-    everyTuesday: boolean,
-    tuesday: boolean,
-    everyWednesday: boolean,
-    wednesday: boolean,
-    everyThursday: boolean,
-    thursday: boolean,
-    everyFriday: boolean,
-    friday: boolean,
-    everySaturday: boolean,
-    saturday: boolean,
-    everySunday: boolean,
-    sunday: boolean,
-}
-
-export interface IMedicationDetails {
-    prescriptionName: string,
-    prescriptionDosage: number,
-    remainingDosages: number,
-    nextFillDay: string,
-    dosages: IDosagesDetails[],
-    userNotes: string,
-}
-
-export interface IMedicationCardProps extends IMedicationDetails {
+export interface IMedicationCardProps extends IMedication {
     medicationId: string,
     isNewCard: boolean
 }
@@ -92,7 +61,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     }
 
     //This is the Medication object that will get updated as the user updates it
-    const [medicationDetails, setMedicationDetails] = useState<IMedicationDetails>({
+    const [medicationDetails, setMedicationDetails] = useState<IMedication>({
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
             remainingDosages: props.remainingDosages,
@@ -210,13 +179,13 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 {/*The header is only displayed if the card is not a new card*/}
                 <MedicationCardHeader
                     isNewCard={props.isNewCard}
-                    medicationDetails={medicationDetails}
+                    medication={medicationDetails}
                     handleIsShowingDetailsClick={handleIsShowingDetailsClick}
                     isEditing={isEditing}/>
 
                 {/*Quick details of the medication*/}
                 <Collapse in={isShowingDetails} timeout={"auto"} unmountOnExit>
-                    <MedicationCardDetails medicationDetails={medicationDetails}/>
+                    <MedicationCardDetails  medication={medicationDetails}/>
                     <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
                         <BottomNavigationAction
                             onClick={()=>handleIsEditingClick()}
@@ -229,12 +198,12 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 {/*The editing of the medicaiton*/}
                 <Collapse in={isEditing} timeout={"auto"} unmountOnExit>
                     <MedicationCardEditDetails
-                        medicationDetails={medicationDetails}
+                        medication={medicationDetails}
                         updateMedicationDetails={updateMedicationDetails}/>
                     <Divider/>
                     <MedicationCardAddDosages
-                        medicationDetails={medicationDetails}
-                        updateMedicationDosages={updateMedicationDosages}/>
+                        medication={medicationDetails}
+                        updateMedicationDosages={updateMedicationDosages} isNewCard={props.isNewCard}/>
                 <Divider/>
                 {props.isNewCard ?
                     <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
