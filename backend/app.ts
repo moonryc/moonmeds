@@ -1,22 +1,23 @@
 //region Development
 
-if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config()
-  console.log('dotenv loaded')
+
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+    console.log('dotenv loaded')
 }
 //endregion
 
 //region Imports
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-const medicationRouter = require('./routes/PrivateRoutes/medication');
-const userDataRouter = require('./routes/PrivateRoutes/userdata');
+
+import express = require('express');
+import createError = require('http-errors');
+import path = require('path');
+import cookieParser =require('cookie-parser');
+import logger = require('morgan');
+import authRouter from './routes/auth';
+import medicationRouter from "./routes/PrivateRoutes/medication";
+
 //endregion
 
 const app = express();
@@ -28,25 +29,29 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //region Middleware
 
 //region Middleware imports
+//TODO MONGOOSE TO IMPORT
 const mongoose = require("mongoose");
-const session = require('cookie-session');
-const helmet = require('helmet');
-const hpp = require('hpp');
-const csurf = require('csurf');
-const passport = require('./passport/setup');
-const rateLimit = require('express-rate-limit');
+import session = require('cookie-session');
+import helmet = require('helmet');
+import hpp = require('hpp');
+// import csurf = require('csurf');
+
+
+import passport from"./passport/setup";
+
+import rateLimit = require('express-rate-limit');
 //endregion
 
 //region Mongoose
 let url = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.pdwgv.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
-const connection = mongoose.connect(url,{useNewUrlParser: true, useUnifiedTopology: true});
+const connection = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 const collections = Object.keys(mongoose.connection.collections);
 console.log(collections);
 
@@ -92,11 +97,12 @@ app.use(passport.initialize());
 
 //#region app.use(cors)
 //cors to allow cross origin resource sharing
-const cors = require('cors')
+import cors = require('cors');
+
 app.use(
     cors({
-      origin: 'http://localhost:3000',
-      credentials: true,
+        origin: 'http://localhost:3000',
+        credentials: true,
     }));
 //#endregion
 
@@ -113,39 +119,36 @@ app.use(limiter);
 //endregion
 
 //region routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/medication', medicationRouter);
 app.use('/auth', authRouter);
-app.use('/userdata', userDataRouter);
 //endregion
 
 //region Views
 
 //region 404 Catcher
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function (req, res, next) {
+    next(createError(404));
 });
 //endregion
 
 //region ERROR HANDLER
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err:any, req:any, res:any, next:any) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 //endregion
 
 //endregion
 
 const port = 3001
-app.listen(port, ()=> console.log("Server listening on port", port))
+app.listen(port, () => console.log("Server listening on port", port))
 
 module.exports = app;
 
