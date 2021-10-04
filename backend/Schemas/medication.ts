@@ -1,15 +1,6 @@
 
 import {Schema, Model, model, Document} from "mongoose";
-import * as mongoose from "mongoose";
-import {IMedication} from "../Types/MedicationType";
-// const mongoose = require('mongoose');
-// const {Schema} = mongoose;
-
-//this is for the backend to define the schema
-export interface IMedicationSchema extends IMedication, Document{
-    userId:string
-}
-
+import {IMedicationSchema} from "../Types/MedicationType";
 
 export const medicationSchema:Schema = new Schema<IMedicationSchema>({
     userId: {type: String, required:true},
@@ -61,7 +52,7 @@ export const getUserMedicationByIdAndUpdate = (_id:string, medication:IMedicatio
 }
 
 export const doesUserAlreadyHaveThisMedication = async (userId:string, medication:IMedicationSchema) => {
-    if(await MedicationModel.findOne({userId: userId,medicationName:medication.prescriptionName})){
+    if(await MedicationModel.findOne({userId: userId,prescriptionName:medication.prescriptionName})){
         return true;
     }else{
         return false;

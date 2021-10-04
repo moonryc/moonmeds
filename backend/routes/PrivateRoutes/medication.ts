@@ -1,15 +1,16 @@
 import express = require('express');
 import passport = require('passport');
+import mongoose = require("mongoose");
+
 // const medicationSchema = require('../../Schemas/medication');
 import {
     doesUserAlreadyHaveThisMedication,
     getUserMedicationByIdAndUpdate,
     getUserMedicationsArray,
-    IMedicationSchema,
     MedicationModel
 } from "../../Schemas/medication";
 import {IBackendResponse} from "../../Types/BackendResponseType";
-
+import {IMedicationSchema} from "../../Types/MedicationType";
 
 
 const medicationTimeStampSchema = require('../../Schemas/medicationTimeStamp');
@@ -68,6 +69,7 @@ medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
             response.error = true;
             response.errorMessage = "Error in authenticating user";
             return res.send(response)
+
         } else {
             if (await doesUserAlreadyHaveThisMedication(user.userId, req.body)) {
                 response.error = true;
@@ -75,9 +77,12 @@ medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
                 return res.send(response)
             } else {
 
-                const {_id, ...submittedMedication} = req.body
+                //add in the new randomly generated _id and the userId
+                req.body.userId = user.userId
+                req.body._id = new mongoose.Types.ObjectId().toString()
 
-                const medication = new MedicationModel(submittedMedication)
+                let newMedication:IMedicationSchema = req.body
+                const medication = new MedicationModel(newMedication)
 
                 await medication.save();
 

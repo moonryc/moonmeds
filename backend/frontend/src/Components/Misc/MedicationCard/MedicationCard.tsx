@@ -112,17 +112,9 @@ const MedicationCard = (props: IMedicationCardProps) => {
             },
             // redirect: 'follow', // manual, *follow, error
             // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({
-                medicationDetails: {
-                    prescriptionName:prescriptionName,
-                    prescriptionDosage:prescriptionDosage,
-                    remainingDosages:remainingDosages,
-                    nextFillDay:nextFillDay,
-                    userNotes:userNotes},
-                dosageDetails: dosages
-            }) // body data type must match "Content-Type" header
+            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
         }).then(response => response);
-        return response.json(); // parses JSON response into native JavaScript objects
+        return console.log(response.json()); // parses JSON response into native JavaScript objects
     };
     //updates medication
     const submitUpdatedMedication = async () => {

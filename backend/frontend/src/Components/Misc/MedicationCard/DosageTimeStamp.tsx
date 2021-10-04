@@ -24,9 +24,47 @@ interface IDosageTimeStampProps{
 const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     const [dose, setDose] = useState<number>(props.dosageDetails.amount);
-    const [time, setTime] = useState(props.dosageDetails.time);
+    const [time, setTime] = useState<Date>(props.dosageDetails.time);
     const [medicationDays, setMedicationDays] = useState<ICustomDays>(props.dosageDetails.customDays);
     const [options, setOptions] = useState(props.isNewCard);
+
+
+    const [isDaily,setIsDaily]=useState<boolean>(props.dosageDetails.isDaily)
+    const [isWeekly,setIsWeekly]=useState<boolean>(props.dosageDetails.isWeekly)
+    const [isMonthly,setIsMonthly]=useState<boolean>(props.dosageDetails.isMonthly)
+    const [isCustom,setIsCustom]=useState<boolean>(props.dosageDetails.isCustom)
+
+
+    const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
+    const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
+
+    const handleDailyToggle = () => {
+      setIsDaily(!isDaily)
+      setIsWeekly(false)
+      setIsMonthly(false)
+      setIsCustom(false)
+    }
+
+    const handleWeeklyToggle = () => {
+        setIsDaily(false)
+        setIsWeekly(!isWeekly)
+        setIsMonthly(false)
+        setIsCustom(false)
+    }
+
+    const handleMonthlyToggle = () => {
+        setIsDaily(false)
+        setIsWeekly(false)
+        setIsMonthly(!isMonthly)
+        setIsCustom(false)
+    }
+
+    const handleCustomToggle = () => {
+        setIsDaily(false)
+        setIsWeekly(false)
+        setIsMonthly(false)
+        setIsCustom(!isCustom)
+    }
 
     ///This passes data back to the
     /// MedicationCardAddDosages components
@@ -44,6 +82,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         setOptions(!options);
     }
 
+    //This handels changing the checkboxes and updating the Dosage Details
     const handleCheckbox = (day: string, everyday: boolean) => {
         let tempMedicationDay = {...medicationDays}
         if (!everyday) {
@@ -126,15 +165,15 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
             <Collapse in={options}>
                 <br/>
                 <Grid container spacing={2}>
-                    {/*TODO*/}
-                    {/*<Grid item xs={3}>Daily</Grid>*/}
-                    {/*<Grid item xs={3}>Weekly</Grid>*/}
-                    {/*<Grid item xs={3}>Monthly</Grid>*/}
-                    {/*<Grid item xs={3}>Custom</Grid>*/}
-                    {/*<Grid item xs={3}> <Switch /> </Grid>*/}
-                    {/*<Grid item xs={3}> <Switch/> </Grid>*/}
-                    {/*<Grid item xs={3}> <Switch/> </Grid>*/}
-                    {/*<Grid item xs={3}> <Switch/> </Grid>*/}
+
+                    <Grid item xs={3}>Daily</Grid>
+                    <Grid item xs={3}>Weekly</Grid>
+                    <Grid item xs={3}>Monthly</Grid>
+                    <Grid item xs={3}>Custom</Grid>
+                    <Grid item xs={3} > <Switch checked={isDaily} onClick={()=>handleDailyToggle()}/> </Grid>
+                    <Grid item xs={3} > <Switch checked={isWeekly} onClick={()=>handleWeeklyToggle()}/> </Grid>
+                    <Grid item xs={3} > <Switch checked={isMonthly} onClick={()=>handleMonthlyToggle()}/> </Grid>
+                    <Grid item xs={3} > <Switch checked={isCustom} onClick={()=>handleCustomToggle()}/> </Grid>
 
                 </Grid>
                 <Grid container spacing={2}>

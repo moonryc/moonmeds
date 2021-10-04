@@ -1,20 +1,18 @@
+import {Document} from "mongoose";
 
-//this is for the backend to define the schema
-export interface IMedicationSchema extends IMedicationFrontEnd{
+//(Backend) for creating an retriving medications associated with a user
+export interface IMedicationSchema extends IMedication,Document{
     userId:string
+    _id: string,
+
 }
 
-//This is for the backend return value
-export interface IMedicationList {
-    error: boolean,
-    medicationList: IMedicationSchema[]
-}
-
-
+// This is an interface to represent a medication object
 export interface IMedicationFrontEnd extends IMedication {
     _id: string,
 }
 
+//Base medication object
 export interface IMedication {
     prescriptionName: string,
     prescriptionDosage: number,
@@ -24,6 +22,7 @@ export interface IMedication {
     userNotes: string,
 }
 
+//Base Dosage object
 export interface IDosagesDetails {
     amount: number,
     time: Date,
@@ -34,6 +33,7 @@ export interface IDosagesDetails {
     customDays: ICustomDays
 }
 
+//Base custom days
 export interface ICustomDays {
     startDate: Date,
     endDate: Date,
