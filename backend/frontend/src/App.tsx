@@ -8,7 +8,8 @@ import ErrorPage from "./Pages/ErrorPage";
 import MedicationPage from "./Pages/MedicationPage";
 import {Route} from "react-router-dom";
 import SendToLogin from "./Components/Misc/SendToLogin";
-import {ILoginResponse} from "./Types/BackendResponseType";
+import {ILoginResponse} from "../../Types/BackendResponseType";
+
 
 
 function App() {

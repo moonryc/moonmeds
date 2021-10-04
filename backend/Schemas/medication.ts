@@ -1,6 +1,7 @@
-import {IMedication} from "../../frontend/src/Types/MedicationType";
+
 import {Schema, Model, model, Document} from "mongoose";
 import * as mongoose from "mongoose";
+import {IMedication} from "../Types/MedicationType";
 // const mongoose = require('mongoose');
 // const {Schema} = mongoose;
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Delete, MoreVert} from "@mui/icons-material";
 import {Checkbox, Collapse, Divider, Grid, IconButton, Switch, TextField} from "@mui/material";
 import TimePickerComponent from "../TimePickerComponent";
-import {ICustomDays, IDosagesDetails} from "../../../Types/MedicationType";
+import {ICustomDays, IDosagesDetails} from "../../../../../Types/MedicationType";
 
 
 

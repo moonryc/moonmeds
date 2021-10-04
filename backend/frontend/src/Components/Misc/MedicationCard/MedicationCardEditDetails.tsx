@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Divider, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {IMedication} from "../../../Types/MedicationType";
+import {IMedication} from "../../../../../Types/MedicationType";
 
 
 interface IMedicationCardEditDetails {

@@ -8,7 +8,8 @@ import {
     IMedicationSchema,
     MedicationModel
 } from "../../Schemas/medication";
-import {IBackendResponse} from "../../../frontend/src/Types/BackendResponseType";
+import {IBackendResponse} from "../../Types/BackendResponseType";
+
 
 
 const medicationTimeStampSchema = require('../../Schemas/medicationTimeStamp');

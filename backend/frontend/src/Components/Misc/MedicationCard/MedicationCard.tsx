@@ -10,7 +10,8 @@ import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import {UserContext} from "../UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
-import {IDosagesDetails, IMedication, IMedicationFrontEnd, IMedicationSchema} from "../../../Types/MedicationType";
+import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+
 
 
 export interface IMedicationCardProps extends IMedicationFrontEnd {

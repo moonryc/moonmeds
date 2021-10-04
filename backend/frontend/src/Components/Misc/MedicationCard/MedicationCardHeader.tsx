@@ -4,7 +4,7 @@ import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import {Info} from "@mui/icons-material";
 import CardHeader from "@mui/material/CardHeader";
-import {IMedication} from "../../../Types/MedicationType";
+import {IMedication} from "../../../../../Types/MedicationType";
 
 interface IMedicationCardHeaderProps {
     isNewCard: boolean

@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import {Button} from "@mui/material";
 import {UserContext} from "../../Misc/UserContext";
 import MedicationCard, {IMedicationCardProps} from "../../Misc/MedicationCard/MedicationCard";
-import {IMedicationFrontEnd} from "../../../Types/MedicationType";
+import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 
 
 interface IDisplayMedicationList {

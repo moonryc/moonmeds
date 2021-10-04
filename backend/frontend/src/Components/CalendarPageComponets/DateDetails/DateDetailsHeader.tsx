@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {ICalendarDay} from "../../../Types/CalendarType";
+import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {getDay, toDate} from "date-fns";
 
 const DateDetailsHeader = (props:ICalendarDay) => {

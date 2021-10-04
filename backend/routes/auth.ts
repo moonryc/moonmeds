@@ -1,7 +1,8 @@
 import express = require('express');
 import passport = require('passport');
 import jwt = require('jsonwebtoken');
-import {IBackendResponse, ILoginResponse} from "../../frontend/src/Types/BackendResponseType";
+import {IBackendResponse, ILoginResponse} from "../Types/BackendResponseType";
+
 
 const authRouter = express.Router();
 

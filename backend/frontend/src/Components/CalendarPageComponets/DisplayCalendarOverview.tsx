@@ -14,7 +14,7 @@ import {Card, Grid} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
 import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
-import {IMedicationFrontEnd} from "../../Types/MedicationType";
+import {IMedicationFrontEnd} from "../../../../Types/MedicationType";
 
 
 interface TabPanelProps {

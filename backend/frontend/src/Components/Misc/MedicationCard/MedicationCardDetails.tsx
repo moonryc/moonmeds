@@ -1,6 +1,6 @@
 import React from 'react';
 import {Typography} from "@mui/material";
-import {IMedication} from "../../../Types/MedicationType";
+import {IMedication} from "../../../../../Types/MedicationType";
 
 interface IMedicationCardDetailsProps {
     medication: IMedication,

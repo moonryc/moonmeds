@@ -1,5 +1,5 @@
 import React from 'react';
-import {ICalendarDay} from "../../../Types/CalendarType";
+import {ICalendarDay} from "../../../../../Types/CalendarType";
 
 const DateDetailsMissedMedications = (props:ICalendarDay) => {
     return (

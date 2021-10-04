@@ -4,7 +4,7 @@ import DateDetailsMedicationsTaken from "./DateDetailsMedicationsTaken";
 import DateDetailsMedicationToTake from "./DateDetailsMedicationToTake";
 import DateDetailsMissedMedications from "./DateDetailsMissedMedications";
 import DateDetailsMedicationToRefill from "./DateDetailsMedicationToRefill";
-import {ICalendarDay} from "../../../Types/CalendarType";
+import {ICalendarDay} from "../../../../../Types/CalendarType";
 
 
 interface IDisplayDateDetailsProp {
