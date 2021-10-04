@@ -8,6 +8,7 @@ import ErrorPage from "./Pages/ErrorPage";
 import MedicationPage from "./Pages/MedicationPage";
 import {Route} from "react-router-dom";
 import SendToLogin from "./Components/Misc/SendToLogin";
+import {ILoginResponse} from "./Types/BackendResponseType";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 
     //region FETCH
     const checkIfLoggedIn = async ()=>{
+        let backendResponse:ILoginResponse = {isLoggedIn: false, jwtToken: ""}
         let url='/auth/current-session';
         // Default options are marked with *
         const response = await fetch(url, {
@@ -23,15 +25,9 @@ function App() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                if(data){
-                    setLoggedIn(true)
-                    setUserId(data)
-                        console.log("User data below: ");
-                }else{
-                    setUserId()
-                    setLoggedIn(false)
-                }
+                backendResponse = data
+                setLoggedIn(backendResponse.isLoggedIn)
+                setUserId(backendResponse.jwtToken)
             })
             .catch((error) => {
                 console.error('Error: ', error);
