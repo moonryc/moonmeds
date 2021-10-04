@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const {Schema} = mongoose;
+import {Schema,model} from "mongoose";
 
 const ThirdPartyProviderSchema = new Schema({
     provider_name:{
@@ -29,4 +28,4 @@ const userSchema = new Schema(
     },
     {strict: false})
 
-module.exports = mongoose.model("users", userSchema)
+module.exports = model("users", userSchema)
