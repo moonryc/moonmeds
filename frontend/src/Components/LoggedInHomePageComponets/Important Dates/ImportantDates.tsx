@@ -11,8 +11,9 @@ import IconButton, {IconButtonProps} from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
 import Calendar from 'react-calendar';
-import moment from "moment";
-import 'react-calendar/dist/Calendar.css'
+import DisplayCalendarOverview from "../../CalendarPageComponets/DisplayCalendarOverview";
+import {CalendarContainer} from "../../CalendarPageComponets/CalendarContext";
+import DisplayCalendar from "../../CalendarPageComponets/Calendar/DisplayCalendar";
 
 const useStyles = makeStyles((theme?: any) => ({
     title: {
@@ -26,11 +27,7 @@ const useStyles = makeStyles((theme?: any) => ({
 const ImportantDates = () => {
 
 
-    const mark = [
-        '04-03-2020',
-        '03-03-2020',
-        '05-03-2020'
-    ]
+
     const classes = useStyles();
     return (
         <div>
@@ -50,10 +47,9 @@ const ImportantDates = () => {
                     <Collapse in={true}>
 
                         <CardContent>
-                            <Calendar
-                                tileClassName="content"
-                            />
-
+                            <CalendarContainer>
+                                <DisplayCalendar />
+                            </CalendarContainer>
                         </CardContent>
                         <CardActions>
                             <Button size="small">Learn More</Button>

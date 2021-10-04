@@ -70,25 +70,25 @@ const CalendarBody = (props: ICalendarBodyProps) => {
             <Paper>
                 <div className={classes.weekContainer}>
                     <div className={classes.dayItem}>
-                        Sunday
+                        Sun
                     </div>
                     <div className={classes.dayItem}>
-                        Monday
+                        Mon
                     </div>
                     <div className={classes.dayItem}>
-                        Tuesday
+                        Tues
                     </div>
                     <div className={classes.dayItem}>
-                        Wednesday
+                        Wed
                     </div>
                     <div className={classes.dayItem}>
-                        Thursday
+                        Thurs
                     </div>
                     <div className={classes.dayItem}>
-                        Friday
+                        Fri
                     </div>
                     <div className={classes.dayItem}>
-                        Saturday
+                        Sat
                     </div>
                 {arrayOfMonthDays.map(day =>
                     // arrayOfMonthDays.indexOf(day) % 6 ?
