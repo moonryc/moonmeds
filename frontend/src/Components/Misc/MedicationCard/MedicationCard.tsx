@@ -1,18 +1,10 @@
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import {red} from '@mui/material/colors';
-import {BottomNavigation, BottomNavigationAction, Button, Divider} from "@mui/material";
-import {Delete, DeleteForever, Info, MoreVert, Visibility, VisibilityOff} from "@mui/icons-material";
+import {BottomNavigation, BottomNavigationAction, Divider} from "@mui/material";
+import {DeleteForever} from "@mui/icons-material";
 import MedicationCardAddDosages from "./MedicationCardAddDosages";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import EditIcon from "@mui/icons-material/Edit";
 import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
@@ -50,6 +42,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     //Discards the changed medication values
     const handleDiscardClick = () => {
         setMedicationDetails({
+            _id: props._id,
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
             remainingDosages: props.remainingDosages,
@@ -62,7 +55,8 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //This is the Medication object that will get updated as the user updates it
     const [medicationDetails, setMedicationDetails] = useState<IMedication>({
-            prescriptionName: props.prescriptionName,
+        _id: props._id,
+        prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
             remainingDosages: props.remainingDosages,
             nextFillDay: props.nextFillDay,

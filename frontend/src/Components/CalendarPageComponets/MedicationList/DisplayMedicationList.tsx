@@ -9,7 +9,7 @@ interface IDisplayMedicationList {
     medicationsArray:[]|null,
 }
 
-
+//TODO this is currently not working attempting to view this will break the website
 const DisplayMedicationList = (props:IDisplayMedicationList) => {
 
     const [medicationsArray, setMedicationsArray] = useState<[]|null>(props.medicationsArray);
@@ -40,11 +40,13 @@ const DisplayMedicationList = (props:IDisplayMedicationList) => {
     //             });
     //         return response;
     // }
+    // getListOfMedications()
 
     return (
         <div>
             <Card>
                 <br/>
+
                 {medicationsArray==null ? <>Click the "Add A Medication" to add a new medication</>: medicationsArray.map((medication: IMedicationCardProps) =>
                     <><MedicationCard
                         medicationId={medication.medicationId}
@@ -53,7 +55,7 @@ const DisplayMedicationList = (props:IDisplayMedicationList) => {
                         remainingDosages={medication.remainingDosages}
                         nextFillDay={medication.nextFillDay}
                         dosages={medication.dosages}
-                        userNotes={medication.userNotes} isNewCard={false}/><br/>
+                        userNotes={medication.userNotes} isNewCard={false} _id={medication._id}/><br/>
                     </>)}
 
 
