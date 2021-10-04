@@ -1,11 +1,11 @@
 import express = require('express');
 import passport = require('passport');
 // const medicationSchema = require('../../Schemas/medication');
-import {IMedicationSchema} from "../../../frontend/src/Types/MedicationType";
 import {
     doesUserAlreadyHaveThisMedication,
     getUserMedicationByIdAndUpdate,
     getUserMedicationsArray,
+    IMedicationSchema,
     MedicationModel
 } from "../../Schemas/medication";
 import {IBackendResponse} from "../../../frontend/src/Types/BackendResponseType";

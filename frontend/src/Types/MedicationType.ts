@@ -1,6 +1,6 @@
 
 //this is for the backend to define the schema
-export interface IMedicationSchema extends IMedication{
+export interface IMedicationSchema extends IMedicationFrontEnd{
     userId:string
 }
 
@@ -10,8 +10,12 @@ export interface IMedicationList {
     medicationList: IMedicationSchema[]
 }
 
-export interface IMedication {
+
+export interface IMedicationFrontEnd extends IMedication {
     _id: string,
+}
+
+export interface IMedication {
     prescriptionName: string,
     prescriptionDosage: number,
     remainingDosages: number,
