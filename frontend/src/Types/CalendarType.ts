@@ -1,5 +1,4 @@
-import React from 'react';
-import {IMedication} from "./MedicationType";
+
 
 export interface ICalendarMonth {
     numberOfInMonthDays: number
