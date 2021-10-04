@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme?: any) => ({
         position: 'relative',
 
     },
+    icon:{
+        color: theme.palette.text.primary,
+        marginRight:'15px'
+    }
 }));
 
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
@@ -40,8 +44,11 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget)
     };
-    const handleClose = () => {
-        setAnchorEl(null)
+    const handleClose = (path:string) => {
+        setAnchorEl(null);
+        if(path!= '[object Object]') {
+            window.location.href = path
+        }
     };
 
     return(
@@ -71,7 +78,10 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         }}
                     >
 
-                        <MenuItem onClick={handleClose} ><HomeIcon /> </MenuItem>
+                        <MenuItem onClick={()=>handleClose('/')} ><HomeIcon className={classes.icon} /> Home </MenuItem>
+                        <MenuItem onClick={()=>handleClose('/CalendarOverview')} ><DateRangeIcon className={classes.icon} /> Calendar Overview </MenuItem>
+                        <MenuItem onClick={()=>handleClose('/Err')} ><ErrorOutlineIcon className={classes.icon} /> Error/ testing  </MenuItem>
+                        <MenuItem onClick={()=>handleClose('/')} ><MedicationIcon className={classes.icon} /> MedicationPage </MenuItem>
 
                     </Menu>
                     {/*test speed dial*/}

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme?: any) => ({
         height: '100vmin'
     },
     cardHolder:{
-        paddingTop: '30vh',
+        paddingTop: '5vh',
         background: theme.palette.primary.dark
     }
 }));
