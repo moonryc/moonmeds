@@ -14,7 +14,6 @@ const MedicationCardDetails = (props: IMedicationCardDetailsProps) => {
         <div>
             <Typography variant="body2" color="text.secondary">
                 <span>Prescription Dosage: {props.medication.prescriptionDosage}</span><br/>
-                <span>Remaining Dosages: {props.medication.remainingDosages}</span><br/>
                 <span>Next Refill Date: {props.medication.nextFillDay}</span><br/>
                 <span>Notes: {props.medication.userNotes}</span><br/>
             </Typography>

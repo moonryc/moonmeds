@@ -141,7 +141,7 @@ const DisplayCalendarOverview = () => {
                                     <MedicationCard
                                         _id={''} isNewCard={true}
                                         prescriptionName={''} prescriptionDosage={0}
-                                        remainingDosages={0} nextFillDay={new Date()}
+                                        startDay={new Date()} nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
                                      />
                                 </TabPanel>

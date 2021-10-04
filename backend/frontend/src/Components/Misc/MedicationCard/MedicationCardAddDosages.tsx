@@ -25,6 +25,7 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
             isDaily: false,
             isWeekly: false,
             isMonthly: false,
+            selectedMonthly:new Date(),
             isCustom: false,
             customDays: {
                 startDate: new Date(),

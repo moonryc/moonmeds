@@ -56,7 +56,7 @@ const DisplayMedicationList = (props:IDisplayMedicationList) => {
                             _id={medication._id}
                             prescriptionName={medication.prescriptionName}
                             prescriptionDosage={medication.prescriptionDosage}
-                            remainingDosages={medication.remainingDosages}
+                            startDay={medication.startDay}
                             nextFillDay={medication.nextFillDay}
                             dosages={medication.dosages}
                             userNotes={medication.userNotes} />
