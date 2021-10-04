@@ -4,12 +4,12 @@ import {IMedicationSchema} from "../Types/MedicationType";
 
 export const medicationSchema:Schema = new Schema<IMedicationSchema>({
     userId: {type: String, required:true},
-    _id: {type: String, required:false},
+    _id: {type: String, required:true},
     prescriptionName: {type:String, required: true},
     prescriptionDosage: {type:Number, required:true},
-    remainingDosages: {type:Number, required:true},
+    startDay: {type:Date, required:true},
     nextFillDay: {type:Date, required:true},
-    userNotes: {type:String, required:true},
+    userNotes: {type:String, required:false},
     dosages: [{
         amount: {type:String, required:true},
         time: {type:Date, required:true},
@@ -39,7 +39,6 @@ export const MedicationModel:Model<IMedicationSchema> = model('Medication',medic
 export const getUserMedicationsArray = async (userId:string) => {
     let medicationArray = MedicationModel.find({userId: userId})
     return medicationArray
-
 }
 
 export const getUserMedicationByIdAndUpdate = (_id:string, medication:IMedicationSchema):boolean|string => {
