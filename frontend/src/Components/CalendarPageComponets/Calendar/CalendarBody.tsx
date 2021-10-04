@@ -42,7 +42,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
             }
         ])
         let tempArray: ICalendarDay[] = []
-        for (let i = 0; i < firstDay - 1; i++) {
+        for (let i = 0; i < firstDay; i++) {
             if (i == 0) {
                 let date = sub(props.firstDay, {days: 1})
                 tempArray.push({index: 0, date: date})
@@ -51,11 +51,12 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                 tempArray.unshift({index: 0, date: date})
             }
         }
+        console.log(tempArray)
         for (let i = 0; i <= props.numberOfDaysInMonth; i++) {
             if (i == 0) {
-                tempArray.push({index: 0, date: props.firstDay})
+                tempArray.push({index: 1, date: props.firstDay})
             } else {
-                tempArray.push({index: i, date: add(tempArray[tempArray.length - 1].date, {days: 1})})
+                tempArray.push({index: i+1, date: add(tempArray[tempArray.length - 1].date, {days: 1})})
             }
         }
         setArrayOfMonthDays(tempArray)
