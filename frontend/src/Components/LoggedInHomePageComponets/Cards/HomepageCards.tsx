@@ -14,8 +14,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
-import ImportantDates from "./Important Dates/ImportantDates";
+import ImportantDates from "./ImportantDates";
 import {makeStyles} from "@mui/styles";
+import UpcomingRefills from "./UpcomingRefills";
 
 const useStyles = makeStyles((theme?: any) => ({
     wrapper: {
@@ -37,13 +38,13 @@ const HomepageCards: React.FC<React.HTMLProps<HTMLDivElement>> = ({children, ...
                 <Grid container spacing={5} alignItems="flex-end">
 
                     <Grid item xs={12} md={4} >
-                        <ImportantDates />
+                        <UpcomingRefills />
                     </Grid>
                     <Grid item xs={12} md={4} >
                         <ImportantDates/>
                     </Grid>
                     <Grid item xs={12} md={4} >
-                        <ImportantDates/>
+                        <UpcomingRefills/>
                     </Grid>
                 </Grid>
             </Container>
