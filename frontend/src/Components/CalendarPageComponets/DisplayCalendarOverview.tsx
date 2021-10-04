@@ -14,6 +14,7 @@ import {Card, Grid} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
 import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
+import {IMedicationFrontEnd} from "../../Types/MedicationType";
 
 
 interface TabPanelProps {
@@ -56,7 +57,7 @@ const DisplayCalendarOverview = () => {
     const {userId} = useContext(UserContext);
     const {selectedDay} = useContext(CalendarContext);
 
-    const [userMedications, setUserMedications] = useState<[] | null>(null);
+    const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | null>(null);
 
     const getMedications = async () => {
         let url = '/medication/userMedications';
@@ -71,7 +72,7 @@ const DisplayCalendarOverview = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setUserMedications(data)
+                setUserMedications(data.response)
             })
             .catch((error) => {
                 console.error('Error: ', error);
@@ -138,11 +139,11 @@ const DisplayCalendarOverview = () => {
                                 {/*NEW MEDICATION CARD*/}
                                 <TabPanel value={value} index={2} dir={theme.direction}>
                                     <MedicationCard
-                                        medicationId={''} isNewCard={true}
+                                        _id={''} isNewCard={true}
                                         prescriptionName={''} prescriptionDosage={0}
                                         remainingDosages={0} nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
-                                     _id={''}/>
+                                     />
                                 </TabPanel>
                             </SwipeableViews>
                         </Box>

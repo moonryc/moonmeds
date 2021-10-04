@@ -10,11 +10,10 @@ import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import {UserContext} from "../UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
-import {IDosagesDetails, IMedication} from "../../../Types/MedicationType";
+import {IDosagesDetails, IMedication, IMedicationFrontEnd, IMedicationSchema} from "../../../Types/MedicationType";
 
 
-export interface IMedicationCardProps extends IMedication {
-    medicationId: string,
+export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean
 }
 
@@ -54,7 +53,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     }
 
     //This is the Medication object that will get updated as the user updates it
-    const [medicationDetails, setMedicationDetails] = useState<IMedication>({
+    const [medicationDetails, setMedicationDetails] = useState<IMedicationFrontEnd>({
         _id: props._id,
         prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
@@ -152,7 +151,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
             // redirect: 'follow', // manual, *follow, error
             // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify({
-                medicationId: props.medicationId,
+                medicationId: props._id,
                 medicationDetails: {
                     prescriptionName: prescriptionName,
                     prescriptionDosage: prescriptionDosage,

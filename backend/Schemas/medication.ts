@@ -1,9 +1,13 @@
-import {IMedicationSchema} from "../../frontend/src/Types/MedicationType";
-import {Schema, Model, model} from "mongoose";
+import {IMedication} from "../../frontend/src/Types/MedicationType";
+import {Schema, Model, model, Document} from "mongoose";
 import * as mongoose from "mongoose";
 // const mongoose = require('mongoose');
 // const {Schema} = mongoose;
 
+//this is for the backend to define the schema
+export interface IMedicationSchema extends IMedication, Document{
+    userId:string
+}
 
 
 export const medicationSchema:Schema = new Schema<IMedicationSchema>({
@@ -37,10 +41,13 @@ export const medicationSchema:Schema = new Schema<IMedicationSchema>({
 })
 
 
+
 export const MedicationModel:Model<IMedicationSchema> = model('Medication',medicationSchema)
 
 export const getUserMedicationsArray = async (userId:string) => {
-    return await MedicationModel.find({userId: userId})
+    let medicationArray = MedicationModel.find({userId: userId})
+    return medicationArray
+
 }
 
 export const getUserMedicationByIdAndUpdate = (_id:string, medication:IMedicationSchema):boolean|string => {
@@ -61,4 +68,4 @@ export const doesUserAlreadyHaveThisMedication = async (userId:string, medicatio
 }
 
 
-module.exports = mongoose.model("medicationsForUser", medicationSchema)
+// module.exports = mongoose.model("medicationsForUser", medicationSchema)
