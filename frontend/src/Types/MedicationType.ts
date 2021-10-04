@@ -1,11 +1,21 @@
-import React from 'react';
 
+//this is for the backend to define the schema
+export interface IMedicationSchema extends IMedication{
+    userId:string
+}
+
+//This is for the backend return value
+export interface IMedicationList {
+    error: boolean,
+    medicationList: IMedicationSchema[]
+}
 
 export interface IMedication {
+    _id: string,
     prescriptionName: string,
     prescriptionDosage: number,
     remainingDosages: number,
-    nextFillDay: string,
+    nextFillDay: Date,
     dosages: IDosagesDetails[],
     userNotes: string,
 }
