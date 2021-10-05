@@ -10,7 +10,7 @@ interface IMedicationCardEditDetails {
     medication: IMedication,
     updateMedicationDetails(name:string,nextFillDate:Date, userNotes:string,prescriptionDosage:number):void
 }
-{/*TODO(Spotexx): theming*/}
+//*TODO(Spotexx): theming*/}
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
 
