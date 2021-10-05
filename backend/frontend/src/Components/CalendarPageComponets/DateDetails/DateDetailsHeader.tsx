@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {getDay, toDate} from "date-fns";
+import {toDate} from "date-fns";
 
 const DateDetailsHeader = (props:ICalendarDay) => {
 

@@ -14,7 +14,8 @@ import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/Medicat
 
 
 export interface IMedicationCardProps extends IMedicationFrontEnd {
-    isNewCard: boolean
+    isNewCard: boolean,
+    handleTabsChangeIndex(index:number):void
 }
 
 
@@ -22,7 +23,7 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
 const MedicationCard = (props: IMedicationCardProps) => {
 
     //user jwt token
-    const {userId} = useContext(UserContext);
+    const {userId,submitUpdatedMedication,postNewMedication,fetchUserMedications} = useContext(UserContext);
 
 
     const [isShowingDetails, setIsShowingDetails] = useState(false);
@@ -94,48 +95,15 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //creates a new medication
     const submitNewMedication = async () => {
-
-
-
-        let url = "/medication/addnewmedication"
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${userId}`
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
-        }).then(response => response);
-        return console.log(response.json()); // parses JSON response into native JavaScript objects
+        postNewMedication(medicationDetails)
+        fetchUserMedications()
+        props.handleTabsChangeIndex(1)
     };
     //updates medication
-    const submitUpdatedMedication = async () => {
+    const updatedMedication = async (medicationDetails:IMedicationFrontEnd) => {
         setIsEditing(false)
+        submitUpdatedMedication(medicationDetails)
 
-        let url = "/medication/updatemedication"
-        const response = await fetch(url, {
-            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${userId}`
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
-        }).then(response => response);
-        return response.json(); // parses JSON response into native JavaScript objects
     };
 
     return (
@@ -178,7 +146,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
                         </BottomNavigation> :
                         <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
                             <BottomNavigationAction label={"Update Card"}
-                                                    icon={<EditIcon onClick={() => submitUpdatedMedication()}/>}/>
+                                                    icon={<EditIcon onClick={() => updatedMedication(medicationDetails)}/>}/>
                             <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changed"}
                                                     icon={<DeleteForever/>}/>
                         </BottomNavigation>

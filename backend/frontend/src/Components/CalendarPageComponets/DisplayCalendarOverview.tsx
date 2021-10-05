@@ -37,7 +37,7 @@ function TabPanel(props: TabPanelProps) {
         >
             {value === index && (
                 <Box sx={{p: 3}}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>
@@ -54,47 +54,22 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const DisplayCalendarOverview = () => {
 
-    const {userId} = useContext(UserContext);
+    const {userMedications,fetchUserMedications} = useContext(UserContext);
     const {selectedDay} = useContext(CalendarContext);
-
-    const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | null>(null);
-
-    const getMedications = async () => {
-        let url = '/medication/userMedications';
-        // Default options are marked with *
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Bearer ${userId}`
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            method: 'GET', // or 'PUT'
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setUserMedications(data.response)
-            })
-            .catch((error) => {
-                console.error('Error: ', error);
-            });
-        return response;
-    }
-
-    useEffect(() => {
-        if (userMedications == null) {
-            getMedications()
-        }
-    }, [userMedications]);
-
 
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
+
+    useEffect(() => {
+            fetchUserMedications().then(message => message)
+    }, [value]);
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
-    const handleChangeIndex = (index: number) => {
+    const handleTabsChangeIndex = (index: number) => {
         setValue(index);
     };
 
@@ -119,14 +94,14 @@ const DisplayCalendarOverview = () => {
                                     aria-label="full width tabs example"
                                 >
                                     <Tab label="Date Details" {...a11yProps(0)} />
-                                    <Tab label="Medications" onClick={() => getMedications()} {...a11yProps(1)} />
+                                    <Tab label="Medications" onClick={() => fetchUserMedications()} {...a11yProps(1)} />
                                     <Tab label="Add A Medication" {...a11yProps(2)} />
                                 </Tabs>
                             </AppBar>
                             <SwipeableViews
                                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                                 index={value}
-                                onChangeIndex={handleChangeIndex}
+                                onChangeIndex={handleTabsChangeIndex}
                             >
                                 {/*DETAILS OF SELECTED DATE*/}
                                 <TabPanel value={value} index={0} dir={theme.direction}>
@@ -134,7 +109,7 @@ const DisplayCalendarOverview = () => {
                                 </TabPanel>
                                 {/*MEDICATION LIST*/}
                                 <TabPanel value={value} index={1} dir={theme.direction}>
-                                    <DisplayMedicationList medicationsArray={userMedications}/>
+                                    <DisplayMedicationList handleTabsChangeIndex={handleTabsChangeIndex}/>
                                 </TabPanel>
                                 {/*NEW MEDICATION CARD*/}
                                 <TabPanel value={value} index={2} dir={theme.direction}>
@@ -143,7 +118,7 @@ const DisplayCalendarOverview = () => {
                                         prescriptionName={''} prescriptionDosage={0}
                                         startDay={new Date()} nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
-                                     />
+                                      handleTabsChangeIndex={handleTabsChangeIndex}/>
                                 </TabPanel>
                             </SwipeableViews>
                         </Box>
