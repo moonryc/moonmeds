@@ -55,9 +55,10 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
         tempDosages[index].time = time;
         setDosages(tempDosages)
     }
-    const getDosageDetails = (details: ICustomDays, index: number) => {
+    const getDosageDetails = (details: IDosagesDetails, index: number) => {
         let tempDosages = [...dosages];
-        tempDosages[index].customDays = details
+        // tempDosages[index].customDays = details
+        tempDosages[index] = details
         setDosages(tempDosages);
     }
 

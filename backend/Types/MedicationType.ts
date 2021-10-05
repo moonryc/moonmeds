@@ -8,16 +8,17 @@ export interface IMedicationSchema extends IMedication,Document{
 }
 
 //(Backend) for creating and retriving doses associated with a user
-export interface IMedicationDosagesSchema extends Document,IMedicationDosagesBase{
+export interface IMedicationDosagesSchema extends IMedicationDosagesBase, Document{
     userId:string
     _id:string,
-    medication_id:string
-    hasBeenTaken:boolean,
-    isLateToTakenMedication:boolean
+
 
 }
 
 interface IMedicationDosagesBase extends IWeekdays{
+    medication_id:string
+    hasBeenTaken:boolean,
+    isLateToTakeMedication:boolean
     prescriptionName: string,
     nextFillDay: Date,
     amount: number,

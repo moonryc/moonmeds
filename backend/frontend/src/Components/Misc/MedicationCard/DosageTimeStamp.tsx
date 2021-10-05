@@ -3,18 +3,21 @@ import {Delete, MoreVert} from "@mui/icons-material";
 import {Checkbox, Collapse, Divider, Grid, IconButton, Switch, TextField} from "@mui/material";
 import TimePickerComponent from "../TimePickerComponent";
 import {ICustomDays, IDosagesDetails} from "../../../../../Types/MedicationType";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
 
 
-
-interface IDosageTimeStampProps{
+interface IDosageTimeStampProps {
     index: number,
     dosageDetails: IDosagesDetails,
     isNewCard: boolean
 
     deleteDosage(dosageIndex: number): void,
+
     getDosage(dosage: number, index: number): void,
+
     getDosageTime(time: Date, index: number): void,
-    getDosageDetails(details: ICustomDays, index: number): void
+
+    getDosageDetails(details: IDosagesDetails, index: number): void
 
 }
 
@@ -23,47 +26,51 @@ interface IDosageTimeStampProps{
 }
 const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
-    const [dose, setDose] = useState<number>(props.dosageDetails.amount);
-    const [time, setTime] = useState<Date>(props.dosageDetails.time);
+    const [dosageDetails, setDosageDetails] = useState(props.dosageDetails);
+
     const [medicationDays, setMedicationDays] = useState<ICustomDays>(props.dosageDetails.customDays);
-    const [options, setOptions] = useState(props.isNewCard);
-
-
-    const [isDaily,setIsDaily]=useState<boolean>(props.dosageDetails.isDaily)
-    const [isWeekly,setIsWeekly]=useState<boolean>(props.dosageDetails.isWeekly)
-    const [isMonthly,setIsMonthly]=useState<boolean>(props.dosageDetails.isMonthly)
-    const [isCustom,setIsCustom]=useState<boolean>(props.dosageDetails.isCustom)
+    const [options, setOptions] = useState<boolean>(props.isNewCard);
 
 
     const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
     const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
 
     const handleDailyToggle = () => {
-      setIsDaily(!isDaily)
-      setIsWeekly(false)
-      setIsMonthly(false)
-      setIsCustom(false)
+
+        let temp = {...dosageDetails}
+        temp.isDaily = !temp.isDaily
+        temp.isWeekly = false
+        temp.isMonthly = false
+        temp.isCustom = false
+        setDosageDetails(temp)
+
     }
 
     const handleWeeklyToggle = () => {
-        setIsDaily(false)
-        setIsWeekly(!isWeekly)
-        setIsMonthly(false)
-        setIsCustom(false)
+        let temp = {...dosageDetails}
+        temp.isDaily = false
+        temp.isWeekly = !temp.isWeekly
+        temp.isMonthly = false
+        temp.isCustom = false
+        setDosageDetails(temp)
     }
 
     const handleMonthlyToggle = () => {
-        setIsDaily(false)
-        setIsWeekly(false)
-        setIsMonthly(!isMonthly)
-        setIsCustom(false)
+        let temp = {...dosageDetails}
+        temp.isDaily = false
+        temp.isWeekly = false
+        temp.isMonthly = !temp.isMonthly
+        temp.isCustom = false
+        setDosageDetails(temp)
     }
 
     const handleCustomToggle = () => {
-        setIsDaily(false)
-        setIsWeekly(false)
-        setIsMonthly(false)
-        setIsCustom(!isCustom)
+        let temp = {...dosageDetails}
+        temp.isDaily = false
+        temp.isWeekly = false
+        temp.isMonthly = false
+        temp.isCustom = !temp.isCustom
+        setDosageDetails(temp)
     }
 
     ///This passes data back to the
@@ -72,10 +79,17 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     /// it is kept up to date by using useEffect
     //TODO(Moon) fix typescript
     const handleDoseOnChange = (e: any) => {
-        setDose(e.target.value)
+        let temp = {...dosageDetails}
+        temp.amount = e.target.value
+        setDosageDetails(temp)
+
+        // setDose(e.target.value)
     }
     const handleTimeOnChange = (time: Date) => {
-        setTime(time)
+        let temp = {...dosageDetails}
+        temp.time = time
+        setDosageDetails(temp)
+        // setTime(time)
     }
 
     const handleMoreVertClick = () => {
@@ -85,6 +99,13 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     //This handels changing the checkboxes and updating the Dosage Details
     const handleCheckbox = (day: string, everyday: boolean) => {
         let tempMedicationDay = {...medicationDays}
+        tempMedicationDay.sunday = false;
+        tempMedicationDay.monday = false;
+        tempMedicationDay.tuesday = false;
+        tempMedicationDay.wednesday = false;
+        tempMedicationDay.thursday = false;
+        tempMedicationDay.friday = false;
+        tempMedicationDay.saturday = false;
         if (!everyday) {
             switch (day) {
                 case "monday":
@@ -121,11 +142,24 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         }
     }
 
+    const handleDateChange = (newValue: Date|null) => {
+        if(newValue == null){
+            let temp = {...dosageDetails}
+            temp.selectedMonthly = new Date()
+            setDosageDetails(temp)
+        }else{
+            let temp = {...dosageDetails}
+            temp.selectedMonthly = newValue
+            setDosageDetails(temp)
+        }
+    };
+
+
     useEffect(() => {
-        props.getDosage(dose, props.index)
-        props.getDosageTime(time, props.index)
-        props.getDosageDetails(medicationDays, props.index)
-    }, [time, dose, medicationDays])
+        props.getDosage(dosageDetails.amount, props.index)
+        props.getDosageTime(dosageDetails.time, props.index)
+        props.getDosageDetails(dosageDetails, props.index)
+    }, [medicationDays, dosageDetails])
 
     return (
         <div>
@@ -170,54 +204,78 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                     <Grid item xs={3}>Weekly</Grid>
                     <Grid item xs={3}>Monthly</Grid>
                     <Grid item xs={3}>Custom</Grid>
-                    <Grid item xs={3} > <Switch checked={isDaily} onClick={()=>handleDailyToggle()}/> </Grid>
-                    <Grid item xs={3} > <Switch checked={isWeekly} onClick={()=>handleWeeklyToggle()}/> </Grid>
-                    <Grid item xs={3} > <Switch checked={isMonthly} onClick={()=>handleMonthlyToggle()}/> </Grid>
-                    <Grid item xs={3} > <Switch checked={isCustom} onClick={()=>handleCustomToggle()}/> </Grid>
+                    <Grid item xs={3}> <Switch checked={dosageDetails.isDaily} onClick={() => handleDailyToggle()}/>
+                    </Grid>
+                    <Grid item xs={3}> <Switch checked={dosageDetails.isWeekly} onClick={() => handleWeeklyToggle()}/>
+                    </Grid>
+                    <Grid item xs={3}> <Switch checked={dosageDetails.isMonthly} onClick={() => handleMonthlyToggle()}/>
+                    </Grid>
+                    <Grid item xs={3}> <Switch checked={dosageDetails.isCustom} onClick={() => handleCustomToggle()}/>
+                    </Grid>
 
                 </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        Monday:
+                <Collapse in={dosageDetails.isWeekly}>
+                    <Grid container spacing={2}>
                         <br/>
-                        <br/>
-                        Tuesday:
-                        <br/>
-                        <br/>
-                        Wednesday:
-                        <br/>
-                        <br/>
-                        Thursday:
-                        <br/>
-                        <br/>
-                        Friday:
-                        <br/>
-                        <br/>
-                        Saturday:
-                        <br/>
-                        <br/>
-                        Sunday:
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Checkbox checked={medicationDays.monday} onClick={() => handleCheckbox("monday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.tuesday} onClick={() => handleCheckbox("tuesday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.wednesday}
-                                  onClick={() => handleCheckbox("wednesday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.thursday} onClick={() => handleCheckbox("thursday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.friday} onClick={() => handleCheckbox("friday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.saturday} onClick={() => handleCheckbox("saturday", false)}/>
-                        <br/>
-                        <Checkbox checked={medicationDays.sunday} onClick={() => handleCheckbox("sunday", false)}/>
-                    </Grid>
-                    <Grid item xs={4}>
+                        <Grid item xs={4}>
+                            Monday:
+                            <br/>
+                            <br/>
+                            Tuesday:
+                            <br/>
+                            <br/>
+                            Wednesday:
+                            <br/>
+                            <br/>
+                            Thursday:
+                            <br/>
+                            <br/>
+                            Friday:
+                            <br/>
+                            <br/>
+                            Saturday:
+                            <br/>
+                            <br/>
+                            Sunday:
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Switch checked={medicationDays.monday} onClick={() => handleCheckbox("monday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.tuesday} onClick={() => handleCheckbox("tuesday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.wednesday}
+                                    onClick={() => handleCheckbox("wednesday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.thursday}
+                                    onClick={() => handleCheckbox("thursday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.friday} onClick={() => handleCheckbox("friday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.saturday}
+                                    onClick={() => handleCheckbox("saturday", false)}/>
+                            <br/>
+                            <Switch checked={medicationDays.sunday} onClick={() => handleCheckbox("sunday", false)}/>
+                        </Grid>
+                        <Grid item xs={4}>
 
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Collapse>
+                <Collapse in={dosageDetails.isMonthly}>
+                        <br/>
+
+                    <Grid container spacing={0}>
+                        <Grid item>
+                        <MobileDatePicker
+                            label="Start Date"
+                            inputFormat="MM/dd/yyyy"
+                            value={dosageDetails.selectedMonthly}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                        </Grid>
+                    </Grid>
+                </Collapse>
             </Collapse>
             <br/>
             <Divider/>

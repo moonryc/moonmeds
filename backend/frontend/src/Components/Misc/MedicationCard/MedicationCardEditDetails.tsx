@@ -22,9 +22,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
     const handlePrescriptionNameOnChange = (e: any) => {
         setPrescriptionName(e.target.value)
     }
-    const handleRemainingDosagesOnChange = (e: any) => {
-        setNextFillDate(e.target.value)
-    }
+
     const handlePrescriptionDosageOnChange = (e: any) => {
         setPrescriptionDosage(e.target.value)
     }
@@ -77,11 +75,6 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     onChange={handleChange}
                     renderInput={(params) => <TextField {...params} />}
                  />
-                {/*<TextField size={"small"}*/}
-                {/*           onChange={(e) => handleRemainingDosagesOnChange(e)}*/}
-                {/*           id="outlined-number"*/}
-                {/*           label={"Remaining Doses"} type="number" InputLabelProps={{shrink: true,}}*/}
-                {/*defaultValue={props.medication.nextFillDay}/>*/}
                 <br/>
             </Typography>
             <Divider/>
