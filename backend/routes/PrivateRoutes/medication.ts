@@ -10,7 +10,17 @@ import {
 import {IBackendResponse} from "../../Types/BackendResponseType";
 import {IDosagesDetails, IMedicationDosagesSchema, IMedicationSchema} from "../../Types/MedicationType";
 import {MedicationDosagesModel} from "../../Schemas/medicationDosages";
-import {add, addMonths, differenceInCalendarMonths, getDay, isBefore, parseISO} from "date-fns";
+import {
+    add,
+    addMonths,
+    differenceInCalendarMonths, getDate,
+    getDay,
+    getMinutes, getMonth, getYear,
+    isBefore,
+    parseISO,
+    setDate,
+    setMinutes, setMonth, setYear
+} from "date-fns";
 
 const medicationRouter = express.Router();
 
@@ -87,6 +97,12 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
         medicationDosage.selectedMonthly = selectedMonthly
         medicationDosage.isCustom = isCustom
 
+        if(isMonthly){
+            dayAndTimeOfDosage = setYear(dayAndTimeOfDosage,getYear(selectedMonthly))
+            dayAndTimeOfDosage = setMonth(dayAndTimeOfDosage,getMonth(selectedMonthly))
+            dayAndTimeOfDosage = setDate(dayAndTimeOfDosage,getDate(selectedMonthly))
+        }
+
         //iterates over a single dosage
         while (isBefore(dayAndTimeOfDosage, nextFillDay)) {
 
@@ -107,6 +123,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
                         break;
                     case 1:
                         if (monday) {
+                console.log(isWeekly)
                             addDosageToDay = true;
                             medicationDosage.monday = monday
                         }
@@ -144,24 +161,26 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
                 }
 
             } else if (isMonthly) {
-                console.log(differenceInCalendarMonths(dayAndTimeOfDosage, nextFillDay))
-                if (differenceInCalendarMonths(dayAndTimeOfDosage, nextFillDay) == 1) {
-                    addDosageToDay = true
-                }
+                addDosageToDay = true
             }
-            console.log(isMonthly)
+
 
             if (addDosageToDay) {
                 medicationDosage._id = new mongoose.Types.ObjectId().toString()
                 medicationDosage.time = dayAndTimeOfDosage
                 const medicationDosageReminder = new MedicationDosagesModel(medicationDosage)
                 console.log("attempting to create")
-
                 await medicationDosageReminder.save();
             }
 
+            if (isDaily) {
+                dayAndTimeOfDosage = add(dayAndTimeOfDosage, {days: 1})
+            } else if (isWeekly) {
+                dayAndTimeOfDosage = add(dayAndTimeOfDosage, {days: 1})
+            } else if (isMonthly) {
+                dayAndTimeOfDosage = add(dayAndTimeOfDosage, {months: 1})
+            }
 
-            dayAndTimeOfDosage = add(dayAndTimeOfDosage, {days: 1})
             console.log(dayAndTimeOfDosage)
 
 
