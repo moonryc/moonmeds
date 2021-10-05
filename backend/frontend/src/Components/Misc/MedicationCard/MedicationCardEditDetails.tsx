@@ -8,7 +8,7 @@ interface IMedicationCardEditDetails {
     medication: IMedication,
     updateMedicationDetails(name:string,remainingDosages:number, userNotes:string,prescriptionDosage:number):void
 }
-{/*TODO(Spotexx): theming*/}
+///*TODO(Spotexx): theming*/}
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
 
@@ -32,7 +32,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
     useEffect(() => {
         props.updateMedicationDetails(prescriptionName,remainingDosages,userNotes,prescriptionDosage)
 
-    }, [prescriptionName,remainingDosages,userNotes,prescriptionDosage]);
+    }, [prescriptionName,remainingDosages,userNotes,prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (

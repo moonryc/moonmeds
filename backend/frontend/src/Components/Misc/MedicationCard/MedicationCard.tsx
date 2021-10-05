@@ -96,7 +96,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     //creates a new medication
     const submitNewMedication = async () => {
 
-        const {prescriptionName, prescriptionDosage, remainingDosages, nextFillDay, userNotes, dosages} = medicationDetails
+        //const {prescriptionName, prescriptionDosage, remainingDosages, nextFillDay, userNotes, dosages} = medicationDetails TODO (moon) check if you need these
 
         let url = "/medication/addnewmedication"
         const response = await fetch(url, {

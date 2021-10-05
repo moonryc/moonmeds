@@ -84,7 +84,7 @@ const DisplayCalendarOverview = () => {
         if (userMedications == null) {
             getMedications()
         }
-    }, [userMedications]);
+    }, [userMedications]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const theme = useTheme();

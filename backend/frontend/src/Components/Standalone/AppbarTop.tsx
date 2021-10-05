@@ -3,7 +3,6 @@ import {AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography} fro
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../Misc/UserContext";
-import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import MedicationIcon from '@mui/icons-material/Medication';
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme?: any) => ({
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
 
-    let {loggedIn:loggedIn} = useContext(UserContext);
+    let loggedIn = useContext(UserContext);
 
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const open = Boolean(anchorEl);
@@ -46,7 +45,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
     };
     const handleClose = (path:string) => {
         setAnchorEl(null);
-        if(path!= '[object Object]') {
+        if(path!== '[object Object]') {
             window.location.href = path
         }
     };

@@ -19,8 +19,8 @@ interface IDosageTimeStampProps{
 }
 
 
-{/*TODO(Spotexx): theming*/
-}
+//TODO(Spotexx): theming
+
 const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     const [dose, setDose] = useState<number>(props.dosageDetails.amount);
@@ -35,8 +35,8 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     const [isCustom,setIsCustom]=useState<boolean>(props.dosageDetails.isCustom)
 
 
-    const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
-    const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
+    //const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
+    //const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
 
     const handleDailyToggle = () => {
       setIsDaily(!isDaily)
@@ -125,7 +125,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         props.getDosage(dose, props.index)
         props.getDosageTime(time, props.index)
         props.getDosageDetails(medicationDays, props.index)
-    }, [time, dose, medicationDays])
+    }, [time, dose, medicationDays])  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>

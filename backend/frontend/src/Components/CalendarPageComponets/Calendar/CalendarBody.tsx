@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {add, getDay, sub} from "date-fns";
 import CalendarDay from "./CalendarDay";
-import {Box, Grid, Paper} from "@mui/material";
+import { Paper} from "@mui/material";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {makeStyles} from "@mui/styles";
 
@@ -12,7 +12,7 @@ interface ICalendarBodyProps {
 
 
 const CalendarBody = (props: ICalendarBodyProps) => {
-
+    //const today = new Date();
     const useStyles = makeStyles({
         weekContainer:{
             display:"flex",
@@ -43,7 +43,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         ])
         let tempArray: ICalendarDay[] = []
         for (let i = 0; i < firstDay; i++) {
-            if (i == 0) {
+            if (i === 0) {
                 let date = sub(props.firstDay, {days: 1})
                 tempArray.push({index: 0, date: date})
             } else {
@@ -53,7 +53,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         }
         console.log(tempArray)
         for (let i = 0; i <= props.numberOfDaysInMonth; i++) {
-            if (i == 0) {
+            if (i === 0) {
                 tempArray.push({index: 1, date: props.firstDay})
             } else {
                 tempArray.push({index: i+1, date: add(tempArray[tempArray.length - 1].date, {days: 1})})
@@ -62,7 +62,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         setArrayOfMonthDays(tempArray)
         console.log(arrayOfMonthDays)
         console.log(firstDay)
-    }, [firstDay]);
+    }, [firstDay]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
@@ -92,7 +92,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                     </div>
                 {arrayOfMonthDays.map(day =>
                     // arrayOfMonthDays.indexOf(day) % 6 ?
-                        <div className={classes.dayItem}>
+                        <div className={classes.dayItem} key={arrayOfMonthDays.indexOf(day)}>
                             <CalendarDay index={day.index} date={day.date}/><br/>
                         </div>
                         // :<CalendarDay index={day.index} date={day.date}/>
