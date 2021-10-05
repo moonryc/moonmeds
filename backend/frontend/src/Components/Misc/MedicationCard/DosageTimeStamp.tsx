@@ -28,12 +28,12 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     const [dosageDetails, setDosageDetails] = useState(props.dosageDetails);
 
-    const [medicationDays, setMedicationDays] = useState<ICustomDays>(props.dosageDetails.customDays);
+
     const [options, setOptions] = useState<boolean>(props.isNewCard);
 
-
-    const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
-    const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
+    //for custom
+    // const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
+    // const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
 
     const handleDailyToggle = () => {
 
@@ -97,57 +97,55 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     }
 
     //This handels changing the checkboxes and updating the Dosage Details
-    const handleCheckbox = (day: string, everyday: boolean) => {
-        let tempMedicationDay = {...medicationDays}
-        tempMedicationDay.sunday = false;
-        tempMedicationDay.monday = false;
-        tempMedicationDay.tuesday = false;
-        tempMedicationDay.wednesday = false;
-        tempMedicationDay.thursday = false;
-        tempMedicationDay.friday = false;
-        tempMedicationDay.saturday = false;
-        if (!everyday) {
-            switch (day) {
-                case "monday":
-                    tempMedicationDay.monday = !medicationDays.monday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "tuesday":
-                    tempMedicationDay.tuesday = !medicationDays.tuesday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "wednesday":
-                    tempMedicationDay.wednesday = !medicationDays.wednesday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "thursday":
-                    tempMedicationDay.thursday = !medicationDays.thursday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "friday":
-                    tempMedicationDay.friday = !medicationDays.friday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "saturday":
-                    tempMedicationDay.saturday = !medicationDays.saturday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-                case "sunday":
-                    tempMedicationDay.sunday = !medicationDays.sunday
-                    setMedicationDays(tempMedicationDay);
-                    break;
-            }
-        } else {
+    const handleCheckbox = (day: string) => {
+        let tempMedicationDetails:IDosagesDetails = {...dosageDetails}
+        tempMedicationDetails.customDays.sunday = false;
+        tempMedicationDetails.customDays.monday = false;
+        tempMedicationDetails.customDays.tuesday = false;
+        tempMedicationDetails.customDays.wednesday = false;
+        tempMedicationDetails.customDays.thursday = false;
+        tempMedicationDetails.customDays.friday = false;
+        tempMedicationDetails.customDays.saturday = false;
 
+        switch (day) {
+            case "monday":
+                tempMedicationDetails.customDays.monday = !dosageDetails.customDays.monday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "tuesday":
+                tempMedicationDetails.customDays.tuesday = !dosageDetails.customDays.tuesday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "wednesday":
+                tempMedicationDetails.customDays.wednesday = !dosageDetails.customDays.wednesday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "thursday":
+                tempMedicationDetails.customDays.thursday = !dosageDetails.customDays.thursday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "friday":
+                tempMedicationDetails.customDays.friday =!dosageDetails.customDays.friday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "saturday":
+                tempMedicationDetails.customDays.saturday = !dosageDetails.customDays.saturday
+                setDosageDetails(tempMedicationDetails);
+                break;
+            case "sunday":
+                tempMedicationDetails.customDays.sunday = !dosageDetails.customDays.sunday
+                setDosageDetails(tempMedicationDetails);
+                break;
         }
+
     }
 
-    const handleDateChange = (newValue: Date|null) => {
-        if(newValue == null){
+    const handleDateChange = (newValue: Date | null) => {
+        if (newValue == null) {
             let temp = {...dosageDetails}
             temp.selectedMonthly = new Date()
             setDosageDetails(temp)
-        }else{
+        } else {
             let temp = {...dosageDetails}
             temp.selectedMonthly = newValue
             setDosageDetails(temp)
@@ -159,7 +157,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         props.getDosage(dosageDetails.amount, props.index)
         props.getDosageTime(dosageDetails.time, props.index)
         props.getDosageDetails(dosageDetails, props.index)
-    }, [medicationDays, dosageDetails])
+    }, [dosageDetails])
 
     return (
         <div>
@@ -239,22 +237,22 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                             Sunday:
                         </Grid>
                         <Grid item xs={4}>
-                            <Switch checked={medicationDays.monday} onClick={() => handleCheckbox("monday", false)}/>
+                            <Switch checked={dosageDetails.customDays.monday} onClick={() => handleCheckbox("monday")}/>
                             <br/>
-                            <Switch checked={medicationDays.tuesday} onClick={() => handleCheckbox("tuesday", false)}/>
+                            <Switch checked={dosageDetails.customDays.tuesday} onClick={() => handleCheckbox("tuesday")}/>
                             <br/>
-                            <Switch checked={medicationDays.wednesday}
-                                    onClick={() => handleCheckbox("wednesday", false)}/>
+                            <Switch checked={dosageDetails.customDays.wednesday}
+                                    onClick={() => handleCheckbox("wednesday")}/>
                             <br/>
-                            <Switch checked={medicationDays.thursday}
-                                    onClick={() => handleCheckbox("thursday", false)}/>
+                            <Switch checked={dosageDetails.customDays.thursday}
+                                    onClick={() => handleCheckbox("thursday")}/>
                             <br/>
-                            <Switch checked={medicationDays.friday} onClick={() => handleCheckbox("friday", false)}/>
+                            <Switch checked={dosageDetails.customDays.friday} onClick={() => handleCheckbox("friday")}/>
                             <br/>
-                            <Switch checked={medicationDays.saturday}
-                                    onClick={() => handleCheckbox("saturday", false)}/>
+                            <Switch checked={dosageDetails.customDays.saturday}
+                                    onClick={() => handleCheckbox("saturday")}/>
                             <br/>
-                            <Switch checked={medicationDays.sunday} onClick={() => handleCheckbox("sunday", false)}/>
+                            <Switch checked={dosageDetails.customDays.sunday} onClick={() => handleCheckbox("sunday")}/>
                         </Grid>
                         <Grid item xs={4}>
 
@@ -262,17 +260,17 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                     </Grid>
                 </Collapse>
                 <Collapse in={dosageDetails.isMonthly}>
-                        <br/>
+                    <br/>
 
                     <Grid container spacing={0}>
                         <Grid item>
-                        <MobileDatePicker
-                            label="Start Date"
-                            inputFormat="MM/dd/yyyy"
-                            value={dosageDetails.selectedMonthly}
-                            onChange={handleDateChange}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
+                            <MobileDatePicker
+                                label="Start Date"
+                                inputFormat="MM/dd/yyyy"
+                                value={dosageDetails.selectedMonthly}
+                                onChange={handleDateChange}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
                         </Grid>
                     </Grid>
                 </Collapse>
