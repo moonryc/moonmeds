@@ -25,6 +25,7 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
             isDaily: false,
             isWeekly: false,
             isMonthly: false,
+            selectedMonthly:new Date(),
             isCustom: false,
             customDays: {
                 startDate: new Date(),
@@ -54,9 +55,10 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
         tempDosages[index].time = time;
         setDosages(tempDosages)
     }
-    const getDosageDetails = (details: ICustomDays, index: number) => {
+    const getDosageDetails = (details: IDosagesDetails, index: number) => {
         let tempDosages = [...dosages];
-        tempDosages[index].customDays = details
+        // tempDosages[index].customDays = details
+        tempDosages[index] = details
         setDosages(tempDosages);
     }
 

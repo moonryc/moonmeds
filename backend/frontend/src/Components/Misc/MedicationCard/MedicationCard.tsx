@@ -13,7 +13,6 @@ import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 
 
-
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean
 }
@@ -33,11 +32,11 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //Toggles showing the details
     const handleIsShowingDetailsClick = () => {
-      setIsShowingDetails(!isShowingDetails)
+        setIsShowingDetails(!isShowingDetails)
     }
     //Toggles the editing menu
     const handleIsEditingClick = () => {
-      setIsEditing(!isEditing);
+        setIsEditing(!isEditing);
     }
     //Discards the changed medication values
     const handleDiscardClick = () => {
@@ -45,7 +44,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
             _id: props._id,
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
-            remainingDosages: props.remainingDosages,
+            startDay: props.startDay,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,
             userNotes: props.userNotes
@@ -55,10 +54,10 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //This is the Medication object that will get updated as the user updates it
     const [medicationDetails, setMedicationDetails] = useState<IMedicationFrontEnd>({
-        _id: props._id,
-        prescriptionName: props.prescriptionName,
+            _id: props._id,
+            prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
-            remainingDosages: props.remainingDosages,
+            startDay: props.startDay,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,
             userNotes: props.userNotes
@@ -72,10 +71,10 @@ const MedicationCard = (props: IMedicationCardProps) => {
         setMedicationDetails(tempMedicationDetails);
     }
     // //This updates the medication details
-    const updateMedicationDetails = (prescriptionName: string, remainingDosages: number, userNotes: string, prescriptionDosage: number) => {
+    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number) => {
         const tempMedicationDetails = medicationDetails
         tempMedicationDetails.prescriptionName = prescriptionName
-        tempMedicationDetails.remainingDosages = remainingDosages
+        tempMedicationDetails.nextFillDay = nextFilledDate
         tempMedicationDetails.prescriptionDosage = prescriptionDosage
         tempMedicationDetails.userNotes = userNotes
         setMedicationDetails(tempMedicationDetails);
@@ -83,7 +82,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //useEffect to hide the details menu while editing
     useEffect(() => {
-        if(isEditing){
+        if (isEditing) {
             setIsShowingDetails(false)
         }
     }, [isEditing]);
@@ -96,7 +95,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     //creates a new medication
     const submitNewMedication = async () => {
 
-        //const {prescriptionName, prescriptionDosage, remainingDosages, nextFillDay, userNotes, dosages} = medicationDetails TODO (moon) check if you need these
+
 
         let url = "/medication/addnewmedication"
         const response = await fetch(url, {
@@ -120,15 +119,6 @@ const MedicationCard = (props: IMedicationCardProps) => {
     const submitUpdatedMedication = async () => {
         setIsEditing(false)
 
-        const {
-            prescriptionName,
-            prescriptionDosage,
-            remainingDosages,
-            nextFillDay,
-            userNotes,
-            dosages
-        } = medicationDetails
-
         let url = "/medication/updatemedication"
         const response = await fetch(url, {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
@@ -143,17 +133,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
             },
             // redirect: 'follow', // manual, *follow, error
             // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({
-                medicationId: props._id,
-                medicationDetails: {
-                    prescriptionName: prescriptionName,
-                    prescriptionDosage: prescriptionDosage,
-                    remainingDosages: remainingDosages,
-                    nextFillDay: nextFillDay,
-                    userNotes: userNotes
-                },
-                dosageDetails: dosages
-            }) // body data type must match "Content-Type" header
+            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
         }).then(response => response);
         return response.json(); // parses JSON response into native JavaScript objects
     };
@@ -171,10 +151,10 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
                 {/*Quick details of the medication*/}
                 <Collapse in={isShowingDetails} timeout={"auto"} unmountOnExit>
-                    <MedicationCardDetails  medication={medicationDetails}/>
-                    <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
+                    <MedicationCardDetails medication={medicationDetails}/>
+                    <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
                         <BottomNavigationAction
-                            onClick={()=>handleIsEditingClick()}
+                            onClick={() => handleIsEditingClick()}
                             label={"Edit Medication"}
                             icon={<EditIcon/>}/>
                         <BottomNavigationAction label={"Delete Medication"} icon={<DeleteForever/>}/>
@@ -190,16 +170,19 @@ const MedicationCard = (props: IMedicationCardProps) => {
                     <MedicationCardAddDosages
                         medication={medicationDetails}
                         updateMedicationDosages={updateMedicationDosages} isNewCard={props.isNewCard}/>
-                <Divider/>
-                {props.isNewCard ?
-                    <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
-                        <BottomNavigationAction label={"Add Medication"} icon={<EditIcon/>} onClick={()=>submitNewMedication()}/>
-                    </BottomNavigation> :
-                    <BottomNavigation sx={{ width: "100%" }} value={value} onChange={handleChange}>
-                        <BottomNavigationAction label={"Update Card"} icon={<EditIcon onClick={()=>submitUpdatedMedication()}/>}/>
-                        <BottomNavigationAction onClick={()=>handleDiscardClick()} label={"Discard Changed"} icon={<DeleteForever/>}/>
-                    </BottomNavigation>
-                }
+                    <Divider/>
+                    {props.isNewCard ?
+                        <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
+                            <BottomNavigationAction label={"Add Medication"} icon={<EditIcon/>}
+                                                    onClick={() => submitNewMedication()}/>
+                        </BottomNavigation> :
+                        <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
+                            <BottomNavigationAction label={"Update Card"}
+                                                    icon={<EditIcon onClick={() => submitUpdatedMedication()}/>}/>
+                            <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changed"}
+                                                    icon={<DeleteForever/>}/>
+                        </BottomNavigation>
+                    }
                 </Collapse>
 
             </Card>
