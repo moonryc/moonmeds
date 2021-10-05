@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {toDate} from "date-fns";
+import {Typography} from "@mui/material";
 
 const DateDetailsHeader = (props:ICalendarDay) => {
 
@@ -8,8 +9,8 @@ const DateDetailsHeader = (props:ICalendarDay) => {
 
     return (
         <div>
-            <h6>Header</h6>
-            <h6>{date}</h6>
+            <Typography>Header</Typography>
+            <Typography>{date}</Typography>
         </div>
     );
 };
