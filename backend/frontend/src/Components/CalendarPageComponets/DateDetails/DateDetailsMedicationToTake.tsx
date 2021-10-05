@@ -1,10 +1,11 @@
 import React from 'react';
 import {ICalendarDay} from "../../../../../Types/CalendarType";
+import {Typography} from "@mui/material";
 
 const DateDetailsMedicationToTake = (props:ICalendarDay) => {
     return (
         <div>
-            <h6>Medications to take</h6>
+            <Typography>Medications to take</Typography>
         </div>
     );
 };

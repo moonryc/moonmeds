@@ -5,11 +5,8 @@ import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
 import {UserContext} from "./Components/Misc/UserContext";
 import CalendarOverViewPage from "./Pages/CalenderOverviewPage";
 import ErrorPage from "./Pages/ErrorPage";
-import MedicationPage from "./Pages/MedicationPage";
 import {Route} from "react-router-dom";
-import SendToLogin from "./Components/Misc/SendToLogin";
 import {ILoginResponse} from "../../Types/BackendResponseType";
-
 
 
 function App() {
@@ -39,22 +36,16 @@ function App() {
 
     useEffect(()=> {
         checkIfLoggedIn();
-    },[])
+    },)
 
-    const sendToLogin = async () => {
-        let url = '/auth/login'
-        fetch(url,{method:('GET')})
-            .then(response=>response.json)
-            .then(data=>data)
-    }
 
     return (
-    <>
+    <div >
         <Route exact path="/" component={loggedIn? LoggedInHomePage : Homepage} />
         <Route exact path="/CalendarOverview" component={loggedIn? CalendarOverViewPage: CalendarOverViewPage} />
         <Route exact path="/Err" component={ErrorPage} />
         <Route exact path="/MedicationPage" component={loggedIn? LoggedInHomePage : Homepage} />
-    </>
+    </div>
 
     )
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Delete, MoreVert} from "@mui/icons-material";
-import {Checkbox, Collapse, Divider, Grid, IconButton, Switch, TextField} from "@mui/material";
+import {Collapse, Divider, Grid, IconButton, Switch, TextField} from "@mui/material";
 import TimePickerComponent from "../TimePickerComponent";
-import {ICustomDays, IDosagesDetails} from "../../../../../Types/MedicationType";
+import {IDosagesDetails} from "../../../../../Types/MedicationType";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 
 
@@ -22,8 +22,8 @@ interface IDosageTimeStampProps {
 }
 
 
-{/*TODO(Spotexx): theming*/
-}
+//TODO(Spotexx): theming
+
 const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     const [dosageDetails, setDosageDetails] = useState(props.dosageDetails);
@@ -31,9 +31,9 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     const [options, setOptions] = useState<boolean>(props.isNewCard);
 
-    //for custom
-    // const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
-    // const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
+
+    //const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
+    //const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
 
     const handleDailyToggle = () => {
 
@@ -157,7 +157,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         props.getDosage(dosageDetails.amount, props.index)
         props.getDosageTime(dosageDetails.time, props.index)
         props.getDosageDetails(dosageDetails, props.index)
-    }, [dosageDetails])
+    }, [dosageDetails])  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>

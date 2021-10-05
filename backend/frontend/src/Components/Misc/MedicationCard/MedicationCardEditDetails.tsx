@@ -10,7 +10,7 @@ interface IMedicationCardEditDetails {
     medication: IMedication,
     updateMedicationDetails(name:string,nextFillDate:Date, userNotes:string,prescriptionDosage:number):void
 }
-{/*TODO(Spotexx): theming*/}
+//*TODO(Spotexx): theming*/}
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
 
@@ -32,7 +32,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
     useEffect(() => {
         props.updateMedicationDetails(prescriptionName,nextFillDate,userNotes,prescriptionDosage)
 
-    }, [prescriptionName,nextFillDate,userNotes,prescriptionDosage]);
+    }, [prescriptionName,nextFillDate,userNotes,prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const handleChange = (newValue: Date|null) => {

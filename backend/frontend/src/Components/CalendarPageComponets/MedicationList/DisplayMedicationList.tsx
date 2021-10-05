@@ -37,6 +37,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     }, [medicationsArray, userMedications])
 
 
+
     return (
         <div>
             <Card>

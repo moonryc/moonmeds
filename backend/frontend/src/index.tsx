@@ -8,7 +8,6 @@ import {createBrowserHistory} from "history";
 import {UserContainer} from "./Components/Misc/UserContext";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {LocalizationProvider} from "@mui/lab";
-import { PaletteMode } from "@mui/material";
 import {createTheme} from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import {StyledEngineProvider} from "@mui/material/styles";
@@ -30,7 +29,7 @@ const theme = createTheme({
                 secondary: '#B0B3B8',
             },
             background: {
-                default: '#242526',
+                default: '#1A1919',
                 paper: '#242526',
             },
         }

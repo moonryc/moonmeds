@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import MobileTimePicker from "@mui/lab/MobileTimePicker";
 import {TextField} from "@mui/material";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 interface ITimePickerComponentProps {
     initialTime: Date,
@@ -17,7 +15,7 @@ const TimePickerComponent = (props: ITimePickerComponentProps) => {
 
     useEffect(() => {
         props.handleTimeOnChange(value)
-    }, [value])
+    }, [value])// eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>

@@ -11,8 +11,8 @@ export interface IMedicationCardAddDosagesProps {
 
 
 
-{/*TODO(Spotexx): theming*/
-}
+///*TODO(Spotexx): theming*/
+
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
 
     const [dosages, setDosages] = useState<IDosagesDetails[]>(props.medication.dosages);
@@ -64,7 +64,7 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
 
     useEffect(() => {
         props.updateMedicationDosages(dosages);
-    }, [dosages])
+    }, [dosages]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (

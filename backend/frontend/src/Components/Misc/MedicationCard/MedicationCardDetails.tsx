@@ -6,7 +6,7 @@ interface IMedicationCardDetailsProps {
     medication: IMedication,
 }
 
-{/*TODO(Spotexx): theming*/}
+///*TODO(Spotexx): theming*/}
 //This component is for rendering the quick view details of the selected medication
 const MedicationCardDetails = (props: IMedicationCardDetailsProps) => {
 
