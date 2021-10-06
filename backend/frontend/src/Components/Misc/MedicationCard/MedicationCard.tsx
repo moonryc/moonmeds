@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
-import {BottomNavigation, BottomNavigationAction, Divider} from "@mui/material";
+import {alpha, BottomNavigation, BottomNavigationAction, Divider} from "@mui/material";
 import {DeleteForever} from "@mui/icons-material";
 import MedicationCardAddDosages from "./MedicationCardAddDosages";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,7 +11,18 @@ import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import {UserContext} from "../UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+import {makeStyles} from "@mui/styles";
+import SendIcon from '@mui/icons-material/Send';
 
+const useStyles = makeStyles((theme?: any) => ({
+    container: {
+        maxHeight: '10vh'
+    }
+}));
+
+const style = {
+    backgroundColor: alpha('#ffffff', 0.5)
+}
 
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
@@ -105,8 +116,9 @@ const MedicationCard = (props: IMedicationCardProps) => {
         submitUpdatedMedication(medicationDetails)
 
     };
-
+    const classes= useStyles();
     return (
+
         <div>
             <Card sx={{maxWidth: "100%"}}>
 
@@ -120,7 +132,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 {/*Quick details of the medication*/}
                 <Collapse in={isShowingDetails} timeout={"auto"} unmountOnExit>
                     <MedicationCardDetails medication={medicationDetails}/>
-                    <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
+                    <BottomNavigation showLabels sx={{width: "100%"}} value={value} onChange={handleChange}>
                         <BottomNavigationAction
                             onClick={() => handleIsEditingClick()}
                             label={"Edit Medication"}
@@ -140,14 +152,14 @@ const MedicationCard = (props: IMedicationCardProps) => {
                         updateMedicationDosages={updateMedicationDosages} isNewCard={props.isNewCard}/>
                     <Divider/>
                     {props.isNewCard ?
-                        <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
-                            <BottomNavigationAction label={"Add Medication"} icon={<EditIcon/>}
+                        <BottomNavigation showLabels  sx={{width: "100%"}} value={value} onChange={handleChange}>
+                            <BottomNavigationAction label={"Add Medication"} icon={<SendIcon/>}
                                                     onClick={() => submitNewMedication()}/>
                         </BottomNavigation> :
-                        <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
+                        <BottomNavigation showLabels   sx={{width: "100%"}}  onChange={handleChange}>
                             <BottomNavigationAction label={"Update Card"} onClick={() => updatedMedication(medicationDetails)}
-                                                    icon={<EditIcon />}/>
-                            <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changed"}
+                                                    title={'Update Card'} icon={<EditIcon />}/>
+                            <BottomNavigationAction   onClick={() => handleDiscardClick()} label={"Discard Changes"} title={'Discard Changes'}
                                                     icon={<DeleteForever/>}/>
                         </BottomNavigation>
                     }

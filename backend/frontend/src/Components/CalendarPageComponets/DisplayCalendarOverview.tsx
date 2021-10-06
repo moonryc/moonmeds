@@ -85,7 +85,7 @@ const DisplayCalendarOverview = () => {
 
                 <Grid item xs={6}>
                     <Card sx={{width: "100%", height: "100%",}}>
-                        <Box sx={{bgcolor: 'background.paper', width: "100%"}}>
+                        <Box sx={{bgcolor: 'background.paper', width: "100%", maxHeight: '85vh', overflow: 'auto'}}>
                             <AppBar position="static">
                                 <Tabs
                                     value={value}
@@ -106,7 +106,7 @@ const DisplayCalendarOverview = () => {
                                 onChangeIndex={handleTabsChangeIndex}
                             >
                                 {/*DETAILS OF SELECTED DATE*/}
-                                <TabPanel value={value} index={0} dir={theme.direction}>
+                                <TabPanel  value={value} index={0} dir={theme.direction}>
                                     <DisplayDateDetails selectedDate={{index: 0, date: selectedDay}}/>
                                 </TabPanel>
                                 {/*MEDICATION LIST*/}
