@@ -1,10 +1,9 @@
 import React, {useContext} from 'react';
 import {IconButton} from "@mui/material";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {CalendarContext} from "../CalendarContext";
+import {CalendarContext} from "../../../Context/CalendarContext";
 import {format, getDate} from "date-fns";
 import {makeStyles} from "@mui/styles";
-
 
 
 const useStyles = makeStyles((theme?: any) => ({

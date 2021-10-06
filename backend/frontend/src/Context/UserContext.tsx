@@ -1,5 +1,5 @@
 import React, {createContext, useState,} from 'react'
-import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../../Types/MedicationType";
+import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
 
 
 interface IUserContextState {
@@ -7,14 +7,15 @@ interface IUserContextState {
     setLoggedIn: (state: boolean) => void,
     userId: string,
     setUserId: (state: string) => void,
-    userMedications: IMedicationFrontEnd[] | null
-    setUserMedications: (state: IMedicationFrontEnd[] | null) => void,
+    userMedications: IMedicationFrontEnd[] | []
+    setUserMedications: (state: IMedicationFrontEnd[] | []) => void,
     userMedicationDosages: IMedicationDosagesSchema[] | null
     setUserMedicationDosages: (state: IMedicationDosagesSchema[] | null) => void
     fetchUserMedications: () => Promise<void>
     fetchUserMedicationsDosages: () => Promise<void>
     submitUpdatedMedication: (medicationDetails: IMedicationFrontEnd) => Promise<void>,
     postNewMedication: (medicationDetails: IMedicationFrontEnd) => Promise<void>,
+    putDeleteSelectedMedications: (medicationFrontEndArray: IMedicationFrontEnd[]) => Promise<void>,
 
 
 }
@@ -25,14 +26,15 @@ export const UserContext = createContext<IUserContextState>({
     setLoggedIn: (state: boolean) => {},
     userId: 'test',
     setUserId: (state: string) => '',
-    userMedications: null,
-    setUserMedications: (state: IMedicationFrontEnd[] | null) => {},
+    userMedications: [],
+    setUserMedications: (state: IMedicationFrontEnd[] | []) => {},
     userMedicationDosages: null,
     setUserMedicationDosages: (state: IMedicationDosagesSchema[] | null) => {},
     fetchUserMedications: async () => {},
     fetchUserMedicationsDosages: async () => {},
     submitUpdatedMedication: async (medicationDetails: IMedicationFrontEnd) => {},
     postNewMedication: async (medicationDetails: IMedicationFrontEnd) => {},
+    putDeleteSelectedMedications: async (medicationFrontEndArray: IMedicationFrontEnd[]) => {},
 
 })
 
@@ -40,7 +42,7 @@ export const UserContainer = (props: any) => {
     const {children} = props;
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>('test');
-    const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | null>(null);
+    const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | []>([]);
     const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesSchema[] | null>(null);
     const fetchUserMedications: () => Promise<void> = async () => {
         let url = '/medication/userMedications';
@@ -109,6 +111,22 @@ export const UserContainer = (props: any) => {
         }).then(response => response);
 
     };
+    const putDeleteSelectedMedications = async (medicationFrontEndArray:IMedicationFrontEnd[]) => {
+        let url = "/medication/deleteSelectedMedications"
+        await fetch(url, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                // 'Authorization': `Bearer ${userId}`
+            },
+            body: JSON.stringify({payload:medicationFrontEndArray}) // body data type must match "Content-Type" header
+        }).then(response => response);
+
+    };
 
 
     return (
@@ -124,7 +142,8 @@ export const UserContainer = (props: any) => {
             fetchUserMedications,
             submitUpdatedMedication,
             postNewMedication,
-            fetchUserMedicationsDosages
+            fetchUserMedicationsDosages,
+            putDeleteSelectedMedications
         }}>
             {children}
         </UserContext.Provider>

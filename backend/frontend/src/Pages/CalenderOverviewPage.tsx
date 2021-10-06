@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppbarTop from "../Components/Standalone/AppbarTop";
-import {CalendarContainer} from "../Components/CalendarPageComponets/CalendarContext";
+import {CalendarContainer} from "../Context/CalendarContext";
 import DisplayCalendarOverview from "../Components/CalendarPageComponets/DisplayCalendarOverview";
 import {makeStyles} from "@mui/styles";
 

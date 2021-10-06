@@ -8,7 +8,7 @@ import MedicationCardAddDosages from "./MedicationCardAddDosages";
 import EditIcon from "@mui/icons-material/Edit";
 import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
-import {UserContext} from "../UserContext";
+import {UserContext} from "../../../Context/UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 
@@ -23,7 +23,7 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
 const MedicationCard = (props: IMedicationCardProps) => {
 
     //user jwt token
-    const {userId,submitUpdatedMedication,postNewMedication,fetchUserMedications} = useContext(UserContext);
+    const {submitUpdatedMedication,postNewMedication,fetchUserMedications} = useContext(UserContext);
 
 
     const [isShowingDetails, setIsShowingDetails] = useState(false);

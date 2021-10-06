@@ -3,11 +3,11 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import { CardHeader, Collapse} from "@mui/material";
+import {CardHeader, Collapse} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
-import {CalendarContainer} from "../../CalendarPageComponets/CalendarContext";
+import {CalendarContainer} from "../../../Context/CalendarContext";
 import DisplayCalendar from "../../CalendarPageComponets/Calendar/DisplayCalendar";
 
 const useStyles = makeStyles((theme?: any) => ({

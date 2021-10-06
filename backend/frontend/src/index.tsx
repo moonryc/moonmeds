@@ -5,13 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Router} from "react-router";
 import {createBrowserHistory} from "history";
-import {UserContainer} from "./Components/Misc/UserContext";
+import {UserContainer} from "./Context/UserContext";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {LocalizationProvider} from "@mui/lab";
 import {createTheme} from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import {StyledEngineProvider} from "@mui/material/styles";
-
+import {StyledEngineProvider, ThemeProvider} from "@mui/material/styles";
 
 
 const customHistory = createBrowserHistory();
