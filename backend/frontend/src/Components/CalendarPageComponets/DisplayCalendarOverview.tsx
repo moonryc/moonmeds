@@ -54,7 +54,7 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const DisplayCalendarOverview = () => {
 
-    const {userMedications,fetchUserMedications} = useContext(UserContext);
+    const {userMedications,fetchUserMedications,userMedicationDosages,fetchUserMedicationsDosages} = useContext(UserContext);
     const {selectedDay} = useContext(CalendarContext);
 
     const theme = useTheme();
@@ -62,6 +62,8 @@ const DisplayCalendarOverview = () => {
 
     useEffect(() => {
             fetchUserMedications().then(message => message)
+            fetchUserMedicationsDosages().then(message=>message)
+        console.log(userMedicationDosages)
     }, [value]);
 
 

@@ -24,6 +24,7 @@ function App() {
             .then(response => response.json())
             .then(data => {
                 backendResponse = data
+                console.log(backendResponse)
                 setLoggedIn(backendResponse.isLoggedIn)
                 setUserId(backendResponse.jwtToken)
             })
@@ -36,7 +37,9 @@ function App() {
 
     useEffect(()=> {
         checkIfLoggedIn();
-    },)
+
+
+    },[])
 
 
     return (

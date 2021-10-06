@@ -9,7 +9,11 @@ import {
 } from "../../Schemas/medication";
 import {IBackendResponse} from "../../Types/BackendResponseType";
 import {IDosagesDetails, IMedicationDosagesSchema, IMedicationSchema} from "../../Types/MedicationType";
-import {MedicationDosagesModel} from "../../Schemas/medicationDosages";
+import {
+    getUserMedicationsDosagesArray,
+    MedicationDosagesModel,
+    removeFutureDosages
+} from "../../Schemas/medicationDosages";
 import {
     add,
     addMonths,
@@ -28,7 +32,7 @@ const medicationRouter = express.Router();
 const jwtRequired = passport.authenticate('jwt', {session: false});
 
 
-const addNewDosages = async (medicationObject: IMedicationSchema) => {
+const addNewDosages = async (medicationObject: IMedicationSchema,userId:string) => {
     let currentTime: Date = new Date()
     currentTime = parseISO(currentTime.toISOString())
 
@@ -56,15 +60,10 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
         sunday: false,
     }
 
-
-    let {userId, _id: medication_id, prescriptionName, nextFillDay, dosages} = medicationObject
+    let {_id: medication_id, prescriptionName, nextFillDay, dosages} = medicationObject
     let loopDosage: IDosagesDetails[] = dosages
 
-    console.log("loopDosage")
-    console.log(loopDosage)
-
     nextFillDay = parseISO(nextFillDay.toString())
-
 
     medicationDosage.userId = userId
     medicationDosage.medication_id = medication_id
@@ -73,8 +72,6 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
     medicationDosage.hasBeenTaken = false
     medicationDosage.isLateToTakeMedication = false
 
-
-    console.log("2")
     for (let index = 0; index < loopDosage.length; index++) {
 
         let {
@@ -87,6 +84,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
             isCustom,
             customDays
         } = loopDosage[index]
+
         let {monday, tuesday, wednesday, thursday, friday, saturday, sunday} = customDays
         dayAndTimeOfDosage = parseISO(dayAndTimeOfDosage.toString())
 
@@ -97,10 +95,16 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
         medicationDosage.selectedMonthly = selectedMonthly
         medicationDosage.isCustom = isCustom
 
-        if(isMonthly){
-            dayAndTimeOfDosage = setYear(dayAndTimeOfDosage,getYear(selectedMonthly))
-            dayAndTimeOfDosage = setMonth(dayAndTimeOfDosage,getMonth(selectedMonthly))
-            dayAndTimeOfDosage = setDate(dayAndTimeOfDosage,getDate(selectedMonthly))
+
+        //sets the time to the day/month/year of the day of the month input
+        if (isMonthly) {
+            let day = getDate(parseISO(selectedMonthly.toString()))
+            let month = getMonth(parseISO(selectedMonthly.toString()))
+            let year = getYear(parseISO(selectedMonthly.toString()))
+
+            dayAndTimeOfDosage = setYear(dayAndTimeOfDosage, year)
+            dayAndTimeOfDosage = setMonth(dayAndTimeOfDosage, month)
+            dayAndTimeOfDosage = setDate(dayAndTimeOfDosage, day)
         }
 
         //iterates over a single dosage
@@ -123,7 +127,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
                         break;
                     case 1:
                         if (monday) {
-                console.log(isWeekly)
+                            console.log(isWeekly)
                             addDosageToDay = true;
                             medicationDosage.monday = monday
                         }
@@ -168,7 +172,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
             if (addDosageToDay) {
                 medicationDosage._id = new mongoose.Types.ObjectId().toString()
                 medicationDosage.time = dayAndTimeOfDosage
-                const medicationDosageReminder = new MedicationDosagesModel(medicationDosage)
+                const medicationDosageReminder:IMedicationDosagesSchema = new MedicationDosagesModel(medicationDosage)
                 console.log("attempting to create")
                 await medicationDosageReminder.save();
             }
@@ -181,7 +185,6 @@ const addNewDosages = async (medicationObject: IMedicationSchema) => {
                 dayAndTimeOfDosage = add(dayAndTimeOfDosage, {months: 1})
             }
 
-            console.log(dayAndTimeOfDosage)
 
 
         }
@@ -208,6 +211,39 @@ medicationRouter.get('/userMedications', jwtRequired, (req, res) => {
 
             try {
                 const userMedications: IMedicationSchema[] = await getUserMedicationsArray(user.userId)
+                response.error = false
+                response.errorMessage = ''
+                response.response = userMedications
+                return res.send(response)
+            } catch (e) {
+                console.log(e)
+                response.error = true
+                response.errorMessage = "error message is located in the response under errorMessage"
+                response.response = {errorMessage: e}
+                return res.send(response)
+            }
+        }
+    })(req, res)
+});
+
+//Get list of doses based off of logged in user
+medicationRouter.get('/userMedicationsDosages', jwtRequired, (req, res) => {
+
+    let response: IBackendResponse = {
+        error: false,
+        errorMessage: "",
+        response: {}
+    }
+
+    passport.authenticate('jwt', {session: false}, async (err, user) => {
+        //if error
+        if (err || !user) {
+            response.error = true;
+            response.errorMessage = "Error in authenticating user";
+            return res.send(response)
+        } else {
+            try {
+                const userMedications: IMedicationDosagesSchema[] = await getUserMedicationsDosagesArray(user.userId)
                 response.error = false
                 response.errorMessage = ''
                 response.response = userMedications
@@ -254,7 +290,7 @@ medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
 
                 await medication.save();
 
-                await addNewDosages(newMedication)
+                await addNewDosages(newMedication,user.userId)
 
                 response.error = false;
                 response.errorMessage = "";
@@ -281,7 +317,10 @@ medicationRouter.put('/updatemedication', jwtRequired, (req, res) => {
             return res.send(err)
         } else {
 
-            let update: string | boolean = await getUserMedicationByIdAndUpdate(req.body._id, req.body)
+            let medication: IMedicationSchema = req.body
+            let update: string | boolean = await getUserMedicationByIdAndUpdate(req.body._id, medication)
+            removeFutureDosages(user.userId, medication._id)
+            addNewDosages(medication,user.userId)
             if (update) {
 
                 response.error = true

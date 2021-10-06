@@ -17,6 +17,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     const {userMedications} = useContext(UserContext);
 
     const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | [] | null>(userMedications);
+    //TRAVIS DONT DELETE THIS
     const [deleteArray, setDeleteArray] = useState<string[]>([]);
 
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
@@ -24,13 +25,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
         setIsDeletionEnabled(!isDeletionEnabled)
     }
 
-    // const handleCheckbox = (_id:string) => {
-    //     let tempArray:string[] = [...deleteArray,_id]
-    //     setDeleteArray(tempArray)
-    // }
 
-
-    //TODO need to update the emdications array when the add new medication button is clicked
     useEffect(() => {
         setMedicationsArray(userMedications)
         console.log(medicationsArray)
@@ -49,9 +44,11 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                         {medicationsArray.map((medication: IMedicationFrontEnd) =>
                             <>
                                 <Grid container>
-                                    <Grid item>
+                                    {/*//TODO(TRAVIS) FLEXBOX FUCKER*/}
+                                    {isDeletionEnabled ? <Grid item>
                                         <Checkbox/>
-                                    </Grid>
+                                    </Grid>:<></>
+                                    }
                                     <Grid item>
                                         <MedicationCard
                                             isNewCard={false}

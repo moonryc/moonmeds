@@ -145,8 +145,8 @@ const MedicationCard = (props: IMedicationCardProps) => {
                                                     onClick={() => submitNewMedication()}/>
                         </BottomNavigation> :
                         <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
-                            <BottomNavigationAction label={"Update Card"}
-                                                    icon={<EditIcon onClick={() => updatedMedication(medicationDetails)}/>}/>
+                            <BottomNavigationAction label={"Update Card"} onClick={() => updatedMedication(medicationDetails)}
+                                                    icon={<EditIcon />}/>
                             <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changed"}
                                                     icon={<DeleteForever/>}/>
                         </BottomNavigation>

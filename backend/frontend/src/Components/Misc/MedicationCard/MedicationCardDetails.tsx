@@ -22,7 +22,7 @@ const MedicationCardDetails = (props: IMedicationCardDetailsProps) => {
                 <span>
                     {props.medication.dosages.map(doses =>
                             <li key={props.medication.dosages.indexOf(doses)}>
-                                Take {doses.amount} at {doses.time}
+                                Take {doses.amount} at {doses.time.toString()}
                             </li>
                     )}
                 </span>

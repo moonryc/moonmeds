@@ -1,5 +1,5 @@
 import {Model, model, Schema} from "mongoose";
-import {IMedicationDosagesSchema, IMedicationSchema} from "../Types/MedicationType";
+import {IMedicationDosagesSchema} from "../Types/MedicationType";
 
 
 export const medicationDosagesSchema:Schema = new Schema<IMedicationDosagesSchema>({
@@ -32,6 +32,22 @@ export const MedicationDosagesModel:Model<IMedicationDosagesSchema> = model('Med
 export const getUserMedicationsDosagesArray = async (userId:string) => {
     let medicationDosagesArray = MedicationDosagesModel.find({userId: userId})
     return medicationDosagesArray
+}
+
+export const removeFutureDosages = async (userId:string,medication_id:string) => {
+    let dosagesArray= await MedicationDosagesModel.find({userId: userId, medication_id: medication_id});
+    let currentTime = new Date()
+    for(let index = 0; index<dosagesArray.length;index++){
+        if(dosagesArray[index].time>currentTime){
+            MedicationDosagesModel.findByIdAndDelete(dosagesArray[index]._id,{sort:false},(err)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log("sucessful deletion")
+                }
+            })
+        }
+    }
 }
 
 

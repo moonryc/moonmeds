@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme?: any) => ({
 const AppbarTop: React.FC<{[key:string]: any}> = () => {
     const classes = useStyles();
 
-    let loggedIn = useContext(UserContext);
+    let {loggedIn} = useContext(UserContext);
 
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const open = Boolean(anchorEl);
@@ -45,10 +45,12 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
     };
     const handleClose = (path:string) => {
         setAnchorEl(null);
-        if(path!== '[object Object]') {
+    //Travis I fucking hate your guts, $10 says ill change this and you wont even notice
+        if(path!= '[object Object]') {
             window.location.href = path
         }
     };
+
 
     return(
         <>
@@ -83,11 +85,6 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         <MenuItem onClick={()=>handleClose('/')} ><MedicationIcon className={classes.icon} /> MedicationPage </MenuItem>
 
                     </Menu>
-                    {/*test speed dial*/}
-
-
-
-
 
 
                     <Typography variant="h6" className={classes.title}>

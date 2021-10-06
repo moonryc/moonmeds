@@ -80,6 +80,10 @@ authRouter.get('/current-session', (req, res) => {
         //if signed in
         else{
             response.isLoggedIn = true;
+            console.log(req.session!.jwt.toString())
+            if(req.session!.jwt.toString()==null){
+                response.isLoggedIn = false;
+            }
             response.jwtToken = req.session!.jwt.toString()
             //returns the current jwt token
             return res.send(response);
