@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
-import {ICustomDays, IDosagesDetails, IMedication} from "../../../../../Types/MedicationType";
+import {IDosagesDetails, IMedication} from "../../../../../Types/MedicationType";
 
 export interface IMedicationCardAddDosagesProps {
     medication: IMedication

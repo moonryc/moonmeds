@@ -1,6 +1,7 @@
 
 import {Schema, Model, model, Document} from "mongoose";
 import {IMedicationSchema} from "../Types/MedicationType";
+import {MedicationDosagesModel} from "./medicationDosages";
 
 export const medicationSchema:Schema = new Schema<IMedicationSchema>({
     userId: {type: String, required:true},
@@ -56,6 +57,16 @@ export const doesUserAlreadyHaveThisMedication = async (userId:string, medicatio
     }else{
         return false;
     }
+}
+
+export const removeMedication = async (_id: string) => {
+     MedicationModel.findByIdAndDelete(_id, {sort:false},(err)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log("Removing the medication from user")
+        }
+    })
 }
 
 

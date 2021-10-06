@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
 import {Button, Checkbox, Grid} from "@mui/material";
-import {UserContext} from "../../Misc/UserContext";
+import {UserContext} from "../../../Context/UserContext";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 
@@ -14,11 +14,12 @@ interface IDisplayMedicationList {
 const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
 
-    const {userMedications} = useContext(UserContext);
+    const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
 
-    const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | [] | null>(userMedications);
+    const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | []>(userMedications);
+
     //TRAVIS DONT DELETE THIS
-    const [deleteArray, setDeleteArray] = useState<string[]>([]);
+    const [deleteArray, setDeleteArray] = useState<IMedicationFrontEnd[]>([]);
 
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
     const toggleDeletion = () => {
@@ -26,11 +27,29 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     }
 
 
+    const handleCheckBoxClick = (medication:IMedicationFrontEnd) => {
+
+        let tempArray: IMedicationFrontEnd[] = [...deleteArray];
+
+        if (tempArray.includes(medication)) {
+            tempArray.splice(tempArray.indexOf(medication), 1)
+        } else {
+            tempArray.push(medication)
+        }
+
+        setDeleteArray(tempArray)
+        console.log(tempArray)
+    }
+
+    const handleDeleteMedicationsAction = () => {
+        putDeleteSelectedMedications(deleteArray).then(response=>response)
+        fetchUserMedications().then()
+    }
+
     useEffect(() => {
         setMedicationsArray(userMedications)
         console.log(medicationsArray)
     }, [medicationsArray, userMedications])
-
 
 
     return (
@@ -40,14 +59,24 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                 {medicationsArray?.length == 0 || medicationsArray == null ?
                     <Button onClick={() => props.handleTabsChangeIndex(2)}>New Medication</Button> :
                     <>
-                        <Button onClick={() => toggleDeletion()}>Delete medication</Button>
+                        <Grid container>
+                            <Grid item xs={6}>
+                        <Button onClick={() => toggleDeletion()}>
+                            {isDeletionEnabled ? "Cancel" : "Delete medication"}
+                        </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                        {isDeletionEnabled? <Button onClick={()=>handleDeleteMedicationsAction()}>Delete Medications</Button> : <></>}
+                            </Grid>
+                        </Grid>
                         {medicationsArray.map((medication: IMedicationFrontEnd) =>
                             <>
                                 <Grid container>
                                     {/*//TODO(TRAVIS) FLEXBOX FUCKER*/}
                                     {isDeletionEnabled ? <Grid item>
-                                        <Checkbox/>
-                                    </Grid>:<></>
+                                        <Checkbox key={medication._id}
+                                                  onClick={() => handleCheckBoxClick(medication)}/>
+                                    </Grid> : <></>
                                     }
                                     <Grid item>
                                         <MedicationCard

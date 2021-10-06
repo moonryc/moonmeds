@@ -1,20 +1,18 @@
 import * as React from 'react';
+import {useContext, useEffect} from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import {useTheme} from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import {useContext, useEffect, useState} from "react";
-import {UserContext} from "../Misc/UserContext";
-import {CalendarContext} from "./CalendarContext";
+import {UserContext} from "../../Context/UserContext";
+import {CalendarContext} from "../../Context/CalendarContext";
 import DisplayCalendar from "./Calendar/DisplayCalendar";
 import {Card, Grid} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
 import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
-import {IMedicationFrontEnd} from "../../../../Types/MedicationType";
 
 
 interface TabPanelProps {

@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {add, getDay, sub} from "date-fns";
 import CalendarDay from "./CalendarDay";
-import { Paper} from "@mui/material";
+import {Paper} from "@mui/material";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {makeStyles} from "@mui/styles";
 

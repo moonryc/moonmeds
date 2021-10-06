@@ -5,7 +5,6 @@ import {IMedication} from "../../../../../Types/MedicationType";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 
-
 interface IMedicationCardEditDetails {
     medication: IMedication,
     updateMedicationDetails(name:string,nextFillDate:Date, userNotes:string,prescriptionDosage:number):void

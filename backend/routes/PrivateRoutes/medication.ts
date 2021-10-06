@@ -5,7 +5,7 @@ import {
     doesUserAlreadyHaveThisMedication,
     getUserMedicationByIdAndUpdate,
     getUserMedicationsArray,
-    MedicationModel
+    MedicationModel, removeMedication
 } from "../../Schemas/medication";
 import {IBackendResponse} from "../../Types/BackendResponseType";
 import {IDosagesDetails, IMedicationDosagesSchema, IMedicationSchema} from "../../Types/MedicationType";
@@ -302,7 +302,6 @@ medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
 });
 
 //update medication
-//add new medication
 medicationRouter.put('/updatemedication', jwtRequired, (req, res) => {
     console.log(req.body)
     let response: IBackendResponse = {
@@ -331,6 +330,33 @@ medicationRouter.put('/updatemedication', jwtRequired, (req, res) => {
             } else {
                 return res.send(response)
             }
+        }
+    })(req, res)
+    // return res.send(userReturnObject);
+});
+
+//remove medication
+medicationRouter.put('/deleteSelectedMedications', jwtRequired, (req, res) => {
+    console.log(req.body)
+    let response: IBackendResponse = {
+        error: false,
+        errorMessage: "",
+        response: {}
+    }
+    passport.authenticate('jwt', {session: false}, async (err, user) => {
+        //if error
+        if (err || !user) {
+            console.log("error:" + err)
+            return res.send(err)
+        } else {
+
+            let medicationArray: IMedicationSchema[] = req.body.payload
+
+            for(let index = 0; index<medicationArray.length;index++){
+                await removeFutureDosages(user.userId, medicationArray[index]._id)
+                await removeMedication(medicationArray[index]._id)
+            }
+            return res.send(response)
         }
     })(req, res)
     // return res.send(userReturnObject);
