@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
-import {Button, Checkbox, Grid} from "@mui/material";
+import {Button, Checkbox, Grid, LinearProgress} from "@mui/material";
 import {UserContext} from "../../../Context/UserContext";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+import {MedicationContext} from "../../../Context/MedicationContext";
+import {fetchUserMedications, putDeleteSelectedMedications} from "../../../Services/ApiCalls";
 
 
 interface IDisplayMedicationList {
@@ -14,13 +16,14 @@ interface IDisplayMedicationList {
 const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
 
-    const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
+    // const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
+    const {userMedications} = useContext(MedicationContext);
 
     const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | []>(userMedications);
 
-    //TRAVIS DONT DELETE THIS
-    const [deleteArray, setDeleteArray] = useState<IMedicationFrontEnd[]>([]);
 
+    const [deleteArray, setDeleteArray] = useState<IMedicationFrontEnd[]>([]);
+    const [updateBar, setUpdateBar] = useState(false);
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
     const toggleDeletion = () => {
         setIsDeletionEnabled(!isDeletionEnabled)
@@ -36,20 +39,31 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
         } else {
             tempArray.push(medication)
         }
-
         setDeleteArray(tempArray)
-        console.log(tempArray)
     }
 
     const handleDeleteMedicationsAction = () => {
-        putDeleteSelectedMedications(deleteArray).then(response=>response)
-        fetchUserMedications().then()
+        setUpdateBar(true)
+        putDeleteSelectedMedications(deleteArray).then((response)=>{
+            if(response.error){
+                //TODO
+            }else{
+
+            }
+        })
+        fetchUserMedications().then((response)=>{
+            if(response.error){
+                //TODO
+            }else{
+
+            }
+        })
+        setTimeout(()=>{setUpdateBar(false)},1000)
     }
 
     useEffect(() => {
         setMedicationsArray(userMedications)
-        console.log(medicationsArray)
-    }, [medicationsArray, userMedications])
+     }, [medicationsArray, userMedications])
 
 
     return (

@@ -11,23 +11,26 @@ import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import {UserContext} from "../../../Context/UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+import {fetchUserMedications, postNewMedication, submitUpdatedMedication} from "../../../Services/ApiCalls";
+import {MedicationContext} from "../../../Context/MedicationContext";
+import {response} from "express";
 
 
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
-    handleTabsChangeIndex(index:number):void
+
+    handleTabsChangeIndex(index: number): void
 }
 
 
 //TODO(Moon): fix the numerous isses being logged into the console
 const MedicationCard = (props: IMedicationCardProps) => {
 
-    //user jwt token
-    const {submitUpdatedMedication,postNewMedication,fetchUserMedications} = useContext(UserContext);
-
+    const {setUserMedicationDosages} = useContext(MedicationContext);
 
     const [isShowingDetails, setIsShowingDetails] = useState(false);
     const [isEditing, setIsEditing] = useState(props.isNewCard);
+    const [updateBar, setUpdateBar] = useState(false);
 
     //region Medication Card details callback functions
 
@@ -95,14 +98,42 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //creates a new medication
     const submitNewMedication = async () => {
-        postNewMedication(medicationDetails)
-        fetchUserMedications()
+        setUpdateBar(true)
+
+        postNewMedication(medicationDetails).then((response)=>{
+            if(response.error){
+                //TODO show error on screen
+                console.log(response.errorMessage)
+            }else{
+                setUserMedicationDosages(response.response)
+            }
+        })
+        fetchUserMedications().then((response)=>{
+            if(response.error){
+                //TODO show error on screen
+                console.log(response.errorMessage)
+            }else{
+                setUserMedicationDosages(response.response)
+            }
+        })
+        setTimeout(()=>{setUpdateBar(false)},1000)
         props.handleTabsChangeIndex(1)
     };
     //updates medication
-    const updatedMedication = async (medicationDetails:IMedicationFrontEnd) => {
+    const updatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
         setIsEditing(false)
-        submitUpdatedMedication(medicationDetails)
+
+        setUpdateBar(true)
+        submitUpdatedMedication(medicationDetails).then((response)=>{
+            if(response.error){
+                //TODO
+                console.log("error"+ response)
+            }else{
+                console.log("response"+ response)
+            }
+        })
+
+        setTimeout(()=>{setUpdateBar(false)},1000)
 
     };
 
@@ -145,8 +176,9 @@ const MedicationCard = (props: IMedicationCardProps) => {
                                                     onClick={() => submitNewMedication()}/>
                         </BottomNavigation> :
                         <BottomNavigation sx={{width: "100%"}} value={value} onChange={handleChange}>
-                            <BottomNavigationAction label={"Update Card"} onClick={() => updatedMedication(medicationDetails)}
-                                                    icon={<EditIcon />}/>
+                            <BottomNavigationAction label={"Update Card"}
+                                                    onClick={() => updatedMedication(medicationDetails)}
+                                                    icon={<EditIcon/>}/>
                             <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changed"}
                                                     icon={<DeleteForever/>}/>
                         </BottomNavigation>

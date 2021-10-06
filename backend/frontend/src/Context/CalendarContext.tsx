@@ -1,6 +1,6 @@
 import React, {createContext, useState} from "react";
 
-interface ICalendarContextState {
+export interface ICalendarContextState {
     selectedDay:Date,
     setSelectedDay:(state:Date)=>void
 }

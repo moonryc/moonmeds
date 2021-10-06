@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import {useTheme} from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -9,10 +9,13 @@ import Box from '@mui/material/Box';
 import {UserContext} from "../../Context/UserContext";
 import {CalendarContext} from "../../Context/CalendarContext";
 import DisplayCalendar from "./Calendar/DisplayCalendar";
-import {Card, Grid} from "@mui/material";
+import {Card, Grid, LinearProgress} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
 import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
+import {MedicationContext} from "../../Context/MedicationContext";
+import {fetchUserMedications, fetchUserMedicationsDosages} from "../../Services/ApiCalls";
+import {response} from "express";
 
 
 interface TabPanelProps {
@@ -52,17 +55,50 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const DisplayCalendarOverview = () => {
 
-    const {userMedications,fetchUserMedications,userMedicationDosages,fetchUserMedicationsDosages} = useContext(UserContext);
+    const {userMedicationDosages,setUserMedicationDosages,setUserMedications} = useContext(MedicationContext);
+
     const {selectedDay} = useContext(CalendarContext);
+
+    const [updateBar, setUpdateBar] = useState(false);
+
 
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 
+    const updateUserMedications = () => {
+        setUpdateBar(true)
+        fetchUserMedications().then((response)=>{
+            if(response.error){
+                //TODO show error on screen
+                console.log(response.errorMessage)
+            }else{
+                setUserMedications(response.response)
+            }
+        })
+        setTimeout(()=>{setUpdateBar(false)},1000)
+    }
+    const updateUserMedicationDosages = () => {
+        setUpdateBar(true)
+        fetchUserMedicationsDosages().then((response)=>{
+            if(response.error){
+                //TODO show error on screen
+                console.log(response.errorMessage)
+            }else{
+                setUserMedicationDosages(response.response)
+            }
+        })
+        setTimeout(()=>{setUpdateBar(false)},1000)
+
+    }
+
+
     useEffect(() => {
-            fetchUserMedications().then(message => message)
-            fetchUserMedicationsDosages().then(message=>message)
-        console.log(userMedicationDosages)
+        updateUserMedications()
+        updateUserMedicationDosages()
+
     }, [value]);
+
+
 
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -94,10 +130,11 @@ const DisplayCalendarOverview = () => {
                                     aria-label="full width tabs example"
                                 >
                                     <Tab label="Date Details" {...a11yProps(0)} />
-                                    <Tab label="Medications" onClick={() => fetchUserMedications()} {...a11yProps(1)} />
+                                    <Tab label="Medications" onClick={() => updateUserMedications()} {...a11yProps(1)} />
                                     <Tab label="Add A Medication" {...a11yProps(2)} />
                                 </Tabs>
                             </AppBar>
+                            {updateBar?<LinearProgress/>:<></>}
                             <SwipeableViews
                                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                                 index={value}

@@ -10,7 +10,7 @@ const DateDetailsHeader = (props:ICalendarDay) => {
     return (
         <div>
             <Typography>Header</Typography>
-            <Typography>{date}</Typography>
+            <Typography>{date.toString()}</Typography>
         </div>
     );
 };

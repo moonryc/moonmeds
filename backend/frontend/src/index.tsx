@@ -10,6 +10,8 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {LocalizationProvider} from "@mui/lab";
 import {createTheme} from "@mui/material";
 import {StyledEngineProvider, ThemeProvider} from "@mui/material/styles";
+import {MedicationContainer} from "./Context/MedicationContext";
+import {CalendarContainer} from "./Context/CalendarContext";
 
 
 const customHistory = createBrowserHistory();
@@ -35,17 +37,19 @@ const theme = createTheme({
 );
 
 
-
-
 ReactDOM.render(
     <React.StrictMode>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Router history={customHistory}>
                 <ThemeProvider theme={theme}>
                     <UserContainer>
-                        <StyledEngineProvider injectFirst>
-                            <App/>
-                        </StyledEngineProvider>
+                        <MedicationContainer>
+                            <CalendarContainer>
+                                <StyledEngineProvider injectFirst>
+                                    <App/>
+                                </StyledEngineProvider>
+                            </CalendarContainer>
+                        </MedicationContainer>
                     </UserContainer>
                 </ThemeProvider>
             </Router>
