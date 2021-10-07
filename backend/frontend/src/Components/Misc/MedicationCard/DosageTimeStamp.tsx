@@ -181,13 +181,6 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     //This handels changing the checkboxes and updating the Dosage Details
     const handleCheckbox = (day: string) => {
         let tempMedicationDetails:IDosagesDetails = {...dosageDetails}
-        tempMedicationDetails.customDays.sunday = false;
-        tempMedicationDetails.customDays.monday = false;
-        tempMedicationDetails.customDays.tuesday = false;
-        tempMedicationDetails.customDays.wednesday = false;
-        tempMedicationDetails.customDays.thursday = false;
-        tempMedicationDetails.customDays.friday = false;
-        tempMedicationDetails.customDays.saturday = false;
 
         switch (day) {
             case "monday":
@@ -301,43 +294,43 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                             <br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.monday} onChange={handleChange} name="monday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.monday} onChange={()=>handleCheckbox("monday")} name="monday" />
                                 }
                                 label="Monday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.tuesday} onChange={handleChange} name="tuesday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.tuesday} onClick={()=>handleCheckbox("tuesday")} name="tuesday" />
                                 }
                                 label="Tuesday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.wednesday} onChange={handleChange} name="wednesday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.wednesday} onClick={()=>handleCheckbox("wednesday")} name="wednesday" />
                                 }
                                 label="Wednesday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.thursday} onChange={handleChange} name="thursday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.thursday} onClick={()=>handleCheckbox("thursday")} name="thursday" />
                                 }
                                 label="Thursday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.friday} onChange={handleChange} name="friday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.friday} onClick={()=>handleCheckbox("friday")} name="friday" />
                                 }
                                 label="Friday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.saturday} onChange={handleChange} name="saturday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.saturday} onClick={()=>handleCheckbox("saturday")} name="saturday" />
                                 }
                                 label="Saturday"
                             /><br/>
                             <FormControlLabel
                                 control={
-                                    <Switch className={classes.switch} checked={state.sunday} onChange={handleChange} name="sunday" />
+                                    <Switch className={classes.switch} checked={dosageDetails.customDays.sunday} onClick={()=>handleCheckbox("sunday")} name="sunday" />
                                 }
                                 label="Sunday"
                             />
