@@ -7,6 +7,8 @@ export interface IMedicationContextState {
     setUserMedications: (state: IMedicationFrontEnd[] | []) => void,
     userMedicationDosages: IMedicationDosagesSchema[] | null,
     setUserMedicationDosages: (state:IMedicationDosagesSchema[] | null)=>void,
+    updateBar:boolean
+    setUpdateBar:(state:boolean)=>void
 }
 
 
@@ -15,6 +17,8 @@ export const MedicationContext = createContext<IMedicationContextState>({
     setUserMedications: (state: IMedicationFrontEnd[] | []) => {},
     userMedicationDosages: null,
     setUserMedicationDosages: (state: IMedicationDosagesSchema[] | null) => {},
+    updateBar:false,
+    setUpdateBar:(state:boolean)=>{}
 
 })
 
@@ -22,7 +26,7 @@ export const MedicationContainer = (props: any) => {
     const {children} = props;
     const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | []>([]);
     const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesSchema[] | null>(null);
-
+    const [updateBar, setUpdateBar] = useState(false);
 
 
     return (
@@ -31,6 +35,8 @@ export const MedicationContainer = (props: any) => {
             setUserMedications,
             userMedicationDosages,
             setUserMedicationDosages,
+            updateBar,
+            setUpdateBar
 
         }}>
             {children}
