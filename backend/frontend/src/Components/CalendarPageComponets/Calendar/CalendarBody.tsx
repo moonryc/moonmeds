@@ -1,9 +1,10 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {add, getDay, sub} from "date-fns";
 import CalendarDay from "./CalendarDay";
 import {Paper} from "@mui/material";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {makeStyles} from "@mui/styles";
+import {MedicationContext} from "../../../Context/MedicationContext";
 
 interface ICalendarBodyProps {
     numberOfDaysInMonth: number,
@@ -34,6 +35,8 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         date: new Date()
     }]);
 
+    const {userMedicationDosages} = useContext(MedicationContext);
+
     useEffect(() => {
         setArrayOfMonthDays([
             {
@@ -51,7 +54,6 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                 tempArray.unshift({index: 0, date: date})
             }
         }
-        console.log(tempArray)
         for (let i = 0; i < props.numberOfDaysInMonth; i++) {
             if (i === 0) {
                 tempArray.push({index: 1, date: props.firstDay})
