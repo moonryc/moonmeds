@@ -26,54 +26,57 @@ const useStyles = makeStyles((theme?: any) => ({
 
 const CalendarDay = (props: ICalendarDay) => {
 
-
-    let today = format(new Date(), 'MM/dd/yyyy');
     const classes = useStyles();
 
-    const {setSelectedDay, setSelectedDayDetails} = useContext(CalendarContext);
-
+    const {setSelectedDay,setSelectedDayDetails} = useContext(CalendarContext);
     const {userMedicationDosages} = useContext(MedicationContext);
 
-    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[]>([]);
+    //to be used for rending colour changes
+    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[]|[]>([]);
 
 
     const handleOnDayClick = () => {
         setSelectedDay(props.date);
         console.log(format(props.date, 'MM/dd/yyyy'));
-        getDatesUserMedication(userMedicationDosages)
-        console.log(today);
-        console.log(medicationDosagesDetails);
-        console.log(userMedicationDosages)
-
+        let answer = getDatesUserMedication(userMedicationDosages)
+        setMedicationDosagesDetails([...answer])
+        setSelectedDayDetails([...answer])
+        // console.log(today);
+        // console.log(medicationDosagesDetails);
+        // console.log(userMedicationDosages)
     }
 
     //style logic
-    const isToday = (prop: any) => {
-        return format(prop, 'MM/dd/yyyy') === today;
+    const isToday = (calendarDate: Date) => {
+        return format(calendarDate, 'MM/dd/yyyy') === format(new Date(), 'MM/dd/yyyy');
     }
 
-    const getDatesUserMedication = (userMedicationDosagesArray: IMedicationDosagesSchema[] | null) => {
-        if (userMedicationDosagesArray == null) {
-            console.log("userMEdicationDosageArray is null")
-            return
-        }
+    const getDatesUserMedication = (userMedicationDosagesArray: IMedicationDosagesSchema[] ) => {
 
-        let date = new Date(getYear(props.date), getMonth(props.date), getDay(props.date))
+
+        console.log("-----------------------")
+        console.log("results")
+        console.log(userMedicationDosagesArray)
+        console.log("-----------------------")
+
+        let date = new Date(getYear(props.date), getMonth(props.date), getDate(props.date))
         let results = userMedicationDosagesArray.filter(dosage=>isEqual(date,new Date(
             getYear(parseISO(dosage.time.toString())),
             getMonth(parseISO(dosage.time.toString())),
-            getDay(parseISO(dosage.time.toString())))))
+            getDate(parseISO(dosage.time.toString())))))
 
-        setSelectedDayDetails(results)
-        setMedicationDosagesDetails(results)
+        return results
 
 
 
     }
 
-    useEffect(() => {
-        setSelectedDayDetails(medicationDosagesDetails)
-    }, [medicationDosagesDetails]);
+    // //updates if the user clicks on a day or if the userMedicationDosages in context is updated
+    // useEffect(() => {
+    //     let answer = getDatesUserMedication(userMedicationDosages)
+    //     setMedicationDosagesDetails([...answer])
+    //     setSelectedDayDetails([...answer])
+    // }, [selectedDay]);
 
 
     return (

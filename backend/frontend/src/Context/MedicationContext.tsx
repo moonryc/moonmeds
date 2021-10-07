@@ -5,8 +5,8 @@ import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/Medi
 export interface IMedicationContextState {
     userMedications: IMedicationFrontEnd[] | []
     setUserMedications: (state: IMedicationFrontEnd[] | []) => void,
-    userMedicationDosages: IMedicationDosagesSchema[] | null,
-    setUserMedicationDosages: (state:IMedicationDosagesSchema[] | null)=>void,
+    userMedicationDosages: IMedicationDosagesSchema[] | [],
+    setUserMedicationDosages: (state:IMedicationDosagesSchema[] |[])=>void,
     updateBar:boolean
     setUpdateBar:(state:boolean)=>void
 }
@@ -14,9 +14,9 @@ export interface IMedicationContextState {
 
 export const MedicationContext = createContext<IMedicationContextState>({
     userMedications: [],
-    setUserMedications: (state: IMedicationFrontEnd[] | []) => {},
-    userMedicationDosages: null,
-    setUserMedicationDosages: (state: IMedicationDosagesSchema[] | null) => {},
+    setUserMedications: (state: IMedicationFrontEnd[] | []) => [],
+    userMedicationDosages: [],
+    setUserMedicationDosages: (state: IMedicationDosagesSchema[] |[]) => [],
     updateBar:false,
     setUpdateBar:(state:boolean)=>{}
 
@@ -25,7 +25,7 @@ export const MedicationContext = createContext<IMedicationContextState>({
 export const MedicationContainer = (props: any) => {
     const {children} = props;
     const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | []>([]);
-    const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesSchema[] | null>(null);
+    const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesSchema[]>([]);
     const [updateBar, setUpdateBar] = useState(false);
 
 

@@ -15,7 +15,7 @@ import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
 import {MedicationContext} from "../../Context/MedicationContext";
 import {fetchUserMedications, fetchUserMedicationsDosages} from "../../Services/ApiCalls";
-import {response} from "express";
+
 
 
 interface TabPanelProps {
@@ -55,7 +55,7 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const DisplayCalendarOverview = () => {
 
-    const {userMedicationDosages,setUserMedicationDosages,setUserMedications,updateBar,setUpdateBar} = useContext(MedicationContext);
+    const {setUserMedicationDosages,setUserMedications,updateBar,setUpdateBar} = useContext(MedicationContext);
 
     const {selectedDay} = useContext(CalendarContext);
 
