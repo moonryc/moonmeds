@@ -17,13 +17,12 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
 
     // const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
-    const {userMedications} = useContext(MedicationContext);
+    const {userMedications,setUpdateBar} = useContext(MedicationContext);
 
     const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | []>(userMedications);
 
 
     const [deleteArray, setDeleteArray] = useState<IMedicationFrontEnd[]>([]);
-    const [updateBar, setUpdateBar] = useState(false);
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
     const toggleDeletion = () => {
         setIsDeletionEnabled(!isDeletionEnabled)
