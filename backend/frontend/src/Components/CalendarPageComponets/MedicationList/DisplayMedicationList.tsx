@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
-import {Button, Checkbox, Grid, LinearProgress} from "@mui/material";
+import {alpha, Box, Button, Checkbox, Grid, LinearProgress} from "@mui/material";
 import {UserContext} from "../../../Context/UserContext";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
@@ -14,7 +14,6 @@ interface IDisplayMedicationList {
 
 
 const DisplayMedicationList = (props: IDisplayMedicationList) => {
-
 
     // const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
     const {userMedications,setUpdateBar} = useContext(MedicationContext);
@@ -66,7 +65,9 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
 
     return (
-        <div>
+
+        <Box sx={{ maxHeight: '70vh', overflow: 'auto'}}>
+
             <Card>
                 <br/>
                 {medicationsArray?.length == 0 || medicationsArray == null ?
@@ -74,12 +75,12 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                     <>
                         <Grid container>
                             <Grid item xs={6}>
-                        <Button onClick={() => toggleDeletion()}>
+                        <Button sx={{bgcolor: 'primary.light', color:'text.primary'}} onClick={() => toggleDeletion()}>
                             {isDeletionEnabled ? "Cancel" : "Delete medication"}
                         </Button>
                             </Grid>
                             <Grid item xs={6}>
-                        {isDeletionEnabled? <Button onClick={()=>handleDeleteMedicationsAction()}>Delete Medications</Button> : <></>}
+                        {isDeletionEnabled? <Button sx={{bgcolor: 'primary.light', color:'text.primary'}} onClick={()=>handleDeleteMedicationsAction()}>Delete Medications</Button> : <></>}
                             </Grid>
                         </Grid>
                         {medicationsArray.map((medication: IMedicationFrontEnd) =>
@@ -109,7 +110,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                     </>
                 }
             </Card>
-        </div>
+        </Box>
     );
 };
 

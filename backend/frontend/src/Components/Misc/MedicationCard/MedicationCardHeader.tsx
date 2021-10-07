@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from "@mui/material/Avatar";
 import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
-import {Info} from "@mui/icons-material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardHeader from "@mui/material/CardHeader";
 import {IMedication} from "../../../../../Types/MedicationType";
 
@@ -26,7 +26,7 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                 action={
                     <div>
                         {props.isEditing ? <></>:<IconButton size="small" sx={{ml: 2}} onClick={()=>props.handleIsShowingDetailsClick()}>
-                            <Info/>
+                            <MoreVertIcon/>
                         </IconButton>}
                     </div>
                 }

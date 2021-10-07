@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import {UserContext} from "../../Context/UserContext";
 import {CalendarContext} from "../../Context/CalendarContext";
 import DisplayCalendar from "./Calendar/DisplayCalendar";
-import {Card, Grid, LinearProgress} from "@mui/material";
+import {Button, Card, Grid, LinearProgress} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
 import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
 import MedicationCard from "../Misc/MedicationCard/MedicationCard";
@@ -109,14 +109,16 @@ const DisplayCalendarOverview = () => {
 
     return (
         <div>
+
             <Grid container spacing={2}>
                 <Grid item xs={6}>
+
                     <DisplayCalendar/>
                 </Grid>
 
                 <Grid item xs={6}>
                     <Card sx={{width: "100%", height: "100%",}}>
-                        <Box sx={{bgcolor: 'background.paper', width: "100%", maxHeight: '85vh', overflow: 'auto'}}>
+                        <Box sx={{bgcolor: 'background.paper', width: "100%"}}>
                             <AppBar position="static">
                                 <Tabs
                                     value={value}

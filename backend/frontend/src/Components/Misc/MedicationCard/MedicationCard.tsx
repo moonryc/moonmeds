@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
-import {alpha, BottomNavigation, BottomNavigationAction, Divider} from "@mui/material";
+import {alpha, BottomNavigation, BottomNavigationAction, Box, Divider} from "@mui/material";
 import {DeleteForever} from "@mui/icons-material";
 import MedicationCardAddDosages from "./MedicationCardAddDosages";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,9 +23,7 @@ const useStyles = makeStyles((theme?: any) => ({
     }
 }));
 
-const style = {
-    backgroundColor: alpha('#ffffff', 0.5)
-}
+
 
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
@@ -149,8 +147,8 @@ const MedicationCard = (props: IMedicationCardProps) => {
     };
     const classes= useStyles();
     return (
-        <div>
-            <Card sx={{maxWidth: "100%"}}>
+        <Box sx={props.isNewCard? { maxHeight: '70vh', overflow: 'auto'}:{}}>
+            <Card sx={{maxWidth: "100%", }}>
 
                 {/*The header is only displayed if the card is not a new card*/}
                 <MedicationCardHeader
@@ -196,7 +194,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 </Collapse>
 
             </Card>
-        </div>
+        </Box>
     );
 };
 
