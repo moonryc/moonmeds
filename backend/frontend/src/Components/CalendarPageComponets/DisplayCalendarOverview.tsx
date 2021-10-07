@@ -81,6 +81,7 @@ const DisplayCalendarOverview = () => {
                 //TODO show error on screen
                 console.log(response.errorMessage)
             }else{
+                console.log(response)
                 setUserMedicationDosages(response.response)
             }
         })

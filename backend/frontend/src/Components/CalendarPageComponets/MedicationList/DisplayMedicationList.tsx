@@ -70,6 +70,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
             <Card>
                 <br/>
+                {console.log("medicationsArray")}
                 {medicationsArray?.length == 0 || medicationsArray == null ?
                     <Button onClick={() => props.handleTabsChangeIndex(2)}>New Medication</Button> :
                     <>

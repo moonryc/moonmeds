@@ -35,7 +35,7 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
 //TODO(Moon): fix the numerous isses being logged into the console
 const MedicationCard = (props: IMedicationCardProps) => {
 
-    const {setUserMedicationDosages} = useContext(MedicationContext);
+    const {setUserMedications} = useContext(MedicationContext);
 
     const [isShowingDetails, setIsShowingDetails] = useState(false);
     const [isEditing, setIsEditing] = useState(props.isNewCard);
@@ -114,7 +114,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 //TODO show error on screen
                 console.log(response.errorMessage)
             }else{
-                setUserMedicationDosages(response.response)
+
             }
         })
         fetchUserMedications().then((response)=>{
@@ -122,7 +122,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 //TODO show error on screen
                 console.log(response.errorMessage)
             }else{
-                setUserMedicationDosages(response.response)
+                setUserMedications(response.response)
             }
         })
         setTimeout(()=>{setUpdateBar(false)},1000)

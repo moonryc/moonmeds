@@ -29,7 +29,7 @@ const CalendarDay = (props: ICalendarDay) => {
     const classes = useStyles();
 
     const {setSelectedDay,setSelectedDayDetails} = useContext(CalendarContext);
-    const {userMedicationDosages} = useContext(MedicationContext);
+    const {userMedicationDosages,userMedications} = useContext(MedicationContext);
 
     //to be used for rending colour changes
     const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[]|[]>([]);
@@ -38,12 +38,8 @@ const CalendarDay = (props: ICalendarDay) => {
     const handleOnDayClick = () => {
         setSelectedDay(props.date);
         console.log(format(props.date, 'MM/dd/yyyy'));
-        let answer = getDatesUserMedication(userMedicationDosages)
-        setMedicationDosagesDetails([...answer])
-        setSelectedDayDetails([...answer])
-        // console.log(today);
-        // console.log(medicationDosagesDetails);
-        // console.log(userMedicationDosages)
+        setSelectedDayDetails([...medicationDosagesDetails])
+
     }
 
     //style logic
@@ -53,11 +49,9 @@ const CalendarDay = (props: ICalendarDay) => {
 
     const getDatesUserMedication = (userMedicationDosagesArray: IMedicationDosagesSchema[] ) => {
 
-
-        console.log("-----------------------")
-        console.log("results")
-        console.log(userMedicationDosagesArray)
-        console.log("-----------------------")
+        if(userMedicationDosagesArray==null){
+            return []
+        }
 
         let date = new Date(getYear(props.date), getMonth(props.date), getDate(props.date))
         let results = userMedicationDosagesArray.filter(dosage=>isEqual(date,new Date(
@@ -66,17 +60,14 @@ const CalendarDay = (props: ICalendarDay) => {
             getDate(parseISO(dosage.time.toString())))))
 
         return results
-
-
-
     }
 
-    // //updates if the user clicks on a day or if the userMedicationDosages in context is updated
-    // useEffect(() => {
-    //     let answer = getDatesUserMedication(userMedicationDosages)
-    //     setMedicationDosagesDetails([...answer])
-    //     setSelectedDayDetails([...answer])
-    // }, [selectedDay]);
+    //updates if the user clicks on a day or if the userMedicationDosages in context is updated
+    useEffect(() => {
+        let answer = getDatesUserMedication(userMedicationDosages)
+        setMedicationDosagesDetails([...answer])
+        setSelectedDayDetails([...answer])
+    }, [userMedications,userMedicationDosages]);
 
 
     return (

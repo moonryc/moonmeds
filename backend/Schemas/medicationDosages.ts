@@ -31,6 +31,7 @@ export const MedicationDosagesModel: Model<IMedicationDosagesSchema> = model('Me
 
 export const getUserMedicationsDosagesArray = async (userId: string) => {
     let medicationDosagesArray = MedicationDosagesModel.find({userId: userId})
+    console.log(medicationDosagesArray)
     return medicationDosagesArray
 }
 
