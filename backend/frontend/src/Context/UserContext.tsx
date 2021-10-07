@@ -6,7 +6,6 @@ export interface IUserContextState {
     setLoggedIn: (state: boolean) => void,
     userId: string,
     setUserId: (state: string) => void,
-
 }
 
 
@@ -16,12 +15,14 @@ export const UserContext = createContext<IUserContextState>({
     userId: 'test',
     setUserId: (state: string) => '',
 
+
 })
 
 export const UserContainer = (props: any) => {
     const {children} = props;
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>('test');
+
 
 
 

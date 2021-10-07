@@ -12,6 +12,7 @@ import {createTheme} from "@mui/material";
 import {StyledEngineProvider, ThemeProvider} from "@mui/material/styles";
 import {MedicationContainer} from "./Context/MedicationContext";
 import {CalendarContainer} from "./Context/CalendarContext";
+import {ApiContainer} from "./Context/ApiContext";
 
 
 const customHistory = createBrowserHistory();
@@ -45,9 +46,11 @@ ReactDOM.render(
                     <UserContainer>
                         <MedicationContainer>
                             <CalendarContainer>
-                                <StyledEngineProvider injectFirst>
-                                    <App/>
-                                </StyledEngineProvider>
+                                <ApiContainer>
+                                    <StyledEngineProvider injectFirst>
+                                        <App/>
+                                    </StyledEngineProvider>
+                                </ApiContainer>
                             </CalendarContainer>
                         </MedicationContainer>
                     </UserContainer>
