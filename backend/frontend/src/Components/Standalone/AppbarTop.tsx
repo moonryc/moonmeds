@@ -81,19 +81,9 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
 
                         <MenuItem onClick={()=>handleClose('/')} ><HomeIcon className={classes.icon} /> Home </MenuItem>
                         <MenuItem onClick={()=>handleClose('/CalendarOverview')} ><DateRangeIcon className={classes.icon} /> Calendar Overview </MenuItem>
-                        <MenuItem onClick={()=>handleClose('/Err')} ><ErrorOutlineIcon className={classes.icon} /> Error/ testing  </MenuItem>
-                        <MenuItem onClick={()=>handleClose('/')} ><MedicationIcon className={classes.icon} /> MedicationPage </MenuItem>
 
                     </Menu>
-
-
-                    <Typography variant="h6" className={classes.title}>
-                        Moons Meds {'>'}:)
-                    </Typography>
-                    <Container maxWidth="sm">
-                        <Button color="inherit" onClick={() => { console.log(loggedIn)}}>console.log</Button>
-                    </Container>
-                    <Box>
+                    <Box sx={{position: 'absolute', right: 20}}>
                         {loggedIn ? <LogoutButton />:<LoginButton />}
                     </Box>
                 </Toolbar>
