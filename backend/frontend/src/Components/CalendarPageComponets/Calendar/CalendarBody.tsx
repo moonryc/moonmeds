@@ -52,7 +52,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
             }
         }
         console.log(tempArray)
-        for (let i = 0; i <= props.numberOfDaysInMonth; i++) {
+        for (let i = 0; i < props.numberOfDaysInMonth; i++) {
             if (i === 0) {
                 tempArray.push({index: 1, date: props.firstDay})
             } else {
@@ -93,7 +93,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                 {arrayOfMonthDays.map(day =>
                     // arrayOfMonthDays.indexOf(day) % 6 ?
                         <div className={classes.dayItem} key={arrayOfMonthDays.indexOf(day)}>
-                            <CalendarDay index={day.index} date={day.date}/><br/>
+                            {day.index !=0 ?<CalendarDay index={day.index} date={day.date}/>:<></>}<br/>
                         </div>
                         // :<CalendarDay index={day.index} date={day.date}/>
                 )}

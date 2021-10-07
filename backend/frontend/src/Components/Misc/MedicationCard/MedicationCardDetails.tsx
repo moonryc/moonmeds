@@ -14,14 +14,14 @@ const MedicationCardDetails = (props: IMedicationCardDetailsProps) => {
         <div>
             <Typography variant="body2" color="text.secondary">
                 <span>Prescription Dosage: {props.medication.prescriptionDosage}</span><br/>
-                <span>Next Refill Date: {props.medication.nextFillDay.toDateString()}</span><br/>
+                <span>Next Refill Date: {props.medication.nextFillDay.toString()}</span><br/>
                 <span>Notes: {props.medication.userNotes}</span><br/>
             </Typography>
                 {/*Maps through the dosage timestamps*/}
                 <span>
                     {props.medication.dosages.map(doses =>
                             <li key={props.medication.dosages.indexOf(doses)}>
-                                Take {doses.amount} at {doses.time.toDateString()}
+                                Take {doses.amount} at {doses.time.toString()}
                             </li>
                     )}
                 </span>

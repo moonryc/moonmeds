@@ -41,8 +41,10 @@ const CalendarDay = (props:ICalendarDay) => {
         return format(prop, 'MM/dd/yyyy') === today;
     }
 
+    const x = () => {
 
-    //TODO: make it not render last months dates
+    }
+
     return (
         <div>
             {/*if(props.date===today) color= cyan*/}
