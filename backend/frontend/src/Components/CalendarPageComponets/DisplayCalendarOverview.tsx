@@ -55,12 +55,9 @@ function a11yProps(index: number) {
 //TODO(Travis): Theming/CSS
 const DisplayCalendarOverview = () => {
 
-    const {userMedicationDosages,setUserMedicationDosages,setUserMedications} = useContext(MedicationContext);
+    const {userMedicationDosages,setUserMedicationDosages,setUserMedications,updateBar,setUpdateBar} = useContext(MedicationContext);
 
     const {selectedDay} = useContext(CalendarContext);
-
-    const [updateBar, setUpdateBar] = useState(false);
-
 
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
