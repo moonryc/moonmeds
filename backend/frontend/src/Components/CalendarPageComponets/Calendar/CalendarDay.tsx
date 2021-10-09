@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {IconButton} from "@mui/material";
-import {ICalendarDay} from "../../../../../Types/CalendarType";
+import {ICalendarDay, IRenderedOnHomePage} from "../../../../../Types/CalendarType";
 import {CalendarContext} from "../../../Context/CalendarContext";
 import {format, getDate, getDay, getMonth, getYear, isBefore, isEqual, parseISO} from "date-fns";
 import {makeStyles} from "@mui/styles";
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme?: any) => ({
 }));
 
 
-const CalendarDay = (props: ICalendarDay) => {
+const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
 
     const classes = useStyles();
 
