@@ -69,7 +69,6 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     return (
         <div>
             <br/>
-            <Paper>
                 <div className={classes.weekContainer}>
                     <div className={classes.dayItem}>
                         Sun
@@ -100,7 +99,6 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                         // :<CalendarDay index={day.index} date={day.date}/>
                 )}
                 </div>
-            </Paper>
         </div>
     );
 };

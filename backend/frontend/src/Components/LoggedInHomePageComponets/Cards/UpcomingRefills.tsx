@@ -12,9 +12,16 @@ import {makeStyles} from "@mui/styles";
 const useStyles = makeStyles((theme?: any) => ({
     title: {
         color: theme.palette.text.primary
+
     },
     cardStyle:{
-        margin: '2vw'
+        [theme.breakpoints.up('xs')]: {
+            marginTop: '15px',
+            marginBottom: '15px'
+            },
+        [theme.breakpoints.up('lg')]: {
+            margin: '2vw',
+        },
     }
 }));
 
@@ -43,21 +50,21 @@ const ImportantDates = () => {
 
                     <CardContent>
                         {/*TODO if nothing upcoming 'hurray you are up to date! else display upcoming refills*/}
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
-                        <Typography> Hurray You are up to date on your refills.</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
+                        <Typography> Hurray You are all up to date!</Typography>
 
                     </CardContent>
                     <CardActions>

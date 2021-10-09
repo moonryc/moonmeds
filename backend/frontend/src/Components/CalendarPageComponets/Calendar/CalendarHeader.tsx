@@ -1,5 +1,5 @@
 import React from 'react';
-import {IconButton} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import {ArrowBack, ArrowForward} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
 
@@ -24,7 +24,7 @@ const CalendarHeader = (props:ICalendarHeaderProps) => {
     const classes = useStyles();
 
     return (
-        <div>
+        <Box sx={{position:'absolute', left:'0', right:'0', textAlign: 'center', top:'-5%'}}>
             <IconButton onClick={()=>props.goBackAMonth()}>
                 <ArrowBack className={classes.leftArrow}/>
             </IconButton>
@@ -32,7 +32,7 @@ const CalendarHeader = (props:ICalendarHeaderProps) => {
             <IconButton onClick={()=>props.goForwardAMonth()}>
                 <ArrowForward className={classes.rightArrow}/>
             </IconButton>
-        </div>
+        </Box>
     );
 };
 
