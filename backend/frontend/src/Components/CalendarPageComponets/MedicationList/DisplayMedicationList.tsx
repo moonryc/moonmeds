@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
-import {alpha, Box, Button, Checkbox, Grid, LinearProgress} from "@mui/material";
-import {UserContext} from "../../../Context/UserContext";
+import {Box, Button, Checkbox, Grid} from "@mui/material";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 import {MedicationContext} from "../../../Context/MedicationContext";
-import {fetchUserMedications, putDeleteSelectedMedications} from "../../../Services/ApiCalls";
+import {ApiContext} from "../../../Context/ApiContext";
+import {Skeleton} from "@mui/lab";
 
 
 interface IDisplayMedicationList {
@@ -16,7 +16,9 @@ interface IDisplayMedicationList {
 const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
     // const {userMedications,putDeleteSelectedMedications,fetchUserMedications} = useContext(UserContext);
-    const {userMedications,setUpdateBar} = useContext(MedicationContext);
+    const {userMedications} = useContext(MedicationContext);
+    const {loadingBar} = useContext(ApiContext);
+    const {putDeleteSelectedMedications, fetchUserMedications, fetchUserMedicationsDosages} = useContext(ApiContext);
 
     const [medicationsArray, setMedicationsArray] = useState<IMedicationFrontEnd[] | []>(userMedications);
 
@@ -28,7 +30,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     }
 
 
-    const handleCheckBoxClick = (medication:IMedicationFrontEnd) => {
+    const handleCheckBoxClick = (medication: IMedicationFrontEnd) => {
 
         let tempArray: IMedicationFrontEnd[] = [...deleteArray];
 
@@ -40,48 +42,45 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
         setDeleteArray(tempArray)
     }
 
-    const handleDeleteMedicationsAction = () => {
-        setUpdateBar(true)
-        putDeleteSelectedMedications(deleteArray).then((response)=>{
-            if(response.error){
-                //TODO
-            }else{
+    const handleDeleteMedicationsAction = async () => {
 
-            }
-        })
-        fetchUserMedications().then((response)=>{
-            if(response.error){
-                //TODO
-            }else{
+        await putDeleteSelectedMedications(deleteArray)
+        await fetchUserMedications()
+        await fetchUserMedicationsDosages()
 
-            }
-        })
-        setTimeout(()=>{setUpdateBar(false)},1000)
     }
 
+    //TODO is this needed?
     useEffect(() => {
         setMedicationsArray(userMedications)
-     }, [medicationsArray, userMedications])
+    }, [medicationsArray, userMedications])
 
 
     return (
 
-        <Box sx={{ maxHeight: '70vh', overflow: 'auto'}}>
+        <Box sx={{maxHeight: '70vh', overflow: 'auto'}}>
 
             <Card>
+                {loadingBar ? <><Skeleton variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/></> : <>
+
                 <br/>
-                {console.log("medicationsArray")}
                 {medicationsArray?.length == 0 || medicationsArray == null ?
                     <Button onClick={() => props.handleTabsChangeIndex(2)}>New Medication</Button> :
                     <>
                         <Grid container>
                             <Grid item xs={6}>
-                        <Button sx={{bgcolor: 'primary.light', color:'text.primary'}} onClick={() => toggleDeletion()}>
-                            {isDeletionEnabled ? "Cancel" : "Delete medication"}
-                        </Button>
+                                <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
+                                        onClick={() => toggleDeletion()}>
+                                    {isDeletionEnabled ? "Cancel" : "Delete medication"}
+                                </Button>
                             </Grid>
                             <Grid item xs={6}>
-                        {isDeletionEnabled? <Button sx={{bgcolor: 'primary.light', color:'text.primary'}} onClick={()=>handleDeleteMedicationsAction()}>Delete Medications</Button> : <></>}
+                                {isDeletionEnabled ? <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
+                                                             onClick={() => handleDeleteMedicationsAction()}>Delete
+                                    Medications</Button> : <></>}
                             </Grid>
                         </Grid>
                         {medicationsArray.map((medication: IMedicationFrontEnd) =>
@@ -110,6 +109,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                             </>)}
                     </>
                 }
+                </>}
             </Card>
         </Box>
     );

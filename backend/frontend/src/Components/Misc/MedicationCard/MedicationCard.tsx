@@ -2,20 +2,17 @@ import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
-import {alpha, BottomNavigation, BottomNavigationAction, Box, Divider} from "@mui/material";
+import {BottomNavigation, BottomNavigationAction, Box, Divider} from "@mui/material";
 import {DeleteForever} from "@mui/icons-material";
 import MedicationCardAddDosages from "./MedicationCardAddDosages";
 import EditIcon from "@mui/icons-material/Edit";
 import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
-import {UserContext} from "../../../Context/UserContext";
 import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
-import {fetchUserMedications, postNewMedication, submitUpdatedMedication} from "../../../Services/ApiCalls";
-import {MedicationContext} from "../../../Context/MedicationContext";
-import {response} from "express";
 import {makeStyles} from "@mui/styles";
 import SendIcon from '@mui/icons-material/Send';
+import {ApiContext} from "../../../Context/ApiContext";
 
 const useStyles = makeStyles((theme?: any) => ({
     container: {
@@ -35,11 +32,11 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
 //TODO(Moon): fix the numerous isses being logged into the console
 const MedicationCard = (props: IMedicationCardProps) => {
 
-    const {setUserMedications} = useContext(MedicationContext);
+    const {postNewMedication,submitUpdatedMedication} = useContext(ApiContext);
 
     const [isShowingDetails, setIsShowingDetails] = useState(false);
     const [isEditing, setIsEditing] = useState(props.isNewCard);
-    const [updateBar, setUpdateBar] = useState(false);
+
 
     //region Medication Card details callback functions
 
@@ -107,43 +104,16 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
     //creates a new medication
     const submitNewMedication = async () => {
-        setUpdateBar(true)
 
-        postNewMedication(medicationDetails).then((response)=>{
-            if(response.error){
-                //TODO show error on screen
-                console.log(response.errorMessage)
-            }else{
+        await postNewMedication(medicationDetails)
 
-            }
-        })
-        fetchUserMedications().then((response)=>{
-            if(response.error){
-                //TODO show error on screen
-                console.log(response.errorMessage)
-            }else{
-                setUserMedications(response.response)
-            }
-        })
-        setTimeout(()=>{setUpdateBar(false)},1000)
         props.handleTabsChangeIndex(1)
     };
     //updates medication
     const updatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
         setIsEditing(false)
 
-        setUpdateBar(true)
-        submitUpdatedMedication(medicationDetails).then((response)=>{
-            if(response.error){
-                //TODO
-                console.log("error"+ response)
-            }else{
-                console.log("response"+ response)
-            }
-        })
-
-        setTimeout(()=>{setUpdateBar(false)},1000)
-
+        await submitUpdatedMedication(medicationDetails)
     };
     const classes= useStyles();
     return (
