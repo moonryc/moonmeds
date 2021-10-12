@@ -1,12 +1,18 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
 import {MedicationContext} from "./MedicationContext";
+import {IBackendResponse} from "../../../Types/BackendResponseType";
+import {IAlerts} from "../../../Types/AlertMessageTypes";
+import {NotificationsContext} from "./NotificationsContext";
 
 export interface IApiContextState {
     numberOfCurrentApiCalls: number
     setNumberOfCurrentApiCalls: (state: number) => void
     loadingBar: boolean,
     setLoadingBar: (state: boolean) => void
+
+
+    //apiCalls
     fetchUserMedications: () => void,
     fetchUserMedicationsDosages: () => void
     postNewMedication: (medicationDetails: IMedicationFrontEnd) => void
@@ -21,6 +27,9 @@ export const ApiContext = createContext<IApiContextState>({
     loadingBar: false,
     setLoadingBar: (state: boolean) => {
     },
+
+
+    //apiCalls
     fetchUserMedications: async () => Promise,
     fetchUserMedicationsDosages: async () => Promise,
     postNewMedication: async (medicationDetails: IMedicationFrontEnd) => Promise,
@@ -31,35 +40,34 @@ export const ApiContext = createContext<IApiContextState>({
 export const ApiContainer = (props: any) => {
 
     const {setUserMedications, setUserMedicationDosages} = useContext(MedicationContext);
+    const {newNotification} = useContext(NotificationsContext);
 
     const {children} = props;
     const [numberOfCurrentApiCalls, setNumberOfCurrentApiCalls] = useState<number>(0);
     const [loadingBar, setLoadingBar] = useState<boolean>(false);
 
     useEffect(() => {
-        if(numberOfCurrentApiCalls<1){
+        if (numberOfCurrentApiCalls < 1) {
             setNumberOfCurrentApiCalls(0)
             setLoadingBar(false)
-        }else{
+        } else {
             setLoadingBar(true)
         }
     }, [numberOfCurrentApiCalls]);
 
 
-
     const handleLoadingBarTurnOn = () => {
-        let tempNumber = numberOfCurrentApiCalls+1
+        let tempNumber = numberOfCurrentApiCalls + 1
         setNumberOfCurrentApiCalls(tempNumber)
     }
     const handleLoadingBarTurnOff = () => {
-            let tempNumber = numberOfCurrentApiCalls -1
-            setNumberOfCurrentApiCalls(tempNumber)
+        let tempNumber = numberOfCurrentApiCalls - 1
+        setNumberOfCurrentApiCalls(tempNumber)
     }
 
 
     const fetchUserMedications = async (): Promise<void> => {
         handleLoadingBarTurnOn()
-        console.log(loadingBar)
         let url = '/medication/userMedications';
         // Default options are marked with *
         await fetch(url, {
@@ -69,22 +77,19 @@ export const ApiContainer = (props: any) => {
             },
         })
             .then(response => response.json())
-            .then(body => {
-                if (body.error) {
-                    //TODO
-                    handleLoadingBarTurnOff()
-                } else {
-                    setUserMedications(body.response)
-                    handleLoadingBarTurnOff()
+            .then((data: IBackendResponse) => {
+                if (!data.error) {
+                    setUserMedications(data.response)
                 }
+                newNotification(data.alert.message,data.alert.severity)
+                handleLoadingBarTurnOff()
             }).catch(error => {
-                console.log(error);
+                //TODO
                 handleLoadingBarTurnOff()
             })
 
     }
     const fetchUserMedicationsDosages = async () => {
-
 
         handleLoadingBarTurnOn()
         let url = '/medication/userMedicationsDosages';
@@ -94,16 +99,16 @@ export const ApiContainer = (props: any) => {
             headers: {
                 // 'Authorization': `Bearer ${userId}`
             },
-        }).then(response => response.json()).then(data => {
-            if (data.error) {
-                //TODO
-                handleLoadingBarTurnOff()
-            } else {
-                handleLoadingBarTurnOff()
+        })
+            .then(response => response.json())
+            .then((data:IBackendResponse) => {
+            if (!data.error) {
                 setUserMedicationDosages(data.response)
             }
+                newNotification(data.alert.message,data.alert.severity)
+            handleLoadingBarTurnOff()
         }).catch(error => {
-            console.log(error);
+            //TODO
             handleLoadingBarTurnOff()
         })
 
@@ -123,17 +128,15 @@ export const ApiContainer = (props: any) => {
                 // 'Authorization': `Bearer ${userId}`
             },
             body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
-        }).then(response => response.json()).then(data => {
-            if (data.error) {
+        })
+            .then(response => response.json())
+            .then((data: IBackendResponse) => {
+                newNotification(data.alert.message,data.alert.severity)
+                handleLoadingBarTurnOff()
+            }).catch(error => {
                 //TODO
                 handleLoadingBarTurnOff()
-            } else {
-                handleLoadingBarTurnOff()
-            }
-        }).catch(error => {
-            console.log(error);
-            handleLoadingBarTurnOff()
-        })
+            })
         return response;
     };
     const putDeleteSelectedMedications = async (medicationFrontEndArray: IMedicationFrontEnd[]) => {
@@ -152,17 +155,16 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify({payload: medicationFrontEndArray}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    //TODO
-                    handleLoadingBarTurnOff()
-                } else {
-                    handleLoadingBarTurnOff()
-                    fetchUserMedications()
-                }
+            .then((data: IBackendResponse) => {
+
+                fetchUserMedications()
+                fetchUserMedicationsDosages()
+
+                handleLoadingBarTurnOff()
+                newNotification(data.alert.message,data.alert.severity)
             })
             .catch(error => {
-                console.log(error);
+                //TODO
                 handleLoadingBarTurnOff()
             })
 
@@ -182,17 +184,14 @@ export const ApiContainer = (props: any) => {
                 // 'Authorization': `Bearer ${userId}`
             },
             body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
-        }).then(response => response.json()).then(body => {
-            if (body.error) {
+        }).then(response => response.json())
+            .then((data: IBackendResponse) => {
+                handleLoadingBarTurnOff()
+                newNotification(data.alert.message,data.alert.severity)
+            }).catch(error => {
                 //TODO
                 handleLoadingBarTurnOff()
-            } else {
-                handleLoadingBarTurnOff()
-            }
-        }).catch(error => {
-            console.log(error)
-            handleLoadingBarTurnOff()
-        })
+            })
         return response;
     };
 

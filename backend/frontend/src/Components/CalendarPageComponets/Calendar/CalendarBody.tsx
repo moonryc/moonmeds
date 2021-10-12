@@ -11,6 +11,8 @@ interface ICalendarBodyProps {
     firstDay: Date,
 }
 
+//TODO DOCSTRINGS on here
+
 
 const CalendarBody = (props: ICalendarBodyProps) => {
     //const today = new Date();
@@ -35,8 +37,10 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         date: new Date()
     }]);
 
-    const {userMedicationDosages} = useContext(MedicationContext);
 
+    /**
+     * updates the arrayOfMonthsDays to the correct number of days in a month when the selected month is changed
+     */
     useEffect(() => {
         setArrayOfMonthDays([
             {

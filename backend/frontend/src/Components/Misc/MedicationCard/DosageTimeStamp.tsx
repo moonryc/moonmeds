@@ -6,11 +6,11 @@ import {
     FormControl,
     FormControlLabel,
     FormGroup,
-    FormLabel,
     Grid,
     IconButton,
     Switch,
-    TextField, Typography
+    TextField,
+    Typography
 } from "@mui/material";
 import TimePickerComponent from "../TimePickerComponent";
 import {IDosagesDetails} from "../../../../../Types/MedicationType";
@@ -24,41 +24,41 @@ const useStyles = makeStyles((theme?: any) => ({
         padding: '0px',
         display: 'flex',
         '&:active': {
-        '& .MuiSwitch-thumb': {
-            width: '15',
-        },
-        '& .MuiSwitch-switchBase.Mui-checked': {
-            transform: 'translateX(9px)',
-        },
-    },
-
-    '& .MuiSwitch-switchBase': {
-        padding: 2,
-            '&.Mui-checked': {
-            transform: 'translateX(12px)',
-                color: '#fff',
-                '& + .MuiSwitch-track': {
-                opacity: 1,
-                    backgroundColor: theme.palette.secondary.main,
+            '& .MuiSwitch-thumb': {
+                width: '15',
+            },
+            '& .MuiSwitch-switchBase.Mui-checked': {
+                transform: 'translateX(9px)',
             },
         },
-    },
-    '& .MuiSwitch-thumb': {
-        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+
+        '& .MuiSwitch-switchBase': {
+            padding: 2,
+            '&.Mui-checked': {
+                transform: 'translateX(12px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': {
+                    opacity: 1,
+                    backgroundColor: theme.palette.secondary.main,
+                },
+            },
+        },
+        '& .MuiSwitch-thumb': {
+            boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
             width: '12px',
             height: '12px',
             borderRadius: '6px',
             transition: theme.transitions.create(['width'], {
-            duration: 700,
-        }),
-    },
-    '& .MuiSwitch-track': {
-        borderRadius: 16 / 2,
+                duration: 700,
+            }),
+        },
+        '& .MuiSwitch-track': {
+            borderRadius: 16 / 2,
             opacity: 1,
             backgroundColor:
-        theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+                theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
             boxSizing: 'border-box',
-    },
+        },
     },
     center: {
         justifyContent: "center",
@@ -66,7 +66,16 @@ const useStyles = makeStyles((theme?: any) => ({
     }
 }));
 
-
+/**
+ *
+ * @property index - number,
+ * @property dosageDetails - IDosagesDetails,
+ * @property isNewCard - boolean
+ * @property deleteDosage(dosageIndex: number) - void,
+ * @property getDosage(dosage:number,index:number) - void,
+ * @property getDosageTime(time:Date,index:number) - void,
+ * @property getDosageDetails(details:IDosagesDetails,index:number) - void
+ */
 interface IDosageTimeStampProps {
     index: number,
     dosageDetails: IDosagesDetails,
@@ -74,49 +83,70 @@ interface IDosageTimeStampProps {
 
     deleteDosage(dosageIndex: number): void,
 
-    getDosage(dosage: number, index: number): void,
-
-    getDosageTime(time: Date, index: number): void,
-
     getDosageDetails(details: IDosagesDetails, index: number): void
 
 }
 
 
 //TODO(Spotexx): theming
-
+/**
+ * Used to set the time of a medication dosage
+ * @param props - {index - number,dosageDetails: IDosagesDetails,isNewCard: boolean,
+ * deleteDosage(dosageIndex: number): void,getDosage(dosage:number,index:number): void,
+ * getDosageTime(time:Date,index:number): void,getDosageDetails(details:IDosagesDetails,index:number): void}
+ * @constructor
+ */
 const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
-    const [state, setState] = React.useState({
-        monday: false,
-        tuesday: false,
-        wednesday: false,
-        thursday: false,
-        friday: false,
-        saturday: false,
-        sunday: false
-    });
+    const classes = useStyles();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
-    };
+    //region useState
 
-
-
-
-
-    const [dosageDetails, setDosageDetails] = useState(props.dosageDetails);
-
-
-    const [options, setOptions] = useState<boolean>(props.isNewCard);
-
-
+    /**
+     * The dosage details for one specific dosage in a medication
+     */
+    const [dosageDetails, setDosageDetails] = useState<IDosagesDetails>(props.dosageDetails);
     //const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
     //const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
 
+    //endregion
+
+    //region Callback functions
+
+    /**
+     *  used for selecting the time of the day in the time picker
+     * @param time - Date
+     */
+    const handleTimeOnChange = (time: Date) => {
+        let temp = {...dosageDetails}
+        temp.time = time
+        setDosageDetails(temp)
+    }
+
+    /**
+     *  use for selecting the date in the day of the month picker for a monthly scheduled medication
+     * @param newValue - Date
+     */
+    const handleDateChange = (newValue: Date | null) => {
+        if (newValue == null) {
+            let temp = {...dosageDetails}
+            temp.selectedMonthly = new Date()
+            setDosageDetails(temp)
+        } else {
+            let temp = {...dosageDetails}
+            temp.selectedMonthly = newValue
+            setDosageDetails(temp)
+        }
+    };
+
+    //endregion
+
+    //region functions
+
+    /**
+     * updates the dosageDetails |
+     * toggles the daily option on/off and turns off weekly, monthly, and custom
+     */
     const handleDailyToggle = () => {
 
         let temp = {...dosageDetails}
@@ -128,6 +158,10 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     }
 
+    /**
+     * updates the dosageDetails |
+     * toggles the weekly option on/off and turns off daily, monthly, and custom
+     */
     const handleWeeklyToggle = () => {
         let temp = {...dosageDetails}
         temp.isDaily = false
@@ -137,6 +171,10 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         setDosageDetails(temp)
     }
 
+    /**
+     * updates the dosageDetails |
+     * toggles the monthly option on/off and turns off weekly, daily, and custom
+     */
     const handleMonthlyToggle = () => {
         let temp = {...dosageDetails}
         temp.isDaily = false
@@ -146,6 +184,10 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         setDosageDetails(temp)
     }
 
+    /**
+     * updates the dosageDetails |
+     * toggles the custom option on/off and turns off weekly, monthly, and daily
+     */
     const handleCustomToggle = () => {
         let temp = {...dosageDetails}
         temp.isDaily = false
@@ -155,32 +197,26 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         setDosageDetails(temp)
     }
 
-    ///This passes data back to the
-    /// MedicationCardAddDosages components
-    /// to log the information below
-    /// it is kept up to date by using useEffect
+
     //TODO(Moon) fix typescript
+    /**
+     * updates the dosageDetails |
+     * updates the change in dosage as the user types
+     * @param e - any
+     */
     const handleDoseOnChange = (e: any) => {
         let temp = {...dosageDetails}
         temp.amount = e.target.value
         setDosageDetails(temp)
-
-        // setDose(e.target.value)
-    }
-    const handleTimeOnChange = (time: Date) => {
-        let temp = {...dosageDetails}
-        temp.time = time
-        setDosageDetails(temp)
-        // setTime(time)
     }
 
-    const handleMoreVertClick = () => {
-        setOptions(!options);
-    }
 
-    //This handels changing the checkboxes and updating the Dosage Details
+    /**
+     * Update the dosageDetails to reflect what day of the week has been toggled on or off
+     * @param day - string of the day of the week
+     */
     const handleCheckbox = (day: string) => {
-        let tempMedicationDetails:IDosagesDetails = {...dosageDetails}
+        let tempMedicationDetails: IDosagesDetails = {...dosageDetails}
 
         switch (day) {
             case "monday":
@@ -200,7 +236,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "friday":
-                tempMedicationDetails.customDays.friday =!dosageDetails.customDays.friday
+                tempMedicationDetails.customDays.friday = !dosageDetails.customDays.friday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "saturday":
@@ -215,27 +251,21 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
     }
 
-    const handleDateChange = (newValue: Date | null) => {
-        if (newValue == null) {
-            let temp = {...dosageDetails}
-            temp.selectedMonthly = new Date()
-            setDosageDetails(temp)
-        } else {
-            let temp = {...dosageDetails}
-            temp.selectedMonthly = newValue
-            setDosageDetails(temp)
-        }
-    };
+    //endregion
 
+    //region useEffect
 
+    /**
+     * updates the medicationDetails property in the MedicationCard component whenever a dosage detail changes
+     */
     useEffect(() => {
-        props.getDosage(dosageDetails.amount, props.index)
-        props.getDosageTime(dosageDetails.time, props.index)
         props.getDosageDetails(dosageDetails, props.index)
     }, [dosageDetails])  // eslint-disable-line react-hooks/exhaustive-deps
-    const classes = useStyles();
+
+    //endregion
+
     return (
-        <div >
+        <div>
             <br/>
             <Grid container spacing={2}>
                 <Grid item xs={8}>
@@ -252,106 +282,104 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                 <Grid item xs={4}>
 
 
-                    {props.isNewCard ? <>
-                            <IconButton onClick={() => props.deleteDosage(props.index)}>
-                                <Delete/>
-                            </IconButton>
-                        </> :
-                        <>
-                            <br/>
-                            <br/>
-                            <IconButton onClick={() => props.deleteDosage(props.index)}>
-                                <Delete/>
-                            </IconButton>
-                            <IconButton onClick={() => handleMoreVertClick()}>
-                                <MoreVert/>
-                            </IconButton>
-                        </>}
+                    <IconButton onClick={() => props.deleteDosage(props.index)}>
+                        <Delete/>
+                    </IconButton>
+
                 </Grid>
             </Grid>
-            <Collapse in={options}>
-                <br/>
-                <Grid container spacing={2} className={classes.center}   alignItems="center"
-                      justifyContent="center">
+            <br/>
+            <Grid container spacing={2} className={classes.center} alignItems="center"
+                  justifyContent="center">
 
-                    <Grid item xs={3} ><Typography>Daily</Typography></Grid>
-                    <Grid item xs={3}>Weekly</Grid>
-                    <Grid item xs={3}>Monthly</Grid>
-                    <Grid item xs={3}>Custom</Grid>
-                    <Grid item xs={3} > <Switch className={classes.switch} checked={dosageDetails.isDaily} onClick={() => handleDailyToggle()}/>
-                    </Grid>
-                    <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isWeekly} onClick={() => handleWeeklyToggle()}/>
-                    </Grid>
-                    <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isMonthly} onClick={() => handleMonthlyToggle()}/>
-                    </Grid>
-                    <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isCustom} onClick={() => handleCustomToggle()}/>
-                    </Grid>
-
+                <Grid item xs={3}><Typography>Daily</Typography></Grid>
+                <Grid item xs={3}>Weekly</Grid>
+                <Grid item xs={3}>Monthly</Grid>
+                <Grid item xs={3}>Custom</Grid>
+                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isDaily}
+                                           onClick={() => handleDailyToggle()}/>
                 </Grid>
-                <Collapse in={dosageDetails.isWeekly}>
-                    <FormControl component="fieldset" variant="standard">
-                        <FormGroup style={{paddingLeft:'15px'}}>
-                            <br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.monday} onChange={()=>handleCheckbox("monday")} name="monday" />
-                                }
-                                label="Monday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.tuesday} onClick={()=>handleCheckbox("tuesday")} name="tuesday" />
-                                }
-                                label="Tuesday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.wednesday} onClick={()=>handleCheckbox("wednesday")} name="wednesday" />
-                                }
-                                label="Wednesday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.thursday} onClick={()=>handleCheckbox("thursday")} name="thursday" />
-                                }
-                                label="Thursday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.friday} onClick={()=>handleCheckbox("friday")} name="friday" />
-                                }
-                                label="Friday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.saturday} onClick={()=>handleCheckbox("saturday")} name="saturday" />
-                                }
-                                label="Saturday"
-                            /><br/>
-                            <FormControlLabel
-                                control={
-                                    <Switch className={classes.switch} checked={dosageDetails.customDays.sunday} onClick={()=>handleCheckbox("sunday")} name="sunday" />
-                                }
-                                label="Sunday"
-                            />
-                        </FormGroup>
-                    </FormControl>
-                </Collapse>
-                <Collapse in={dosageDetails.isMonthly}>
-                    <br/>
+                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isWeekly}
+                                           onClick={() => handleWeeklyToggle()}/>
+                </Grid>
+                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isMonthly}
+                                           onClick={() => handleMonthlyToggle()}/>
+                </Grid>
+                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isCustom}
+                                           onClick={() => handleCustomToggle()}/>
+                </Grid>
 
-                    <Grid container spacing={0}>
-                        <Grid item>
-                            <MobileDatePicker
-                                label="Start Date"
-                                inputFormat="MM/dd/yyyy"
-                                value={dosageDetails.selectedMonthly}
-                                onChange={handleDateChange}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </Grid>
+            </Grid>
+            <Collapse in={dosageDetails.isWeekly}>
+                <FormControl component="fieldset" variant="standard">
+                    <FormGroup style={{paddingLeft: '15px'}}>
+                        <br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.monday}
+                                        onChange={() => handleCheckbox("monday")} name="monday"/>
+                            }
+                            label="Monday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.tuesday}
+                                        onClick={() => handleCheckbox("tuesday")} name="tuesday"/>
+                            }
+                            label="Tuesday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.wednesday}
+                                        onClick={() => handleCheckbox("wednesday")} name="wednesday"/>
+                            }
+                            label="Wednesday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.thursday}
+                                        onClick={() => handleCheckbox("thursday")} name="thursday"/>
+                            }
+                            label="Thursday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.friday}
+                                        onClick={() => handleCheckbox("friday")} name="friday"/>
+                            }
+                            label="Friday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.saturday}
+                                        onClick={() => handleCheckbox("saturday")} name="saturday"/>
+                            }
+                            label="Saturday"
+                        /><br/>
+                        <FormControlLabel
+                            control={
+                                <Switch className={classes.switch} checked={dosageDetails.customDays.sunday}
+                                        onClick={() => handleCheckbox("sunday")} name="sunday"/>
+                            }
+                            label="Sunday"
+                        />
+                    </FormGroup>
+                </FormControl>
+            </Collapse>
+            <Collapse in={dosageDetails.isMonthly}>
+                <br/>
+
+                <Grid container spacing={0}>
+                    <Grid item>
+                        <MobileDatePicker
+                            label="Start Date"
+                            inputFormat="MM/dd/yyyy"
+                            value={dosageDetails.selectedMonthly}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
                     </Grid>
-                </Collapse>
+                </Grid>
             </Collapse>
             <br/>
             <Divider/>

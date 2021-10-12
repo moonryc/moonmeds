@@ -6,6 +6,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardHeader from "@mui/material/CardHeader";
 import {IMedication} from "../../../../../Types/MedicationType";
 
+/**
+ *
+ * @property isNewCard - boolean
+ * @property isEditing - boolean,
+ * @property medication - IMedication
+ * @property handleIsShowingDetailsClick - ()=>void
+ */
 interface IMedicationCardHeaderProps {
     isNewCard: boolean
     isEditing: boolean,
@@ -13,6 +20,11 @@ interface IMedicationCardHeaderProps {
     handleIsShowingDetailsClick:()=>void
 }
 
+/**
+ *
+ * @param props - {isNewCard: boolean, isEditing: boolean, medication: IMedication, handleIsShowingDetailsClick: ()=>void}
+ * @constructor
+ */
 const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
     return (
         <div>

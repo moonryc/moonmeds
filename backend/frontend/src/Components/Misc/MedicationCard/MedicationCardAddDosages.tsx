@@ -3,21 +3,53 @@ import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
 import {IDosagesDetails, IMedication} from "../../../../../Types/MedicationType";
 
+
+/**
+ * @property medication - IMedication
+ * @property isNewCard - boolean,
+ * @property updateMedicationDosages(listOfDosages: IDosagesDetails[]) - void
+ */
 export interface IMedicationCardAddDosagesProps {
     medication: IMedication
     isNewCard:boolean,
     updateMedicationDosages(listOfDosages: IDosagesDetails[]): void
 }
 
-
-
 ///*TODO(Spotexx): theming*/
-
+/**
+ * Creates and deletes medication dosages, this component is only displayed when the medication is being edited/isNewCard is true
+ * @param props - {medication: IMedication, isNewCard:boolean,updateMedicationDosages(listOfDosages:IDosagesDetails[]):void}
+ * @constructor
+ */
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
+
+    //region useState
 
     const [dosages, setDosages] = useState<IDosagesDetails[]>(props.medication.dosages);
 
+    //endregion
 
+    //region Callback functions
+
+    /**
+     * Callback function |
+     *  updates the dosage info for the give dosage at the given  in the dosages array index
+     * @param details
+     * @param index
+     */
+    const getDosageDetails = (details: IDosagesDetails, index: number) => {
+        let tempDosages = [...dosages];
+        tempDosages[index] = details
+        setDosages(tempDosages);
+    }
+
+    //endregion
+
+    //region functions
+
+    /**
+     * Adds a new blank IDosageDetails object at the end of the dosages array
+     */
     const newDosage = () => {
         setDosages(dosages => [...dosages, {
             amount: 0,
@@ -40,32 +72,29 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
             }
         }])
     }
+
+    /**
+     * Removes a dosage from the array of dosages at the given index
+     * @param dosageIndex - number
+     */
     const deleteDosage = (dosageIndex: number) => {
         let tempDosages = [...dosages];
         tempDosages.splice(dosageIndex, 1)
         setDosages(tempDosages)
     }
-    const getDosage = (dosage: number, index: number) => {
-        let tempDosages = [...dosages];
-        tempDosages[index].amount = dosage;
-        setDosages(tempDosages)
-    }
-    const getDosageTime = (time: Date, index: number) => {
-        let tempDosages = [...dosages];
-        tempDosages[index].time = time;
-        setDosages(tempDosages)
-    }
-    const getDosageDetails = (details: IDosagesDetails, index: number) => {
-        let tempDosages = [...dosages];
-        // tempDosages[index].customDays = details
-        tempDosages[index] = details
-        setDosages(tempDosages);
-    }
 
+    //endregion
+
+    //region useEffect
+
+    /**
+     * updates the medicationDetails property in MedicationCard component when the dosages changes
+     */
     useEffect(() => {
         props.updateMedicationDosages(dosages);
     }, [dosages]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    //endregion
 
     return (
         <div>
@@ -77,8 +106,6 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
                         dosageDetails={dose}
                         isNewCard={props.isNewCard}
                         deleteDosage={deleteDosage}
-                        getDosage={getDosage}
-                        getDosageTime={getDosageTime}
                      getDosageDetails={getDosageDetails}/>)
                 }
                 <br/>

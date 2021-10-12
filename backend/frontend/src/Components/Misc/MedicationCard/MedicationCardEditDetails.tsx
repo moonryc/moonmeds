@@ -4,43 +4,98 @@ import Typography from "@mui/material/Typography";
 import {IMedication} from "../../../../../Types/MedicationType";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
-
+/**
+ *
+ * @property medication - IMedication,
+ * @property updateMedicationDetails( name:string,nextFillDate:Date,userNotes:string,prescriptionDosage:number) - void
+ */
 interface IMedicationCardEditDetails {
     medication: IMedication,
     updateMedicationDetails(name:string,nextFillDate:Date, userNotes:string,prescriptionDosage:number):void
 }
 //*TODO(Spotexx): theming*/}
+/**
+ * For editing the medication card prescription name, prescription dosage, next refill date, and notes
+ * @param props - {medication:IMedication, updateMedicationDetails( name:string,nextFillDate:Date,userNotes:string,prescriptionDosage:number)}
+ * @constructor
+ */
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
 
+    //region useState
+
+    /**
+     * value of the prescription name
+     */
     const [prescriptionName, setPrescriptionName] = useState<string>(props.medication.prescriptionName);
+    /**
+     * Value of the prescription dosage
+     */
     const [prescriptionDosage, setPrescriptionDosage] = useState<number>(props.medication.prescriptionDosage);
+    /**
+     * Value of the next fill date
+     */
     const [nextFillDate, setNextFillDate] = useState<Date>(props.medication.nextFillDay);
+    /**
+     * Value of the user notes regarding the selected medication
+     */
     const [userNotes, setUserNotes] = useState<string>(props.medication.userNotes);
 
+    //endregion
+
+    //region functions
+
+    /**
+     * updates the prescriptionName property when changed
+     * @param e
+     */
     const handlePrescriptionNameOnChange = (e: any) => {
         setPrescriptionName(e.target.value)
     }
 
+    /**
+     * updates the prescriptionDosage property when changed
+     * @param e
+     */
     const handlePrescriptionDosageOnChange = (e: any) => {
         setPrescriptionDosage(e.target.value)
     }
+
+    /**
+     * updates the userNotes property when changed
+     * @param e
+     */
     const handleUserNotesChange = (e: any) => {
         setUserNotes(e.target.value)
     }
-    useEffect(() => {
-        props.updateMedicationDetails(prescriptionName,nextFillDate,userNotes,prescriptionDosage)
 
-    }, [prescriptionName,nextFillDate,userNotes,prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
-    const handleChange = (newValue: Date|null) => {
+    /**
+     * updates the next fill date property when using the mobileDatePicker component
+     * @param newValue
+     */
+    const handleMobileDatePickerChange = (newValue: Date|null) => {
         if(newValue == null){
             setNextFillDate(new Date())
         }else{
         setNextFillDate(newValue);
         }
     };
+
+
+    //endregion
+
+    //region useEffect
+
+    /**
+     * updates the parent component MedicationCard whenever the prescription name, fill Date, user notes,
+     * or prescription dosage changes
+     */
+    useEffect(() => {
+        props.updateMedicationDetails(prescriptionName,nextFillDate,userNotes,prescriptionDosage)
+
+    }, [prescriptionName,nextFillDate,userNotes,prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    //endregion
 
     return (
         <div>
@@ -71,7 +126,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     label="Next Refill"
                     inputFormat="MM/dd/yyyy"
                     value={nextFillDate}
-                    onChange={handleChange}
+                    onChange={handleMobileDatePickerChange}
                     renderInput={(params) => <TextField {...params} />}
                  />
                 <br/>

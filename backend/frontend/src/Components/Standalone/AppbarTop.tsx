@@ -1,12 +1,10 @@
 import React, {useContext} from 'react';
-import {AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Menu, MenuItem, Toolbar} from "@mui/material";
 import LoginButton from "../Misc/LoginButton";
 import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../../Context/UserContext";
 import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import MedicationIcon from '@mui/icons-material/Medication';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles((theme?: any) => ({
@@ -21,38 +19,42 @@ const useStyles = makeStyles((theme?: any) => ({
         marginRight: 0,
         color: '#f60000'
     },
-    appBar:{
+    appBar: {
         background: theme.palette.primary.main,
         height: '60px',
         position: 'relative',
 
     },
-    icon:{
+    icon: {
         color: theme.palette.text.primary,
-        marginRight:'15px'
+        marginRight: '15px'
     }
 }));
 
-const AppbarTop: React.FC<{[key:string]: any}> = () => {
+const AppbarTop: React.FC<{ [key: string]: any }> = () => {
     const classes = useStyles();
 
+    //region Context
+    /**
+     * User context for checking is the user is in fact logged in
+     */
     let {loggedIn} = useContext(UserContext);
+    //endregion
 
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget)
     };
-    const handleClose = (path:string) => {
+    const handleClose = (path: string) => {
         setAnchorEl(null);
-    //Travis I fucking hate your guts, $10 says ill change this and you wont even notice
-        if(path!= '[object Object]') {
+        if (typeof path == typeof "") {
             window.location.href = path
         }
     };
 
 
-    return(
+    return (
         <>
             <AppBar position="static"
                     className={classes.appBar}
@@ -65,7 +67,7 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClick}
-                        sx={{color:'text.primary'}}
+                        sx={{color: 'text.primary'}}
                     >
                         Dashboard
                     </Button>
@@ -79,12 +81,13 @@ const AppbarTop: React.FC<{[key:string]: any}> = () => {
                         }}
                     >
 
-                        <MenuItem onClick={()=>handleClose('/')} ><HomeIcon className={classes.icon} /> Home </MenuItem>
-                        <MenuItem onClick={()=>handleClose('/CalendarOverview')} ><DateRangeIcon className={classes.icon} /> Calendar Overview </MenuItem>
+                        <MenuItem onClick={() => handleClose('/')}><HomeIcon className={classes.icon}/> Home </MenuItem>
+                        <MenuItem onClick={() => handleClose('/CalendarOverview')}><DateRangeIcon
+                            className={classes.icon}/> Calendar Overview </MenuItem>
 
                     </Menu>
                     <Box sx={{position: 'absolute', right: 20}}>
-                        {loggedIn ? <LogoutButton />:<LoginButton />}
+                        {loggedIn ? <LogoutButton/> : <LoginButton/>}
                     </Box>
                 </Toolbar>
             </AppBar>

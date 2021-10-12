@@ -6,6 +6,7 @@ import {format, getDate, getDay, getMonth, getYear, isBefore, isEqual, parseISO}
 import {makeStyles} from "@mui/styles";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {IMedicationDosagesSchema} from "../../../../../Types/MedicationType";
+import {dosagesOnSpecifiedDay} from "../../../Services/MedicationServices";
 
 
 const useStyles = makeStyles((theme?: any) => ({
@@ -28,46 +29,46 @@ const CalendarDay = (props: ICalendarDay) => {
 
     const classes = useStyles();
 
-    const {setSelectedDay,setSelectedDayDetails} = useContext(CalendarContext);
-    const {userMedicationDosages,userMedications} = useContext(MedicationContext);
+    //region Context
+    /**
+     * Context from Calendar and Medication
+     */
+    const {setSelectedDay} = useContext(CalendarContext);
+    const {userMedicationDosages} = useContext(MedicationContext);
+    //endregion
 
-    //to be used for rending colour changes
-    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[]|[]>([]);
+    /**
+     * the medication dosages associated with this day in particular
+     * TODO: This is to be used for styling
+     *
+     */
+    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date,userMedicationDosages));
 
 
+    /**
+     * updates calendar context regarding what day is currently selected
+     * and sets the context details to whatever the
+     * selected days medicationDetails are
+     */
     const handleOnDayClick = () => {
         setSelectedDay(props.date);
-        console.log(format(props.date, 'MM/dd/yyyy'));
-        setSelectedDayDetails([...medicationDosagesDetails])
-
     }
 
-    //style logic
-    const isToday = (calendarDate: Date) => {
-        return format(calendarDate, 'MM/dd/yyyy') === format(new Date(), 'MM/dd/yyyy');
+    /**
+     * tests if the componet represents today
+     * @return boolean - true if it is today, false otherwise
+     */
+    const isToday = ():boolean => {
+        return format(props.date, 'MM/dd/yyyy') === format(new Date(), 'MM/dd/yyyy');
     }
 
-    const getDatesUserMedication = (userMedicationDosagesArray: IMedicationDosagesSchema[] ) => {
-
-        if(userMedicationDosagesArray==null){
-            return []
-        }
-
-        let date = new Date(getYear(props.date), getMonth(props.date), getDate(props.date))
-        let results = userMedicationDosagesArray.filter(dosage=>isEqual(date,new Date(
-            getYear(parseISO(dosage.time.toString())),
-            getMonth(parseISO(dosage.time.toString())),
-            getDate(parseISO(dosage.time.toString())))))
-
-        return results
-    }
-
-    //updates if the user clicks on a day or if the userMedicationDosages in context is updated
+    /**
+     * updates the local variable medicationDosageDetails when dosages change
+     */
     useEffect(() => {
-        let answer = getDatesUserMedication(userMedicationDosages)
-        setMedicationDosagesDetails([...answer])
-        setSelectedDayDetails([...answer])
-    }, [userMedications,userMedicationDosages]);
+        // let answer = getDatesUserMedication()
+        setMedicationDosagesDetails(dosagesOnSpecifiedDay(props.date,userMedicationDosages))
+    }, [userMedicationDosages]);
 
 
     return (
@@ -77,7 +78,7 @@ const CalendarDay = (props: ICalendarDay) => {
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton className={isToday(props.date) ? classes.todayStyle : classes.otherStyle}
+            <IconButton className={isToday() ? classes.todayStyle : classes.otherStyle}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>

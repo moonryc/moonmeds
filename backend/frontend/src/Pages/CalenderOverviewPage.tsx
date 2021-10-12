@@ -3,6 +3,7 @@ import AppbarTop from "../Components/Standalone/AppbarTop";
 import {CalendarContainer} from "../Context/CalendarContext";
 import DisplayCalendarOverview from "../Components/CalendarPageComponets/DisplayCalendarOverview";
 import {makeStyles} from "@mui/styles";
+import NotificationsParent from "../Components/Misc/Notifications/NotificationsParent";
 
 const useStyles = makeStyles((theme?: any) => ({
     outerWrapper: {
@@ -33,6 +34,7 @@ const CalendarOverViewPage = () => {
             <AppbarTop/>
             <div className={classes.innerWrapper}>
                 <DisplayCalendarOverview/> {/*@ts-ignore*/}
+                <NotificationsParent/>
             </div>
         </div>
     );

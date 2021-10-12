@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import {useTheme} from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -50,34 +50,78 @@ function a11yProps(index: number) {
 }
 
 //TODO(Travis): Theming/CSS
+
+/**
+ * This component houses the calendar, date details,medication list, and add a medication parent components
+ * @constructor
+ */
 const DisplayCalendarOverview = () => {
 
-    const {loadingBar,fetchUserMedications,fetchUserMedicationsDosages,numberOfCurrentApiCalls,setNumberOfCurrentApiCalls} = useContext(ApiContext);
+    const theme = useTheme();
 
+    //region Context
+
+    const {loadingBar,fetchUserMedications,fetchUserMedicationsDosages} = useContext(ApiContext);
     const {selectedDay} = useContext(CalendarContext);
 
-    const theme = useTheme();
-    const [value, setValue] = React.useState(0);
+    //endregion
 
+    //region useState
+
+    /**
+     * the index of the swipeable tabs
+     */
+    const [value, setValue] = useState<number>(0);
+
+    //endregion
+
+    //region functions
+
+    //yes both of these are needed
+
+    /**
+     * Handles changing swipable views
+     * @param event
+     * @param newValue
+     */
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
+    /**
+     * Handles changing swpiable views
+     * @param index
+     */
+    const handleTabsChangeIndex = (index: number) => {
+        setValue(index);
+    };
+
+    //endregion
+
+    //region ApiCalls
+
+    /**
+     * Updates the userMedications and userMedicationDosages
+     */
     const updateUserMedications = () => {
         fetchUserMedications()
         fetchUserMedicationsDosages()
     }
 
+    //endregion
+
+    //region useEffect
+
     //TODO to be removed in the future?
+
+    /**
+     * updates userMedication and useMedicationDosages whenever the swipable tab changes
+     */
     useEffect(() => {
         updateUserMedications()
     }, [value]);
 
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
-    const handleTabsChangeIndex = (index: number) => {
-        setValue(index);
-    };
-
+    //endregion
 
     return (
         <div>

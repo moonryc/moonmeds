@@ -32,7 +32,7 @@ const medicationRouter = express.Router();
 const jwtRequired = passport.authenticate('jwt', {session: false});
 
 
-const addNewDosages = async (medicationObject: IMedicationSchema,userId:string) => {
+const addNewDosages = async (medicationObject: IMedicationSchema, userId: string) => {
     let currentTime: Date = new Date()
     currentTime = parseISO(currentTime.toISOString())
 
@@ -172,7 +172,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema,userId:string) 
             if (addDosageToDay) {
                 medicationDosage._id = new mongoose.Types.ObjectId().toString()
                 medicationDosage.time = dayAndTimeOfDosage
-                const medicationDosageReminder:IMedicationDosagesSchema = new MedicationDosagesModel(medicationDosage)
+                const medicationDosageReminder: IMedicationDosagesSchema = new MedicationDosagesModel(medicationDosage)
                 console.log("attempting to create")
                 await medicationDosageReminder.save();
             }
@@ -186,7 +186,6 @@ const addNewDosages = async (medicationObject: IMedicationSchema,userId:string) 
             }
 
 
-
         }
     }
 }
@@ -197,29 +196,43 @@ medicationRouter.get('/userMedications', jwtRequired, (req, res) => {
 
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
-        response: {}
+        alert: {message: "Updated Medication List", severity: "success", notificationDate:new Date()},
+        response: null
     }
 
     passport.authenticate('jwt', {session: false}, async (err, user) => {
         //if error
         if (err || !user) {
             response.error = true;
-            response.errorMessage = "Error in authenticating user";
+            response.alert.severity = "error"
+            if (err) {
+                if (typeof err != typeof "") {
+
+                    response.alert.message = JSON.stringify(err);
+                } else {
+                    response.alert.message = err;
+                }
+            } else {
+                response.alert.message = "Error in authenticating user";
+            }
             return res.send(response)
         } else {
 
             try {
                 const userMedications: IMedicationSchema[] = await getUserMedicationsArray(user.userId)
                 response.error = false
-                response.errorMessage = ''
+                response.alert.severity = 'success'
                 response.response = userMedications
                 return res.send(response)
-            } catch (e) {
-                console.log(e)
+            } catch (e:any|string) {
                 response.error = true
-                response.errorMessage = "error message is located in the response under errorMessage"
-                response.response = {errorMessage: e}
+                response.alert.severity = "error"
+                if (typeof e != typeof "") {
+                    response.alert.message = JSON.stringify(e)
+                } else {
+                    response.alert.message = e
+                }
+                response.response = ""
                 return res.send(response)
             }
         }
@@ -231,28 +244,41 @@ medicationRouter.get('/userMedicationsDosages', jwtRequired, (req, res) => {
 
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
-        response: {}
+        alert: {message: "Updated Medication Schedule", severity: "success",notificationDate:new Date()},
+        response: null
     }
 
     passport.authenticate('jwt', {session: false}, async (err, user) => {
         //if error
         if (err || !user) {
             response.error = true;
-            response.errorMessage = "Error in authenticating user";
+            response.alert.severity = "error"
+            if (err) {
+                if (typeof err != typeof "") {
+
+                    response.alert.message = JSON.stringify(err);
+                } else {
+                    response.alert.message = err;
+                }
+            } else {
+                response.alert.message = "Error in authenticating user";
+            }
             return res.send(response)
         } else {
             try {
                 const userMedications: IMedicationDosagesSchema[] = await getUserMedicationsDosagesArray(user.userId)
                 response.error = false
-                response.errorMessage = ''
+                response.alert.severity = 'success'
                 response.response = userMedications
                 return res.send(response)
-            } catch (e) {
-                console.log(e)
+            } catch (e:any|string) {
                 response.error = true
-                response.errorMessage = "error message is located in the response under errorMessage"
-                response.response = {errorMessage: e}
+                response.alert.severity = "error"
+                if (typeof e != typeof "") {
+                    response.alert.message = "error"
+                } else {
+                    response.alert.message = e
+                }
                 return res.send(response)
             }
         }
@@ -263,21 +289,31 @@ medicationRouter.get('/userMedicationsDosages', jwtRequired, (req, res) => {
 medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
-        response: {}
+        alert: {message: "Successfully added a new medication", severity: "success",notificationDate:new Date()},
+        response: null
     }
 
     passport.authenticate('jwt', {session: false}, async (err, user) => {
         //if error
         if (err || !user) {
             response.error = true;
-            response.errorMessage = "Error in authenticating user";
-            return res.send(response)
+            response.alert.severity = "error"
+            if (err) {
+                if (typeof err != typeof "") {
 
+                    response.alert.message = JSON.stringify(err);
+                } else {
+                    response.alert.message = err;
+                }
+            } else {
+                response.alert.message = "Error in authenticating user";
+            }
+            return res.send(response)
         } else {
             if (await doesUserAlreadyHaveThisMedication(user.userId, req.body)) {
                 response.error = true;
-                response.errorMessage = "Medication already exits";
+                response.alert.message = "Medication already exits";
+                response.alert.severity = "info";
                 return res.send(response)
             } else {
 
@@ -288,13 +324,35 @@ medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
                 let newMedication: IMedicationSchema = req.body
                 const medication = new MedicationModel(newMedication)
 
-                await medication.save();
+                try {
+                    await medication.save();
+                } catch (e:any|string) {
+                    response.error = true
+                    response.alert.severity = "error"
+                    if (typeof e != typeof "") {
+                        response.alert.message = JSON.stringify(e)
+                    } else {
+                        response.alert.message = e
+                    }
+                    return res.send(response)
+                }
 
-                await addNewDosages(newMedication,user.userId)
+                try {
+                    await addNewDosages(newMedication, user.userId)
+
+                } catch (e:any|string) {
+                    response.error = true
+                    response.alert.severity = "error"
+                    if (typeof e != typeof "") {
+                        response.alert.message = JSON.stringify(e)
+                    } else {
+                        response.alert.message = e
+                    }
+                    return res.send(response)
+                }
 
                 response.error = false;
-                response.errorMessage = "";
-                response.response = {}
+                response.alert.severity = "success";
                 return res.send(response)
             }
         }
@@ -306,30 +364,71 @@ medicationRouter.put('/updatemedication', jwtRequired, (req, res) => {
     console.log(req.body)
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
+        alert: {message: "Successfully updated medication", severity: "success",notificationDate:new Date()},
         response: {}
     }
     passport.authenticate('jwt', {session: false}, async (err, user) => {
         //if error
         if (err || !user) {
-            console.log("error:" + err)
-            return res.send(err)
+            response.error = true;
+            response.alert.severity = "error"
+            if (err) {
+                if (typeof err != typeof "") {
+
+                    response.alert.message = JSON.stringify(err);
+                } else {
+                    response.alert.message = err;
+                }
+            } else {
+                response.alert.message = "Error in authenticating user";
+            }
+            return res.send(response)
         } else {
 
             let medication: IMedicationSchema = req.body
             let update: string | boolean = await getUserMedicationByIdAndUpdate(req.body._id, medication)
-            removeFutureDosages(user.userId, medication._id)
-            addNewDosages(medication,user.userId)
-            if (update) {
+
+            //aka if update does not return false
+            if (typeof update !== "boolean") {
 
                 response.error = true
-                if (typeof update === "string") {
-                    response.errorMessage = update
+                if (typeof update != typeof "") {
+                    response.alert.message = JSON.stringify(update)
                 }
-                return res.send(response)
-            } else {
+                response.alert.message = update
+                response.alert.severity = "error"
                 return res.send(response)
             }
+
+            try {
+                removeFutureDosages(user.userId, medication._id)
+            } catch (e:any|string) {
+                response.error = true
+                response.alert.severity = "error"
+                if (typeof e != typeof "") {
+                    response.alert.message = JSON.stringify(e)
+                } else {
+                    response.alert.message = e
+                }
+                return res.send(response)
+            }
+            try {
+                addNewDosages(medication, user.userId)
+
+            } catch (e:any|string) {
+                response.error = true
+                response.alert.severity = "error"
+                if (typeof e != typeof "") {
+                    response.alert.message = JSON.stringify(e)
+                } else {
+                    response.alert.message = e
+                }
+                return res.send(response)
+            }
+
+
+            return res.send(response)
+
         }
     })(req, res)
     // return res.send(userReturnObject);
@@ -340,19 +439,30 @@ medicationRouter.put('/deleteSelectedMedications', jwtRequired, (req, res) => {
     console.log(req.body)
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
+        alert: {message: "Successfully removed Selected Medications", severity: "success",notificationDate:new Date()},
         response: {}
     }
     passport.authenticate('jwt', {session: false}, async (err, user) => {
         //if error
         if (err || !user) {
-            console.log("error:" + err)
-            return res.send(err)
+            response.error = true;
+            response.alert.severity = "error"
+            if (err) {
+                if (typeof err != typeof "") {
+
+                    response.alert.message = JSON.stringify(err);
+                } else {
+                    response.alert.message = err;
+                }
+            } else {
+                response.alert.message = "Error in authenticating user";
+            }
+            return res.send(response)
         } else {
 
             let medicationArray: IMedicationSchema[] = req.body.payload
 
-            for(let index = 0; index<medicationArray.length;index++){
+            for (let index = 0; index < medicationArray.length; index++) {
                 await removeFutureDosages(user.userId, medicationArray[index]._id)
                 await removeMedication(medicationArray[index]._id)
             }

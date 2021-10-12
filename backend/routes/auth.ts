@@ -21,7 +21,7 @@ authRouter.get('/login', (req, res, next) => {
 authRouter.get('/callback', (req, res, next) => {
     let response: IBackendResponse = {
         error: false,
-        errorMessage: "",
+        alert: {message:"",severity:"success", notificationDate: new Date()},
         response: {}
     }
 
@@ -29,13 +29,21 @@ authRouter.get('/callback', (req, res, next) => {
         //if error
         if (err) {
             response.error = true;
-            response.errorMessage = err
+            response.alert.severity = "error";
+            if(typeof err == typeof ""){
+                response.alert.message = err
+            }else{
+                response.alert.message = JSON.stringify( err)
+            }
+
             return res.send(response);
         }
         //if user does not exist
         if (!user) {
             response.error = true
-            response.errorMessage = "user does not exist"
+            response.alert.severity = "warning"
+            response.alert.message = "User does not exist redirecting"
+            res.send(response);
             return res.redirect('/login');
         }
 

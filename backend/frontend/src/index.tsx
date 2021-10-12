@@ -13,6 +13,7 @@ import {StyledEngineProvider, ThemeProvider} from "@mui/material/styles";
 import {MedicationContainer} from "./Context/MedicationContext";
 import {CalendarContainer} from "./Context/CalendarContext";
 import {ApiContainer} from "./Context/ApiContext";
+import {NotificationsContainer} from "./Context/NotificationsContext";
 
 
 const customHistory = createBrowserHistory();
@@ -41,21 +42,23 @@ const theme = createTheme({
 ReactDOM.render(
     <React.StrictMode>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Router history={customHistory}>
-                <ThemeProvider theme={theme}>
-                    <UserContainer>
-                        <MedicationContainer>
-                            <CalendarContainer>
-                                <ApiContainer>
-                                    <StyledEngineProvider injectFirst>
-                                        <App/>
-                                    </StyledEngineProvider>
-                                </ApiContainer>
-                            </CalendarContainer>
-                        </MedicationContainer>
-                    </UserContainer>
-                </ThemeProvider>
-            </Router>
+            <NotificationsContainer>
+                <Router history={customHistory}>
+                    <ThemeProvider theme={theme}>
+                        <UserContainer>
+                            <MedicationContainer>
+                                <CalendarContainer>
+                                    <ApiContainer>
+                                        <StyledEngineProvider injectFirst>
+                                            <App/>
+                                        </StyledEngineProvider>
+                                    </ApiContainer>
+                                </CalendarContainer>
+                            </MedicationContainer>
+                        </UserContainer>
+                    </ThemeProvider>
+                </Router>
+            </NotificationsContainer>
         </LocalizationProvider>
     </React.StrictMode>,
     document.getElementById('root')

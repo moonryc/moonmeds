@@ -2,12 +2,20 @@ import React from 'react';
 import {Typography} from "@mui/material";
 import {IMedication} from "../../../../../Types/MedicationType";
 
+/**
+ * and object that contains an object with the watered down information of a medication
+ * @property medication - {medication:IMedication}
+ */
 interface IMedicationCardDetailsProps {
     medication: IMedication,
 }
 
 ///*TODO(Spotexx): theming*/}
-//This component is for rendering the quick view details of the selected medication
+/**
+ * THis componet display a watered down version of the provide medication information for general view, no editing is involved
+ * @param props - {medication: IMedication}
+ * @constructor
+ */
 const MedicationCardDetails = (props: IMedicationCardDetailsProps) => {
 
     return (

@@ -13,6 +13,7 @@ import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/Medicat
 import {makeStyles} from "@mui/styles";
 import SendIcon from '@mui/icons-material/Send';
 import {ApiContext} from "../../../Context/ApiContext";
+import {NotificationsContext} from "../../../Context/NotificationsContext";
 
 const useStyles = makeStyles((theme?: any) => ({
     container: {
@@ -21,7 +22,17 @@ const useStyles = makeStyles((theme?: any) => ({
 }));
 
 
-
+/**
+ * @property isNewCard - boolean,
+ * @property handleTabsChangeIndex(index: number) - void
+ * @property _id - string
+ * @property prescriptionName - string,
+ * @property prescriptionDosage - number,
+ * @property startDay - Date,
+ * @property nextFillDay - Date,
+ * @property dosages - IDosagesDetails[],
+ * @property userNotes - string,
+ */
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
 
@@ -30,25 +41,109 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
 
 
 //TODO(Moon): fix the numerous isses being logged into the console
+
+/**
+ * Is used for displaying a single user medication or for creating a new one. If creating a new one isNewCard must be set to true and by default _id must be set to ""
+ * @param props - {isNewCard: boolean,handleTabsChangeIndex(index: number): void, _id : string,prescriptionName : string,prescriptionDosage : number,startDay : Date,nextFillDay : Date,dosages : IDosagesDetails[],userNotes : string,}
+ * @constructor
+ */
 const MedicationCard = (props: IMedicationCardProps) => {
 
-    const {postNewMedication,submitUpdatedMedication} = useContext(ApiContext);
+    const classes = useStyles();
 
-    const [isShowingDetails, setIsShowingDetails] = useState(false);
-    const [isEditing, setIsEditing] = useState(props.isNewCard);
+    //region Context
+    /**
+     * Api context for creating and updating medications
+     * Notification context for creating a new notification
+     */
+    const {postNewMedication, submitUpdatedMedication} = useContext(ApiContext);
+    const {newNotification} = useContext(NotificationsContext);
+    //endregion
+
+    //region useState
+
+    /**
+     * Are the details being shown?
+     */
+    const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
+    /**
+     * Is the medication being edited
+     */
+    const [isEditing, setIsEditing] = useState<boolean>(props.isNewCard);
+    /**
+     * The text representing the bottom navigation bars
+     */
+    const [bottomNavigationValue, setBottomNavigationValue] = useState<string>('');
+
+    /**
+     * medicationDetails is where everything in medication card originates from, displaying the medication details, dosages, etc.
+     * this property is changed when editing, but if handleDiscardClick() is used it will revert to its original state
+     * This property is submitted whole when updating or submitting a new medication
+     */
+    const [medicationDetails, setMedicationDetails] = useState<IMedicationFrontEnd>({
+            _id: props._id,
+            prescriptionName: props.prescriptionName,
+            prescriptionDosage: props.prescriptionDosage,
+            startDay: props.startDay,
+            nextFillDay: props.nextFillDay,
+            dosages: props.dosages,
+            userNotes: props.userNotes
+        }
+    );
+
+    //endregion
+
+    //region Callback Functions
+
+    /**
+     * Callback Function|
+     * Used for updating the medication details property "dosages", a function passed into one of the child components
+     * @param listOfDosages - IDosagesDetails[]
+     */
+    const updateMedicationDosages = (listOfDosages: IDosagesDetails[]) => {
+        const tempMedicationDetails = medicationDetails
+        tempMedicationDetails.dosages = listOfDosages
+        setMedicationDetails(tempMedicationDetails);
+    }
+    /**
+     * Callback function|
+     * Used for updating the medication details using the parameters passed in to the function, a function passed into one of the child componets
+     * @param prescriptionName - string
+     * @param nextFilledDate - Date
+     * @param userNotes - string
+     * @param prescriptionDosage - number
+     */
+    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number) => {
+        const tempMedicationDetails = medicationDetails
+        tempMedicationDetails.prescriptionName = prescriptionName
+        tempMedicationDetails.nextFillDay = nextFilledDate
+        tempMedicationDetails.prescriptionDosage = prescriptionDosage
+        tempMedicationDetails.userNotes = userNotes
+        setMedicationDetails(tempMedicationDetails);
+    }
 
 
-    //region Medication Card details callback functions
+    //endregion
 
-    //Toggles showing the details
-    const handleIsShowingDetailsClick = () => {
+    //region functions
+
+    /**
+     * toggles displaying details on and off
+     */
+    const handleIsShowingDetailsClick = (): void => {
         setIsShowingDetails(!isShowingDetails)
     }
-    //Toggles the editing menu
-    const handleIsEditingClick = () => {
+
+    /**
+     * toggles editing on and off
+     */
+    const handleIsEditingClick = (): void => {
         setIsEditing(!isEditing);
     }
-    //Discards the changed medication values
+
+    /**
+     * Sets the medicationDetails back to the original values and turns editing off
+     */
     const handleDiscardClick = () => {
         setMedicationDetails({
             _id: props._id,
@@ -62,63 +157,85 @@ const MedicationCard = (props: IMedicationCardProps) => {
         setIsEditing(false);
     }
 
-    //This is the Medication object that will get updated as the user updates it
-    const [medicationDetails, setMedicationDetails] = useState<IMedicationFrontEnd>({
-            _id: props._id,
-            prescriptionName: props.prescriptionName,
-            prescriptionDosage: props.prescriptionDosage,
-            startDay: props.startDay,
-            nextFillDay: props.nextFillDay,
-            dosages: props.dosages,
-            userNotes: props.userNotes
+    const handleBottomNavigationChange = (event: React.SyntheticEvent, newValue: string) => {
+        setBottomNavigationValue(newValue);
+    };
+
+    /**
+     * checks if the user is attempting to send empty data, if so it generates a notification based on the location of the null information
+     * @return boolean - returns true if a null value was found, false if all values were not null
+     */
+    const handleNullChecker = (): boolean => {
+
+        let isNullPresent = false
+
+        console.log(medicationDetails.prescriptionName)
+        if (medicationDetails.prescriptionName == null || medicationDetails.prescriptionName === "") {
+            newNotification("Please fill out the Prescription Name", "info")
+            isNullPresent = true
         }
-    );
 
-    //This updates dosages
-    const updateMedicationDosages = (listOfDosages: IDosagesDetails[]) => {
-        const tempMedicationDetails = medicationDetails
-        tempMedicationDetails.dosages = listOfDosages
-        setMedicationDetails(tempMedicationDetails);
-    }
-    // //This updates the medication details
-    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number) => {
-        const tempMedicationDetails = medicationDetails
-        tempMedicationDetails.prescriptionName = prescriptionName
-        tempMedicationDetails.nextFillDay = nextFilledDate
-        tempMedicationDetails.prescriptionDosage = prescriptionDosage
-        tempMedicationDetails.userNotes = userNotes
-        setMedicationDetails(tempMedicationDetails);
+        if (medicationDetails.prescriptionDosage == null) {
+            newNotification("Please fill out the Prescription Dosage", "info")
+            isNullPresent = true
+        }
+
+        if (medicationDetails.nextFillDay == null) {
+            newNotification("Please select the refill date of this medication", "info")
+            isNullPresent = true
+        }
+
+        if (medicationDetails.dosages == null || medicationDetails.dosages === []) {
+            newNotification("Please add at least one dosage", "info")
+            isNullPresent = true
+        }
+        return isNullPresent
     }
 
-    //useEffect to hide the details menu while editing
+    //endregion
+
+    //region APICalls
+
+    /**
+     * Creates a new medication as long as the nothing was left as null is null
+     */
+    const submitNewMedication = async () => {
+
+        if (!handleNullChecker()) {
+            await postNewMedication(medicationDetails)
+            props.handleTabsChangeIndex(1)
+        }
+    };
+
+    /**
+     * Updates the selected medication as long as nothing was left null
+     * @param medicationDetails
+     */
+    const updatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
+        if (!handleNullChecker()) {
+            setIsEditing(false)
+            await submitUpdatedMedication(medicationDetails)
+        }
+    };
+
+    //endregion
+
+    //region useEffect
+
+    /**
+     * Hide the details component if editing by listening to the isEditing property
+     */
     useEffect(() => {
         if (isEditing) {
             setIsShowingDetails(false)
         }
     }, [isEditing]);
 
-    const [value, setValue] = React.useState('recents');
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue);
-    };
+    //endregion
 
-    //creates a new medication
-    const submitNewMedication = async () => {
-
-        await postNewMedication(medicationDetails)
-
-        props.handleTabsChangeIndex(1)
-    };
-    //updates medication
-    const updatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
-        setIsEditing(false)
-
-        await submitUpdatedMedication(medicationDetails)
-    };
-    const classes= useStyles();
     return (
-        <Box sx={props.isNewCard? { maxHeight: '70vh', overflow: 'auto'}:{}}>
-            <Card sx={{maxWidth: "100%", }}>
+        <Box sx={props.isNewCard ? {maxHeight: '70vh', overflow: 'auto'} : {}}>
+            <Card sx={{maxWidth: "100%",}}>
 
                 {/*The header is only displayed if the card is not a new card*/}
                 <MedicationCardHeader
@@ -130,7 +247,8 @@ const MedicationCard = (props: IMedicationCardProps) => {
                 {/*Quick details of the medication*/}
                 <Collapse in={isShowingDetails} timeout={"auto"} unmountOnExit>
                     <MedicationCardDetails medication={medicationDetails}/>
-                    <BottomNavigation showLabels sx={{width: "100%"}} value={value} onChange={handleChange}>
+                    <BottomNavigation showLabels sx={{width: "100%"}} value={bottomNavigationValue}
+                                      onChange={handleBottomNavigationChange}>
                         <BottomNavigationAction
                             onClick={() => handleIsEditingClick()}
                             label={"Edit Medication"}
@@ -150,14 +268,17 @@ const MedicationCard = (props: IMedicationCardProps) => {
                         updateMedicationDosages={updateMedicationDosages} isNewCard={props.isNewCard}/>
                     <Divider/>
                     {props.isNewCard ?
-                        <BottomNavigation showLabels  sx={{width: "100%"}} value={value} onChange={handleChange}>
+                        <BottomNavigation showLabels sx={{width: "100%"}} value={bottomNavigationValue}
+                                          onChange={handleBottomNavigationChange}>
                             <BottomNavigationAction label={"Add Medication"} icon={<SendIcon/>}
                                                     onClick={() => submitNewMedication()}/>
                         </BottomNavigation> :
-                        <BottomNavigation showLabels   sx={{width: "100%"}}  onChange={handleChange}>
-                            <BottomNavigationAction label={"Update Card"} onClick={() => updatedMedication(medicationDetails)}
-                                                    title={'Update Card'} icon={<EditIcon />}/>
-                            <BottomNavigationAction   onClick={() => handleDiscardClick()} label={"Discard Changes"} title={'Discard Changes'}
+                        <BottomNavigation showLabels sx={{width: "100%"}} onChange={handleBottomNavigationChange}>
+                            <BottomNavigationAction label={"Update Card"}
+                                                    onClick={() => updatedMedication(medicationDetails)}
+                                                    title={'Update Card'} icon={<EditIcon/>}/>
+                            <BottomNavigationAction onClick={() => handleDiscardClick()} label={"Discard Changes"}
+                                                    title={'Discard Changes'}
                                                     icon={<DeleteForever/>}/>
                         </BottomNavigation>
                     }
