@@ -22,3 +22,7 @@ export interface ICalendarDay {
     // medicationToRefill:IMedication[],
 }
 
+export interface IRenderedOnHomePage{
+    isRenderedOnHomePage:boolean
+}
+

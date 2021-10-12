@@ -9,8 +9,7 @@ const DateDetailsHeader = (props:ICalendarDay) => {
 
     return (
         <div>
-            <Typography>Header</Typography>
-            <Typography>{date.toString()}</Typography>
+            <Typography variant={'h5'}>{date.toString()}</Typography>
         </div>
     );
 };

@@ -34,7 +34,8 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     const firstDay = useMemo(() => getDay(props.firstDay), [props.firstDay])
     const [arrayOfMonthDays, setArrayOfMonthDays] = useState<ICalendarDay[]>([{
         index: 0,
-        date: new Date()
+        date: new Date(),
+
     }]);
 
 
@@ -45,7 +46,8 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         setArrayOfMonthDays([
             {
                 index: 0,
-                date: new Date()
+                date: new Date(),
+
             }
         ])
         let tempArray: ICalendarDay[] = []
@@ -73,7 +75,6 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     return (
         <div>
             <br/>
-            <Paper>
                 <div className={classes.weekContainer}>
                     <div className={classes.dayItem}>
                         Sun
@@ -99,12 +100,11 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                 {arrayOfMonthDays.map(day =>
                     // arrayOfMonthDays.indexOf(day) % 6 ?
                         <div className={classes.dayItem} key={arrayOfMonthDays.indexOf(day)}>
-                            {day.index !=0 ?<CalendarDay index={day.index} date={day.date}/>:<></>}<br/>
+                            {day.index !=0 ?<CalendarDay index={day.index} date={day.date} isRenderedOnHomePage={true}/>:<></>}<br/>
                         </div>
                         // :<CalendarDay index={day.index} date={day.date}/>
                 )}
                 </div>
-            </Paper>
         </div>
     );
 };
