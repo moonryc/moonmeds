@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme?: any) => ({
  */
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
-
     handleTabsChangeIndex(index: number): void
 }
 
