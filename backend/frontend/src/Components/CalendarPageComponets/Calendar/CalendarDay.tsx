@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {IconButton} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import {ICalendarDay, IRenderedOnHomePage} from "../../../../../Types/CalendarType";
 import {CalendarContext} from "../../../Context/CalendarContext";
 import {format, getDate, getDay, getMonth, getYear, isBefore, isEqual, parseISO} from "date-fns";
@@ -16,6 +16,12 @@ const useStyles = makeStyles((theme?: any) => ({
         height: '45px',
         color: '#000000'
     },
+    upcoming:{
+        backgroundColor: '#ffe800',
+        width: '45px',
+        height: '45px',
+        color: '#000000'
+    },
     otherStyle: {
         backgroundColor: '#FFFFFF',
         width: '45px',
@@ -26,7 +32,7 @@ const useStyles = makeStyles((theme?: any) => ({
 
 
 const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
-
+    const {selectedDayDetails} = useContext(CalendarContext);
     const classes = useStyles();
 
     //region Context
@@ -52,6 +58,7 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     const handleOnDayClick = () => {
         setSelectedDay(props.date);
+        console.log(selectedDayDetails)
     }
 
     /**
@@ -60,6 +67,20 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     const isToday = ():boolean => {
         return format(props.date, 'MM/dd/yyyy') === format(new Date(), 'MM/dd/yyyy');
+    }
+
+    const isImportantUpcomingDate= ():any => {
+        let j = 0;
+        for(let i in selectedDayDetails){//@ts-ignore
+            if(format === format(props.date, 'hh:mm aa')){
+                return true
+            }//@ts-ignore
+           // console.log(selectedDayDetails[0].nextFillDay.toString()),'yyyy,MM/d'))
+            //console.log(selectedDayDetails)
+            //console.log(format(props.date, 'yyyy,MM/d'))
+
+        }
+        console.log('end of test')
     }
 
     /**
@@ -72,17 +93,17 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
 
 
     return (
-        <div>
+        <Box >
             {/*if(props.date===today) color= cyan*/}
             {/*if(props.date===any fill date coming up) color= yellow*/}
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton className={isToday() ? classes.todayStyle : classes.otherStyle}
+            <IconButton className={isToday() ? classes.todayStyle:isImportantUpcomingDate()? classes.upcoming: classes.otherStyle}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>
-        </div>
+        </Box>
     );
 };
 

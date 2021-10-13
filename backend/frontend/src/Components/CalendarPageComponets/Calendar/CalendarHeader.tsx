@@ -24,7 +24,7 @@ const CalendarHeader = (props:ICalendarHeaderProps) => {
     const classes = useStyles();
 
     return (
-        <Box sx={{position:'absolute', left:'0', right:'0', textAlign: 'center', top:'-5%'}}>
+        <Box sx={{position:'absolute', left:'0', right:'0', textAlign: 'center', top:'2%'}}>
             <IconButton onClick={()=>props.goBackAMonth()}>
                 <ArrowBack className={classes.leftArrow}/>
             </IconButton>

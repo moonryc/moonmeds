@@ -5,7 +5,7 @@ import subMonths from 'date-fns/subMonths'
 import addMonths from 'date-fns/addMonths'
 import CalendarHeader from "./CalendarHeader";
 import CalendarBody from "./CalendarBody";
-import {Paper} from "@mui/material";
+import {Box, Paper} from "@mui/material";
 
 const DisplayCalendar = () => {
 
@@ -50,13 +50,15 @@ const DisplayCalendar = () => {
 
     return (
 
-        <div>
-            <Paper sx={{position:'relative'}}>
+        <Box >
+            <Paper sx={{overflow:'auto', position:'relative', height: '65vh',paddingTop: '40px',}}>
             <CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/>
-            <CalendarBody numberOfDaysInMonth={numberOfDaysInSelectedMonth}
-                          firstDay={dayOfTheWeekOfTheFirstOfTheMonth}/>
+
+                <CalendarBody  numberOfDaysInMonth={numberOfDaysInSelectedMonth}
+                              firstDay={dayOfTheWeekOfTheFirstOfTheMonth}/>
+
             </Paper>
-        </div>
+        </Box>
 
     );
 }

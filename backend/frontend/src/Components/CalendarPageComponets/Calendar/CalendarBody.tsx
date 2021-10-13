@@ -1,10 +1,19 @@
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {add, getDay, sub} from "date-fns";
 import CalendarDay from "./CalendarDay";
-import {Paper} from "@mui/material";
+import {Box, Grid, Paper} from "@mui/material";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
 import {makeStyles} from "@mui/styles";
 import {MedicationContext} from "../../../Context/MedicationContext";
+// sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}
+const useStyles = makeStyles((theme?: any) => ({
+    gridItem: {
+        position: 'relative',
+        left:'0',
+        right:'0',
+        textAlign:'center'
+    }
+}));
 
 interface ICalendarBodyProps {
     numberOfDaysInMonth: number,
@@ -17,16 +26,9 @@ interface ICalendarBodyProps {
 const CalendarBody = (props: ICalendarBodyProps) => {
     //const today = new Date();
     const useStyles = makeStyles({
-        weekContainer:{
-            display:"flex",
-            flexWrap: "wrap",
-        },
-        dayItem:{
-          flexBasis:"14.28%",
-        }
+
     })
 
-    const classes = useStyles();
 
 
     //the day of week, 0 represents Sunday
@@ -35,7 +37,6 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     const [arrayOfMonthDays, setArrayOfMonthDays] = useState<ICalendarDay[]>([{
         index: 0,
         date: new Date(),
-
     }]);
 
 
@@ -71,41 +72,41 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         console.log(arrayOfMonthDays)
         console.log(firstDay)
     }, [firstDay]);// eslint-disable-line react-hooks/exhaustive-deps
-
+    const classes = useStyles();
     return (
-        <div>
+        <Box >
             <br/>
-                <div className={classes.weekContainer}>
-                    <div className={classes.dayItem}>
+            <Grid container spacing={1}>{/*//@ts-ignore*/}
+                    <Grid sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}item xs={1.71428571}>
                         Sun
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Mon
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Tues
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Wed
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Thurs
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Fri
-                    </div>
-                    <div className={classes.dayItem}>
+                    </Grid>{/*//@ts-ignore*/}
+                    <Grid item xs={1.71428571} sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}}>
                         Sat
-                    </div>
+                    </Grid>
                 {arrayOfMonthDays.map(day =>
-                    // arrayOfMonthDays.indexOf(day) % 6 ?
-                        <div className={classes.dayItem} key={arrayOfMonthDays.indexOf(day)}>
+                    //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
+                        <Grid sx={{position:'relative', left:'0', right:'0', textAlign: 'center',}} item xs={1.71428571} key={arrayOfMonthDays.indexOf(day)}>
                             {day.index !=0 ?<CalendarDay index={day.index} date={day.date} isRenderedOnHomePage={true}/>:<></>}<br/>
-                        </div>
+                        </Grid>
                         // :<CalendarDay index={day.index} date={day.date}/>
                 )}
-                </div>
-        </div>
+                </Grid>
+        </Box>
     );
 };
 
