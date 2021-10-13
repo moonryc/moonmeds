@@ -62,9 +62,15 @@ const db = mongoose.connection;
 //region update missed medications
 
 //runs task every minute
-schedule('* * * * *', ()=>{
-    console.log("updates the medicationDosages for all users")
-    updateMissedMedications().then(r => r)
+schedule('* * * * *', async ()=>{
+    console.log("Running scheduled task")
+    let updateResponse = await updateMissedMedications()
+    if(typeof updateResponse  != typeof ""){
+        updateResponse = JSON.stringify(updateResponse)
+        console.log(updateResponse)
+    }else{
+        console.log(updateResponse)
+    }
 
 });
 

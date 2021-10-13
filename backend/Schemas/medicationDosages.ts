@@ -55,42 +55,27 @@ export const removeFutureDosages = async (userId: string, medication_id: string)
 }
 
 export const updateMissedMedications = async () => {
-    try{
+    try {
 
         // await MedicationDosagesModel.updateMany({"hasBeenTaken":true}, {"$set":{"hasBeenTaken":false}},{"multi": true}, (err, writeResult) => {})
 
-        let yetToBeTakenMedication:IMedicationDosagesSchema[] = await MedicationDosagesModel.find({hasBeenTaken:false})
+        let missedMedications: IMedicationDosagesSchema[] = await MedicationDosagesModel.find({hasBeenTaken: false, isLateToTakeMedication:false, time: {$lt: new Date()}})
 
-        let result = yetToBeTakenMedication.filter(medicationDosage=> {
-            if(!medicationDosage.hasBeenTaken && new Date(medicationDosage.time) < new Date()){
-                return true
-            }else{
-                return false
-            }
-        })
-
-        for(let index = 0; index<result.length;index++){
-            result[index].isLateToTakeMedication=true
-            MedicationDosagesModel.findByIdAndUpdate(result[index]._id,result[index],{new:true},(err,doc)=>{
-                if(err){
-                    return err
+        for (let index = 0; index < missedMedications.length; index++) {
+            missedMedications[index].isLateToTakeMedication = true
+            MedicationDosagesModel.findByIdAndUpdate(missedMedications[index]._id, missedMedications[index], {new: true}, (error, doc) => {
+                if (error) {
+                    return error
                 }
             })
         }
-
-        // console.log(result)
-
-
-
-    }catch (error) {
-        console.log("--------------------------------")
-        console.log(error)
-        console.log("--------------------------------")
+        return "Successfully checked and updated missed medication dosages"
+    } catch (error) {
+        return error
     }
 
 
 }
-
 
 
 // module.exports = mongoose.model("medicationAlertsForUser",medicationTimeStampSchema)
