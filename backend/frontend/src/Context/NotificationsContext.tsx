@@ -34,7 +34,7 @@ export const NotificationsContainer = (props: any) => {
         if(typeof message != typeof ""){
             message = JSON.stringify(message)
         }
-        setNotifications(notifications=>[...notifications,{message:message,severity:severity,notificationDate:new Date()}])
+        setNotifications(notifications=>[...notifications,{message:message,numberOfOccurrences:1 ,severity:severity,notificationDate:new Date()}])
     }
 
     /**
