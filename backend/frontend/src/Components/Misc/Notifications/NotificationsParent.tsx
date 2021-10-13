@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Snackbar, SnackbarOrigin} from "@mui/material";
+import {Box, Snackbar, SnackbarOrigin} from "@mui/material";
 import {NotificationsContext} from "../../../Context/NotificationsContext";
 import {IAlerts} from "../../../../../Types/AlertMessageTypes";
 import {Alert, AlertTitle} from "@mui/lab";
@@ -57,7 +57,7 @@ const NotificationsParent = () => {
 
 
     return (
-        <div>
+        <Box>
             {priorityNotification != null ?
                 <Snackbar anchorOrigin={{vertical: "bottom", horizontal: "right"}} open={true} autoHideDuration={null}
                           onClose={handleClose}>
@@ -68,7 +68,7 @@ const NotificationsParent = () => {
                     </Alert>
                 </Snackbar> : <></>
             }
-        </div>
+        </Box>
     );
 };
 

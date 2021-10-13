@@ -7,6 +7,7 @@ import {makeStyles} from "@mui/styles";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {IMedicationDosagesSchema} from "../../../../../Types/MedicationType";
 import {dosagesOnSpecifiedDay} from "../../../Services/MedicationServices";
+import isSameDay from 'date-fns/isSameDay'
 
 
 const useStyles = makeStyles((theme?: any) => ({
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme?: any) => ({
     },
     upcoming:{
         backgroundColor: '#ffe800',
+        width: '45px',
+        height: '45px',
+        color: '#000000'
+    },
+    missed:{
+        backgroundColor: '#ff0000',
         width: '45px',
         height: '45px',
         color: '#000000'
@@ -57,8 +64,8 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      * selected days medicationDetails are
      */
     const handleOnDayClick = () => {
-        setSelectedDay(props.date);
-        console.log(selectedDayDetails)
+        setSelectedDay(props.date); //@ts-ignore
+        console.log(medicationDosagesDetails)
     }
 
     /**
@@ -70,18 +77,33 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
     }
 
     const isImportantUpcomingDate= ():any => {
-        let j = 0;
-        for(let i in selectedDayDetails){//@ts-ignore
-            if(format === format(props.date, 'hh:mm aa')){
-                return true
-            }//@ts-ignore
-           // console.log(selectedDayDetails[0].nextFillDay.toString()),'yyyy,MM/d'))
-            //console.log(selectedDayDetails)
-            //console.log(format(props.date, 'yyyy,MM/d'))
 
-        }
-        console.log('end of test')
+         if(medicationDosagesDetails != null){
+             for(let i in medicationDosagesDetails){//@ts-ignore
+                 if(isSameDay(new Date(medicationDosagesDetails[i].nextFillDay), new Date(props.date))){
+                     return true
+                 }
+                 //ts-ignore
+                 console.log(medicationDosagesDetails[0].nextFillDay)
+             }
+         }
+        console.log(new Date(props.date))
+             return false
+
     }
+
+    const isMissedDate= ():any => {
+
+        if(medicationDosagesDetails != null){
+            for(let i in medicationDosagesDetails){//@ts-ignore
+                if(medicationDosagesDetails[i].isLateToTakeMedication === true) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 
     /**
      * updates the local variable medicationDosageDetails when dosages change
@@ -99,7 +121,7 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton className={isToday() ? classes.todayStyle:isImportantUpcomingDate()? classes.upcoming: classes.otherStyle}
+            <IconButton className={isToday() ? classes.todayStyle:isImportantUpcomingDate()? classes.upcoming:isMissedDate()?classes.missed: classes.otherStyle}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>
