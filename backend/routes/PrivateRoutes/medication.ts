@@ -33,8 +33,6 @@ const jwtRequired = passport.authenticate('jwt', {session: false});
 
 
 const addNewDosages = async (medicationObject: IMedicationSchema, userId: string) => {
-    let currentTime: Date = new Date()
-    currentTime = parseISO(currentTime.toISOString())
 
     let medicationDosage = {
         userId: "",
@@ -86,7 +84,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema, userId: string
         } = loopDosage[index]
 
         let {monday, tuesday, wednesday, thursday, friday, saturday, sunday} = customDays
-        dayAndTimeOfDosage = parseISO(dayAndTimeOfDosage.toString())
+        dayAndTimeOfDosage = new Date(dayAndTimeOfDosage)
 
         medicationDosage.amount = amount
         medicationDosage.isDaily = isDaily
@@ -196,7 +194,7 @@ medicationRouter.get('/userMedications', jwtRequired, (req, res) => {
 
     let response: IBackendResponse = {
         error: false,
-        alert: {message: "Updated Medication List", severity: "success", notificationDate:new Date()},
+        alert: {message: "Updated Medication List", numberOfOccurrences:1,severity: "success", notificationDate:new Date()},
         response: null
     }
 
@@ -244,7 +242,7 @@ medicationRouter.get('/userMedicationsDosages', jwtRequired, (req, res) => {
 
     let response: IBackendResponse = {
         error: false,
-        alert: {message: "Updated Medication Schedule", severity: "success",notificationDate:new Date()},
+        alert: {message: "Updated Medication Schedule", numberOfOccurrences:1,severity: "success",notificationDate:new Date()},
         response: null
     }
 
@@ -289,7 +287,7 @@ medicationRouter.get('/userMedicationsDosages', jwtRequired, (req, res) => {
 medicationRouter.post('/addnewmedication', jwtRequired, (req, res) => {
     let response: IBackendResponse = {
         error: false,
-        alert: {message: "Successfully added a new medication", severity: "success",notificationDate:new Date()},
+        alert: {message: "Successfully added a new medication", numberOfOccurrences: 1,severity: "success",notificationDate:new Date()},
         response: null
     }
 
@@ -364,7 +362,7 @@ medicationRouter.put('/updatemedication', jwtRequired, (req, res) => {
     console.log(req.body)
     let response: IBackendResponse = {
         error: false,
-        alert: {message: "Successfully updated medication", severity: "success",notificationDate:new Date()},
+        alert: {message: "Successfully updated medication", numberOfOccurrences: 1,severity: "success",notificationDate:new Date()},
         response: {}
     }
     passport.authenticate('jwt', {session: false}, async (err, user) => {
@@ -439,7 +437,7 @@ medicationRouter.put('/deleteSelectedMedications', jwtRequired, (req, res) => {
     console.log(req.body)
     let response: IBackendResponse = {
         error: false,
-        alert: {message: "Successfully removed Selected Medications", severity: "success",notificationDate:new Date()},
+        alert: {message: "Successfully removed Selected Medications", numberOfOccurrences: 1,severity: "success",notificationDate:new Date()},
         response: {}
     }
     passport.authenticate('jwt', {session: false}, async (err, user) => {

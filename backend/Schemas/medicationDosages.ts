@@ -1,5 +1,8 @@
 import {Model, model, Schema} from "mongoose";
 import {IMedicationDosagesSchema} from "../Types/MedicationType";
+import {parseISO} from "date-fns"
+import medication from "../routes/PrivateRoutes/medication";
+import {MedicationModel} from "./medication";
 
 
 export const medicationDosagesSchema: Schema = new Schema<IMedicationDosagesSchema>({
@@ -49,6 +52,43 @@ export const removeFutureDosages = async (userId: string, medication_id: string)
             })
         }
     }
+}
+
+export const updateMissedMedications = async () => {
+    try{
+
+        // await MedicationDosagesModel.updateMany({"hasBeenTaken":true}, {"$set":{"hasBeenTaken":false}},{"multi": true}, (err, writeResult) => {})
+
+        let yetToBeTakenMedication:IMedicationDosagesSchema[] = await MedicationDosagesModel.find({hasBeenTaken:false})
+
+        let result = yetToBeTakenMedication.filter(medicationDosage=> {
+            if(!medicationDosage.hasBeenTaken && new Date(medicationDosage.time) < new Date()){
+                return true
+            }else{
+                return false
+            }
+        })
+
+        for(let index = 0; index<result.length;index++){
+            result[index].isLateToTakeMedication=true
+            MedicationDosagesModel.findByIdAndUpdate(result[index]._id,result[index],{new:true},(err,doc)=>{
+                if(err){
+                    return err
+                }
+            })
+        }
+
+        // console.log(result)
+
+
+
+    }catch (error) {
+        console.log("--------------------------------")
+        console.log(error)
+        console.log("--------------------------------")
+    }
+
+
 }
 
 

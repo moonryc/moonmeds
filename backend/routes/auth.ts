@@ -21,7 +21,7 @@ authRouter.get('/login', (req, res, next) => {
 authRouter.get('/callback', (req, res, next) => {
     let response: IBackendResponse = {
         error: false,
-        alert: {message:"",severity:"success", notificationDate: new Date()},
+        alert: {message:"",severity:"success", numberOfOccurrences:1,notificationDate: new Date()},
         response: {}
     }
 

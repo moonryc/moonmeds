@@ -2,6 +2,8 @@
 
 
 
+import {updateMissedMedications} from "./Schemas/medicationDosages";
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
     console.log('dotenv loaded')
@@ -42,10 +44,8 @@ import session = require('cookie-session');
 import helmet = require('helmet');
 import hpp = require('hpp');
 // import csurf = require('csurf');
-
-
-import passport from"./passport/setup";
-
+import {schedule} from "node-cron"
+import passport from "./passport/setup";
 import rateLimit = require('express-rate-limit');
 //endregion
 
@@ -56,6 +56,17 @@ const collections = Object.keys(mongoose.connection.collections);
 console.log(collections);
 
 const db = mongoose.connection;
+
+//endregion
+
+//region update missed medications
+
+//runs task every minute
+schedule('* * * * *', ()=>{
+    console.log("updates the medicationDosages for all users")
+    updateMissedMedications().then(r => r)
+
+});
 
 //endregion
 
@@ -106,8 +117,6 @@ app.use(
     }));
 //#endregion
 
-//endregion
-
 //TODO UNDERSTAND
 // region limiter
 /* Rate Limiter */
@@ -116,6 +125,8 @@ const limiter = rateLimit({
     max: 100,
 });
 app.use(limiter);
+//endregion
+
 //endregion
 
 //region routes
