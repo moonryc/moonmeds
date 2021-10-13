@@ -5,6 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardHeader from "@mui/material/CardHeader";
 import {IMedication} from "../../../../../Types/MedicationType";
+import {Chip} from "@mui/material";
+import {Face} from "@mui/icons-material";
 
 /**
  *
@@ -42,7 +44,9 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                         </IconButton>}
                     </div>
                 }
-                title={props.medication.prescriptionName}/>
+                title={props.medication.prescriptionName}
+                subheader={<Chip color={"secondary"} icon={<Face/>} label={"Child's or SO's name"} />}
+            />
             }
         </div>
     );
