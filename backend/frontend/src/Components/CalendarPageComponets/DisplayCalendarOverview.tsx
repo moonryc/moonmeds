@@ -75,9 +75,23 @@ const DisplayCalendarOverview = () => {
 
     //endregion
 
-    //region functions
+    //region Callback functions
 
-    //yes both of these are needed
+    /**
+     * Handles changing swpiable views passed down to child components
+     * passed to medication list because if user has no medications a button is presented to create a new medication, the tab is changed using this function
+     * passed to the new medication because once a new medication is created the tab automatically switches back to the medication list using this function
+     * @param index
+     */
+    const handleTabsChangeIndex = (index: number) => {
+        updateUserMedications()
+        setValue(index);
+    };
+
+    //endregion
+
+
+    //region functions
 
     /**
      * Handles changing swipable views
@@ -85,15 +99,8 @@ const DisplayCalendarOverview = () => {
      * @param newValue
      */
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        updateUserMedications()
         setValue(newValue);
-    };
-
-    /**
-     * Handles changing swpiable views
-     * @param index
-     */
-    const handleTabsChangeIndex = (index: number) => {
-        setValue(index);
     };
 
     //endregion
@@ -110,18 +117,7 @@ const DisplayCalendarOverview = () => {
 
     //endregion
 
-    //region useEffect
 
-    //TODO to be removed in the future?
-
-    /**
-     * updates userMedication and useMedicationDosages whenever the swipable tab changes
-     */
-    useEffect(() => {
-        updateUserMedications()
-    }, [value]);
-
-    //endregion
 
     return (
         <div>
@@ -145,7 +141,7 @@ const DisplayCalendarOverview = () => {
                                     aria-label="full width tabs example"
                                 >
                                     <Tab label="Date Details" {...a11yProps(0)} />
-                                    <Tab label="Medications" onClick={() => updateUserMedications()} {...a11yProps(1)} />
+                                    <Tab label="Medications" {...a11yProps(1)} />
                                     <Tab label="Add A Medication" {...a11yProps(2)} />
                                 </Tabs>
                             </AppBar>
