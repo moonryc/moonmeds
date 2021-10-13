@@ -7,7 +7,6 @@ import {CardHeader, Collapse} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
-import {CalendarContainer} from "../../../Context/CalendarContext";
 import DisplayCalendar from "../../CalendarPageComponets/Calendar/DisplayCalendar";
 
 const useStyles = makeStyles((theme?: any) => ({
@@ -42,9 +41,7 @@ const ImportantDates = () => {
                     <Collapse in={true}>
 
                         <CardContent>
-                            <CalendarContainer>
                                 <DisplayCalendar />
-                            </CalendarContainer>
                         </CardContent>
                         <CardActions>
                             <Button size="small">Learn More</Button>
