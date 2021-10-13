@@ -7,14 +7,12 @@ export interface ICalendarContextState {
     selectedDay:Date,
     setSelectedDay:(state:Date)=>void
     selectedDayDetails:IMedicationDosagesSchema[]
-    setSelectedDayDetails:(state:IMedicationDosagesSchema[]|[])=>void
 }
 
 export const CalendarContext = createContext<ICalendarContextState>({
     selectedDay:new Date(),
     setSelectedDay:(state:Date)=>{},
     selectedDayDetails:[],
-    setSelectedDayDetails:(state:IMedicationDosagesSchema[]|[])=>{}
 })
 
 export const CalendarContainer = (props:any)=>{
@@ -29,7 +27,7 @@ export const CalendarContainer = (props:any)=>{
 
 
     return(
-        <CalendarContext.Provider value={{selectedDay,setSelectedDay,selectedDayDetails,setSelectedDayDetails}}>
+        <CalendarContext.Provider value={{selectedDay,setSelectedDay,selectedDayDetails}}>
             {children}
         </CalendarContext.Provider>
     )
