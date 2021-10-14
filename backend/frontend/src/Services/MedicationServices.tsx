@@ -1,4 +1,4 @@
-import {getDate, getMonth, getYear, isEqual, parseISO} from "date-fns";
+import {getDate, getMonth, getYear, isEqual, isSameDay, parseISO} from "date-fns";
 import {IMedicationDosagesSchema} from "../../../Types/MedicationType";
 
 /**
@@ -12,11 +12,8 @@ export const dosagesOnSpecifiedDay = (selectedISODate:Date,userMedicationDosages
         return []
     }
 
-    let date = new Date(getYear(selectedISODate), getMonth(selectedISODate), getDate(selectedISODate))
-    let results = userMedicationDosages.filter(dosage => isEqual(date, new Date(
-        getYear(parseISO(dosage.time.toString())),
-        getMonth(parseISO(dosage.time.toString())),
-        getDate(parseISO(dosage.time.toString())))))
+
+    let results = userMedicationDosages.filter(dosage => isSameDay(selectedISODate,new Date(dosage.time)))
 
     return results
 }

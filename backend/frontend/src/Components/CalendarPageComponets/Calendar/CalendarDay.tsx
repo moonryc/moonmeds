@@ -8,6 +8,7 @@ import {MedicationContext} from "../../../Context/MedicationContext";
 import {IMedicationDosagesSchema} from "../../../../../Types/MedicationType";
 import {dosagesOnSpecifiedDay} from "../../../Services/MedicationServices";
 import isSameDay from 'date-fns/isSameDay'
+import {NotificationsContext} from "../../../Context/NotificationsContext";
 
 
 const useStyles = makeStyles((theme?: any) => ({
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme?: any) => ({
 
 const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
     const {selectedDayDetails} = useContext(CalendarContext);
+    const {newNotification} = useContext(NotificationsContext);
     const classes = useStyles();
 
     //region Context
@@ -69,7 +71,9 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     const handleOnDayClick = () => {
         setSelectedDay(props.date); //@ts-ignore
+        newNotification(dosagesOnSpecifiedDay(props.date,userMedicationDosages),"warning")
         console.log(medicationDosagesDetails)
+
     }
 
 
@@ -77,12 +81,6 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
         let isItToday = isToday()
         let isDayAFillday = isFillDay()
         let isMissed = isMissedDate()
-
-        console.log("-----------------")
-        console.log(isItToday)
-        console.log(isDayAFillday)
-        console.log(isMissed)
-        console.log("-----------------")
 
         if(isItToday){
             setCalendarDayColor(classes.todayStyle)
@@ -99,7 +97,6 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
             setCalendarDayColor(classes.upcoming)
             return
         }
-
 
         setCalendarDayColor(classes.otherStyle)
 
@@ -150,14 +147,13 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     useEffect(() => {
         // let answer = getDatesUserMedication()
-        let x = dosagesOnSpecifiedDay(props.date,userMedicationDosages)
-        console.log(x)
-        setMedicationDosagesDetails(x)
-        cssClassUpdater()
+        setMedicationDosagesDetails( dosagesOnSpecifiedDay(props.date,userMedicationDosages))
     }, [userMedicationDosages,props.date]);
 
 
-
+    useEffect(()=>{
+        cssClassUpdater()
+    },[medicationDosagesDetails])
 
     return (
         <Box >
