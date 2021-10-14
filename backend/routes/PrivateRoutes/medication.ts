@@ -20,7 +20,7 @@ import {
     differenceInCalendarMonths, getDate,
     getDay,
     getMinutes, getMonth, getYear,
-    isBefore,
+    isBefore, isSameDay,
     parseISO,
     setDate,
     setMinutes, setMonth, setYear
@@ -106,7 +106,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema, userId: string
         }
 
         //iterates over a single dosage
-        while (isBefore(dayAndTimeOfDosage, nextFillDay)) {
+        while (isBefore(dayAndTimeOfDosage, nextFillDay) || isSameDay(dayAndTimeOfDosage, nextFillDay)) {
 
             let addDosageToDay: boolean = false
             let dayOfTheWeek = getDay(dayAndTimeOfDosage)
