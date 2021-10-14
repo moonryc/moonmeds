@@ -45,7 +45,7 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                     </div>
                 }
                 title={props.medication.prescriptionName}
-                subheader={<Chip color={"secondary"} icon={<Face/>} label={"Child's or SO's name"} />}
+                subheader={<Chip color={"secondary"} icon={<Face/>} label={props.medication.medicationOwner} />}
             />
             }
         </div>

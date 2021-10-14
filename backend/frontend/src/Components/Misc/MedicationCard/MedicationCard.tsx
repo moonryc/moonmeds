@@ -84,6 +84,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
             startDay: props.startDay,
+            medicationOwner:props.medicationOwner,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,
             userNotes: props.userNotes
@@ -111,12 +112,14 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * @param nextFilledDate - Date
      * @param userNotes - string
      * @param prescriptionDosage - number
+     * @param medicationOwner
      */
-    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number) => {
+    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string) => {
         const tempMedicationDetails = medicationDetails
         tempMedicationDetails.prescriptionName = prescriptionName
         tempMedicationDetails.nextFillDay = nextFilledDate
         tempMedicationDetails.prescriptionDosage = prescriptionDosage
+        tempMedicationDetails.medicationOwner = medicationOwner
         tempMedicationDetails.userNotes = userNotes
         setMedicationDetails(tempMedicationDetails);
     }
@@ -148,6 +151,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
             _id: props._id,
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
+            medicationOwner: props.medicationOwner,
             startDay: props.startDay,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,

@@ -46,6 +46,7 @@ interface IMedicationDosagesBase extends IWeekdays{
     prescriptionName: string,
     nextFillDay: Date,
     amount: number,
+    medicationOwner:string,
     time:Date,
     isDaily:boolean,
     isWeekly:boolean,
@@ -75,7 +76,7 @@ export interface IMedicationFrontEnd extends IMedication {
 export interface IMedication {
     prescriptionName: string,
     prescriptionDosage: number,
-    // medicationOwner:string,
+    medicationOwner:string,
     startDay: Date,
     nextFillDay: Date,
     dosages: IDosagesDetails[],

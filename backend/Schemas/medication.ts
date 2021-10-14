@@ -9,6 +9,7 @@ export const medicationSchema:Schema = new Schema<IMedicationSchema>({
     prescriptionName: {type:String, required: true},
     prescriptionDosage: {type:Number, required:true},
     startDay: {type:Date, required:true},
+    medicationOwner:{type:String, required:true},
     nextFillDay: {type:Date, required:true},
     userNotes: {type:String, required:false},
     dosages: [{

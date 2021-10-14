@@ -3,6 +3,8 @@ import {Divider, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {IMedication} from "../../../../../Types/MedicationType";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import MedicationCardOwner from "./MedicationCardOwner";
+import medication from "../../../../../routes/PrivateRoutes/medication";
 
 /**
  *
@@ -11,8 +13,10 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
  */
 interface IMedicationCardEditDetails {
     medication: IMedication,
-    updateMedicationDetails(name:string,nextFillDate:Date, userNotes:string,prescriptionDosage:number):void
+
+    updateMedicationDetails(prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string): void
 }
+
 //*TODO(Spotexx): theming*/}
 /**
  * For editing the medication card prescription name, prescription dosage, next refill date, and notes
@@ -41,7 +45,9 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      */
     const [userNotes, setUserNotes] = useState<string>(props.medication.userNotes);
 
+
     //endregion
+
 
     //region functions
 
@@ -73,11 +79,11 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      * updates the next fill date property when using the mobileDatePicker component
      * @param newValue
      */
-    const handleMobileDatePickerChange = (newValue: Date|null) => {
-        if(newValue == null){
+    const handleMobileDatePickerChange = (newValue: Date | null) => {
+        if (newValue == null) {
             setNextFillDate(new Date())
-        }else{
-        setNextFillDate(newValue);
+        } else {
+            setNextFillDate(newValue);
         }
     };
 
@@ -91,9 +97,9 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      * or prescription dosage changes
      */
     useEffect(() => {
-        props.updateMedicationDetails(prescriptionName,nextFillDate,userNotes,prescriptionDosage)
+        props.updateMedicationDetails(prescriptionName, nextFillDate, userNotes, prescriptionDosage,props.medication.medicationOwner)
 
-    }, [prescriptionName,nextFillDate,userNotes,prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [prescriptionName, nextFillDate, userNotes, prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
 
     //endregion
 
@@ -105,18 +111,20 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                            onChange={(e) => handlePrescriptionNameOnChange(e)}
                            id="outlined-number"
                            label={"Prescription Name"} type="text" InputLabelProps={{shrink: true,}}
-                defaultValue={props.medication.prescriptionName}/>
+                           defaultValue={props.medication.prescriptionName}/>
             </Typography>
-
-
             <Divider/>
+            <Typography paragraph>
+                <br/>
+                <MedicationCardOwner  medication={props.medication} updateMedicationDetails={props.updateMedicationDetails}/>
+            </Typography>
             <Typography paragraph>
                 <br/>
                 <TextField size={"small"}
                            onChange={(e) => handlePrescriptionDosageOnChange(e)}
                            id="outlined-number"
                            label={"Prescription Dosage"} type="number" InputLabelProps={{shrink: true,}}
-                defaultValue={props.medication.prescriptionDosage}/>
+                           defaultValue={props.medication.prescriptionDosage}/>
                 <br/>
             </Typography>
             <Divider/>
@@ -128,7 +136,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     value={nextFillDate}
                     onChange={handleMobileDatePickerChange}
                     renderInput={(params) => <TextField {...params} />}
-                 />
+                />
                 <br/>
             </Typography>
             <Divider/>
@@ -139,7 +147,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     label="Notes"
                     multiline
                     rows={4}
-                    onChange={(e)=>handleUserNotesChange(e)}
+                    onChange={(e) => handleUserNotesChange(e)}
                     InputLabelProps={{shrink: true,}}
                     defaultValue={props.medication.userNotes}
                 />

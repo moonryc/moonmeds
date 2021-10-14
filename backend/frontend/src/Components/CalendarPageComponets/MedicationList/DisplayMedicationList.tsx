@@ -133,9 +133,9 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                                                 startDay={medication.startDay}
                                                 nextFillDay={medication.nextFillDay}
                                                 dosages={medication.dosages}
-                                                userNotes={medication.userNotes} handleTabsChangeIndex={() => {
-                                            }
-                                            }/>
+                                                userNotes={medication.userNotes} handleTabsChangeIndex={() => {}}
+                                                medicationOwner={medication.medicationOwner}
+                                            />
                                         </Grid>
                                     </Grid>
                                     <br/>

@@ -1,6 +1,6 @@
-import express = require('express');
-import passport = require('passport');
-import mongoose = require("mongoose");
+import express from 'express';
+import passport from 'passport';
+import mongoose from "mongoose";
 import {
     doesUserAlreadyHaveThisMedication,
     getUserMedicationByIdAndUpdate,
