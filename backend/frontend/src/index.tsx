@@ -34,6 +34,13 @@ const theme = createTheme({
                 default: '#1A1919',
                 paper: '#242526',
             },
+            action:{
+                active: '#fff',
+                hover: 'fff',
+                selected: '#fff',
+                disabled: '#fff',
+                disabledBackground: '#fff'
+            }
         }
     }
 );

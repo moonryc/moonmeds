@@ -61,7 +61,7 @@ const DisplayCalendarOverview = () => {
 
     //region Context
 
-    const {loadingBar,fetchUserMedications,fetchUserMedicationsDosages} = useContext(ApiContext);
+    const {loadingBar, fetchCalendarOverviewPage} = useContext(ApiContext);
     const {selectedDay} = useContext(CalendarContext);
 
     //endregion
@@ -84,7 +84,7 @@ const DisplayCalendarOverview = () => {
      * @param index
      */
     const handleTabsChangeIndex = (index: number) => {
-        updateUserMedications()
+
         setValue(index);
     };
 
@@ -99,23 +99,15 @@ const DisplayCalendarOverview = () => {
      * @param newValue
      */
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        updateUserMedications()
         setValue(newValue);
     };
 
     //endregion
 
-    //region ApiCalls
+    useEffect(()=>{
+        fetchCalendarOverviewPage()
+    },[])
 
-    /**
-     * Updates the userMedications and userMedicationDosages
-     */
-    const updateUserMedications = () => {
-        fetchUserMedications()
-        fetchUserMedicationsDosages()
-    }
-
-    //endregion
 
 
 

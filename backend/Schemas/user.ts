@@ -1,4 +1,4 @@
-import {Schema,model} from "mongoose";
+import {model, Schema} from "mongoose";
 
 const ThirdPartyProviderSchema = new Schema({
     provider_name:{
@@ -19,6 +19,7 @@ const userSchema = new Schema(
     {
         email: String,
         password: String,
+        persons: {type:[String], required:false},
         third_party_auth:[ThirdPartyProviderSchema],
         data:{
             type:Date,
@@ -28,4 +29,5 @@ const userSchema = new Schema(
     },
     {strict: false})
 
-module.exports = model("users", userSchema)
+export const UserModel = model("users", userSchema)
+

@@ -6,6 +6,8 @@ export interface IUserContextState {
     setLoggedIn: (state: boolean) => void,
     userId: string,
     setUserId: (state: string) => void,
+    usersPeople:string[],
+    setUsersPeople:(state:string[])=>void,
 }
 
 
@@ -14,7 +16,8 @@ export const UserContext = createContext<IUserContextState>({
     setLoggedIn: (state: boolean) => {},
     userId: 'test',
     setUserId: (state: string) => '',
-
+    usersPeople:["placeholder"],
+    setUsersPeople:(state:string[])=>{},
 
 })
 
@@ -22,7 +25,7 @@ export const UserContainer = (props: any) => {
     const {children} = props;
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>('test');
-
+    const [usersPeople, setUsersPeople] = useState<string[]>(["placeholder"]);
 
 
 
@@ -32,6 +35,7 @@ export const UserContainer = (props: any) => {
             setLoggedIn,
             userId,
             setUserId,
+            usersPeople,setUsersPeople
         }}>
             {children}
         </UserContext.Provider>

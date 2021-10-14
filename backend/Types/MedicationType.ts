@@ -40,9 +40,9 @@ export interface IMedicationDosagesSchema extends IMedicationDosagesBase, Docume
  * @property isCustom:boolean,
  */
 interface IMedicationDosagesBase extends IWeekdays{
-    medication_id:string
+    medication_id:string,
     hasBeenTaken:boolean,
-    isLateToTakeMedication:boolean
+    isLateToTakeMedication:boolean,
     prescriptionName: string,
     nextFillDay: Date,
     amount: number,
@@ -75,6 +75,7 @@ export interface IMedicationFrontEnd extends IMedication {
 export interface IMedication {
     prescriptionName: string,
     prescriptionDosage: number,
+    // medicationOwner:string,
     startDay: Date,
     nextFillDay: Date,
     dosages: IDosagesDetails[],

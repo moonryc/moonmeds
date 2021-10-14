@@ -19,6 +19,7 @@ import cookieParser =require('cookie-parser');
 import logger = require('morgan');
 import authRouter from './routes/auth';
 import medicationRouter from "./routes/PrivateRoutes/medication";
+import personsRouter from "./routes/PrivateRoutes/persons";
 
 //endregion
 
@@ -137,6 +138,7 @@ app.use(limiter);
 
 //region routes
 app.use('/medication', medicationRouter);
+app.use('/persons', personsRouter);
 app.use('/auth', authRouter);
 //endregion
 

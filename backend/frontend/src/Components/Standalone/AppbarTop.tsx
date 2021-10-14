@@ -84,7 +84,7 @@ const AppbarTop: React.FC<{ [key: string]: any }> = () => {
                         <MenuItem onClick={() => handleClose('/')}><HomeIcon className={classes.icon}/> Home </MenuItem>
                         <MenuItem onClick={() => handleClose('/CalendarOverview')}><DateRangeIcon
                             className={classes.icon}/> Calendar Overview </MenuItem>
-
+                        <MenuItem onClick={() => handleClose('/UserAccount')}>User Settings </MenuItem>
                     </Menu>
                     <Box sx={{position: 'absolute', right: 20}}>
                         {loggedIn ? <LogoutButton/> : <LoginButton/>}

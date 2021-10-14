@@ -56,6 +56,10 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      *
      */
     const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date,userMedicationDosages));
+    const [calendarDayColor, setCalendarDayColor] = useState(classes.otherStyle);
+
+
+
 
 
     /**
@@ -68,15 +72,51 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
         console.log(medicationDosagesDetails)
     }
 
+
+    const cssClassUpdater = () => {
+        let isItToday = isToday()
+        let isDayAFillday = isFillDay()
+        let isMissed = isMissedDate()
+
+        console.log("-----------------")
+        console.log(isItToday)
+        console.log(isDayAFillday)
+        console.log(isMissed)
+        console.log("-----------------")
+
+        if(isItToday){
+            setCalendarDayColor(classes.todayStyle)
+            return
+        }
+
+        if(isMissed){
+            setCalendarDayColor(classes.missed)
+            return
+        }
+
+
+        if(isDayAFillday){
+            setCalendarDayColor(classes.upcoming)
+            return
+        }
+
+
+        setCalendarDayColor(classes.otherStyle)
+
+    }
+
+
     /**
      * tests if the componet represents today
      * @return boolean - true if it is today, false otherwise
      */
     const isToday = ():boolean => {
-        return format(props.date, 'MM/dd/yyyy') === format(new Date(), 'MM/dd/yyyy');
+        console.log()
+        return isSameDay(new Date(props.date), new Date())
+
     }
 
-    const isImportantUpcomingDate= ():any => {
+    const isFillDay= ():any => {
 
          if(medicationDosagesDetails != null){
              for(let i in medicationDosagesDetails){//@ts-ignore
@@ -95,8 +135,8 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
     const isMissedDate= ():any => {
 
         if(medicationDosagesDetails != null){
-            for(let i in medicationDosagesDetails){//@ts-ignore
-                if(medicationDosagesDetails[i].isLateToTakeMedication === true) {
+            for(let i in medicationDosagesDetails){
+                if(medicationDosagesDetails[i].isLateToTakeMedication) {
                     return true
                 }
             }
@@ -110,8 +150,13 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     useEffect(() => {
         // let answer = getDatesUserMedication()
-        setMedicationDosagesDetails(dosagesOnSpecifiedDay(props.date,userMedicationDosages))
-    }, [userMedicationDosages]);
+        let x = dosagesOnSpecifiedDay(props.date,userMedicationDosages)
+        console.log(x)
+        setMedicationDosagesDetails(x)
+        cssClassUpdater()
+    }, [userMedicationDosages,props.date]);
+
+
 
 
     return (
@@ -121,7 +166,7 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton className={isToday() ? classes.todayStyle:isImportantUpcomingDate()? classes.upcoming:isMissedDate()?classes.missed: classes.otherStyle}
+            <IconButton className={calendarDayColor}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>

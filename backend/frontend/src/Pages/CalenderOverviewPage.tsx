@@ -33,7 +33,6 @@ const CalendarOverViewPage = () => {
             <AppbarTop/>
             <div className={classes.innerWrapper}>
                 <DisplayCalendarOverview/> {/*@ts-ignore*/}
-                <NotificationsParent/>
             </div>
         </div>
     );
