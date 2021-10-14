@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme?: any) => ({
 
 
 const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
-    const {selectedDayDetails} = useContext(CalendarContext);
-    const {newNotification} = useContext(NotificationsContext);
+
+
     const classes = useStyles();
 
     //region Context
@@ -71,7 +71,6 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     const handleOnDayClick = () => {
         setSelectedDay(props.date); //@ts-ignore
-        newNotification(dosagesOnSpecifiedDay(props.date,userMedicationDosages),"warning")
         console.log(medicationDosagesDetails)
 
     }
