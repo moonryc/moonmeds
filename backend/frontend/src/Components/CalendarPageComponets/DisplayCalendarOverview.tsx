@@ -158,7 +158,6 @@ const DisplayCalendarOverview = () => {
                                         prescriptionName={''} prescriptionDosage={0}
                                         startDay={new Date()} nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
-                                      handleTabsChangeIndex={handleTabsChangeIndex}
                                         medicationOwner={""}/>
                                 </TabPanel>
                             </SwipeableViews>

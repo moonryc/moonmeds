@@ -27,7 +27,7 @@ import {NotificationsContext} from "../../../Context/NotificationsContext";
  */
 export interface IMedicationCardProps extends IMedicationFrontEnd {
     isNewCard: boolean,
-    handleTabsChangeIndex(index: number): void
+
 }
 
 
@@ -196,7 +196,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
 
         if (!handleNullChecker()) {
             await postNewMedication(medicationDetails)
-            props.handleTabsChangeIndex(1)
+
         }
     };
 

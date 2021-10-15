@@ -43,6 +43,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema, userId: string
         isLateToTakeMedication: false,
         nextFillDay: new Date(),
         amount: 0,
+        medicationOwner:"",
         time: new Date(),
         isDaily: false,
         isWeekly: false,
@@ -58,7 +59,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema, userId: string
         sunday: false,
     }
 
-    let {_id: medication_id, prescriptionName, nextFillDay, dosages} = medicationObject
+    let {_id: medication_id, prescriptionName, nextFillDay, dosages, medicationOwner} = medicationObject
     let loopDosage: IDosagesDetails[] = dosages
 
     nextFillDay = parseISO(nextFillDay.toString())
@@ -68,6 +69,7 @@ const addNewDosages = async (medicationObject: IMedicationSchema, userId: string
     medicationDosage.prescriptionName = prescriptionName
     medicationDosage.nextFillDay = nextFillDay
     medicationDosage.hasBeenTaken = false
+    medicationDosage.medicationOwner = medicationOwner
     medicationDosage.isLateToTakeMedication = false
 
     for (let index = 0; index < loopDosage.length; index++) {

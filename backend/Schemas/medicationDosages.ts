@@ -11,6 +11,7 @@ export const medicationDosagesSchema: Schema = new Schema<IMedicationDosagesSche
     medication_id: {type: String, required: true},
     hasBeenTaken: {type: Boolean, required: true},
     isLateToTakeMedication: {type: Boolean, required: true},
+    medicationOwner:{type:String, required:true},
     prescriptionName: {type: String, required: true},
     nextFillDay: {type: Date, required: true},
     amount: {type: Number, required: true},

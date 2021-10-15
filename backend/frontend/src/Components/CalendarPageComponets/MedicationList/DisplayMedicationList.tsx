@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
-import {Box, Button, Checkbox, Grid} from "@mui/material";
+import {Box, Button, Checkbox, Dialog, Grid} from "@mui/material";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
 import {MedicationContext} from "../../../Context/MedicationContext";
@@ -29,7 +29,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
      * Api Context to get the loadingBar and to deleteSelectedMedications
      */
     const {userMedications} = useContext(MedicationContext);
-    const {loadingBar,putDeleteSelectedMedications} = useContext(ApiContext);
+    const {loadingBar, putDeleteSelectedMedications} = useContext(ApiContext);
 
     //endregion
 
@@ -87,33 +87,49 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
 
     //endregion
 
+    const displaySkeletonLoading = () => {
+        return (
+            <>
+                <Skeleton variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
+                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/>
+            </>
+        )
+    }
+
+    const deleteMedicationButtons = () => {
+        return (
+            <Grid container>
+                <Grid item xs={6}>
+                    <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
+                            onClick={() => toggleDeletion()}>
+                        {isDeletionEnabled ? "Cancel" : "Delete medication"}
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    {isDeletionEnabled ? <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
+                                                 onClick={() => handleDeleteMedicationsAction()}>Delete
+                        Medications</Button> : <></>}
+                </Grid>
+            </Grid>
+        )
+    }
+
     return (
 
         <Box sx={{maxHeight: '70vh', overflow: 'auto'}}>
 
+
             <Card>
-                {loadingBar ? <><Skeleton variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                    variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/></> : <>
+                {loadingBar ? displaySkeletonLoading() : <>
 
                     <br/>
+                    {deleteMedicationButtons()}
                     {userMedications?.length == 0 || userMedications == null ?
-                        <Button onClick={() => props.handleTabsChangeIndex(2)}>New Medication</Button> :
+                        <Button onClick={() => {}}>New Medication</Button> :
                         <>
-                            <Grid container>
-                                <Grid item xs={6}>
-                                    <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
-                                            onClick={() => toggleDeletion()}>
-                                        {isDeletionEnabled ? "Cancel" : "Delete medication"}
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    {isDeletionEnabled ? <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
-                                                                 onClick={() => handleDeleteMedicationsAction()}>Delete
-                                        Medications</Button> : <></>}
-                                </Grid>
-                            </Grid>
+
                             {userMedications.map((medication: IMedicationFrontEnd) =>
                                 <>
                                     <Grid container>
@@ -133,7 +149,7 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                                                 startDay={medication.startDay}
                                                 nextFillDay={medication.nextFillDay}
                                                 dosages={medication.dosages}
-                                                userNotes={medication.userNotes} handleTabsChangeIndex={() => {}}
+                                                userNotes={medication.userNotes}
                                                 medicationOwner={medication.medicationOwner}
                                             />
                                         </Grid>

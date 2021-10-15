@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {IMedicationFrontEnd} from "../../../Types/MedicationType";
+import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
 import {MedicationContext} from "./MedicationContext";
 import {IBackendResponse, ILoginResponse} from "../../../Types/BackendResponseType";
 import {NotificationsContext} from "./NotificationsContext";
@@ -21,6 +21,8 @@ export interface IApiContextState {
     postPerson: (listOfNames:string[]) => void
     putDeleteSelectedMedications: (medicationFrontEndArray: IMedicationFrontEnd[]) => void
     putDeleteSelectedPerson: (listOfDesiredNames:string[]) => void
+    putUpdateMedicationDosageTaken: (medicationDosage: IMedicationDosagesSchema) => void,
+    putUpdateMedicationDosageRefill:(medicationDosage:IMedicationDosagesSchema, newRefillDate:Date) =>void
     submitUpdatedMedication: (medicationDetails: IMedicationFrontEnd) => void
 
     fetchCalendarOverviewPage:()=>void
@@ -46,6 +48,8 @@ export const ApiContext = createContext<IApiContextState>({
     putDeleteSelectedPerson: async (listOfDesiredNames:string[]) => Promise,
     putDeleteSelectedMedications: async (medicationFrontEndArray: IMedicationFrontEnd[]) => Promise,
     submitUpdatedMedication: async (medicationDetails: IMedicationFrontEnd) => Promise,
+    putUpdateMedicationDosageTaken: async (medicationDosage: IMedicationDosagesSchema) => Promise,
+    putUpdateMedicationDosageRefill: async (medicationDosage:IMedicationDosagesSchema, newRefillDate:Date)=>Promise,
     fetchCalendarOverviewPage:()=>{},
 })
 
@@ -225,6 +229,60 @@ export const ApiContainer = (props: any) => {
     };
     //endregion
 
+    const putUpdateMedicationDosageTaken = async (medicationDosage:IMedicationDosagesSchema):Promise<void> => {
+        handleLoadingBarTurnOn()
+        let url = "/medication/markAsTaken"
+        await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                // 'Authorization': `Bearer ${userId}`
+            },
+            body: JSON.stringify(medicationDosage) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then((data: IBackendResponse) => {
+                newNotification(data.alert.message,data.alert.severity)
+                fetchCalendarOverviewPage()
+                handleLoadingBarTurnOff()
+            }).catch(error => {
+                //TODO
+                handleLoadingBarTurnOff()
+            })
+    }
+
+    const putUpdateMedicationDosageRefill = async (medicationDosage:IMedicationDosagesSchema, newRefillDate:Date):Promise<void> => {
+        handleLoadingBarTurnOn()
+        medicationDosage.nextFillDay=newRefillDate
+        let url = "/medication/updateRefillDate"
+        await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                // 'Authorization': `Bearer ${userId}`
+            },
+            body: JSON.stringify({payload: medicationDosage}) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then((data: IBackendResponse) => {
+                newNotification(data.alert.message,data.alert.severity)
+                fetchCalendarOverviewPage()
+                handleLoadingBarTurnOff()
+            }).catch(error => {
+                //TODO
+                handleLoadingBarTurnOff()
+            })
+    }
+
+    
 
     //region Persons
     const postPerson = async (listOfNames:string[]) => {
@@ -325,7 +383,9 @@ export const ApiContainer = (props: any) => {
             postNewMedication,
             putDeleteSelectedMedications,
             submitUpdatedMedication,
-            fetchCalendarOverviewPage
+            fetchCalendarOverviewPage,
+            putUpdateMedicationDosageTaken,
+            putUpdateMedicationDosageRefill
         }}>
             {children}
         </ApiContext.Provider>
