@@ -5,34 +5,10 @@ import LogoutButton from "../Misc/LogoutButton";
 import {UserContext} from "../../Context/UserContext";
 import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import {makeStyles} from "@mui/styles";
+import {primaryIconTextStyle, titleStyle} from "../../Styles";
 
-const useStyles = makeStyles((theme?: any) => ({
-    title: {
-        background: theme.palette.primary.main,
-        color: theme.palette.text.primary,
-        paddingLeft: '64px',
-        maxHeight: '55px'
-    },
-    rightToolbar: {
-        marginLeft: "auto",
-        marginRight: 0,
-        color: '#f60000'
-    },
-    appBar: {
-        background: theme.palette.primary.main,
-        height: '60px',
-        position: 'relative',
-
-    },
-    icon: {
-        color: theme.palette.text.primary,
-        marginRight: '15px'
-    }
-}));
 
 const AppbarTop: React.FC<{ [key: string]: any }> = () => {
-    const classes = useStyles();
 
     //region Context
     /**
@@ -57,7 +33,12 @@ const AppbarTop: React.FC<{ [key: string]: any }> = () => {
     return (
         <>
             <AppBar position="static"
-                    className={classes.appBar}
+                    sx={{
+                        bgcolor: 'primary.main',
+                        height: '60px',
+                        position: 'relative',
+                    }}
+                    elevation={1}
             >
                 <Toolbar>
 
@@ -67,7 +48,7 @@ const AppbarTop: React.FC<{ [key: string]: any }> = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClick}
-                        sx={{color: 'text.primary'}}
+                        sx={titleStyle}
                     >
                         Dashboard
                     </Button>
@@ -81,9 +62,9 @@ const AppbarTop: React.FC<{ [key: string]: any }> = () => {
                         }}
                     >
 
-                        <MenuItem onClick={() => handleClose('/')}><HomeIcon className={classes.icon}/> Home </MenuItem>
+                        <MenuItem onClick={() => handleClose('/')}><HomeIcon sx={primaryIconTextStyle}/> Home </MenuItem>
                         <MenuItem onClick={() => handleClose('/CalendarOverview')}><DateRangeIcon
-                            className={classes.icon}/> Calendar Overview </MenuItem>
+                            sx={primaryIconTextStyle}/> Calendar Overview </MenuItem>
                         <MenuItem onClick={() => handleClose('/UserAccount')}>User Settings </MenuItem>
                     </Menu>
                     <Box sx={{position: 'absolute', right: 20}}>

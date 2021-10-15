@@ -16,6 +16,7 @@ import TimePickerComponent from "../TimePickerComponent";
 import {IDosagesDetails} from "../../../../../Types/MedicationType";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import {makeStyles} from "@mui/styles";
+import {centeredTextStyle, switchStyle} from "../../../Styles";
 
 const useStyles = makeStyles((theme?: any) => ({
     switch: {
@@ -60,10 +61,7 @@ const useStyles = makeStyles((theme?: any) => ({
             boxSizing: 'border-box',
         },
     },
-    center: {
-        justifyContent: "center",
-        alignSelf: "center",
-    }
+
 }));
 
 /**
@@ -289,23 +287,23 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                 </Grid>
             </Grid>
             <br/>
-            <Grid container spacing={2} className={classes.center} alignItems="center"
-                  justifyContent="center">
+            <Grid container spacing={2}  alignItems="center"
+                  >
 
-                <Grid item xs={3}><Typography>Daily</Typography></Grid>
-                <Grid item xs={3}>Weekly</Grid>
-                <Grid item xs={3}>Monthly</Grid>
-                <Grid item xs={3}>Custom</Grid>
-                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isDaily}
+                <Grid  item xs={3}><Typography sx={{centeredTextStyle}}>Daily</Typography></Grid>
+                <Grid item xs={3}><Typography sx={centeredTextStyle}>Weekly</Typography></Grid>
+                <Grid item xs={3}><Typography sx={centeredTextStyle}>Monthly</Typography></Grid>
+                <Grid item xs={3}><Typography sx={centeredTextStyle}>Custom</Typography></Grid>
+                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isDaily}
                                            onClick={() => handleDailyToggle()}/>
                 </Grid>
-                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isWeekly}
+                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isWeekly}
                                            onClick={() => handleWeeklyToggle()}/>
                 </Grid>
-                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isMonthly}
+                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isMonthly}
                                            onClick={() => handleMonthlyToggle()}/>
                 </Grid>
-                <Grid item xs={3}> <Switch className={classes.switch} checked={dosageDetails.isCustom}
+                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isCustom}
                                            onClick={() => handleCustomToggle()}/>
                 </Grid>
 
@@ -316,49 +314,49 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                         <br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.monday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.monday}
                                         onChange={() => handleCheckbox("monday")} name="monday"/>
                             }
                             label="Monday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.tuesday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.tuesday}
                                         onClick={() => handleCheckbox("tuesday")} name="tuesday"/>
                             }
                             label="Tuesday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.wednesday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.wednesday}
                                         onClick={() => handleCheckbox("wednesday")} name="wednesday"/>
                             }
                             label="Wednesday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.thursday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.thursday}
                                         onClick={() => handleCheckbox("thursday")} name="thursday"/>
                             }
                             label="Thursday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.friday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.friday}
                                         onClick={() => handleCheckbox("friday")} name="friday"/>
                             }
                             label="Friday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.saturday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.saturday}
                                         onClick={() => handleCheckbox("saturday")} name="saturday"/>
                             }
                             label="Saturday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch className={classes.switch} checked={dosageDetails.customDays.sunday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customDays.sunday}
                                         onClick={() => handleCheckbox("sunday")} name="sunday"/>
                             }
                             label="Sunday"

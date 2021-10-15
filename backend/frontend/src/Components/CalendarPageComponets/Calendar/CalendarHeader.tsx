@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, IconButton} from "@mui/material";
 import {ArrowBack, ArrowForward} from "@mui/icons-material";
-import {makeStyles} from "@mui/styles";
+import {subTextStyle} from "../../../Styles";
 
 interface ICalendarHeaderProps {
     goForwardAMonth():void,
@@ -9,28 +9,18 @@ interface ICalendarHeaderProps {
     month:Date
 }
 
-const useStyles = makeStyles((theme?: any) => ({
-
-    leftArrow:{
-        color: theme.palette.text.primary
-    },
-    rightArrow:{
-        color: theme.palette.text.primary
-    },
-}));
 
 
 const CalendarHeader = (props:ICalendarHeaderProps) => {
-    const classes = useStyles();
 
     return (
         <Box sx={{position:'absolute', left:'0', right:'0', textAlign: 'center', top:'2%'}}>
             <IconButton onClick={()=>props.goBackAMonth()}>
-                <ArrowBack className={classes.leftArrow}/>
+                <ArrowBack sx={subTextStyle}/>
             </IconButton>
             <>{props.month.toDateString()}</>
             <IconButton onClick={()=>props.goForwardAMonth()}>
-                <ArrowForward className={classes.rightArrow}/>
+                <ArrowForward sx={subTextStyle}/>
             </IconButton>
         </Box>
     );

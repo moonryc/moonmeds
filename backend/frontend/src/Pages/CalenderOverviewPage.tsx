@@ -1,40 +1,21 @@
 import * as React from 'react';
 import AppbarTop from "../Components/Standalone/AppbarTop";
 import DisplayCalendarOverview from "../Components/CalendarPageComponets/DisplayCalendarOverview";
-import {makeStyles} from "@mui/styles";
-import NotificationsParent from "../Components/Misc/Notifications/NotificationsParent";
+import {Box} from "@mui/material";
+import {flexWrapperStyle, flex1ItemStyle, backgroundStyle} from "../Styles";
 
-const useStyles = makeStyles((theme?: any) => ({
-    outerWrapper: {
-        height: '100vh',
-        display:'flex',
-        flexDirection: 'column'
-
-    },
-    innerWrapper:{
-        background: theme.palette.primary.dark,
-        color: theme.palette.text.primary,
-        flex: 1,
-        height: '100%',
-        padding: '5vh'
-
-    }
-}));
 
 //TODO(Travis): Theming/CSS
 const CalendarOverViewPage = () => {
 
-    //const {selectedDay} = useContext(CalendarContext); COMMENTED UNTIL NEEDED
-
-
-    const classes = useStyles();
+    //const {selectedDay} = useContext(CalendarContext); COMMENTED UNTIL MOON NEEDS
     return (
-        <div className={classes.outerWrapper}>
+        <Box sx={flexWrapperStyle}>
             <AppbarTop/>
-            <div className={classes.innerWrapper}>
-                <DisplayCalendarOverview/> {/*@ts-ignore*/}
-            </div>
-        </div>
+            <Box sx={{...flex1ItemStyle, ...backgroundStyle}}>
+                <DisplayCalendarOverview/>
+            </Box>
+        </Box>
     );
 };
 

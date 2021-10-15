@@ -10,17 +10,9 @@ import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import MedicationCardHeader from "./MedicationCardHeader";
 import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
-import {makeStyles} from "@mui/styles";
 import SendIcon from '@mui/icons-material/Send';
 import {ApiContext} from "../../../Context/ApiContext";
 import {NotificationsContext} from "../../../Context/NotificationsContext";
-
-const useStyles = makeStyles((theme?: any) => ({
-    container: {
-        maxHeight: '10vh'
-    }
-}));
-
 
 /**
  * @property isNewCard - boolean,
@@ -47,8 +39,6 @@ export interface IMedicationCardProps extends IMedicationFrontEnd {
  * @constructor
  */
 const MedicationCard = (props: IMedicationCardProps) => {
-
-    const classes = useStyles();
 
     //region Context
     /**

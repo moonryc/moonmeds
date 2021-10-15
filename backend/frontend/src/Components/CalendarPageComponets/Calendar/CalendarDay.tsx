@@ -11,38 +11,10 @@ import isSameDay from 'date-fns/isSameDay'
 import {NotificationsContext} from "../../../Context/NotificationsContext";
 
 
-const useStyles = makeStyles((theme?: any) => ({
-    todayStyle: {
-        backgroundColor: '#00FFFF',
-        width: '45px',
-        height: '45px',
-        color: '#000000'
-    },
-    upcoming:{
-        backgroundColor: '#ffe800',
-        width: '45px',
-        height: '45px',
-        color: '#000000'
-    },
-    missed:{
-        backgroundColor: '#ff0000',
-        width: '45px',
-        height: '45px',
-        color: '#000000'
-    },
-    otherStyle: {
-        backgroundColor: '#FFFFFF',
-        width: '45px',
-        height: '45px',
-        color: '#000000'
-    }
-}));
-
 
 const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
 
 
-    const classes = useStyles();
 
     //region Context
     /**
@@ -58,7 +30,11 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      *
      */
     const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date,userMedicationDosages));
-    const [calendarDayColor, setCalendarDayColor] = useState(classes.otherStyle);
+    const [calendarDayColor, setCalendarDayColor] = useState({
+                                                                        bgcolor: '#FFFFFF',
+                                                                        width: '45px',
+                                                                        height: '45px',
+                                                                        color: '#000000'});
 
 
 
@@ -82,22 +58,40 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
         let isMissed = isMissedDate()
 
         if(isItToday){
-            setCalendarDayColor(classes.todayStyle)
+            setCalendarDayColor({bgcolor: '#00FFFF',
+                                        width: '45px',
+                                        height: '45px',
+                                        color: '#000000'})
             return
         }
 
         if(isMissed){
-            setCalendarDayColor(classes.missed)
+            setCalendarDayColor({
+                                    bgcolor: '#ff0000',
+                                    width: '45px',
+                                    height: '45px',
+                                    color: '#000000'
+                                })
             return
         }
 
 
         if(isDayAFillday){
-            setCalendarDayColor(classes.upcoming)
+            setCalendarDayColor({
+                                    bgcolor: '#ffe800',
+                                    width: '45px',
+                                    height: '45px',
+                                    color: '#000000'
+                                })
             return
         }
 
-        setCalendarDayColor(classes.otherStyle)
+        setCalendarDayColor({
+                                bgcolor: '#FFFFFF',
+                                width: '45px',
+                                height: '45px',
+                                color: '#000000'
+                            })
 
     }
 
@@ -161,7 +155,7 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton className={calendarDayColor}
+            <IconButton sx={calendarDayColor}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>

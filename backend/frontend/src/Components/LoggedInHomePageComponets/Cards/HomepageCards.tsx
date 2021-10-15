@@ -2,11 +2,12 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import ImportantDates from "./ImportantDates";
 import UpcomingRefills from "./UpcomingRefills";
+import {Box} from "@mui/material";
 
 
 const HomepageCards: React.FC<React.HTMLProps<HTMLDivElement>> = ({children, ...props}) => {
     return (
-        <div {...props}>
+        <Box>
 
                 <Grid container spacing={0} alignItems="flex-end">
 
@@ -21,7 +22,7 @@ const HomepageCards: React.FC<React.HTMLProps<HTMLDivElement>> = ({children, ...
                     </Grid>
                 </Grid>
 
-        </div>
+        </Box>
     );
 }
 

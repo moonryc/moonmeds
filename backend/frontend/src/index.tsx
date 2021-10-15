@@ -21,18 +21,18 @@ const customHistory = createBrowserHistory();
 const theme = createTheme({
         palette: {
             primary: {
-                main: '#242526',
+                main: '#1a237e',
             },
             secondary: {
-                main: '#599988'
+                main: '#6a1b9a'
             },
             text: {
-                primary: '#E4E6EB',
+                primary: '#ffffff',
                 secondary: '#B0B3B8',
             },
             background: {
-                default: '#1A1919',
-                paper: '#242526',
+                default: '#1a237e',
+                paper: '#1a237e',
             },
             action:{
                 active: '#fff',
@@ -40,10 +40,18 @@ const theme = createTheme({
                 selected: '#fff',
                 disabled: '#fff',
                 disabledBackground: '#fff'
-            }
+            },
+        },
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 600,
+                md: 900,
+                lg: 1200,
+                xl: 1536,
+            },
         }
-    }
-);
+});
 
 
 ReactDOM.render(

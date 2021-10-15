@@ -122,7 +122,7 @@ const DisplayCalendarOverview = () => {
 
                 <Grid item xs={6}>
                     <Card sx={{width: "100%", height: "100%",}}>
-                        <Box sx={{bgcolor: 'background.paper', width: "100%"}}>
+                        <Box>
                             <AppBar position="static">
                                 <Tabs
                                     value={value}

@@ -2,27 +2,12 @@ import React from 'react';
 import AppbarTop from "../Components/Standalone/AppbarTop";
 import {makeStyles} from "@mui/styles";
 import People from "../Components/UserAccountPageComponents/ManagePeople";
-import {Box, Tab, Tabs} from "@mui/material";
+import {Box, Paper, Tab, Tabs} from "@mui/material";
 import ManagePeople from "../Components/UserAccountPageComponents/ManagePeople";
 import ChangePassword from "../Components/UserAccountPageComponents/ChangePassword";
+import {backgroundStyle, flex1ItemStyle, flexWrapperStyle} from "../Styles";
 
 
-const useStyles = makeStyles((theme?: any) => ({
-    outerWrapper: {
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column'
-
-    },
-    innerWrapper: {
-        background: theme.palette.primary.dark,
-        color: theme.palette.text.primary,
-        flex: 1,
-        height: '100%',
-        padding: '5vh'
-
-    }
-}));
 
 
 interface TabPanelProps {
@@ -70,15 +55,14 @@ const UserAccountPage = () => {
     };
 
 
-    const classes = useStyles();
 
     return (
         <>
-            <div className={classes.outerWrapper}>
+            <Box sx={{...flexWrapperStyle, ...backgroundStyle}}>
                 <AppbarTop/>
-                <div className={classes.innerWrapper}>
-                    <Box
-                        sx={{ flexGrow: 1, bgcolor: 'secondary.main', display: 'flex', height: "100%" }}
+                <Box sx={flex1ItemStyle}>
+                    <Paper
+                        sx={{ flexGrow: 1, bgcolor: 'primary.light', display: 'flex', height: "100%" }}
                     >
                         <Tabs
                             orientation="vertical"
@@ -106,9 +90,9 @@ const UserAccountPage = () => {
                             TODO LATER
                         </TabPanel>
 
-                    </Box>
-                </div>
-            </div>
+                    </Paper>
+                </Box>
+            </Box>
         </>
     );
 };

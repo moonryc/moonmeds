@@ -4,40 +4,29 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {CardHeader, Collapse} from "@mui/material";
+import {Box, CardHeader, Collapse, Paper} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
+import {rearPaperStyle, titleStyle, frontPaperStyle} from "../../../Styles";
 
-const useStyles = makeStyles((theme?: any) => ({
-    title: {
-        color: theme.palette.text.primary
 
-    },
-    cardStyle:{
-        [theme.breakpoints.up('xs')]: {
-            marginTop: '15px',
-            marginBottom: '15px'
-            },
-        [theme.breakpoints.up('lg')]: {
-            margin: '2vw',
-        },
-    }
-}));
 
 const ImportantDates = () => {
-
-
-
-
-    const classes = useStyles();
     return (
-        <div className={classes.cardStyle}>
+        <Box
+            sx={{
+                marginTop: ['15px',null,null,null,null],
+                marginBottom: ['15px',null,null,null,null],
+                margin:[null,null,null,'2vw',null],
+
+            }}
+        >
             {/*<Box sx={{minWidth: 275}}>*/}
-            <Card variant="outlined">
+            <Card variant="outlined" sx={rearPaperStyle}>
 
                 <CardHeader
-                    className={classes.title}
+                    sx={titleStyle}
                     action={
                         <IconButton aria-label="settings">
                             <MoreVert/>
@@ -46,35 +35,36 @@ const ImportantDates = () => {
                     title="Upcoming Refills"
                 />
 
-                <Collapse in={true}>
 
-                    <CardContent>
-                        {/*TODO if nothing upcoming 'hurray you are up to date! else display upcoming refills*/}
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
-                        <Typography> Hurray You are all up to date!</Typography>
+                    <Paper sx={frontPaperStyle}>
+                        <CardContent>
+                            {/*TODO if nothing upcoming 'hurray you are up to date! else display upcoming refills*/}
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
+                            <Typography> Hurray You are all up to date!</Typography>
 
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Collapse>
+                        </CardContent>
+                    {/*<CardActions>*/}
+                    {/*    <Button size="small">Learn More</Button>*/}
+                    {/*</CardActions>*/}
+
+                    </Paper>
             </Card>
             {/*</Box>*/}
 
-        </div>
+        </Box>
     );
 };
 

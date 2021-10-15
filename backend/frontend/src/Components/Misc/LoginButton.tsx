@@ -2,19 +2,14 @@ import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import {Button} from "@mui/material";
 import {makeStyles} from "@mui/styles";
+import {primaryIconTextStyle, titleStyle} from "../../Styles";
 
-const useStyles = makeStyles((theme?: any) => ({
-    button: {
-        color: theme.palette.text.primary
-    }
-}));
 
 const LoginButton = () => {
-    const classes = useStyles();
     return (
         <div>
             <form action={"/auth/login"}>
-                <Button className={classes.button} type={"submit"} value={"login"}> <LoginIcon style={{marginRight: '15px'}}/>Login/ Sign up </Button>
+                <Button sx={titleStyle} type={"submit"} value={"login"}> <LoginIcon sx={primaryIconTextStyle}/>Login/ Sign up </Button>
             </form>
         </div>
     );

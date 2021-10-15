@@ -51,7 +51,8 @@ const DisplayCalendar = () => {
     return (
 
         <Box >
-            <Paper sx={{overflow:'auto', position:'relative', height: '65vh',paddingTop: '40px',}}>
+            {/*this paper does not use frontPaperStyle because of the strict positioning*/}
+            <Paper elevation={0} sx={{overflow:'auto', position:'relative', height: '65vh',paddingTop: '40px',}}>
             <CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/>
 
                 <CalendarBody  numberOfDaysInMonth={numberOfDaysInSelectedMonth}

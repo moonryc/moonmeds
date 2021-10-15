@@ -6,30 +6,19 @@ import Button from '@mui/material/Button';
 import {CardHeader, Collapse} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import {MoreVert} from "@mui/icons-material";
-import {makeStyles} from "@mui/styles";
 import DisplayCalendar from "../../CalendarPageComponets/Calendar/DisplayCalendar";
+import {titleStyle} from "../../../Styles";
 
-const useStyles = makeStyles((theme?: any) => ({
-    title: {
-        color: theme.palette.text.primary
-    },
-    highlight:{
-        color: 'red'
-    }
-}));
+
 
 const ImportantDates = () => {
-
-
-
-    const classes = useStyles();
     return (
         <div>
             {/*<Box sx={{minWidth: 275}}>*/}
-                <Card variant="outlined">
+                <Card variant="outlined" sx={{bgcolor:'primary.light'}}>
 
                     <CardHeader
-                        className={classes.title}
+                        sx={ titleStyle }
                         action={
                             <IconButton aria-label="settings">
                                 <MoreVert/>
@@ -43,12 +32,11 @@ const ImportantDates = () => {
                         <CardContent>
                                 <DisplayCalendar />
                         </CardContent>
-                        <CardActions>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
+                        {/*<CardActions>*/}
+                        {/*</CardActions>*/}
                     </Collapse>
                 </Card>
-            {/*</Box>*/}
+
 
         </div>
     );

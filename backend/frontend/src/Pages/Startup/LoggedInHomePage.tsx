@@ -2,27 +2,19 @@ import React from 'react';
 import AppbarTop from "../../Components/Standalone/AppbarTop";
 import HomepageCards from "../../Components/LoggedInHomePageComponets/Cards/HomepageCards";
 import {makeStyles} from "@mui/styles";
+import {backgroundStyle, wrapperStyle} from "../../Styles";
+import {Box} from "@mui/material";
 
-const useStyles = makeStyles((theme?: any) => ({
-    wrapper: {
-        background: theme.palette.primary.dark,
-        color: theme.palette.text.primary,
-        height: '100vh',
-    },
-    cardHolder:{
-        padding: '5vh',
-        background: theme.palette.primary.dark
-    }
-}));
 
 const LoggedInHomePage = () => {
-    const classes = useStyles();
 
     return (
-        <div className={classes.wrapper}>
+        <Box sx={{...wrapperStyle, ...backgroundStyle}}>
             <AppbarTop />
-            <HomepageCards className={classes.cardHolder}/>
-        </div>
+            <Box sx={{p:'5vh'}}>
+                <HomepageCards />
+            </Box>
+        </Box>
     );
 };
 
