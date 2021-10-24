@@ -4,6 +4,7 @@ import {Box, Typography} from "@mui/material";
 import {toDate} from "date-fns";
 import {CalendarContext} from "../../../Context/CalendarContext";
 import MedicationDosageDetails from "../../Misc/MedicationDosageDetails";
+import {centeredTextStyle, titleStyle} from "../../../Styles";
 
 
 interface IDisplayDateDetailsProp {
@@ -19,8 +20,8 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
     //
 
     return (
-        <Box sx={{maxHeight: '70vh', overflow: 'auto'}}>
-
+        <Box sx={{height: '74vh', overflow: 'auto', padding:'3vh'}}>
+            <Typography variant={'h4'} sx={{...titleStyle, ...centeredTextStyle}}> Date Details</Typography>
             <Typography variant={'h5'}>
                 {date.toString()}
             </Typography>
@@ -28,7 +29,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             <Typography>
                 Medications Taken
             </Typography>
-            <Typography variant={'body2'} sx={{color: 'text.secondary'}}>
+            <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
                         return medicationDosage.hasBeenTaken ?
                             <>
@@ -50,7 +51,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             <Typography>
                 Medications to take
             </Typography>
-            <Typography variant={'body2'} sx={{color: 'text.secondary'}}>
+            <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
                         return !medicationDosage.hasBeenTaken && !medicationDosage.isLateToTakeMedication ?
                             <>
@@ -70,7 +71,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             <Typography>
                 Missed Medications
             </Typography>
-            <Typography variant={'body2'} sx={{color: 'text.secondary'}}>
+            <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
                         return medicationDosage.isLateToTakeMedication ?
                             <>
@@ -83,14 +84,14 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                                 <br/>
                                 {/*//TODO TRAVIS ADD PADDING*/}
                             </> :
-                            <p key={medicationDosage.prescriptionName + medicationDosage.time}></p>
+                            <Typography key={medicationDosage.prescriptionName + medicationDosage.time}></Typography>
                     }
                 )}
             </Typography>
             <Typography>
                 Medication to refill
             </Typography>
-            <Typography variant={'body2'} sx={{color: 'text.secondary'}}>
+            <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
                         return(<>
                             <MedicationDosageDetails

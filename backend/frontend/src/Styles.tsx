@@ -16,7 +16,7 @@ export const flex1ItemStyle = {
 }
 ////
 export const backgroundStyle = {
-    bgcolor: 'background.default'
+    bgcolor: 'primary.light'
 }
 ////
 export const rearPaperStyle = {

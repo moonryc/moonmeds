@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Box, Button} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {IMedicationDosagesSchema} from "../../../../Types/MedicationType";
 import {differenceInDays, format, parseISO} from "date-fns";
 import {render} from "react-dom";
@@ -26,9 +26,9 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
     const hasBeenTaken = () => {
         return (
             <>
-                <Box sx={{bgcolor: "green", width: "100%", height: 60, borderRadius: 2}}>
-                    {prefix + " was taken"}
-                    <Button variant={"contained"} sx={{ml: "85%"}}>Undo</Button>
+                <Box sx={{bgcolor: "green", width: "100%", height: 60, borderRadius: 2, position:'relative'}}>
+                    <Typography sx={{marginLeft:'1vh',fontSize:'20px', top:'22.5%',position:'absolute'}}>{prefix + " was taken"}</Typography>
+                    <Button variant={"contained"} sx={{position:'absolute', right: "2.5%", top:'20%'}}>Undo</Button>
                 </Box>
             </>
         )
@@ -37,9 +37,9 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
     const toBeTaken = () => {
         return (
             <>
-                <Box sx={{bgcolor: "orange", width: "100%", height: 60, borderRadius: 2}}>
-                    {prefix + " is scheduled to be taken at " + format(parseISO(props.medication.time.toString()), 'hh:mm aa').toString()}
-                    <Button variant={"contained"} sx={{ml: "80%"}}>Mark as Taken</Button>
+                <Box sx={{bgcolor: "orange", width: "100%", height: 60, borderRadius: 2, position:'relative'}}>
+                    <Typography sx={{marginLeft:'1vh',fontSize:'20px', top:'22.5%',position:'absolute'}}>{prefix + " is scheduled to be taken at " + format(parseISO(props.medication.time.toString()), 'hh:mm aa').toString()}</Typography>
+                    <Button variant={"contained"} sx={{position:'absolute', right: "2.5%", top:'20%'}}>Mark as Taken</Button>
                 </Box>
             </>
         )
@@ -49,10 +49,10 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
     const missedMedicationText = () => {
         return (
             <>
-                <Box sx={{bgcolor: "red", width: "100%", height: 60, borderRadius: 2}}>
-                    {prefix + " was missed at " + format(parseISO(props.medication.time.toString()), 'hh:mm aa').toString()}
+                <Box sx={{bgcolor: "red", width: "100%", height: 60, borderRadius: 2, position:'relative'}}>
+                    <Typography sx={{marginLeft:'1vh',fontSize:'20px', top:'22.5%',position:'absolute'}}>{prefix + " was missed at " + format(parseISO(props.medication.time.toString()), 'hh:mm aa').toString()}</Typography>
 
-                    <Button variant={"contained"} sx={{ml: "75%"}}>Mark as taken</Button>
+                    <Button variant={"contained"} sx={{position:'absolute', right: "2.5%", top:'20%'}}>Mark as taken</Button>
                 </Box>
             </>
         )
@@ -61,9 +61,9 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
     const refillReminder = () => {
         return (
             <>
-                <Box sx={{bgcolor: "blue", width: "100%", height: 60, borderRadius: 2}}>
-                    {prefix + " is ready for a refill in " + differenceInDays(new Date(props.medication.nextFillDay),new Date()) + " days"}
-                    {/*<Button variant={"contained"} sx={{ml: "75%"}}>Refill</Button>*/}
+                <Box sx={{bgcolor: "blue", width: "100%", height: 60, borderRadius: 2, position:'relative'}}>
+                    <Typography sx={{marginLeft:'1vh',fontSize:'20px', top:'22.5%',position:'absolute'}}>{prefix + " is ready for a refill in " + differenceInDays(new Date(props.medication.nextFillDay),new Date()) + " days"}</Typography>
+                    <Button variant={"contained"} sx={{position:'absolute', right: "2.5%", top:'20%'}}>Refill</Button>
                 </Box>
             </>
         )

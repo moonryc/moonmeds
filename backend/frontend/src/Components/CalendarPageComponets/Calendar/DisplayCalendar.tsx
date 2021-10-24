@@ -5,7 +5,8 @@ import subMonths from 'date-fns/subMonths'
 import addMonths from 'date-fns/addMonths'
 import CalendarHeader from "./CalendarHeader";
 import CalendarBody from "./CalendarBody";
-import {Box, Paper} from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
+import {centeredTextStyle} from "../../../Styles";
 
 const DisplayCalendar = () => {
 
@@ -50,7 +51,8 @@ const DisplayCalendar = () => {
 
     return (
 
-        <Box >
+        <Box sx={{minWidth:'400px', padding:'2.5vh',}}>
+            <Typography variant={'h4'} sx={centeredTextStyle}>Calendar</Typography>
             {/*this paper does not use frontPaperStyle because of the strict positioning*/}
             <Paper elevation={0} sx={{overflow:'auto', position:'relative', height: '65vh',paddingTop: '40px',}}>
             <CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/>

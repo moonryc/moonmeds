@@ -11,16 +11,14 @@ import isSameDay from 'date-fns/isSameDay'
 import {NotificationsContext} from "../../../Context/NotificationsContext";
 
 
-
-const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
-
+const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) => {
 
 
     //region Context
     /**
      * Context from Calendar and Medication
      */
-    const {setSelectedDay} = useContext(CalendarContext);
+    const {setSelectedDay, selectedDay} = useContext(CalendarContext);
     const {userMedicationDosages} = useContext(MedicationContext);
     //endregion
 
@@ -29,15 +27,16 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      * TODO: This is to be used for styling
      *
      */
-    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date,userMedicationDosages));
+    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
     const [calendarDayColor, setCalendarDayColor] = useState({
-                                                                        bgcolor: '#FFFFFF',
-                                                                        width: '45px',
-                                                                        height: '45px',
-                                                                        color: '#000000'});
-
-
-
+        bgcolor: 'primary.main',
+        width: '45px',
+        height: '45px',
+        color: '#000000',
+        border: 0,
+        borderRadius: '0%',
+        borderColor: 'primary.main'
+    });
 
 
     /**
@@ -47,7 +46,7 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
      */
     const handleOnDayClick = () => {
         setSelectedDay(props.date); //@ts-ignore
-        console.log(medicationDosagesDetails)
+        console.log(selectedDay)
 
     }
 
@@ -57,76 +56,93 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
         let isDayAFillday = isFillDay()
         let isMissed = isMissedDate()
 
-        if(isItToday){
-            setCalendarDayColor({bgcolor: '#00FFFF',
-                                        width: '45px',
-                                        height: '45px',
-                                        color: '#000000'})
+        if (isItToday) {
+            setCalendarDayColor({
+                bgcolor: "primary.main",
+                border: 1,
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                color: 'text.primary',
+                borderColor: "primary.light",
+
+
+
+            } as const)
             return
         }
 
-        if(isMissed){
+        if (isMissed) {
             setCalendarDayColor({
-                                    bgcolor: '#ff0000',
-                                    width: '45px',
-                                    height: '45px',
-                                    color: '#000000'
-                                })
+                bgcolor: 'primary.main',
+                width: "60px",
+                height: "60px",
+                color: '#ff0000',
+                border: 0,
+                borderRadius: '50%',
+                borderColor: 'primary.main'
+            })
             return
         }
 
 
-        if(isDayAFillday){
+        if (isDayAFillday) {
             setCalendarDayColor({
-                                    bgcolor: '#ffe800',
-                                    width: '45px',
-                                    height: '45px',
-                                    color: '#000000'
-                                })
+                bgcolor: 'primary.main',
+                width: "60px",
+                height: "60px",
+                color: '#ffe800',
+                border: 0,
+                borderRadius: '50%',
+                borderColor: 'primary.main'
+            })
             return
         }
 
         setCalendarDayColor({
-                                bgcolor: '#FFFFFF',
-                                width: '45px',
-                                height: '45px',
-                                color: '#000000'
-                            })
+            bgcolor: 'primary.main',
+            width: "60px",
+            height: "60px",
+            color: 'text.primary',
+            border: 0,
+            borderRadius: '50%',
+            borderColor: 'primary.main'
+        })
 
     }
+
 
 
     /**
      * tests if the componet represents today
      * @return boolean - true if it is today, false otherwise
      */
-    const isToday = ():boolean => {
-        console.log()
+    const isToday = (): boolean => {
         return isSameDay(new Date(props.date), new Date())
 
     }
 
-    const isFillDay= ():any => {
+    const isFillDay = (): any => {
 
-         if(medicationDosagesDetails != null){
-             for(let i in medicationDosagesDetails){//@ts-ignore
-                 if(isSameDay(new Date(medicationDosagesDetails[i].nextFillDay), new Date(props.date))){
-                     return true
-                 }
-                 //ts-ignore
-                 console.log(medicationDosagesDetails[0].nextFillDay)
-             }
-         }
+        if (medicationDosagesDetails != null) {
+            for (let i in medicationDosagesDetails) {//@ts-ignore
+                if (isSameDay(new Date(medicationDosagesDetails[i].nextFillDay), new Date(props.date))) {
+                    return true
+                }
+                //ts-ignore
+                console.log(medicationDosagesDetails[0].nextFillDay)
+            }
+        }
         console.log(new Date(props.date))
-             return false
+        return false
 
     }
 
-    const isMissedDate= ():any => {
+    const isMissedDate = (): any => {
 
-        if(medicationDosagesDetails != null){
-            for(let i in medicationDosagesDetails){
-                if(medicationDosagesDetails[i].isLateToTakeMedication) {
+        if (medicationDosagesDetails != null) {
+            for (let i in medicationDosagesDetails) {
+                if (medicationDosagesDetails[i].isLateToTakeMedication) {
                     return true
                 }
             }
@@ -135,27 +151,30 @@ const CalendarDay = (props: ICalendarDay & {isRenderedOnHomePage: boolean}) => {
     }
 
 
+
+
     /**
      * updates the local variable medicationDosageDetails when dosages change
      */
     useEffect(() => {
         // let answer = getDatesUserMedication()
-        setMedicationDosagesDetails( dosagesOnSpecifiedDay(props.date,userMedicationDosages))
-    }, [userMedicationDosages,props.date]);
+        setMedicationDosagesDetails(dosagesOnSpecifiedDay(props.date, userMedicationDosages))
+    }, [userMedicationDosages, props.date]);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         cssClassUpdater()
-    },[medicationDosagesDetails])
+    }, [medicationDosagesDetails])
 
     return (
-        <Box >
+        <Box>
             {/*if(props.date===today) color= cyan*/}
             {/*if(props.date===any fill date coming up) color= yellow*/}
             {/*if(props.date===any dose coming up) color= yellow*/}
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
-            <IconButton sx={calendarDayColor}
+            {/*@ts-ignore*/}
+            <IconButton sx={{...calendarDayColor, bgcolor: 'primary.main'/*isSameDay(new Date(props.date), new Date(selectedDay)) ? bgcolor : 'secondary.main',*/}}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>

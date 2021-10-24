@@ -95,5 +95,5 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         </Box>
     );
 };
-
+//todo  change calendar to flex to scale when screen gets smaller
 export default CalendarBody;
