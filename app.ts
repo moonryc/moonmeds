@@ -1,9 +1,5 @@
 //region Development
 
-
-
-import {updateMissedMedications} from "./Schemas/medicationDosages";
-
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
     console.log('dotenv loaded')
@@ -13,14 +9,13 @@ if (process.env.NODE_ENV !== 'production') {
 //region Imports
 
 import express = require('express');
-import createError = require('http-errors');
 import path = require('path');
-import cookieParser =require('cookie-parser');
+import cookieParser = require('cookie-parser');
 import logger = require('morgan');
-import authRouter from './routes/auth';
-import medicationRouter from "./routes/PrivateRoutes/medication";
-import personsRouter from "./routes/PrivateRoutes/persons";
-
+import createError = require('http-errors');
+import indexRouter from "./routes";
+import passport from "./passport/setup";
+import cors = require('cors');
 //endregion
 
 const app = express();
@@ -32,81 +27,48 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//region Middleware
 
-//region Middleware imports
-//TODO MONGOOSE TO IMPORT
-const mongoose = require("mongoose");
-import session = require('cookie-session');
-import helmet = require('helmet');
-import hpp = require('hpp');
+//TODO UNDERSTAND
+// import helmet = require('helmet');
+// import hpp = require('hpp');
 // import csurf = require('csurf');
-import {schedule} from "node-cron"
-import passport from "./passport/setup";
-import rateLimit = require('express-rate-limit');
-//endregion
 
-//region Mongoose
-let url = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.pdwgv.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
-const connection = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
-const collections = Object.keys(mongoose.connection.collections);
-console.log(collections);
+//region middleware
 
-const db = mongoose.connection;
+require("./middleware/database")
+// require("./middleware/requestLimiter")
+// require('./middleware/timedMiddleware/markMissedMedications')
+// require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
+//Pass global passport object into the configuration function
+require('./middleware/passport')(passport)
 
-//endregion
 
-//region update missed medications
-
-//runs task every minute
-schedule('* * * * *', async ()=>{
-    console.log("Running scheduled task")
-    let updateResponse = await updateMissedMedications()
-    if(typeof updateResponse  != typeof ""){
-        updateResponse = JSON.stringify(updateResponse)
-        console.log(updateResponse)
-    }else{
-        console.log(updateResponse)
-    }
-
-});
-
-//endregion
-
+//TODO remeber what this does
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://www.domainA.com');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
     res.setHeader(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
     next();
 });
-app.options('*', (req, res) => {
-    res.json({
-        status: 'OK'
-    });
-});
+// app.options('*', (req, res) => {
+//     res.json({
+//         status: 'OK'
+//     });
+// });
 
-//region cookie
-/* Set Cookie Settings */
-app.use(
-    session({
-        name: 'MoonMedsCookie',
-        secret: process.env.COOKIE_SECRET,
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-    })
-);
-//endregion
+
 
 //region Security
-/* Set Security Configs */
-app.use(helmet());
-app.use(hpp());
+// /* Set Security Configs */
+// app.use(helmet());
+// app.use(hpp());
 // app.use(csurf({cookie:true}));
 //endregion
 
@@ -115,8 +77,6 @@ app.use(passport.initialize());
 
 //#region app.use(cors)
 //cors to allow cross origin resource sharing
-import cors = require('cors');
-
 app.use(
     cors({
         origin: 'http://localhost:3000',
@@ -124,36 +84,50 @@ app.use(
     }));
 //#endregion
 
-//TODO UNDERSTAND
-// region limiter
-/* Rate Limiter */
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-});
-app.use(limiter);
-//endregion
-
-//endregion
-
 //region routes
-app.use('/medication', medicationRouter);
-app.use('/persons', personsRouter);
-app.use('/auth', authRouter);
+app.use('/',indexRouter)
+
 //endregion
+
+
+//endregion
+
+//region Host the React Build
+
+// if (process.env.NODE_ENV != "development") {
+// // Pick up React index.html file
+//     app.use(
+//         express.static(path.join(__dirname, "/build"))
+//     );
+//
+//     app.get("*", (req, res) => {
+//         res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
+//             .sendFile(
+//                 path.join(__dirname, "/build/index.html")
+//             );
+//     })
+//
+// }
+//endregion
+
+app.get('*', function(req, res){
+    res.status(404).json({error:true,mesg:"*"});
+});
+
 
 //region Views
 
 //region 404 Catcher
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+    console.log(req)
     next(createError(404));
 });
 //endregion
 
-//region ERROR HANDLER
-// error handler
-app.use(function (err:any, req:any, res:any, next:any) {
+// //region ERROR HANDLER
+// // error handler
+app.use(function (err: any, req: any, res: any, next: any) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -162,7 +136,7 @@ app.use(function (err:any, req:any, res:any, next:any) {
     res.status(err.status || 500);
     res.render('error');
 });
-//endregion
+// //endregion
 
 //endregion
 
@@ -170,4 +144,3 @@ const port = 3001
 app.listen(port, () => console.log("Server listening on port", port))
 
 module.exports = app;
-

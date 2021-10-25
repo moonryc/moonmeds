@@ -15,8 +15,8 @@ const DateDetailsMedicationsTaken = (props: ICalendarDay) => {
             {
                 selectedDayDetails.map(medicationDosage => {
                         return medicationDosage.hasBeenTaken ?
-                            <p key={medicationDosage._id}>medicationDosage.prescriptionName +":"+ medicationDosage.amount+"
-                                has been taken"</p> : <p key={medicationDosage.prescriptionName+medicationDosage.time}></p>
+                            <p key={medicationDosage.dosageId}>medicationDosage.prescriptionName +":"+ medicationDosage.amount+"
+                                has been taken"</p> : <p key={medicationDosage.prescriptionName+medicationDosage.timeToTake}></p>
                     }
                 )}
         </div>

@@ -1,12 +1,12 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {IMedicationDosagesSchema} from "../../../Types/MedicationType";
+import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
 import {dosagesOnSpecifiedDay} from "../Services/MedicationServices";
 import {MedicationContext} from "./MedicationContext";
 
 export interface ICalendarContextState {
     selectedDay:Date,
     setSelectedDay:(state:Date)=>void
-    selectedDayDetails:IMedicationDosagesSchema[]
+    selectedDayDetails:IMedicationDosagesBase[]
 }
 
 export const CalendarContext = createContext<ICalendarContextState>({
@@ -19,7 +19,7 @@ export const CalendarContainer = (props:any)=>{
     const {children} = props;
     const {userMedicationDosages} = useContext(MedicationContext);
     const [selectedDay, setSelectedDay] = useState<Date>(new Date());
-    const [selectedDayDetails, setSelectedDayDetails] = useState<IMedicationDosagesSchema[]|[]>([]);
+    const [selectedDayDetails, setSelectedDayDetails] = useState<IMedicationDosagesBase[]|[]>([]);
 
     useEffect(() => {
         setSelectedDayDetails(dosagesOnSpecifiedDay(selectedDay,userMedicationDosages))

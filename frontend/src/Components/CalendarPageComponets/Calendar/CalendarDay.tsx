@@ -5,7 +5,7 @@ import {CalendarContext} from "../../../Context/CalendarContext";
 import {format, getDate, getDay, getMonth, getYear, isBefore, isEqual, parseISO} from "date-fns";
 import {makeStyles} from "@mui/styles";
 import {MedicationContext} from "../../../Context/MedicationContext";
-import {IMedicationDosagesSchema} from "../../../../../Types/MedicationType";
+import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
 import {dosagesOnSpecifiedDay} from "../../../Services/MedicationServices";
 import isSameDay from 'date-fns/isSameDay'
 import {NotificationsContext} from "../../../Context/NotificationsContext";
@@ -27,7 +27,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
      * TODO: This is to be used for styling
      *
      */
-    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesSchema[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
+    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesBase[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
     const [calendarDayColor, setCalendarDayColor] = useState({
         bgcolor: 'primary.main',
         width: '45px',
@@ -133,7 +133,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
                 console.log(medicationDosagesDetails[0].nextFillDay)
             }
         }
-        console.log(new Date(props.date))
+        // console.log(new Date(props.date))
         return false
 
     }
@@ -142,7 +142,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
 
         if (medicationDosagesDetails != null) {
             for (let i in medicationDosagesDetails) {
-                if (medicationDosagesDetails[i].isLateToTakeMedication) {
+                if (medicationDosagesDetails[i].hasBeenMissed) {
                     return true
                 }
             }

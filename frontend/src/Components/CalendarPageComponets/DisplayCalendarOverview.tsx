@@ -61,7 +61,7 @@ const DisplayCalendarOverview = () => {
 
     //region Context
 
-    const {loadingBar, fetchCalendarOverviewPage} = useContext(ApiContext);
+    const {loadingBar, fetchMedicationsAndDosagesAndPersons} = useContext(ApiContext);
     const {selectedDay} = useContext(CalendarContext);
 
     //endregion
@@ -105,7 +105,7 @@ const DisplayCalendarOverview = () => {
     //endregion
 
     useEffect(()=>{
-        fetchCalendarOverviewPage()
+        fetchMedicationsAndDosagesAndPersons()
     },[])
 
 
@@ -154,11 +154,11 @@ const DisplayCalendarOverview = () => {
                                 {/*NEW MEDICATION CARD*/}
                                 <TabPanel value={value} index={2} dir={theme.direction}>
                                     <MedicationCard
-                                        _id={''} isNewCard={true}
+                                        userId={''} medicationId={""} isNewCard={true}
                                         prescriptionName={''} prescriptionDosage={0}
-                                        startDay={new Date()} nextFillDay={new Date()}
+                                        nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
-                                        medicationOwner={""}/>
+                                        medicationOwner={""} endDate={new Date()} inDefinite={false}/>
                                 </TabPanel>
                             </SwipeableViews>
                         </Box>

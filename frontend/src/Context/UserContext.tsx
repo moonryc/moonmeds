@@ -2,20 +2,20 @@ import React, {createContext, useState,} from 'react'
 
 
 export interface IUserContextState {
-    loggedIn: boolean,
-    setLoggedIn: (state: boolean) => void,
-    userId: string,
-    setUserId: (state: string) => void,
+    loggedIn: boolean|null,
+    setLoggedIn: (state: boolean|null) => void,
+
+
     usersPeople:string[],
     setUsersPeople:(state:string[])=>void,
 }
 
 
 export const UserContext = createContext<IUserContextState>({
-    loggedIn: false,
-    setLoggedIn: (state: boolean) => {},
-    userId: 'test',
-    setUserId: (state: string) => '',
+    loggedIn: null,
+    setLoggedIn: (state: boolean|null) => {},
+
+
     usersPeople:["placeholder"],
     setUsersPeople:(state:string[])=>{},
 
@@ -23,8 +23,8 @@ export const UserContext = createContext<IUserContextState>({
 
 export const UserContainer = (props: any) => {
     const {children} = props;
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string>('test');
+    const [loggedIn, setLoggedIn] = useState<boolean|null>(null);
+
     const [usersPeople, setUsersPeople] = useState<string[]>(["placeholder"]);
 
 
@@ -33,8 +33,6 @@ export const UserContainer = (props: any) => {
         <UserContext.Provider value={{
             loggedIn,
             setLoggedIn,
-            userId,
-            setUserId,
             usersPeople,setUsersPeople
         }}>
             {children}

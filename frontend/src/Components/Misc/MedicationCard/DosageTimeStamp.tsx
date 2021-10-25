@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material";
 import TimePickerComponent from "../TimePickerComponent";
-import {IDosagesDetails} from "../../../../../Types/MedicationType";
+import {IDosagesDetails} from "../../../../../Types/MedicationTypes";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import {makeStyles} from "@mui/styles";
 import {centeredTextStyle, switchStyle} from "../../../Styles";
@@ -104,8 +104,8 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
      * The dosage details for one specific dosage in a medication
      */
     const [dosageDetails, setDosageDetails] = useState<IDosagesDetails>(props.dosageDetails);
-    //const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customDays.startDate);
-    //const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customDays.endDate);
+    //const [startDate, setStartDate] = useState<Date>(props.dosageDetails.customWeekDays.startDate);
+    //const [endDate, setEndDate] = useState<Date>(props.dosageDetails.customWeekDays.endDate);
 
     //endregion
 
@@ -128,11 +128,11 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
     const handleDateChange = (newValue: Date | null) => {
         if (newValue == null) {
             let temp = {...dosageDetails}
-            temp.selectedMonthly = new Date()
+            temp.customOnceAMonthDate = new Date()
             setDosageDetails(temp)
         } else {
             let temp = {...dosageDetails}
-            temp.selectedMonthly = newValue
+            temp.customOnceAMonthDate = newValue
             setDosageDetails(temp)
         }
     };
@@ -150,8 +150,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         let temp = {...dosageDetails}
         temp.isDaily = !temp.isDaily
         temp.isWeekly = false
-        temp.isMonthly = false
-        temp.isCustom = false
+        temp.isOnceAMonth = false
         setDosageDetails(temp)
 
     }
@@ -164,8 +163,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         let temp = {...dosageDetails}
         temp.isDaily = false
         temp.isWeekly = !temp.isWeekly
-        temp.isMonthly = false
-        temp.isCustom = false
+        temp.isOnceAMonth = false
         setDosageDetails(temp)
     }
 
@@ -177,23 +175,11 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
         let temp = {...dosageDetails}
         temp.isDaily = false
         temp.isWeekly = false
-        temp.isMonthly = !temp.isMonthly
-        temp.isCustom = false
+        temp.isOnceAMonth = !temp.isOnceAMonth
         setDosageDetails(temp)
     }
 
-    /**
-     * updates the dosageDetails |
-     * toggles the custom option on/off and turns off weekly, monthly, and daily
-     */
-    const handleCustomToggle = () => {
-        let temp = {...dosageDetails}
-        temp.isDaily = false
-        temp.isWeekly = false
-        temp.isMonthly = false
-        temp.isCustom = !temp.isCustom
-        setDosageDetails(temp)
-    }
+
 
 
     //TODO(Moon) fix typescript
@@ -218,31 +204,31 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
 
         switch (day) {
             case "monday":
-                tempMedicationDetails.customDays.monday = !dosageDetails.customDays.monday
+                tempMedicationDetails.customWeekDays.monday = !dosageDetails.customWeekDays.monday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "tuesday":
-                tempMedicationDetails.customDays.tuesday = !dosageDetails.customDays.tuesday
+                tempMedicationDetails.customWeekDays.tuesday = !dosageDetails.customWeekDays.tuesday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "wednesday":
-                tempMedicationDetails.customDays.wednesday = !dosageDetails.customDays.wednesday
+                tempMedicationDetails.customWeekDays.wednesday = !dosageDetails.customWeekDays.wednesday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "thursday":
-                tempMedicationDetails.customDays.thursday = !dosageDetails.customDays.thursday
+                tempMedicationDetails.customWeekDays.thursday = !dosageDetails.customWeekDays.thursday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "friday":
-                tempMedicationDetails.customDays.friday = !dosageDetails.customDays.friday
+                tempMedicationDetails.customWeekDays.friday = !dosageDetails.customWeekDays.friday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "saturday":
-                tempMedicationDetails.customDays.saturday = !dosageDetails.customDays.saturday
+                tempMedicationDetails.customWeekDays.saturday = !dosageDetails.customWeekDays.saturday
                 setDosageDetails(tempMedicationDetails);
                 break;
             case "sunday":
-                tempMedicationDetails.customDays.sunday = !dosageDetails.customDays.sunday
+                tempMedicationDetails.customWeekDays.sunday = !dosageDetails.customWeekDays.sunday
                 setDosageDetails(tempMedicationDetails);
                 break;
         }
@@ -300,11 +286,8 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                 <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isWeekly}
                                            onClick={() => handleWeeklyToggle()}/>
                 </Grid>
-                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isMonthly}
+                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isOnceAMonth}
                                            onClick={() => handleMonthlyToggle()}/>
-                </Grid>
-                <Grid item xs={3}> <Switch sx={switchStyle} checked={dosageDetails.isCustom}
-                                           onClick={() => handleCustomToggle()}/>
                 </Grid>
 
             </Grid>
@@ -314,49 +297,49 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                         <br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.monday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.monday}
                                         onChange={() => handleCheckbox("monday")} name="monday"/>
                             }
                             label="Monday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.tuesday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.tuesday}
                                         onClick={() => handleCheckbox("tuesday")} name="tuesday"/>
                             }
                             label="Tuesday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.wednesday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.wednesday}
                                         onClick={() => handleCheckbox("wednesday")} name="wednesday"/>
                             }
                             label="Wednesday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.thursday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.thursday}
                                         onClick={() => handleCheckbox("thursday")} name="thursday"/>
                             }
                             label="Thursday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.friday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.friday}
                                         onClick={() => handleCheckbox("friday")} name="friday"/>
                             }
                             label="Friday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.saturday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.saturday}
                                         onClick={() => handleCheckbox("saturday")} name="saturday"/>
                             }
                             label="Saturday"
                         /><br/>
                         <FormControlLabel
                             control={
-                                <Switch sx={switchStyle} checked={dosageDetails.customDays.sunday}
+                                <Switch sx={switchStyle} checked={dosageDetails.customWeekDays.sunday}
                                         onClick={() => handleCheckbox("sunday")} name="sunday"/>
                             }
                             label="Sunday"
@@ -364,7 +347,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                     </FormGroup>
                 </FormControl>
             </Collapse>
-            <Collapse in={dosageDetails.isMonthly}>
+            <Collapse in={dosageDetails.isOnceAMonth}>
                 <br/>
 
                 <Grid container spacing={0}>
@@ -372,7 +355,7 @@ const DosageTimeStamp = (props: IDosageTimeStampProps) => {
                         <MobileDatePicker
                             label="Start Date"
                             inputFormat="MM/dd/yyyy"
-                            value={dosageDetails.selectedMonthly}
+                            value={dosageDetails.customOnceAMonthDate}
                             onChange={handleDateChange}
                             renderInput={(params) => <TextField {...params} />}
                         />

@@ -12,11 +12,11 @@ import {
 import {Autocomplete} from "@mui/lab";
 import {UserContext} from "../../../Context/UserContext";
 import {ApiContext} from "../../../Context/ApiContext";
-import {IMedication} from "../../../../../Types/MedicationType";
+import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 
 
 interface IMedicationCardOwnerProps {
-    medication: IMedication,
+    medication: IMedicationBase,
 
     updateMedicationDetails(prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number, medicationOwner: string): void
 }
@@ -27,7 +27,7 @@ const filter = createFilterOptions<string>()
 const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const {usersPeople} = useContext(UserContext);
-    const {postPerson, fetchPersons} = useContext(ApiContext);
+    const {putAddPerson,fetchPersons} = useContext(ApiContext);
 
 
     const [selectedUser, setSelectedUser] = useState<string | null>(props.medication.medicationOwner);
@@ -36,11 +36,11 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const [newUserDialogValue, setNewUserDialogValue] = useState("");
 
-
     const handleSubmitNewUser = () => {
         let temp = usersPeople
         temp.push(newUserDialogValue)
-        postPerson(temp)
+        //TODO make this functional
+        // putAddPerson(temp)
         fetchPersons()
         handleCloseDialog()
     }

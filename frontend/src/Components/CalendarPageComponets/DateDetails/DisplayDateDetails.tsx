@@ -42,7 +42,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
 
                                 <br/>
                             </> :
-                            <p key={medicationDosage.prescriptionName + medicationDosage.time}></p>
+                            <p key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></p>
                     }
                 )}
             </Typography>
@@ -53,7 +53,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             </Typography>
             <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
-                        return !medicationDosage.hasBeenTaken && !medicationDosage.isLateToTakeMedication ?
+                        return !medicationDosage.hasBeenTaken && !medicationDosage.hasBeenMissed ?
                             <>
                                 <MedicationDosageDetails
                                     medication={medicationDosage}
@@ -64,7 +64,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                                 <br/>
                                 {/*//TODO TRAVIS ADD PADDING*/}
                             </> :
-                            <p key={medicationDosage.prescriptionName + medicationDosage.time}></p>
+                            <p key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></p>
                     }
                 )}
             </Typography>
@@ -73,7 +73,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             </Typography>
             <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
-                        return medicationDosage.isLateToTakeMedication ?
+                        return medicationDosage.hasBeenMissed ?
                             <>
                                 <MedicationDosageDetails
                                     medication={medicationDosage}
@@ -84,7 +84,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                                 <br/>
                                 {/*//TODO TRAVIS ADD PADDING*/}
                             </> :
-                            <Typography key={medicationDosage.prescriptionName + medicationDosage.time}></Typography>
+                            <Typography key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></Typography>
                     }
                 )}
             </Typography>
