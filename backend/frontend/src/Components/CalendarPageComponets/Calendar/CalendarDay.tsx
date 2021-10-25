@@ -149,7 +149,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
         }
         return false
     }
-
+    const isSelectedDay = isSameDay(new Date(props.date), new Date(selectedDay))?{bgcolor:'primary.light'}:{}
 
 
 
@@ -174,7 +174,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
             {/*@ts-ignore*/}
-            <IconButton sx={{...calendarDayColor, bgcolor: 'primary.main'/*isSameDay(new Date(props.date), new Date(selectedDay)) ? bgcolor : 'secondary.main',*/}}
+            <IconButton sx={{...calendarDayColor, ...isSelectedDay}}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>
