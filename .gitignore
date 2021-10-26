@@ -4,3 +4,5 @@
 /node_modules
 /.env
 /.idea/
+/cryptography/id_rsa_priv.pem
+/cryptography/id_rsa_pub.pem

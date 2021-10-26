@@ -7,7 +7,7 @@ import {ApiContext} from "../../Context/ApiContext";
 const ManagePeople = () => {
 
     const {usersPeople} = useContext(UserContext);
-    const {putDeleteSelectedPerson,postPerson} = useContext(ApiContext);
+    const {putRemovePerson,putAddPerson} = useContext(ApiContext);
 
 
     const [newName, setNewName] = useState<string>("");
@@ -21,11 +21,13 @@ const ManagePeople = () => {
         let tempArrayOfNames = usersPeople
         let indexToBeRemoved = tempArrayOfNames.indexOf(name)
         tempArrayOfNames.splice(indexToBeRemoved,1)
-        putDeleteSelectedPerson(tempArrayOfNames)
+        //TODO MAKE FUNCTIONAL
+        // putRemovePerson(tempArrayOfNames)
     }
 
     const addPerson = (name:string):void => {
-        postPerson([...usersPeople,name])
+        //TODO MAKE FUNCTIONAL
+        // putAddPerson([...usersPeople,name])
         // setNewName("")
     }
 

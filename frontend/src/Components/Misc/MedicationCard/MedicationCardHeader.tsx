@@ -4,7 +4,7 @@ import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardHeader from "@mui/material/CardHeader";
-import {IMedication} from "../../../../../Types/MedicationType";
+import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {Chip} from "@mui/material";
 import {Face} from "@mui/icons-material";
 
@@ -12,19 +12,19 @@ import {Face} from "@mui/icons-material";
  *
  * @property isNewCard - boolean
  * @property isEditing - boolean,
- * @property medication - IMedication
+ * @property medication - IMedicationBase
  * @property handleIsShowingDetailsClick - ()=>void
  */
 interface IMedicationCardHeaderProps {
     isNewCard: boolean
     isEditing: boolean,
-    medication: IMedication
+    medication: IMedicationBase
     handleIsShowingDetailsClick:()=>void
 }
 
 /**
  *
- * @param props - {isNewCard: boolean, isEditing: boolean, medication: IMedication, handleIsShowingDetailsClick: ()=>void}
+ * @param props - {isNewCard: boolean, isEditing: boolean, medication: IMedicationBase, handleIsShowingDetailsClick: ()=>void}
  * @constructor
  */
 const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {

@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Divider, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {IMedication} from "../../../../../Types/MedicationType";
+import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import MedicationCardOwner from "./MedicationCardOwner";
-import medication from "../../../../../routes/PrivateRoutes/medication";
+
 
 /**
  *
- * @property medication - IMedication,
+ * @property medication - IMedicationBase,
  * @property updateMedicationDetails( name:string,nextFillDate:Date,userNotes:string,prescriptionDosage:number) - void
  */
 interface IMedicationCardEditDetails {
-    medication: IMedication,
+    medication: IMedicationBase,
 
     updateMedicationDetails(prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string): void
 }
@@ -20,7 +20,7 @@ interface IMedicationCardEditDetails {
 //*TODO(Spotexx): theming*/}
 /**
  * For editing the medication card prescription name, prescription dosage, next refill date, and notes
- * @param props - {medication:IMedication, updateMedicationDetails( name:string,nextFillDate:Date,userNotes:string,prescriptionDosage:number)}
+ * @param props - {medication:IMedicationBase, updateMedicationDetails( name:string,nextFillDate:Date,userNotes:string,prescriptionDosage:number)}
  * @constructor
  */
 const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {

@@ -9,7 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import MedicationCardDetails from "./MedicationCardDetails";
 import MedicationCardEditDetails from "./MedicationCardEditDetails";
 import MedicationCardHeader from "./MedicationCardHeader";
-import {IDosagesDetails, IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+import {IDosagesDetails, IMedicationBase} from "../../../../../Types/MedicationTypes";
 import SendIcon from '@mui/icons-material/Send';
 import {ApiContext} from "../../../Context/ApiContext";
 import {NotificationsContext} from "../../../Context/NotificationsContext";
@@ -25,7 +25,7 @@ import {NotificationsContext} from "../../../Context/NotificationsContext";
  * @property dosages - IDosagesDetails[],
  * @property userNotes - string,
  */
-export interface IMedicationCardProps extends IMedicationFrontEnd {
+export interface IMedicationCardProps extends IMedicationBase {
     isNewCard: boolean,
 
 }
@@ -45,7 +45,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * Api context for creating and updating medications
      * Notification context for creating a new notification
      */
-    const {postNewMedication, submitUpdatedMedication} = useContext(ApiContext);
+    const {putNewMedication, putUpdateExistingMedication} = useContext(ApiContext);
     const {newNotification} = useContext(NotificationsContext);
     //endregion
 
@@ -69,12 +69,15 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * this property is changed when editing, but if handleDiscardClick() is used it will revert to its original state
      * This property is submitted whole when updating or submitting a new medication
      */
-    const [medicationDetails, setMedicationDetails] = useState<IMedicationFrontEnd>({
-            _id: props._id,
+    const [medicationDetails, setMedicationDetails] = useState<IMedicationBase>({
+
+            userId: props.userId,
+            medicationId: props.medicationId,
+            endDate: props.endDate,
+            inDefinite: props.inDefinite,
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
-            startDay: props.startDay,
-            medicationOwner:props.medicationOwner,
+            medicationOwner: props.medicationOwner,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,
             userNotes: props.userNotes
@@ -104,7 +107,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * @param prescriptionDosage - number
      * @param medicationOwner
      */
-    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string) => {
+    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number, medicationOwner: string) => {
         const tempMedicationDetails = medicationDetails
         tempMedicationDetails.prescriptionName = prescriptionName
         tempMedicationDetails.nextFillDay = nextFilledDate
@@ -138,11 +141,13 @@ const MedicationCard = (props: IMedicationCardProps) => {
      */
     const handleDiscardClick = () => {
         setMedicationDetails({
-            _id: props._id,
+            medicationId: props.medicationId,
+            userId: props.userId,
             prescriptionName: props.prescriptionName,
             prescriptionDosage: props.prescriptionDosage,
             medicationOwner: props.medicationOwner,
-            startDay: props.startDay,
+            endDate: props.endDate,
+            inDefinite: props.inDefinite,
             nextFillDay: props.nextFillDay,
             dosages: props.dosages,
             userNotes: props.userNotes
@@ -195,7 +200,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
     const submitNewMedication = async () => {
 
         if (!handleNullChecker()) {
-            await postNewMedication(medicationDetails)
+            await putNewMedication(medicationDetails)
 
         }
     };
@@ -204,10 +209,10 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * Updates the selected medication as long as nothing was left null
      * @param medicationDetails
      */
-    const updatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
+    const updatedMedication = async (medicationDetails: IMedicationBase) => {
         if (!handleNullChecker()) {
             setIsEditing(false)
-            await submitUpdatedMedication(medicationDetails)
+            await putUpdateExistingMedication(medicationDetails)
         }
     };
 

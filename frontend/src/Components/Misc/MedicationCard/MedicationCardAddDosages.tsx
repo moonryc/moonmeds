@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import DosageTimeStamp from "./DosageTimeStamp";
 import {Button, Typography} from "@mui/material";
-import {IDosagesDetails, IMedication} from "../../../../../Types/MedicationType";
+import {IDosagesDetails, IMedicationBase} from "../../../../../Types/MedicationTypes";
 
 
 /**
- * @property medication - IMedication
+ * @property medication - IMedicationBase
  * @property isNewCard - boolean,
  * @property updateMedicationDosages(listOfDosages: IDosagesDetails[]) - void
  */
 export interface IMedicationCardAddDosagesProps {
-    medication: IMedication
+    medication: IMedicationBase
     isNewCard:boolean,
     updateMedicationDosages(listOfDosages: IDosagesDetails[]): void
 }
@@ -18,7 +18,7 @@ export interface IMedicationCardAddDosagesProps {
 ///*TODO(Spotexx): theming*/
 /**
  * Creates and deletes medication dosages, this component is only displayed when the medication is being edited/isNewCard is true
- * @param props - {medication: IMedication, isNewCard:boolean,updateMedicationDosages(listOfDosages:IDosagesDetails[]):void}
+ * @param props - {medication: IMedicationBase, isNewCard:boolean,updateMedicationDosages(listOfDosages:IDosagesDetails[]):void}
  * @constructor
  */
 const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
@@ -56,12 +56,9 @@ const MedicationCardAddDosages = (props: IMedicationCardAddDosagesProps) => {
             time: new Date(),
             isDaily: false,
             isWeekly: false,
-            isMonthly: false,
-            selectedMonthly:new Date(),
-            isCustom: false,
-            customDays: {
-                startDate: new Date(),
-                endDate: new Date(),
+            isOnceAMonth: false,
+            customOnceAMonthDate:new Date(),
+            customWeekDays: {
                 monday: false,
                 tuesday: false,
                 wednesday: false,

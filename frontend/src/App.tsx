@@ -10,32 +10,44 @@ import UserAccountPage from "./Pages/UserAccountPage";
 import NotificationsParent from "./Components/Misc/Notifications/NotificationsParent";
 import {ApiContext} from "./Context/ApiContext";
 import MainLoggedInPage from "./Pages/MainLoggedInPage";
+import LoginPage from "./Pages/LoginPage";
+import {reactLocalStorage} from "reactjs-localstorage";
 
 
 function App() {
 
-    const { loggedIn} = useContext<any>(UserContext);
-    const { checkIfLoggedIn} = useContext<any>(ApiContext);
+    const {loggedIn,setLoggedIn} = useContext<any>(UserContext);
+    const {checkIfJWTTokenIsValid} = useContext<any>(ApiContext);
 
     /**
      * Travis so help me god if you remove the [] on this useEffect
      * for real though the empty array is needed because this makes it only render on the initial webpage load
      * otheriwse it will run over and over and over causeing issues
      */
-    useEffect(()=> {
-        checkIfLoggedIn();
-    },[])
+    useEffect(() => {
+        if(reactLocalStorage.get("JWTToken") !=null){
+
+        checkIfJWTTokenIsValid();
+        }else{
+            setLoggedIn(false)
+        }
+
+    }, [])
     //Travis see comment above
 
     return (
-    <div >
-        <Route exact path="/" component={loggedIn? LoggedInHomePage : Homepage} />
-        <Route exact path="/CalendarOverview" component={loggedIn? CalendarOverViewPage: Homepage} />
-        <Route exact path="/Err" component={ErrorPage} />
-        <Route exact path="/MedicationPage" component={loggedIn? LoggedInHomePage : Homepage} />
-        <Route exact path="/UserAccount" component={loggedIn? MainLoggedInPage: Homepage } />
-        <NotificationsParent/>
-    </div>
+        <div>
+            {loggedIn == null ? <></> : <>
+                <Route exact path="/" component={loggedIn ? LoggedInHomePage : Homepage}/>
+                <Route exact path="/CalendarOverview" component={loggedIn ? CalendarOverViewPage : Homepage}/>
+                <Route exact path="/Err" component={ErrorPage}/>
+                <Route exact path="/MedicationPage" component={loggedIn ? LoggedInHomePage : Homepage}/>
+                <Route exact path="/UserAccount" component={loggedIn ? MainLoggedInPage : Homepage}/>
+                <NotificationsParent/>
+                <LoginPage/>
+            </>
+            }
+        </div>
 
     )
 

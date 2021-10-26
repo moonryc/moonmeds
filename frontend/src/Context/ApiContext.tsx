@@ -1,9 +1,11 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
+import { IMedicationBase} from "../../../Types/MedicationTypes";
+import {IMedicationDosagesBase } from "../../../Types/MedicationDosagesTypes";
 import {MedicationContext} from "./MedicationContext";
-import {IBackendResponse, ILoginResponse} from "../../../Types/BackendResponseType";
 import {NotificationsContext} from "./NotificationsContext";
 import {UserContext} from "./UserContext";
+import {reactLocalStorage} from 'reactjs-localstorage';
+import {IPersonNameAndColor} from "../../../Types/UserTypes";
 
 export interface IApiContextState {
     numberOfCurrentApiCalls: number
@@ -12,20 +14,17 @@ export interface IApiContextState {
     setLoadingBar: (state: boolean) => void
 
 
-    //apiCalls
-    fetchPersons: () => void,
-    checkIfLoggedIn: () => void,
-    fetchUserMedications: () => void,
-    fetchUserMedicationsDosages: () => void
-    postNewMedication: (medicationDetails: IMedicationFrontEnd) => void
-    postPerson: (listOfNames:string[]) => void
-    putDeleteSelectedMedications: (medicationFrontEndArray: IMedicationFrontEnd[]) => void
-    putDeleteSelectedPerson: (listOfDesiredNames:string[]) => void
-    putUpdateMedicationDosageTaken: (medicationDosage: IMedicationDosagesSchema) => void,
-    putUpdateMedicationDosageRefill:(medicationDosage:IMedicationDosagesSchema, newRefillDate:Date) =>void
-    submitUpdatedMedication: (medicationDetails: IMedicationFrontEnd) => void
-
-    fetchCalendarOverviewPage:()=>void
+    checkIfJWTTokenIsValid:()=>void,
+    postLogin:(userName:string,password:string)=>void,
+    postRegister:(userName:string,password:string,emailAddress:string)=>void,
+    fetchMedicationsAndDosagesAndPersons:()=>void,
+    fetchPersons:()=>void,
+    putNewMedication:(medicationObject:IMedicationBase)=>void,
+    putUpdateExistingMedication:(medicationObject:IMedicationBase)=>void,
+    putDeleteSelectedMedications:(medicationIdArray: string[],removePastMedicationDosages:boolean)=>void,
+    putUpdateMedicationDosage:(dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date)=>void,
+    putAddPerson:(newPerson:IPersonNameAndColor)=>void,
+    putRemovePerson:(removePerson:IPersonNameAndColor)=>void,
 }
 
 export const ApiContext = createContext<IApiContextState>({
@@ -36,28 +35,25 @@ export const ApiContext = createContext<IApiContextState>({
     setLoadingBar: (state: boolean) => {
     },
 
+    checkIfJWTTokenIsValid:async ()=>Promise,
+    postLogin:async (userName:string,password:string)=>Promise,
+    postRegister:async (userName:string,password:string,emailAddress:string)=>Promise,
+    fetchMedicationsAndDosagesAndPersons:async ()=>Promise,
+    fetchPersons:async ()=>Promise,
+    putNewMedication:async (medicationObject:IMedicationBase)=>Promise,
+    putUpdateExistingMedication:async (medicationObject:IMedicationBase)=>Promise,
+    putDeleteSelectedMedications:async (medicationIdArray: string[],removePastMedicationDosages:boolean)=>Promise,
+    putUpdateMedicationDosage:async (dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date)=>Promise,
+    putAddPerson:async (newPerson:IPersonNameAndColor)=>Promise,
+    putRemovePerson:async (removePerson:IPersonNameAndColor)=>Promise,
 
-    //apiCalls
-
-    fetchPersons: async () => Promise,
-    checkIfLoggedIn: async () => Promise,
-    fetchUserMedications: async () => Promise,
-    fetchUserMedicationsDosages: async () => Promise,
-    postNewMedication: async (medicationDetails: IMedicationFrontEnd) => Promise,
-    postPerson: async (listOfNames:string[]) => Promise,
-    putDeleteSelectedPerson: async (listOfDesiredNames:string[]) => Promise,
-    putDeleteSelectedMedications: async (medicationFrontEndArray: IMedicationFrontEnd[]) => Promise,
-    submitUpdatedMedication: async (medicationDetails: IMedicationFrontEnd) => Promise,
-    putUpdateMedicationDosageTaken: async (medicationDosage: IMedicationDosagesSchema) => Promise,
-    putUpdateMedicationDosageRefill: async (medicationDosage:IMedicationDosagesSchema, newRefillDate:Date)=>Promise,
-    fetchCalendarOverviewPage:()=>{},
 })
 
 export const ApiContainer = (props: any) => {
 
     const {setUserMedications, setUserMedicationDosages} = useContext(MedicationContext);
     const {newNotification} = useContext(NotificationsContext);
-    const { setUserId, setLoggedIn,setUsersPeople } = useContext<any>(UserContext);
+    const { setLoggedIn,setUsersPeople } = useContext<any>(UserContext);
 
     const {children} = props;
     const [numberOfCurrentApiCalls, setNumberOfCurrentApiCalls] = useState<number>(0);
@@ -82,75 +78,40 @@ export const ApiContainer = (props: any) => {
         setNumberOfCurrentApiCalls(tempNumber)
     }
 
-    const checkIfLoggedIn = async (): Promise<void>=>{
-        let backendResponse:ILoginResponse = {isLoggedIn: false, jwtToken: ""}
-        let url='/auth/current-session';
-        // Default options are marked with *
-        await fetch(url, {
-            method: 'GET', // or 'PUT'
-        })
-            .then(response => response.json())
-            .then(data => {
-                backendResponse = data
-                console.log(backendResponse)
-                setLoggedIn(backendResponse.isLoggedIn)
-                setUserId(backendResponse.jwtToken)
-            })
-            .catch((error) => {
-                console.error('Error: ', error);
-            });
-    }
 
-    //region Medications
-    const fetchUserMedications = async (): Promise<void> => {
-        handleLoadingBarTurnOn()
-        let url = '/medication/userMedications';
+    /**
+     * Checks if user is logged in using a callback with the JWTToken being used as the authorization bearer token
+     */
+    const checkIfJWTTokenIsValid = async () => {
+        let url = '/users/callback';
         // Default options are marked with *
         await fetch(url, {
-            method: 'GET', // or 'PUT'
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
             headers: {
-                // 'Authorization': `Bearer ${userId}`
+                'Authorization': reactLocalStorage.get('JWTToken')
             },
+
         })
-            .then(response => response.json())
-            .then((data: IBackendResponse) => {
-                if (!data.error) {
-                    setUserMedications(data.response)
+            .then(response => {
+                if(response.status == 200){
+                    setLoggedIn(true)
+                }else{
+                    setLoggedIn(false)
                 }
-                newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
             })
-
     }
-    const fetchUserMedicationsDosages = async () => {
 
-        handleLoadingBarTurnOn()
-        let url = '/medication/userMedicationsDosages';
+    /**
+     * Login to the website and sets the bearer token to the JWT token as well as setting logged in to true or false
+     * @param userName
+     * @param password
+     */
+    const postLogin = async (userName:string,password:string): Promise<void> => {
+        let url = '/users/login';
         // Default options are marked with *
-        await fetch(url, {
-            method: 'GET', // or 'PUT'
-            headers: {
-                // 'Authorization': `Bearer ${userId}`
-            },
-        })
-            .then(response => response.json())
-            .then((data:IBackendResponse) => {
-            if (!data.error) {
-                setUserMedicationDosages(data.response)
-            }
-                newNotification(data.alert.message,data.alert.severity)
-            handleLoadingBarTurnOff()
-        }).catch(error => {
-            //TODO
-            handleLoadingBarTurnOff()
-        })
-    }
-    const postNewMedication = async (medicationDetails: IMedicationFrontEnd) => {
-        handleLoadingBarTurnOn()
-        let url = "/medication/addnewmedication"
         await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -159,21 +120,174 @@ export const ApiContainer = (props: any) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
             },
-            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
+            body: JSON.stringify({userName:userName,password:password}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then((data: IBackendResponse) => {
+            .then(data => {
+                if (data.error) {
+                    //TODO login failed
+                    setLoggedIn(false)
+                }else{
+                    reactLocalStorage.set('JWTToken',data.token)
+                    setLoggedIn(true)
+                }
+            })
+    }
+
+    /**
+     * Creates a new User
+     * @param userName
+     * @param password
+     * @param emailAddress
+     */
+    const postRegister = async (userName:string,password:string,emailAddress:string): Promise<void> => {
+        let url = '/users/register';
+        // Default options are marked with *
+        await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({userName:userName,password:password,emailAddress:emailAddress}) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    //TODO
+                    setLoggedIn(false)
+                }else{
+                    reactLocalStorage.set('JWTToken',data.token)
+                    setLoggedIn(true)
+                }
+            })
+    }
+
+    const fetchMedicationsAndDosagesAndPersons = async () => {
+        handleLoadingBarTurnOn()
+        let url = '/users/userData';
+        // Default options are marked with *
+        await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': reactLocalStorage.get('JWTToken')
+            },
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.error) {
+                    console.log(data.msg)
+                }else{
+                    setUserMedications(data.medicationArray)
+                    setUserMedicationDosages(data.medicationDosagesArray)
+                    setUsersPeople(data.persons)
+                }
                 newNotification(data.alert.message,data.alert.severity)
-                fetchCalendarOverviewPage()
                 handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
+            }).catch(e=>console.log(e))
+
+    }
+
+    const fetchPersons = async (): Promise<void> => {
+        handleLoadingBarTurnOn()
+        let url = '/users/usersPersons';
+        // Default options are marked with *
+        await fetch(url, {
+            method: 'GET', // or 'PUT'
+            headers: {
+                'Authorization': reactLocalStorage.get("JWTToken")
+            },
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.error) {
+                    console.log(data.error)
+                }else{
+                    setUsersPeople(data.persons)
+                }
+                newNotification(data.alert.message,data.alert.severity)
+                handleLoadingBarTurnOff()
+            })
+
+    }
+
+    //region Put
+
+    /**
+     * Create a new medication
+     * @param medicationObject
+     */
+    const putNewMedication = async (medicationObject: IMedicationBase) => {
+        handleLoadingBarTurnOn()
+        let url = "/medication/newMedication"
+        await fetch(url, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': reactLocalStorage.get("JWTToken")
+            },
+            body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if(data.error){
+                    //TODO
+                }else{
+                    //TODO
+                }
+                fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
             })
     };
-    const putDeleteSelectedMedications = async (medicationFrontEndArray: IMedicationFrontEnd[]) => {
+    /**
+     * Update selected medication
+     * @param medicationObject
+     */
+    const putUpdateExistingMedication = async (medicationObject: IMedicationBase) => {
+        handleLoadingBarTurnOn()
+        let url = "/medication/updateMedication"
+        await fetch(url, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': reactLocalStorage.get("JWTToken")
+            },
+            body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if(data.error){
+                    //TODO
+                }else{
+                    //TODO
+                }
+                fetchMedicationsAndDosagesAndPersons()
+                handleLoadingBarTurnOff()
+            })
+    };
+    /**
+     * Deletes an array of medications
+     * @param medicationIdArray
+     * @param removePastMedicationDosages
+     */
+    const putDeleteSelectedMedications = async (medicationIdArray: string[],removePastMedicationDosages:boolean) => {
         handleLoadingBarTurnOn()
         let url = "/medication/deleteSelectedMedications"
         await fetch(url, {
@@ -184,28 +298,34 @@ export const ApiContainer = (props: any) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
+                'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify({payload: medicationFrontEndArray}) // body data type must match "Content-Type" header
+            body: JSON.stringify({arrayOfMedicationIds: medicationIdArray, removePastMedicationDosages:removePastMedicationDosages}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then((data: IBackendResponse) => {
-
-                fetchCalendarOverviewPage()
-
+            .then((data) => {
+                if(data.error){
+                    //TODO
+                }else{
+                    //TODO
+                }
+                fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
                 newNotification(data.alert.message,data.alert.severity)
-            })
-            .catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
             })
 
 
     };
-    const submitUpdatedMedication = async (medicationDetails: IMedicationFrontEnd) => {
+    /**
+     * update a medication dosage to manually mark if taken/missed and what time it was taken
+     * @param dosageId
+     * @param hasBeenTaken
+     * @param hasBeenMissed
+     * @param timeTaken
+     */
+    const putUpdateMedicationDosage = async (dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date):Promise<void> => {
         handleLoadingBarTurnOn()
-        let url = "/medication/updatemedication"
+        let url = "/medicationDosages/update"
         await fetch(url, {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -214,80 +334,28 @@ export const ApiContainer = (props: any) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
+                'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify(medicationDetails) // body data type must match "Content-Type" header
-        }).then(response => response.json())
-            .then((data: IBackendResponse) => {
-                newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
-                fetchCalendarOverviewPage()
-            }).catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
-            })
-    };
-    //endregion
-
-    const putUpdateMedicationDosageTaken = async (medicationDosage:IMedicationDosagesSchema):Promise<void> => {
-        handleLoadingBarTurnOn()
-        let url = "/medication/markAsTaken"
-        await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
-            },
-            body: JSON.stringify(medicationDosage) // body data type must match "Content-Type" header
+            body: JSON.stringify({dosageId: dosageId, hasBeenTaken: hasBeenTaken, hasBeenMissed: hasBeenMissed, timeTaken: timeTaken}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then((data: IBackendResponse) => {
-                newNotification(data.alert.message,data.alert.severity)
-                fetchCalendarOverviewPage()
-                handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
+            .then((data) => {
+                if(data.error){
+                    console.log(data.error)
+                }else{
+                    //TODO
+                }
+                fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
             })
     }
-
-    const putUpdateMedicationDosageRefill = async (medicationDosage:IMedicationDosagesSchema, newRefillDate:Date):Promise<void> => {
+    /**
+     * Add a person to the users account to assign a medication too
+     * @param newPerson
+     */
+    const putAddPerson = async (newPerson:IPersonNameAndColor) => {
         handleLoadingBarTurnOn()
-        medicationDosage.nextFillDay=newRefillDate
-        let url = "/medication/updateRefillDate"
-        await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
-            },
-            body: JSON.stringify({payload: medicationDosage}) // body data type must match "Content-Type" header
-        })
-            .then(response => response.json())
-            .then((data: IBackendResponse) => {
-                newNotification(data.alert.message,data.alert.severity)
-                fetchCalendarOverviewPage()
-                handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
-            })
-    }
-
-    
-
-    //region Persons
-    const postPerson = async (listOfNames:string[]) => {
-        handleLoadingBarTurnOn()
-        let url = "/persons/addPerson"
+        let url = "/users/addPerson"
         await fetch(url, {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -296,47 +364,29 @@ export const ApiContainer = (props: any) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
+                'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify({payload:listOfNames}) // body data type must match "Content-Type" header
+            body: JSON.stringify(newPerson) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then((data: IBackendResponse) => {
-                fetchPersons()
-                newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
-            })
-
-    };
-    const fetchPersons = async () => {
-
-        handleLoadingBarTurnOn()
-        let url = '/persons/getPersons';
-        // Default options are marked with *
-        await fetch(url, {
-            method: 'GET', // or 'PUT'
-            headers: {
-                // 'Authorization': `Bearer ${userId}`
-            },
-        })
-            .then(response => response.json())
-            .then((data:IBackendResponse) => {
-                if (!data.error) {
-                    setUsersPeople(data.response)
+            .then((data) => {
+                if(data.error){
+                    //TODO
+                }else{
+                    //TODO
                 }
                 newNotification(data.alert.message,data.alert.severity)
                 handleLoadingBarTurnOff()
-            }).catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
             })
-    }
-    const putDeleteSelectedPerson =  async (listOfOnlyDesiredNames: string[]) => {
+
+    };
+    /**
+     * Removes a person
+     * @param removePerson
+     */
+    const putRemovePerson =  async (removePerson:IPersonNameAndColor) => {
         handleLoadingBarTurnOn()
-        let url = "/persons/deleteSelectedPerson"
+        let url = "/users/removePerson"
         await fetch(url, {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -345,13 +395,18 @@ export const ApiContainer = (props: any) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                // 'Authorization': `Bearer ${userId}`
+                'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify({payload: listOfOnlyDesiredNames}) // body data type must match "Content-Type" header
+            body: JSON.stringify(removePerson) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
-            .then((data: IBackendResponse) => {
-                fetchPersons()
+            .then((data) => {
+                if(data.error){
+                    //TODO
+                }else{
+                    //TODO
+                }
+                fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
                 newNotification(data.alert.message,data.alert.severity)
             })
@@ -362,11 +417,8 @@ export const ApiContainer = (props: any) => {
 
 
     };
-    //endregion
 
-    const fetchCalendarOverviewPage =()=>{
-        Promise.all([fetchUserMedications(),fetchUserMedicationsDosages(),fetchPersons()]).then(values=>values)
-    }
+    //endregion
 
     return (
         <ApiContext.Provider value={{
@@ -374,18 +426,18 @@ export const ApiContainer = (props: any) => {
             setNumberOfCurrentApiCalls,
             loadingBar,
             setLoadingBar,
-            postPerson,
+
+            checkIfJWTTokenIsValid,
+            postLogin,
+            postRegister,
+            fetchMedicationsAndDosagesAndPersons,
             fetchPersons,
-            putDeleteSelectedPerson,
-            checkIfLoggedIn,
-            fetchUserMedicationsDosages,
-            fetchUserMedications,
-            postNewMedication,
+            putNewMedication,
+            putUpdateExistingMedication,
             putDeleteSelectedMedications,
-            submitUpdatedMedication,
-            fetchCalendarOverviewPage,
-            putUpdateMedicationDosageTaken,
-            putUpdateMedicationDosageRefill
+            putUpdateMedicationDosage,
+            putAddPerson,
+            putRemovePerson,
         }}>
             {children}
         </ApiContext.Provider>

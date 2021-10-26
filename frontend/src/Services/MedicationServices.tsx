@@ -1,5 +1,5 @@
-import {getDate, getMonth, getYear, isEqual, isSameDay, parseISO} from "date-fns";
-import {IMedicationDosagesSchema} from "../../../Types/MedicationType";
+import {isSameDay} from "date-fns";
+import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
 
 /**
  * Returns medication dosages pertaining to the selected date within the userMedicationDosages array
@@ -7,13 +7,9 @@ import {IMedicationDosagesSchema} from "../../../Types/MedicationType";
  * @param userMedicationDosages - the users medication dosages
  * @return []|IMedicationDosagesSchema[]
  */
-export const dosagesOnSpecifiedDay = (selectedISODate:Date,userMedicationDosages:[]|IMedicationDosagesSchema[]):[]|IMedicationDosagesSchema[] => {
+export const dosagesOnSpecifiedDay = (selectedISODate:Date,userMedicationDosages:[]|IMedicationDosagesBase[]):[]|IMedicationDosagesBase[] => {
     if (userMedicationDosages == null) {
         return []
     }
-
-
-    let results = userMedicationDosages.filter(dosage => isSameDay(selectedISODate,new Date(dosage.time)))
-
-    return results
+    return userMedicationDosages.filter(dosage => isSameDay(selectedISODate,new Date(dosage.timeToTake)))
 }

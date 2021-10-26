@@ -12,7 +12,7 @@ import {backgroundStyle, flex1ItemStyle, flexWrapperStyle, wrapperStyle} from ".
 
 const MainLoggedInPage = () => {
 
-    const {fetchCalendarOverviewPage} = useContext(ApiContext);
+    const {fetchMedicationsAndDosagesAndPersons} = useContext(ApiContext);
     const {selectedDay} = useContext(CalendarContext);
 
 
@@ -26,11 +26,11 @@ const MainLoggedInPage = () => {
                 <Dialog open={isMakingNewMedication} fullWidth={true}>
                     <DialogTitle>New Medication</DialogTitle>
                     <MedicationCard
-                        _id={''} isNewCard={true}
+                        userId={''} medicationId={""} isNewCard={true}
                         prescriptionName={''} prescriptionDosage={0}
-                        startDay={new Date()} nextFillDay={new Date()}
+                        nextFillDay={new Date()}
                         dosages={[]} userNotes={''}
-                        medicationOwner={""}/>
+                        medicationOwner={""} endDate={new Date()} inDefinite={false}/>
                     <DialogActions>
                         <Button variant={"contained"} onClick={()=>setIsMakingNewMedication(!isMakingNewMedication)}>
                             Cancel
@@ -55,7 +55,7 @@ const MainLoggedInPage = () => {
 
 
     useEffect(() => {
-        fetchCalendarOverviewPage()
+        fetchMedicationsAndDosagesAndPersons()
     }, []);
 
 

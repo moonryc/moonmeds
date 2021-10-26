@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
 import {Box, Button, Checkbox, Dialog, Grid} from "@mui/material";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
-import {IMedicationFrontEnd} from "../../../../../Types/MedicationType";
+import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {ApiContext} from "../../../Context/ApiContext";
 import {Skeleton} from "@mui/material";
@@ -36,9 +36,9 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     //region useState
 
     /**
-     * An array of medications that are selected that the user wishes to be deleted
+     * An array of medications Ids that are selected that the user wishes to be deleted
      */
-    const [deleteArray, setDeleteArray] = useState<IMedicationFrontEnd[]>([]);
+    const [deleteArray, setDeleteArray] = useState<string[]>([]);
     /**
      * Is the user wishing to delete a medication from the medication list
      */
@@ -58,16 +58,16 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
     /**
      * if the checkbox is selected it will add the medication to the deleteArray,
      * if it is then unselected it will then be removed from the list
-     * @param medication - IMedicationFrontEnd
+     * @param medication - IMedicationBase
      */
-    const handleCheckBoxClick = (medication: IMedicationFrontEnd) => {
+    const handleCheckBoxClick = (medication: IMedicationBase) => {
 
-        let tempArray: IMedicationFrontEnd[] = [...deleteArray];
+        let tempArray: string[] = [...deleteArray];
 
-        if (tempArray.includes(medication)) {
-            tempArray.splice(tempArray.indexOf(medication), 1)
+        if (tempArray.includes(medication.medicationId)) {
+            tempArray.splice(tempArray.indexOf(medication.medicationId), 1)
         } else {
-            tempArray.push(medication)
+            tempArray.push(medication.medicationId)
         }
         setDeleteArray(tempArray)
     }
@@ -80,8 +80,8 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
      * sends delete request and updates the dosages and medications and sets the deleteArray back to []
      */
     const handleDeleteMedicationsAction = async () => {
-
-        await putDeleteSelectedMedications(deleteArray)
+        //TODO make false not always false
+        await putDeleteSelectedMedications(deleteArray,false)
         setDeleteArray([])
     }
 
@@ -130,12 +130,12 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                         <Button onClick={() => {}}>New Medication</Button> :
                         <>
 
-                            {userMedications.map((medication: IMedicationFrontEnd) =>
+                            {userMedications.map((medication: IMedicationBase) =>
                                 <>
                                     <Grid container>
                                         {/*//TODO(TRAVIS) FLEXBOX FUCKER*/}
                                         {isDeletionEnabled ? <Grid item>
-                                            <Checkbox key={medication._id}
+                                            <Checkbox key={medication.medicationId}
                                                       onClick={() => handleCheckBoxClick(medication)}/>
                                         </Grid> : <></>
                                         }
@@ -143,10 +143,12 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
                                             {/*handleTabsChangeIndex is  a blank function because it is uneeded here but is needed when creating a new medication*/}
                                             <MedicationCard
                                                 isNewCard={false}
-                                                _id={medication._id}
+                                                userId={medication.userId}
+                                                medicationId={medication.medicationId}
+                                                endDate={medication.endDate}
+                                                inDefinite={medication.inDefinite}
                                                 prescriptionName={medication.prescriptionName}
                                                 prescriptionDosage={medication.prescriptionDosage}
-                                                startDay={medication.startDay}
                                                 nextFillDay={medication.nextFillDay}
                                                 dosages={medication.dosages}
                                                 userNotes={medication.userNotes}

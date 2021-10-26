@@ -16,10 +16,10 @@ const DateDetailsMedicationToTake = (props: ICalendarDay) => {
             {
                 selectedDayDetails.map(medicationDosage => {
                         return !medicationDosage.hasBeenTaken ?
-                            <p key={medicationDosage._id}>{medicationDosage.prescriptionName}: {medicationDosage.amount} is
+                            <p key={medicationDosage.dosageId}>{medicationDosage.prescriptionName}: {medicationDosage.amount} is
                                 scheduled to be taken
-                                at {format(parseISO(medicationDosage.time.toString()), 'hh:mm aa').toString()}<br/></p> :
-                            <p key={medicationDosage.prescriptionName+medicationDosage.time}></p>
+                                at {format(parseISO(medicationDosage.timeToTake.toString()), 'hh:mm aa').toString()}<br/></p> :
+                            <p key={medicationDosage.prescriptionName+medicationDosage.timeToTake}></p>
                     }
                 )}
         </div>

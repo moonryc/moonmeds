@@ -1,29 +1,30 @@
 import React, {createContext, useState,} from 'react'
-import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
+import {IMedicationDosagesBase } from "../../../Types/MedicationDosagesTypes";
+import { IMedicationBase} from "../../../Types/MedicationTypes";
 
 
 export interface IMedicationContextState {
-    userMedications: IMedicationFrontEnd[] | []
-    setUserMedications: (state: IMedicationFrontEnd[] | []) => void,
-    userMedicationDosages: IMedicationDosagesSchema[] | [],
-    setUserMedicationDosages: (state:IMedicationDosagesSchema[] |[])=>void,
+    userMedications: IMedicationBase[] | []
+    setUserMedications: (state: IMedicationBase[] | []) => void,
+    userMedicationDosages: IMedicationDosagesBase[] | [],
+    setUserMedicationDosages: (state:IMedicationDosagesBase[] |[])=>void,
 
 }
 
 
 export const MedicationContext = createContext<IMedicationContextState>({
     userMedications: [],
-    setUserMedications: (state: IMedicationFrontEnd[] | []) => [],
+    setUserMedications: (state: IMedicationBase[] | []) => [],
     userMedicationDosages: [],
-    setUserMedicationDosages: (state: IMedicationDosagesSchema[] |[]) => [],
+    setUserMedicationDosages: (state: IMedicationDosagesBase[] |[]) => [],
 
 
 })
 
 export const MedicationContainer = (props: any) => {
     const {children} = props;
-    const [userMedications, setUserMedications] = useState<IMedicationFrontEnd[] | []>([]);
-    const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesSchema[]>([]);
+    const [userMedications, setUserMedications] = useState<IMedicationBase[] | []>([]);
+    const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesBase[]>([]);
 
 
     return (

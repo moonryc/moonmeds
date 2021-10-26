@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {IMedicationDosagesSchema, IMedicationFrontEnd} from "../../../Types/MedicationType";
+import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
+import {IMedicationBase} from "../../../Types/MedicationTypes";
 import {MedicationContext} from "./MedicationContext";
-import {IBackendResponse} from "../../../Types/BackendResponseType";
 import {IAlerts} from "../../../Types/AlertMessageTypes";
 
 export interface INotificationsContextState {
