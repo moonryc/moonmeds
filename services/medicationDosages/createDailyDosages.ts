@@ -2,6 +2,7 @@ import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 import {isBefore} from "date-fns";
 import * as mongoose from "mongoose"
+import {Types} from "mongoose";
 //@ts-nocheck
 
 /**
@@ -19,7 +20,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
     const createDosagesForTomorrow = () => {
         if (newDosage.inDefinite) {
             newDosage.timeToTake = tomorrow
-            newDosage.dosageId = new mongoose.Types.ObjectId().toString()
+            newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
 
             newDosageModel.save()
@@ -30,7 +31,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
         } else {
             if (isBefore(tomorrow, newDosage.endDate)) {
                 newDosage.timeToTake = tomorrow
-                newDosage.dosageId = new mongoose.Types.ObjectId().toString()
+                newDosage.dosageId = new Types.ObjectId().toString()
                 let newDosageModel = new MedicationDosageModel({...newDosage})
                 newDosageModel.save()
                     .catch((error:any) => {
@@ -43,7 +44,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
     if (todayAndTomorrow) {
         if (newDosage.inDefinite || isBefore(today, newDosage.endDate)) {
             newDosage.timeToTake = today
-            newDosage.dosageId = new mongoose.Types.ObjectId().toString()
+            newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
             newDosageModel.save()
                 .then((res:any) => createDosagesForTomorrow())

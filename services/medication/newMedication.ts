@@ -1,6 +1,7 @@
 import MedicationModel from "../../Schemas/MedicationSchema";
 import * as mongoose from "mongoose";
 import createDosages from "../medicationDosages/createDosages";
+import {Types} from "mongoose";
 
 
 /**
@@ -9,9 +10,9 @@ import createDosages from "../medicationDosages/createDosages";
  * @param res - then post response
  * @constructor
  */
-const createNewMedication = (req:any, res:any) => {
+const createNewMedication = async (req:any, res:any) => {
     //dont create a new medication if it is a duplicate
-    MedicationModel.exists({
+    await MedicationModel.exists({
         userId: req.user._id,
         prescriptionName: req.body.prescriptionName,
         prescriptionOwner: req.body.prescriptionOwner
@@ -22,7 +23,7 @@ const createNewMedication = (req:any, res:any) => {
         if(doc){
             throw "Medication already exists"
         }else{
-            req.body.medicationId = new mongoose.Types.ObjectId()
+            req.body.medicationId = new Types.ObjectId()
             req.body.userId = req.user._id
             const newMedication = new MedicationModel(req.body)
             newMedication.save()

@@ -5,6 +5,7 @@ import CreateWeeklyDosages from "./CreateWeeklyDosages";
 import CreateMonthlyDosages from "./CreateMonthlyDosages";
 import CreateDailyDosages from "./CreateDailyDosages";
 import {getHours, getMinutes, setHours, setMinutes, startOfToday, startOfTomorrow} from "date-fns";
+import {Types} from "mongoose";
 
 /**
  * Creates medication dosages for the medication that is passed
@@ -42,7 +43,7 @@ const createDosages = (medication:IMedicationBase,todayAndTomorrow:boolean) => {
             sunday: dose.customWeekDays.sunday,
 
             //create
-            dosageId: new mongoose.Types.ObjectId().toString(),
+            dosageId: new Types.ObjectId().toString(),
 
             //When created this should always be false/undefined
             timeTaken: undefined,

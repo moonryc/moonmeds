@@ -2,6 +2,7 @@ import {differenceInCalendarDays, isBefore} from "date-fns";
 import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 import * as mongoose from "mongoose"
+import {Types} from "mongoose";
 //@ts-nocheck
 
 /**
@@ -35,7 +36,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
     const createDosagesTomorrow = () => {
         if (isDayThirtyDayMark(tomorrow) && (newDosage.inDefinite || isBefore(tomorrow, newDosage.endDate))) {
             newDosage.timeToTake = tomorrow
-            newDosage.dosageId = new mongoose.Types.ObjectId().toString()
+            newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
             newDosageModel.save().then((res:any)=>res)
         }
@@ -43,7 +44,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
 
     if (todayAndTomorrow && isDayThirtyDayMark(today) && (newDosage.inDefinite || isBefore(today, newDosage.endDate))) {
         newDosage.timeToTake = today
-        newDosage.dosageId = new mongoose.Types.ObjectId().toString()
+        newDosage.dosageId = new Types.ObjectId().toString()
         let newDosageModel = new MedicationDosageModel({...newDosage})
         newDosageModel.save()
             .then((res:any)=>createDosagesTomorrow())
