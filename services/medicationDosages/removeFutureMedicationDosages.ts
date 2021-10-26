@@ -7,7 +7,7 @@ import {startOfToday} from "date-fns";
  * @param req
  * @param medicationId
  */
-const removeFutureMedicationDosages = (req, medicationId) => {
+const removeFutureMedicationDosages = (req:any, medicationId:any) => {
     MedicationDosageModel.find({
         timeToTake: {$gte: startOfToday()},
         userId: req.userId,

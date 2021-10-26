@@ -2,7 +2,7 @@ import UserModel from "../../Schemas/UserSchema";
 import issueJWT from "../../middleware/issueJwt";
 import bcrypt = require("bcryptjs");
 
-const newUser = (req,res) => {
+const newUser = (req:any,res:any) => {
 
     const createUser = async () => {
 

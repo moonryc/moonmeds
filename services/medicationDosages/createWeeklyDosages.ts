@@ -4,7 +4,7 @@ import {isBefore, isFriday, isMonday, isSaturday, isSunday, isThursday, isTuesda
 import * as mongoose from "mongoose"
 
 const createWeeklyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow: boolean, today: Date, tomorrow: Date) => {
-    let arrayOfDosages = []
+    let arrayOfDosages:any[] = []
 
     /**
      * if tomorrow is a valid day to take medication
@@ -69,7 +69,7 @@ const createWeeklyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow
     }
 
 
-    MedicationDosageModel.insertMany(arrayOfDosages)
+    MedicationDosageModel.insertMany(arrayOfDosages).then(r => r)
 }
 
 

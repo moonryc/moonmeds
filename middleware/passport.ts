@@ -1,9 +1,10 @@
+//@ts-nocheck
 import fs = require('fs');
 import path = require("path");
 import {Strategy,ExtractJwt} from 'passport-jwt'
 const JwtStrategy = Strategy
 import UserModel from "../Schemas/UserSchema";
-
+import passport from 'passport'
 
 
 const pathToKey = path.join('./Cryptography/id_rsa_pub.pem')
@@ -16,9 +17,13 @@ const options = {
 }
 
 const strategy = new JwtStrategy(options,(payload, done) => {
+            console.log(payload)
+
     UserModel.findOne({_id:payload.sub})
         .then((user)=>{
+            console.log(user)
             if(user){
+                console.log(user)
                 return done(null,user)
             }else{
                 return done(null,false)
@@ -31,6 +36,5 @@ const strategy = new JwtStrategy(options,(payload, done) => {
 
 
 
-module.exports = (passport) =>{
-    passport.use(strategy)
-}
+passport.use(strategy)
+

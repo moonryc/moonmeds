@@ -9,13 +9,13 @@ if (process.env.NODE_ENV !== 'production') {
 //region Imports
 
 import express = require('express');
+import passport = require("passport")
+import createError = require('http-errors');
 import path = require('path');
 import cookieParser = require('cookie-parser');
 import logger = require('morgan');
-import createError = require('http-errors');
-import indexRouter from "./routes";
-import passport from "./passport/setup";
 import cors = require('cors');
+import indexRouter from "./routes";
 //endregion
 
 const app = express();
@@ -33,34 +33,42 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //TODO UNDERSTAND
-// import helmet = require('helmet');
-// import hpp = require('hpp');
+import helmet = require('helmet');
+import hpp = require('hpp');
 // import csurf = require('csurf');
 
 //region middleware
 
-require("./middleware/database")
-// require("./middleware/requestLimiter")
-// require('./middleware/timedMiddleware/markMissedMedications')
-// require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
-//Pass global passport object into the configuration function
-require('./middleware/passport')(passport)
+require('./Schemas/UserSchema')
+require('./Schemas/MedicationSchema')
+require('./Schemas/MedicationDosageSchema')
 
+
+require("./middleware/database")
+require("./middleware/requestLimiter")
+require('./middleware/timedMiddleware/markMissedMedications')
+require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
+//Pass global passport object into the configuration function
+require('./middleware/passport')
+//Passport
+app.use(passport.initialize());
+app.use(cors())
 
 //TODO remeber what this does
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    next();
-});
-// app.options('*', (req, res) => {
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
+//     res.setHeader(
+//         'Access-Control-Allow-Headers',
+//         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//     );
+//     next();
+// });
+// app.options('*', (req, res,next) => {
 //     res.json({
 //         status: 'OK'
 //     });
+//     next()
 // });
 
 
@@ -72,16 +80,15 @@ app.use((req, res, next) => {
 // app.use(csurf({cookie:true}));
 //endregion
 
-//Passport
-app.use(passport.initialize());
+
 
 //#region app.use(cors)
 //cors to allow cross origin resource sharing
-app.use(
-    cors({
-        origin: 'http://localhost:3000',
-        credentials: true,
-    }));
+// app.use(
+//     cors({
+//         origin: 'http://localhost:3000',
+//         credentials: true,
+//     }));
 //#endregion
 
 //region routes
@@ -110,9 +117,9 @@ app.use('/',indexRouter)
 // }
 //endregion
 
-app.get('*', function(req, res){
-    res.status(404).json({error:true,mesg:"*"});
-});
+// app.get('*', function(req, res){
+//     res.status(404).json({error:true,mesg:"*"});
+// });
 
 
 //region Views

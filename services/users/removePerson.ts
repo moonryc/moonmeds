@@ -1,7 +1,7 @@
 import UserModel from "../../Schemas/UserSchema";
 
 
-const RemovePerson = (req, res) => {
+const RemovePerson = (req:any, res:any) => {
 
     UserModel.findByIdAndUpdate(req.user._id, {
         $pull: {

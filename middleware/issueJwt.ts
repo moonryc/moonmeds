@@ -1,3 +1,5 @@
+import {IUser} from "../Types/UserTypes";
+
 const jsonwebtoken = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +11,7 @@ const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 /**
  * @param {*} user - The users object.  We need this to set the JWT `sub` payload property to the MongoDB users ID
  */
-const issueJWT =(user) =>{
+const issueJWT =(user:any) =>{
     const _id = user._id;
 
     const expiresIn = '1d';

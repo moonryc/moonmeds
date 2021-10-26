@@ -9,7 +9,7 @@ import createDosages from "../medicationDosages/createDosages";
  * @param res - then post response
  * @constructor
  */
-const createNewMedication = (req, res) => {
+const createNewMedication = (req:any, res:any) => {
     //dont create a new medication if it is a duplicate
     MedicationModel.exists({
         userId: req.user._id,

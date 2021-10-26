@@ -1,5 +1,5 @@
 import express =require('express')
-import * as passport from "passport";
+import passport =require("passport");
 import MedicationDosageModel from "../Schemas/MedicationDosageSchema";
 
 const router = express.Router()
@@ -13,7 +13,7 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     }else{
         timeMedicationWasTaken = null
     }
-    MedicationDosageModel.findOneAndUpdate({dosageId:req.body.dosageId},{hasBeenTaken:req.body.hasBeenTaken,hasBeenMissed:req.body.hasBeenMissed,timeTaken:timeMedicationWasTaken},(err,doc)=>{
+    MedicationDosageModel.findOneAndUpdate({dosageId:req.body.dosageId},{hasBeenTaken:req.body.hasBeenTaken,hasBeenMissed:req.body.hasBeenMissed,timeTaken:timeMedicationWasTaken},(err:any,doc:any)=>{
         if(err){
             console.log(err)
             res.status(401).json({error:true,msg:err})

@@ -91,20 +91,15 @@ export const ApiContainer = (props: any) => {
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'same-origin', // include, *same-origin, omit
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
                 'Authorization': reactLocalStorage.get('JWTToken')
             },
 
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    setLoggedIn(false)
-                    reactLocalStorage.set('JWTToken',"")
-                }else{
+            .then(response => {
+                if(response.status == 200){
                     setLoggedIn(true)
-                    console.log("successful callback")
+                }else{
+                    setLoggedIn(false)
                 }
             })
     }

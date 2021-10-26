@@ -8,7 +8,7 @@ import removeAllMedicationDosages from "../medicationDosages/removeAllMedication
  * @param res
  * @constructor
  */
-const removeMedications = (req, res) => {
+const removeMedications = (req:any, res:any) => {
     for (let medicationId of req.body.arrayOfMedicationIds) {
         MedicationModel.findOneAndDelete({medicationId: medicationId}, {sort: false}, (err, doc) => {
             if (err) {

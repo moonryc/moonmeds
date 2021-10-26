@@ -9,7 +9,7 @@ import {Document, Model, model, Types, Schema, Query} from "mongoose"
  */
 export interface IUser {
     userName:string
-    hash?:string,
+    hash:string,
     emailAddress:string,
     persons: IPersonNameAndColor[]
 }

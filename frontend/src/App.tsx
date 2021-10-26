@@ -11,11 +11,12 @@ import NotificationsParent from "./Components/Misc/Notifications/NotificationsPa
 import {ApiContext} from "./Context/ApiContext";
 import MainLoggedInPage from "./Pages/MainLoggedInPage";
 import LoginPage from "./Pages/LoginPage";
+import {reactLocalStorage} from "reactjs-localstorage";
 
 
 function App() {
 
-    const {loggedIn} = useContext<any>(UserContext);
+    const {loggedIn,setLoggedIn} = useContext<any>(UserContext);
     const {checkIfJWTTokenIsValid} = useContext<any>(ApiContext);
 
     /**
@@ -24,7 +25,12 @@ function App() {
      * otheriwse it will run over and over and over causeing issues
      */
     useEffect(() => {
+        if(reactLocalStorage.get("JWTToken") !=null){
+
         checkIfJWTTokenIsValid();
+        }else{
+            setLoggedIn(false)
+        }
 
     }, [])
     //Travis see comment above

@@ -1,8 +1,9 @@
+//@ts-nocheck
 import {ModelDefinition} from "./common";
 import {IDosagesDetails, IMedicationBase, IWeekdays} from "../Types/MedicationTypes";
 
 import {model, Schema} from "mongoose";
-
+import * as mongoose from "mongoose";
 
 const WeekdaysDefinition:ModelDefinition<IWeekdays>={
 
@@ -45,5 +46,5 @@ const MedicationDefinition:ModelDefinition<IMedicationBase> = {
 // @ts-ignore
 const MedicationSchema = new Schema(MedicationDefinition)
 
-const MedicationModel = model<IMedicationBase & Document>('MedicationTest', MedicationSchema);
+const MedicationModel = model<IMedicationBase & mongoose.Document>('MedicationTest', MedicationSchema);
 export default MedicationModel;

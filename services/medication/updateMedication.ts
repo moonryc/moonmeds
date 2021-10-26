@@ -10,7 +10,7 @@ import removeFutureMedicationDosages from "../medicationDosages/removeFutureMedi
  * @param res - the post res
  * @constructor
  */
-const updateMedication = (req, res) => {
+const updateMedication = (req:any, res:any) => {
 
     MedicationModel.findOneAndUpdate(req.body.medicationId, req.body, {new: true}, (err, doc) => {
         if (err) {
