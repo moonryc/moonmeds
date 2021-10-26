@@ -2,7 +2,7 @@ import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 import {isBefore} from "date-fns";
 import * as mongoose from "mongoose"
-
+//@ts-nocheck
 
 /**
  * Creates dosages for tomorrow and optionally today
@@ -23,7 +23,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
             let newDosageModel = new MedicationDosageModel({...newDosage})
 
             newDosageModel.save()
-                .catch(error => {
+                .catch((error:any) => {
                     throw error;
                 })
 
@@ -33,7 +33,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
                 newDosage.dosageId = new mongoose.Types.ObjectId().toString()
                 let newDosageModel = new MedicationDosageModel({...newDosage})
                 newDosageModel.save()
-                    .catch(error => {
+                    .catch((error:any) => {
                         throw error;
                     })
             }
@@ -46,8 +46,8 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
             newDosage.dosageId = new mongoose.Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
             newDosageModel.save()
-                .then(res => createDosagesForTomorrow())
-                .catch(error => {
+                .then((res:any) => createDosagesForTomorrow())
+                .catch((error:any) => {
                     throw error
                 })
         }

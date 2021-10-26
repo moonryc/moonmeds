@@ -191,10 +191,9 @@ export const ApiContainer = (props: any) => {
                     setUserMedicationDosages(data.medicationDosagesArray)
                     setUsersPeople(data.persons)
                 }
-                newNotification(data.alert.message,data.alert.severity)
+                // newNotification(data.alert.message,data.alert.severity)
                 handleLoadingBarTurnOff()
             }).catch(e=>console.log(e))
-
     }
 
     const fetchPersons = async (): Promise<void> => {
@@ -214,7 +213,7 @@ export const ApiContainer = (props: any) => {
                 }else{
                     setUsersPeople(data.persons)
                 }
-                newNotification(data.alert.message,data.alert.severity)
+                // newNotification(data.alert.message,data.alert.severity)
                 handleLoadingBarTurnOff()
             })
 
@@ -311,7 +310,7 @@ export const ApiContainer = (props: any) => {
                 }
                 fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
-                newNotification(data.alert.message,data.alert.severity)
+                // newNotification(data.alert.message,data.alert.severity)
             })
 
 
@@ -375,7 +374,7 @@ export const ApiContainer = (props: any) => {
                 }else{
                     //TODO
                 }
-                newNotification(data.alert.message,data.alert.severity)
+                // newNotification(data.alert.message,data.alert.severity)
                 handleLoadingBarTurnOff()
             })
 
@@ -408,7 +407,7 @@ export const ApiContainer = (props: any) => {
                 }
                 fetchMedicationsAndDosagesAndPersons()
                 handleLoadingBarTurnOff()
-                newNotification(data.alert.message,data.alert.severity)
+                // newNotification(data.alert.message,data.alert.severity)
             })
             .catch(error => {
                 //TODO

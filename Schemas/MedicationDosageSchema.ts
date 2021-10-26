@@ -1,8 +1,7 @@
 //@ts-nocheck
 import {ModelDefinition} from "./common";
 import {IMedicationDosagesBase} from "../Types/MedicationDosagesTypes";
-import {Document, model, Schema} from "mongoose";
-
+import {model, Schema} from "mongoose";
 
 
 const MedicationDosageDefinition:ModelDefinition<IMedicationDosagesBase> = {

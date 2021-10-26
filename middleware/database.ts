@@ -7,9 +7,9 @@ const db = mongoose.connection;
 
 mongoose.connection.on('connected',()=>{
     console.log("Database connected")
-    // console.log("--------------------------")
-    // console.log("Collections")
-    // console.log(collections);
-    // console.log("--------------------------")
+    console.log("--------------------------")
+    console.log("Collections")
+    console.log(collections);
+    console.log("--------------------------")
 })
 

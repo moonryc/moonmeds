@@ -25,7 +25,7 @@ const UserDefinition:ModelDefinition<IUser>  = {
 
 const UserSchema = new Schema(UserDefinition)
 
-const UserModel = model<IUser & mongoose.Document>('User', UserSchema);
+const UserModel = model<IUser & Document>('User', UserSchema);
 export default UserModel;
 
 

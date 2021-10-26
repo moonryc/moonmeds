@@ -1,17 +1,19 @@
 import UserModel from "../../Schemas/UserSchema";
 import {IPersonNameAndColor} from "../../Types/UserTypes";
 
-const getPersons = (req:any):any => {
+const getPersons = async (req:any) => {
 
-    let personsArray;
-    UserModel.findOne({_id:req.user._id},(err:any,doc:any)=>{
-        if(err){
-            throw err
-        }else{
-            personsArray = doc.persons
-        }
-    })
-    return personsArray
+
+    return await UserModel.findOne({_id:req.user._id})
+
+    // UserModel.findOne({_id:req.user._id},(err:any,doc:any)=>{
+    //     if(err){
+    //         throw err
+    //     }
+    //
+    //     return [...doc.persons]
+    // })
+
 }
 
 export default getPersons

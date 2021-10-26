@@ -26,7 +26,7 @@ const createNewMedication = (req:any, res:any) => {
             req.body.userId = req.user._id
             const newMedication = new MedicationModel(req.body)
             newMedication.save()
-                .catch(error => {
+                .catch((error:any) => {
                     throw error
                 })
             createDosages(req.body, true)

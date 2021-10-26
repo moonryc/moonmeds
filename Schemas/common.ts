@@ -2,8 +2,8 @@
 
 export type IsRequired<T> =
     undefined extends T
-        ? true
-        : false;
+        ? false
+        : true;
 
 export type FieldType<T> =
     T extends number ? typeof Number :

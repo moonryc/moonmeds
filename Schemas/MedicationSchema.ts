@@ -46,5 +46,5 @@ const MedicationDefinition:ModelDefinition<IMedicationBase> = {
 // @ts-ignore
 const MedicationSchema = new Schema(MedicationDefinition)
 
-const MedicationModel = model<IMedicationBase & mongoose.Document>('MedicationTest', MedicationSchema);
+const MedicationModel = model<IMedicationBase & Document>('MedicationTest', MedicationSchema);
 export default MedicationModel;

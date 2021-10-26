@@ -2,6 +2,7 @@ import {differenceInCalendarDays, isBefore} from "date-fns";
 import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 import * as mongoose from "mongoose"
+//@ts-nocheck
 
 /**
  * Creates a medication dosage based on  the dosage input and depending
@@ -36,7 +37,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
             newDosage.timeToTake = tomorrow
             newDosage.dosageId = new mongoose.Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
-            newDosageModel.save().then(res=>res)
+            newDosageModel.save().then((res:any)=>res)
         }
     }
 
@@ -45,7 +46,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
         newDosage.dosageId = new mongoose.Types.ObjectId().toString()
         let newDosageModel = new MedicationDosageModel({...newDosage})
         newDosageModel.save()
-            .then(res=>createDosagesTomorrow())
+            .then((res:any)=>createDosagesTomorrow())
     } else {
         createDosagesTomorrow()
     }

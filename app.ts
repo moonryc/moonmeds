@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
 //endregion
 
 //region Imports
-
 import express = require('express');
 import passport = require("passport")
 import createError = require('http-errors');
@@ -33,8 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //TODO UNDERSTAND
-import helmet = require('helmet');
-import hpp = require('hpp');
+// import helmet = require('helmet');
+// import hpp = require('hpp');
 // import csurf = require('csurf');
 
 //region middleware
@@ -48,7 +47,6 @@ require("./middleware/database")
 require("./middleware/requestLimiter")
 require('./middleware/timedMiddleware/markMissedMedications')
 require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
-//Pass global passport object into the configuration function
 require('./middleware/passport')
 //Passport
 app.use(passport.initialize());
@@ -72,15 +70,12 @@ app.use(cors())
 // });
 
 
-
 //region Security
 // /* Set Security Configs */
 // app.use(helmet());
 // app.use(hpp());
 // app.use(csurf({cookie:true}));
 //endregion
-
-
 
 //#region app.use(cors)
 //cors to allow cross origin resource sharing
@@ -101,25 +96,21 @@ app.use('/',indexRouter)
 
 //region Host the React Build
 
-// if (process.env.NODE_ENV != "development") {
-// // Pick up React index.html file
-//     app.use(
-//         express.static(path.join(__dirname, "/build"))
-//     );
-//
-//     app.get("*", (req, res) => {
-//         res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
-//             .sendFile(
-//                 path.join(__dirname, "/build/index.html")
-//             );
-//     })
-//
-// }
-//endregion
+if (process.env.NODE_ENV != "development") {
+// Pick up React index.html file
+    app.use(
+        express.static(path.join(__dirname, "/build"))
+    );
 
-// app.get('*', function(req, res){
-//     res.status(404).json({error:true,mesg:"*"});
-// });
+    app.get("*", (req, res) => {
+        res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
+            .sendFile(
+                path.join(__dirname, "/build/index.html")
+            );
+    })
+
+}
+//endregion
 
 
 //region Views
@@ -132,8 +123,8 @@ app.use(function (req, res, next) {
 });
 //endregion
 
-// //region ERROR HANDLER
-// // error handler
+//region ERROR HANDLER
+// error handler
 app.use(function (err: any, req: any, res: any, next: any) {
     // set locals, only providing error in development
     res.locals.message = err.message;
