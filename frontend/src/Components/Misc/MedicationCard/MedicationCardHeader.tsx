@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import Avatar from "@mui/material/Avatar";
 import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
@@ -7,6 +7,7 @@ import CardHeader from "@mui/material/CardHeader";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {Chip} from "@mui/material";
 import {Face} from "@mui/icons-material";
+import {UserContext} from "../../../Context/UserContext";
 
 /**
  *
@@ -28,6 +29,22 @@ interface IMedicationCardHeaderProps {
  * @constructor
  */
 const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
+
+    const {usersPeople} = useContext(UserContext);
+
+    const getPersonColor = () => {
+      usersPeople.map(people => {
+          if(props.medication.medicationOwner == people.name){
+              return people.color
+          }
+      })
+        return "secondary"
+    }
+
+    const [color, setColor] = useState<string>(()=>getPersonColor());
+
+    console.log(color)
+
     return (
         <div>
             {props.isNewCard ?<></>:
@@ -45,7 +62,8 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                     </div>
                 }
                 title={props.medication.prescriptionName}
-                subheader={<Chip color={"secondary"} icon={<Face/>} label={props.medication.medicationOwner} />}
+                //TODO:(TRAVIS) I cant get the color to work properly
+                subheader={<Chip sx={{backgroundColor:color}} icon={<Face/>} label={props.medication.medicationOwner} />}
             />
             }
         </div>
