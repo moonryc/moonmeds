@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import { IMedicationBase} from "../../../Types/MedicationTypes";
-import {IMedicationDosagesBase } from "../../../Types/MedicationDosagesTypes";
+import {IMedicationBase} from "../../../Types/MedicationTypes";
+import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
 import {MedicationContext} from "./MedicationContext";
 import {NotificationsContext} from "./NotificationsContext";
 import {UserContext} from "./UserContext";
@@ -14,17 +14,17 @@ export interface IApiContextState {
     setLoadingBar: (state: boolean) => void
 
 
-    checkIfJWTTokenIsValid:()=>void,
-    postLogin:(userName:string,password:string)=>void,
-    postRegister:(userName:string,password:string,emailAddress:string)=>void,
-    fetchMedicationsAndDosagesAndPersons:()=>void,
-    fetchPersons:()=>void,
-    putNewMedication:(medicationObject:IMedicationBase)=>void,
-    putUpdateExistingMedication:(medicationObject:IMedicationBase)=>void,
-    putDeleteSelectedMedications:(medicationIdArray: string[],removePastMedicationDosages:boolean)=>void,
-    putUpdateMedicationDosage:(dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date)=>void,
-    putAddPerson:(newPerson:IPersonNameAndColor)=>void,
-    putRemovePerson:(removePerson:IPersonNameAndColor)=>void,
+    checkIfJWTTokenIsValid: () => void,
+    postLogin: (userName: string, password: string) => void,
+    postRegister: (userName: string, password: string, emailAddress: string) => void,
+    fetchMedicationsAndDosagesAndPersons: () => void,
+    fetchPersons: () => void,
+    putNewMedication: (medicationObject: IMedicationBase) => void,
+    putUpdateExistingMedication: (medicationObject: IMedicationBase) => void,
+    putDeleteSelectedMedications: (medicationIdArray: string[], removePastMedicationDosages: boolean) => void,
+    putUpdateMedicationDosage: (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date) => void,
+    putAddPerson: (newPerson: IPersonNameAndColor) => void,
+    putRemovePerson: (removePerson: IPersonNameAndColor) => void,
 }
 
 export const ApiContext = createContext<IApiContextState>({
@@ -35,17 +35,17 @@ export const ApiContext = createContext<IApiContextState>({
     setLoadingBar: (state: boolean) => {
     },
 
-    checkIfJWTTokenIsValid:async ()=>Promise,
-    postLogin:async (userName:string,password:string)=>Promise,
-    postRegister:async (userName:string,password:string,emailAddress:string)=>Promise,
-    fetchMedicationsAndDosagesAndPersons:async ()=>Promise,
-    fetchPersons:async ()=>Promise,
-    putNewMedication:async (medicationObject:IMedicationBase)=>Promise,
-    putUpdateExistingMedication:async (medicationObject:IMedicationBase)=>Promise,
-    putDeleteSelectedMedications:async (medicationIdArray: string[],removePastMedicationDosages:boolean)=>Promise,
-    putUpdateMedicationDosage:async (dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date)=>Promise,
-    putAddPerson:async (newPerson:IPersonNameAndColor)=>Promise,
-    putRemovePerson:async (removePerson:IPersonNameAndColor)=>Promise,
+    checkIfJWTTokenIsValid: async () => Promise,
+    postLogin: async (userName: string, password: string) => Promise,
+    postRegister: async (userName: string, password: string, emailAddress: string) => Promise,
+    fetchMedicationsAndDosagesAndPersons: async () => Promise,
+    fetchPersons: async () => Promise,
+    putNewMedication: async (medicationObject: IMedicationBase) => Promise,
+    putUpdateExistingMedication: async (medicationObject: IMedicationBase) => Promise,
+    putDeleteSelectedMedications: async (medicationIdArray: string[], removePastMedicationDosages: boolean) => Promise,
+    putUpdateMedicationDosage: async (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date) => Promise,
+    putAddPerson: async (newPerson: IPersonNameAndColor) => Promise,
+    putRemovePerson: async (removePerson: IPersonNameAndColor) => Promise,
 
 })
 
@@ -53,7 +53,7 @@ export const ApiContainer = (props: any) => {
 
     const {setUserMedications, setUserMedicationDosages} = useContext(MedicationContext);
     const {newNotification} = useContext(NotificationsContext);
-    const { setLoggedIn,setUsersPeople } = useContext<any>(UserContext);
+    const {setLoggedIn, setUsersPeople} = useContext<any>(UserContext);
 
     const {children} = props;
     const [numberOfCurrentApiCalls, setNumberOfCurrentApiCalls] = useState<number>(0);
@@ -96,9 +96,9 @@ export const ApiContainer = (props: any) => {
 
         })
             .then(response => {
-                if(response.status == 200){
+                if (response.status == 200) {
                     setLoggedIn(true)
-                }else{
+                } else {
                     setLoggedIn(false)
                 }
             })
@@ -109,7 +109,7 @@ export const ApiContainer = (props: any) => {
      * @param userName
      * @param password
      */
-    const postLogin = async (userName:string,password:string): Promise<void> => {
+    const postLogin = async (userName: string, password: string): Promise<void> => {
         let url = '/users/login';
         // Default options are marked with *
         await fetch(url, {
@@ -121,15 +121,15 @@ export const ApiContainer = (props: any) => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({userName:userName,password:password}) // body data type must match "Content-Type" header
+            body: JSON.stringify({userName: userName, password: password}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
                     //TODO login failed
                     setLoggedIn(false)
-                }else{
-                    reactLocalStorage.set('JWTToken',data.token)
+                } else {
+                    reactLocalStorage.set('JWTToken', data.token)
                     setLoggedIn(true)
                 }
             })
@@ -141,7 +141,7 @@ export const ApiContainer = (props: any) => {
      * @param password
      * @param emailAddress
      */
-    const postRegister = async (userName:string,password:string,emailAddress:string): Promise<void> => {
+    const postRegister = async (userName: string, password: string, emailAddress: string): Promise<void> => {
         let url = '/users/register';
         // Default options are marked with *
         await fetch(url, {
@@ -153,15 +153,15 @@ export const ApiContainer = (props: any) => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({userName:userName,password:password,emailAddress:emailAddress}) // body data type must match "Content-Type" header
+            body: JSON.stringify({userName: userName, password: password, emailAddress: emailAddress}) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
                     //TODO
                     setLoggedIn(false)
-                }else{
-                    reactLocalStorage.set('JWTToken',data.token)
+                } else {
+                    reactLocalStorage.set('JWTToken', data.token)
                     setLoggedIn(true)
                 }
             })
@@ -186,14 +186,14 @@ export const ApiContainer = (props: any) => {
             .then((data) => {
                 if (data.error) {
                     console.log(data.msg)
-                }else{
+                } else {
                     setUserMedications(data.medicationArray)
                     setUserMedicationDosages(data.medicationDosagesArray)
                     setUsersPeople(data.persons)
                 }
                 // newNotification(data.alert.message,data.alert.severity)
                 handleLoadingBarTurnOff()
-            }).catch(e=>console.log(e))
+            }).catch(e => console.log(e))
     }
 
     const fetchPersons = async (): Promise<void> => {
@@ -210,7 +210,7 @@ export const ApiContainer = (props: any) => {
             .then((data) => {
                 if (data.error) {
                     console.log(data.error)
-                }else{
+                } else {
                     setUsersPeople(data.persons)
                 }
                 // newNotification(data.alert.message,data.alert.severity)
@@ -242,9 +242,9 @@ export const ApiContainer = (props: any) => {
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     //TODO
-                }else{
+                } else {
                     //TODO
                 }
                 fetchMedicationsAndDosagesAndPersons()
@@ -272,9 +272,9 @@ export const ApiContainer = (props: any) => {
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     //TODO
-                }else{
+                } else {
                     //TODO
                 }
                 fetchMedicationsAndDosagesAndPersons()
@@ -286,7 +286,7 @@ export const ApiContainer = (props: any) => {
      * @param medicationIdArray
      * @param removePastMedicationDosages
      */
-    const putDeleteSelectedMedications = async (medicationIdArray: string[],removePastMedicationDosages:boolean) => {
+    const putDeleteSelectedMedications = async (medicationIdArray: string[], removePastMedicationDosages: boolean) => {
         handleLoadingBarTurnOn()
         let url = "/medication/deleteSelectedMedications"
         await fetch(url, {
@@ -299,13 +299,16 @@ export const ApiContainer = (props: any) => {
                 'Accept': 'application/json',
                 'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify({arrayOfMedicationIds: medicationIdArray, removePastMedicationDosages:removePastMedicationDosages}) // body data type must match "Content-Type" header
+            body: JSON.stringify({
+                arrayOfMedicationIds: medicationIdArray,
+                removePastMedicationDosages: removePastMedicationDosages
+            }) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     //TODO
-                }else{
+                } else {
                     //TODO
                 }
                 fetchMedicationsAndDosagesAndPersons()
@@ -322,7 +325,7 @@ export const ApiContainer = (props: any) => {
      * @param hasBeenMissed
      * @param timeTaken
      */
-    const putUpdateMedicationDosage = async (dosageId:string, hasBeenTaken:boolean, hasBeenMissed:boolean,timeTaken:Date):Promise<void> => {
+    const putUpdateMedicationDosage = async (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date): Promise<void> => {
         handleLoadingBarTurnOn()
         let url = "/medicationDosages/update"
         await fetch(url, {
@@ -335,13 +338,18 @@ export const ApiContainer = (props: any) => {
                 'Accept': 'application/json',
                 'Authorization': reactLocalStorage.get("JWTToken")
             },
-            body: JSON.stringify({dosageId: dosageId, hasBeenTaken: hasBeenTaken, hasBeenMissed: hasBeenMissed, timeTaken: timeTaken}) // body data type must match "Content-Type" header
+            body: JSON.stringify({
+                dosageId: dosageId,
+                hasBeenTaken: hasBeenTaken,
+                hasBeenMissed: hasBeenMissed,
+                timeTaken: timeTaken
+            }) // body data type must match "Content-Type" header
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     console.log(data.error)
-                }else{
+                } else {
                     //TODO
                 }
                 fetchMedicationsAndDosagesAndPersons()
@@ -352,7 +360,7 @@ export const ApiContainer = (props: any) => {
      * Add a person to the users account to assign a medication too
      * @param newPerson
      */
-    const putAddPerson = async (newPerson:IPersonNameAndColor) => {
+    const putAddPerson = async (newPerson: IPersonNameAndColor) => {
         handleLoadingBarTurnOn()
         let url = "/users/addPerson"
         await fetch(url, {
@@ -369,9 +377,9 @@ export const ApiContainer = (props: any) => {
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     //TODO
-                }else{
+                } else {
                     //TODO
                 }
                 // newNotification(data.alert.message,data.alert.severity)
@@ -383,7 +391,7 @@ export const ApiContainer = (props: any) => {
      * Removes a person
      * @param removePerson
      */
-    const putRemovePerson =  async (removePerson:IPersonNameAndColor) => {
+    const putRemovePerson = async (removePerson: IPersonNameAndColor) => {
         handleLoadingBarTurnOn()
         let url = "/users/removePerson"
         await fetch(url, {
@@ -400,9 +408,9 @@ export const ApiContainer = (props: any) => {
         })
             .then(response => response.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     //TODO
-                }else{
+                } else {
                     //TODO
                 }
                 fetchMedicationsAndDosagesAndPersons()
@@ -413,8 +421,6 @@ export const ApiContainer = (props: any) => {
                 //TODO
                 handleLoadingBarTurnOff()
             })
-
-
     };
 
     //endregion
