@@ -1,7 +1,7 @@
 import React from 'react';
-import {Box, IconButton} from "@mui/material";
+import {Box, IconButton, Typography} from "@mui/material";
 import {ArrowBack, ArrowForward} from "@mui/icons-material";
-import {subTextStyle} from "../../../Styles";
+import {centeredTextStyle, subTextStyle} from "../../../Styles";
 
 interface ICalendarHeaderProps {
     goForwardAMonth():void,
@@ -14,7 +14,7 @@ interface ICalendarHeaderProps {
 const CalendarHeader = (props:ICalendarHeaderProps) => {
 
     return (
-        <Box sx={{position:'absolute', left:'0', right:'0', textAlign: 'center', top:'2%'}}>
+        <Typography sx={{...centeredTextStyle, textAlign:['right','right','right','center'], fontSize:['2vw'], overflow:'visible'}}>
             <IconButton onClick={()=>props.goBackAMonth()}>
                 <ArrowBack sx={subTextStyle}/>
             </IconButton>
@@ -22,7 +22,7 @@ const CalendarHeader = (props:ICalendarHeaderProps) => {
             <IconButton onClick={()=>props.goForwardAMonth()}>
                 <ArrowForward sx={subTextStyle}/>
             </IconButton>
-        </Box>
+        </Typography>
     );
 };
 

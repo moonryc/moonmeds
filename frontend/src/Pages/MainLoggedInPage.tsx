@@ -70,8 +70,8 @@ const MainLoggedInPage = () => {
                 {newMedicationDialog()}
                 {listOfMedicationDialog()}
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <Paper elevation={0} sx={{overflow:'auto', position:'relative', height: '80vh',}}>
+                    <Grid item xs={12} lg={6}>
+                        <Paper elevation={0} sx={{overflow:'auto', position:'relative', height: ['60vh','60vh','60vh','80vh'],}}>
                             <DisplayCalendar/>
                             {/*//@ts-ignore*/}
                             <Box sx={{position: 'absolute', bottom: '6px', left: '6px'}}>
@@ -86,7 +86,7 @@ const MainLoggedInPage = () => {
                             </Box>
                         </Paper>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} lg={6}>
                         <Card sx={{width: "100%", height: "100%",}}>
                             <Box sx={{bgcolor: 'background.paper', width: "100%"}}>
                                 <DisplayDateDetails selectedDate={{index: 0, date: selectedDay}}/>

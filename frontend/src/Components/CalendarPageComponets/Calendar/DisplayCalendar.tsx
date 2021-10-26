@@ -5,7 +5,7 @@ import subMonths from 'date-fns/subMonths'
 import addMonths from 'date-fns/addMonths'
 import CalendarHeader from "./CalendarHeader";
 import CalendarBody from "./CalendarBody";
-import {Box, Paper, Typography} from "@mui/material";
+import {Box, Grid, Paper, Typography} from "@mui/material";
 import {centeredTextStyle} from "../../../Styles";
 
 const DisplayCalendar = () => {
@@ -51,16 +51,16 @@ const DisplayCalendar = () => {
 
     return (
 
-        <Box sx={{minWidth:'400px', padding:'2.5vh',}}>
-            <Typography variant={'h4'} sx={centeredTextStyle}>Calendar</Typography>
-            {/*this paper does not use frontPaperStyle because of the strict positioning*/}
-            <Paper elevation={0} sx={{overflow:'auto', position:'relative', height: '65vh',paddingTop: '40px',}}>
-            <CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/>
+        <Box sx={{ padding:'2.5vh',}}>
+            <Grid container>
+                <Grid sx={{minWidth:'5px'}} item xs={6} lg={12}> <Typography  sx={{...centeredTextStyle, textAlign:['left','left','left','center'], fontSize:['2vw','2vw','2vw','3vw']}}>Calendar</Typography></Grid>
 
+                <Grid sx={{minWidth:'5px'}} item xs={6} lg={12}><CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/></Grid>
+            </Grid>
                 <CalendarBody  numberOfDaysInMonth={numberOfDaysInSelectedMonth}
                               firstDay={dayOfTheWeekOfTheFirstOfTheMonth}/>
 
-            </Paper>
+
         </Box>
 
     );

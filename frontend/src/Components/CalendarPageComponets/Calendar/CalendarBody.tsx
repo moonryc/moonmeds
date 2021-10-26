@@ -62,7 +62,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     return (
         <Box >
             <br/>
-            <Grid container spacing={1}>{/*//@ts-ignore*/}
+            <Grid container spacing={2}>{/*//@ts-ignore*/}
                     <Grid sx={centeredTextStyle}item xs={1.71428571}>
                         Sun
                     </Grid>{/*//@ts-ignore*/}
@@ -86,7 +86,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
                     </Grid>
                 {arrayOfMonthDays.map(day =>
                     //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
-                        <Grid sx={centeredTextStyle} item xs={1.71428571} key={arrayOfMonthDays.indexOf(day)}>
+                        <Grid sx={{...centeredTextStyle, height:['6vh',,,'10vh']}} item xs={1.71428571} key={arrayOfMonthDays.indexOf(day)}>
                             {day.index !=0 ?<CalendarDay index={day.index} date={day.date} isRenderedOnHomePage={true}/>:<></>}<br/>
                         </Grid>
                         // :<CalendarDay index={day.index} date={day.date}/>

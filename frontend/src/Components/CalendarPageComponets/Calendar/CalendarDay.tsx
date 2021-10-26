@@ -174,7 +174,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
             {/*@ts-ignore*/}
-            <IconButton sx={{...calendarDayColor, ...isSelectedDay}}
+            <IconButton sx={{...calendarDayColor, ...isSelectedDay, fontSize:'3vw'}}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>
