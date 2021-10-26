@@ -4,8 +4,21 @@ const jsonwebtoken = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
+try{
+    const priv_key = '../cryptography/id_rsa_priv.pem'
+    const pub_key = '../cryptography/id_rsa_pub.pem'
 
-const pathToKey = path.join('./Cryptography/id_rsa_priv.pem');
+
+    if(fs.existsSync(priv_key) && fs.existsSync(pub_key)){
+        //Do NOTHING
+    }else{
+        require('../cryptography/createKeyPair')
+    }
+}catch(e){
+    console.log(e)
+}
+
+const pathToKey = path.join('./cryptography/id_rsa_priv.pem');
 const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 /**
