@@ -63,7 +63,7 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
         return (
             <>
                 <Box sx={{bgcolor: "blue", width: "100%", height: 60, borderRadius: 2, position:'relative'}}>
-                    <Typography sx={{marginLeft:'1vh',fontSize:'20px', top:'22.5%',position:'absolute'}}>{prefix + " is ready for a refill in " + differenceInDays(new Date(props.medication.nextFillDay),new Date()) + " days"}</Typography>
+                    <Typography sx={{marginLeft:'1vh',fontSize:'.75vw', top:'22.5%',position:'absolute'}}>{prefix + " is ready for a refill in " + differenceInDays(new Date(props.medication.nextFillDay),new Date()) + " days"}</Typography>
                     <Button variant={"contained"} sx={{position:'absolute', right: "2.5%", top:'20%'}}>Refill</Button>
                 </Box>
             </>

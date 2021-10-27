@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Avatar from "@mui/material/Avatar";
 import {red} from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
@@ -30,20 +30,27 @@ interface IMedicationCardHeaderProps {
  */
 const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
 
-    const {usersPeople} = useContext(UserContext);
+    const {usersPeople} = useContext<any>(UserContext);
+    const [peopleState, setPeopleState] = useState<any>({usersPeople})
 
-    const getPersonColor = () => {
-      usersPeople.map(people => {
+    useEffect(()=> {
+        setPeopleState(usersPeople)
+    },[usersPeople])
+
+
+    const getPersonColor = () => {//@ts-ignore
+         usersPeople.map(people => {
+          console.log(people.name)//@ts-ignore
           if(props.medication.medicationOwner == people.name){
+              console.log(people.name)//@ts-ignore
               return people.color
           }
       })
         return "secondary"
     }
+    //@ts-ignore
+    const [color, /*setColor*/] = useState<string>(()=>getPersonColor());
 
-    const [color, setColor] = useState<string>(()=>getPersonColor());
-
-    console.log(color)
 
     return (
         <div>

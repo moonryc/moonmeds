@@ -51,9 +51,9 @@ const DisplayCalendar = () => {
 
     return (
 
-        <Box sx={{ padding:'2.5vh',}}>
+        <Box sx={{ padding:'2.5vh', maxHeight:'90%'}}>
             <Grid container>
-                <Grid sx={{minWidth:'5px'}} item xs={6} lg={12}> <Typography  sx={{...centeredTextStyle, textAlign:['left','left','left','center'], fontSize:['2vw','2vw','2vw','3vw']}}>Calendar</Typography></Grid>
+                <Grid sx={{minWidth:'5px'}} item xs={6} lg={12}> <Typography  sx={{...centeredTextStyle, textAlign:['left','left','left','center'], fontSize:['2vw','2vw','2vw','2vw']}}>Calendar</Typography></Grid>
 
                 <Grid sx={{minWidth:'5px'}} item xs={6} lg={12}><CalendarHeader goForwardAMonth={goForwardAMonth} goBackAMonth={goBackAMonth} month={selectedDate}/></Grid>
             </Grid>

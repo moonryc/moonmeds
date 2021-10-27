@@ -14,13 +14,13 @@ interface ICalendarHeaderProps {
 const CalendarHeader = (props:ICalendarHeaderProps) => {
 
     return (
-        <Typography sx={{...centeredTextStyle, textAlign:['right','right','right','center'], fontSize:['2vw'], overflow:'visible'}}>
+        <Typography sx={{...centeredTextStyle, textAlign:['right','right','right','center'], fontSize:['2vw']}}>
             <IconButton onClick={()=>props.goBackAMonth()}>
-                <ArrowBack sx={subTextStyle}/>
+                <ArrowBack sx={{...subTextStyle, fontSize:['2vw']}}/>
             </IconButton>
             <>{props.month.toDateString()}</>
             <IconButton onClick={()=>props.goForwardAMonth()}>
-                <ArrowForward sx={subTextStyle}/>
+                <ArrowForward sx={{...subTextStyle, fontSize:['2vw']}}/>
             </IconButton>
         </Typography>
     );

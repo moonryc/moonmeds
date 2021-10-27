@@ -62,7 +62,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     return (
         <Box >
             <br/>
-            <Grid container spacing={2}>{/*//@ts-ignore*/}
+            <Grid container spacing={0}>{/*//@ts-ignore*/}
                     <Grid sx={centeredTextStyle}item xs={1.71428571}>
                         Sun
                     </Grid>{/*//@ts-ignore*/}

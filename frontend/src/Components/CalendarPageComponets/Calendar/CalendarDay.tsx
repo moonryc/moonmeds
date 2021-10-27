@@ -30,11 +30,11 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
     const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesBase[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
     const [calendarDayColor, setCalendarDayColor] = useState({
         bgcolor: 'primary.main',
-        width: '45px',
-        height: '45px',
+        width: ["5vw",'5vw','5vw','55px'],
+        height: ["5vw",'5vw','5vw','55px'],
         color: '#000000',
         border: 0,
-        borderRadius: '0%',
+        borderRadius: '50%',
         borderColor: 'primary.main'
     });
 
@@ -60,23 +60,23 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
             setCalendarDayColor({
                 bgcolor: "primary.main",
                 border: 1,
-                width: "60px",
-                height: "60px",
+                width: ["5vw",'5vw','5vw','55px'],
+                height: ["5vw",'5vw','5vw','55px'],
                 borderRadius: "50%",
                 color: 'text.primary',
                 borderColor: "primary.light",
 
 
 
-            } as const)
+            })
             return
         }
 
         if (isMissed) {
             setCalendarDayColor({
                 bgcolor: 'primary.main',
-                width: "60px",
-                height: "60px",
+                width: ["5vw",'5vw','5vw','55px'],
+                height: ["5vw",'5vw','5vw','55px'],
                 color: '#ff0000',
                 border: 0,
                 borderRadius: '50%',
@@ -89,8 +89,8 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
         if (isDayAFillday) {
             setCalendarDayColor({
                 bgcolor: 'primary.main',
-                width: "60px",
-                height: "60px",
+                width: ["5vw",'5vw','5vw','55px'],
+                height: ["5vw",'5vw','5vw','55px'],
                 color: '#ffe800',
                 border: 0,
                 borderRadius: '50%',
@@ -101,8 +101,8 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
 
         setCalendarDayColor({
             bgcolor: 'primary.main',
-            width: "60px",
-            height: "60px",
+            width: ["5vw",'5vw','5vw','55px'],
+            height: ["5vw",'5vw','5vw','55px'],
             color: 'text.primary',
             border: 0,
             borderRadius: '50%',
@@ -174,7 +174,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
             {/*if(props.date===missed dose) color=red*/}
             {/*else color=theme.text.primary*/}
             {/*@ts-ignore*/}
-            <IconButton sx={{...calendarDayColor, ...isSelectedDay, fontSize:'3vw'}}
+            <IconButton sx={{...calendarDayColor, ...isSelectedDay, fontSize:['3vw',,,'35px']}}
                         onClick={() => handleOnDayClick()}>
                 {getDate(props.date)}
             </IconButton>

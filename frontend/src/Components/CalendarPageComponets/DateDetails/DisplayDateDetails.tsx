@@ -82,9 +82,8 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                                     missedMedications={true}
                                     upcomingRefill={false}/>
                                 <br/>
-                                {/*//TODO TRAVIS ADD PADDING*/}
                             </> :
-                            <Typography key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></Typography>
+                            <Typography sx={{fontSize:'1vw'}} key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></Typography>
                     }
                 )}
             </Typography>
