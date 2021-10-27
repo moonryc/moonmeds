@@ -1,4 +1,5 @@
 import React, {createContext, useState,} from 'react'
+import {IPersonNameAndColor} from "../../../Types/UserTypes";
 
 
 export interface IUserContextState {
@@ -6,8 +7,8 @@ export interface IUserContextState {
     setLoggedIn: (state: boolean|null) => void,
 
 
-    usersPeople:string[],
-    setUsersPeople:(state:string[])=>void,
+    usersPeople:IPersonNameAndColor[],
+    setUsersPeople:(state:IPersonNameAndColor[])=>void,
 }
 
 
@@ -16,8 +17,8 @@ export const UserContext = createContext<IUserContextState>({
     setLoggedIn: (state: boolean|null) => {},
 
 
-    usersPeople:["placeholder"],
-    setUsersPeople:(state:string[])=>{},
+    usersPeople:[{name:"Default",color:"Grey"}],
+    setUsersPeople:(state:IPersonNameAndColor[])=>{},
 
 })
 
@@ -25,7 +26,7 @@ export const UserContainer = (props: any) => {
     const {children} = props;
     const [loggedIn, setLoggedIn] = useState<boolean|null>(null);
 
-    const [usersPeople, setUsersPeople] = useState<string[]>(["placeholder"]);
+    const [usersPeople, setUsersPeople] = useState<IPersonNameAndColor[]>([{name:"Default",color:"Grey"}]);
 
 
 

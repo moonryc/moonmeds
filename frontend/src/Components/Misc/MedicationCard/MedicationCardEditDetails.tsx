@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Divider, TextField} from "@mui/material";
+import {Button, ButtonGroup, Divider, Switch, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import MedicationCardOwner from "./MedicationCardOwner";
+
 
 
 /**
@@ -14,7 +15,7 @@ import MedicationCardOwner from "./MedicationCardOwner";
 interface IMedicationCardEditDetails {
     medication: IMedicationBase,
 
-    updateMedicationDetails(prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string): void
+    updateMedicationDetails(prescriptionName: string, nextFilledDate: Date,userNotes: string, prescriptionDosage: number,medicationOwner:string,endDate:Date,inDefinite:boolean): void
 }
 
 //*TODO(Spotexx): theming*/}
@@ -44,7 +45,8 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      * Value of the user notes regarding the selected medication
      */
     const [userNotes, setUserNotes] = useState<string>(props.medication.userNotes);
-
+    const [medicationEndDate, setMedicationEndDate] = useState(props.medication.endDate);
+    const [isIndefinite, setIsIndefinite] = useState(props.medication.inDefinite);
 
     //endregion
 
@@ -87,6 +89,18 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
         }
     };
 
+    /**
+     * updates the next fill date property when using the mobileDatePicker component
+     * @param newValue
+     */
+    const handleEndDateDatePickerChange = (newValue: Date | null) => {
+        if (newValue == null) {
+            setMedicationEndDate(new Date())
+        } else {
+            setMedicationEndDate(newValue);
+        }
+    };
+
 
     //endregion
 
@@ -97,7 +111,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      * or prescription dosage changes
      */
     useEffect(() => {
-        props.updateMedicationDetails(prescriptionName, nextFillDate, userNotes, prescriptionDosage,props.medication.medicationOwner)
+        props.updateMedicationDetails(prescriptionName, nextFillDate, userNotes, prescriptionDosage,props.medication.medicationOwner,medicationEndDate,isIndefinite)
 
     }, [prescriptionName, nextFillDate, userNotes, prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -137,6 +151,52 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
                     onChange={handleMobileDatePickerChange}
                     renderInput={(params) => <TextField {...params} />}
                 />
+                <br/>
+            </Typography>
+            <Divider/>
+            <Typography paragraph>
+
+
+
+
+
+
+
+
+
+
+
+
+                <br/>
+                Stop taking medication
+
+                <ButtonGroup variant={"contained"}>
+                    <Button disabled={isIndefinite} onClick={()=>setIsIndefinite(!isIndefinite)}>Never</Button>
+                    <Button disabled={!isIndefinite} onClick={()=>setIsIndefinite(!isIndefinite)}>Specific Day</Button>
+                </ButtonGroup>
+
+                <br/>
+                <br/>
+
+                {isIndefinite ? <></> : <>
+                    <MobileDatePicker
+                        label="Next Refill"
+                        inputFormat="MM/dd/yyyy"
+                        value={medicationEndDate}
+                        onChange={handleEndDateDatePickerChange}
+                        renderInput={(params) => <TextField {...params} />}
+                    />
+                </>
+                }
+
+
+
+
+
+
+
+
+
                 <br/>
             </Typography>
             <Divider/>

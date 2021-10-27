@@ -34,10 +34,6 @@ router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
         await getUserMedicationDosages(req).then(data=>response.medicationDosagesArray = data)
         await getPersons(req).then(data=>response.persons = data.persons)
 
-        // console.log(response.medicationArray)
-        // console.log(response.medicationDosagesArray)
-        // console.log(response.persons)
-        console.log(response)
         res.status(200).json(response)
     } catch (e) {
         res.status(401).json({error: true, msg: e})

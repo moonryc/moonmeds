@@ -107,12 +107,14 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * @param prescriptionDosage - number
      * @param medicationOwner
      */
-    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number, medicationOwner: string) => {
+    const updateMedicationDetails = (prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number, medicationOwner: string,endDate:Date,inDefinite:boolean) => {
         const tempMedicationDetails = medicationDetails
         tempMedicationDetails.prescriptionName = prescriptionName
         tempMedicationDetails.nextFillDay = nextFilledDate
         tempMedicationDetails.prescriptionDosage = prescriptionDosage
         tempMedicationDetails.medicationOwner = medicationOwner
+        tempMedicationDetails.endDate = endDate
+        tempMedicationDetails.inDefinite = inDefinite
         tempMedicationDetails.userNotes = userNotes
         setMedicationDetails(tempMedicationDetails);
     }
@@ -198,10 +200,8 @@ const MedicationCard = (props: IMedicationCardProps) => {
      * Creates a new medication as long as the nothing was left as null is null
      */
     const submitNewMedication = async () => {
-
         if (!handleNullChecker()) {
             await putNewMedication(medicationDetails)
-
         }
     };
 
