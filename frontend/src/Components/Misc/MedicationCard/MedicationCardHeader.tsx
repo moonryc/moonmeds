@@ -8,6 +8,8 @@ import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {Chip} from "@mui/material";
 import {Face} from "@mui/icons-material";
 import {UserContext} from "../../../Context/UserContext";
+import medication from "../../../../../routes/medication";
+import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
 
 /**
  *
@@ -31,25 +33,29 @@ interface IMedicationCardHeaderProps {
 const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
 
     const {usersPeople} = useContext<any>(UserContext);
-    const [peopleState, setPeopleState] = useState<any>({usersPeople})
+
+    const [color, setColor] = useState<string>("secondary");
+
+    useEffect(() => {
+        getPersonColor()
+        console.log(color)
+    }, []);
+
 
     useEffect(()=> {
-        setPeopleState(usersPeople)
+        getPersonColor()
     },[usersPeople])
 
 
-    const getPersonColor = () => {//@ts-ignore
-         usersPeople.map(people => {
-          console.log(people.name)//@ts-ignore
-          if(props.medication.medicationOwner == people.name){
-              console.log(people.name)//@ts-ignore
-              return people.color
-          }
-      })
-        return "secondary"
+    const getPersonColor = () => {
+        for( let person of usersPeople){
+            if(props.medication.medicationOwner == person.name){
+                return setColor(person.color)
+            }
+        }
+        return setColor("secondary")
     }
-    //@ts-ignore
-    const [color, /*setColor*/] = useState<string>(()=>getPersonColor());
+
 
 
     return (

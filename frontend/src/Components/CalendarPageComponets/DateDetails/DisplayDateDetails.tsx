@@ -47,7 +47,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                 )}
             </Typography>
 
-            {/*<DateDetailsMedicationToTake index={0} date={props.selectedDate.date}/>*/}
+
             <Typography>
                 Medications to take
             </Typography>
@@ -73,7 +73,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
             </Typography>
             <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
                 {selectedDayDetails.map(medicationDosage => {
-                        return medicationDosage.hasBeenMissed ?
+                        return medicationDosage.hasBeenMissed && !medicationDosage.hasBeenTaken ?
                             <>
                                 <MedicationDosageDetails
                                     medication={medicationDosage}

@@ -156,19 +156,9 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
             <Divider/>
             <Typography paragraph>
 
-
-
-
-
-
-
-
-
-
-
-
                 <br/>
                 Stop taking medication
+                <br/>
 
                 <ButtonGroup variant={"contained"}>
                     <Button disabled={isIndefinite} onClick={()=>setIsIndefinite(!isIndefinite)}>Never</Button>
@@ -180,22 +170,13 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
 
                 {isIndefinite ? <></> : <>
                     <MobileDatePicker
-                        label="Next Refill"
+                        label="Medication End Date"
                         inputFormat="MM/dd/yyyy"
                         value={medicationEndDate}
                         onChange={handleEndDateDatePickerChange}
                         renderInput={(params) => <TextField {...params} />}
                     />
-                </>
-                }
-
-
-
-
-
-
-
-
+                </>}
 
                 <br/>
             </Typography>

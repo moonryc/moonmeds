@@ -27,7 +27,6 @@ import {NotificationsContext} from "../../../Context/NotificationsContext";
  */
 export interface IMedicationCardProps extends IMedicationBase {
     isNewCard: boolean,
-
 }
 
 

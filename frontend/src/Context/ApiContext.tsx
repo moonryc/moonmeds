@@ -78,6 +78,17 @@ export const ApiContainer = (props: any) => {
         setNumberOfCurrentApiCalls(tempNumber)
     }
 
+    const checkResponseCodes = (response: any) => {
+        if (response.status == 200 || response.status == 400) {
+            return response.json()
+        } else if (response.status == 401) {
+            setLoggedIn(false)
+            throw "Session has expired please log back in"
+        } else {
+            throw response.json()
+        }
+    }
+
 
     /**
      * Checks if user is logged in using a callback with the JWTToken being used as the authorization bearer token
@@ -96,13 +107,14 @@ export const ApiContainer = (props: any) => {
 
         })
             .then(response => {
-                if (response.status == 200) {
-                    setLoggedIn(true)
-                } else {
-                    setLoggedIn(false)
-                }
+                    return checkResponseCodes(response)
+                }).then(apiResponse=>{
+                setLoggedIn(true)
             })
-            .catch(err => newNotification(err, "error"))
+            .catch(err => {
+                setLoggedIn(false)
+                newNotification(err, "error")
+            })
     }
 
     /**
@@ -114,7 +126,7 @@ export const ApiContainer = (props: any) => {
         let url = '/users/login';
         // Default options are marked with *
         await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            method: 'POST', // *GET, POST, PUT, DELsETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'same-origin', // include, *same-origin, omit
@@ -125,20 +137,14 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify({userName: userName, password: password}) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if (response.status == 200) {
-                    response.json().then(apiResponse => {
-                        //if there is an error
-                        if (apiResponse.error) {
-                            throw apiResponse.errorMessage
-                        } else {
-                            reactLocalStorage.set('JWTToken', apiResponse.payload.token)
-                            setLoggedIn(true)
-                        }
-                    })
+                    return checkResponseCodes(response)
+                }
+            ).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
                 } else {
-                    response.json().then(error => {
-                        throw error
-                    })
+                    reactLocalStorage.set('JWTToken', apiResponse.payload.token)
+                    setLoggedIn(true)
                 }
             })
             .catch(error => {
@@ -168,21 +174,19 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify({userName: userName, password: password, emailAddress: emailAddress}) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status==200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            setLoggedIn(true)
-                            reactLocalStorage.set("JWTToken",apiResponse.payload.token)
-                        }
-                    })
-                }else{
-                    response.json().then(error=>{throw error})
+                    return checkResponseCodes(response)
                 }
-            }).catch(error=>{
-                setLoggedIn(false)
-                newNotification(error,"error")
+            ).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    reactLocalStorage.set('JWTToken', apiResponse.payload.token)
+                    setLoggedIn(true)
+                }
+            })
+            .catch(error => {
+                setLoggedIn(false);
+                newNotification(error, "error")
             })
     }
 
@@ -202,29 +206,21 @@ export const ApiContainer = (props: any) => {
             },
         })
             .then(response => {
-                if (response.status == 200) {
-                    response.json().then(apiResponse => {
-                        if (apiResponse.error) {
-                            throw apiResponse.errorMessage
-                        } else {
-                            setUserMedications(apiResponse.payload.medicationArray)
-                            setUserMedicationDosages(apiResponse.payload.medicationDosagesArray)
-                            setUsersPeople(apiResponse.payload.persons)
-                        }
-                    })
-                } else if (response.status == 401) {
-                    setLoggedIn(false)
-                    throw "Login has expired please log back in"
+
+                return checkResponseCodes(response)
+            })
+            .then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
                 } else {
-                    response.json().then(error => {
-                        throw error
-                    })
+                    setUserMedications(apiResponse.payload.medicationArray)
+                    setUserMedicationDosages(apiResponse.payload.medicationDosagesArray)
+                    setUsersPeople(apiResponse.payload.persons)
                 }
             }).catch(error => {
                 newNotification(error, "error")
             })
 
-        // newNotification(data.alert.message,data.alert.severity)
         handleLoadingBarTurnOff()
 
     }
@@ -240,21 +236,12 @@ export const ApiContainer = (props: any) => {
             },
         })
             .then(response => {
-                if (response.status == 200) {
-                    response.json().then(apiResponse => {
-                        if (apiResponse.error) {
-                            throw apiResponse.errorMessage
-                        } else {
-                            setUsersPeople(apiResponse.payload)
-                        }
-                    })
-                } else if (response.status == 401) {
-                    setLoggedIn(false)
-                    throw "session expired please log back in"
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
                 } else {
-                    response.json().then(error => {
-                        throw error
-                    })
+                    setUsersPeople(apiResponse.payload)
                 }
             }).catch(error => {
                 newNotification(error, "error")
@@ -262,7 +249,7 @@ export const ApiContainer = (props: any) => {
         handleLoadingBarTurnOff()
     }
 
-    //region Put
+//region Put
 
     /**
      * Create a new medication
@@ -284,25 +271,16 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status==200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            newNotification("Medication Successfully added","success")
-                        }
-                    })
-                }else if(response.status == 401){
-                    setLoggedIn(false)
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    fetchMedicationsAndDosagesAndPersons()
+                    newNotification("Medication Successfully added", "success")
                 }
-            })
-            .catch(error => {
-                newNotification(error,"error")
+            }).catch(error => {
+                newNotification(error, "error")
             })
         handleLoadingBarTurnOff()
     };
@@ -326,26 +304,19 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status == 200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            newNotification("updated medication successfully","success")
-                        }
-                    })
-                }else if( response.status == 401){
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    fetchMedicationsAndDosagesAndPersons()
+                    newNotification("updated medication successfully", "success")
                 }
             })
-            .catch(error=>{
-                newNotification(error,"error")
+            .catch(error => {
+                newNotification(error, "error")
             })
-                handleLoadingBarTurnOff()
+        handleLoadingBarTurnOff()
     };
     /**
      * Deletes an array of medications
@@ -371,24 +342,17 @@ export const ApiContainer = (props: any) => {
             }) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status == 200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            newNotification("Deleted medications successfully","success")
-                        }
-                    })
-                }else if( response.status == 401){
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    fetchMedicationsAndDosagesAndPersons()
+                    newNotification("Deleted medications successfully", "success")
                 }
             })
-            .catch(error=>{
-                newNotification(error,"error")
+            .catch(error => {
+                newNotification(error, "error")
             })
         handleLoadingBarTurnOff()
 
@@ -422,24 +386,18 @@ export const ApiContainer = (props: any) => {
             }) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status == 200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            newNotification("updated scheduled dosage successfully","success")
-                        }
-                    })
-                }else if( response.status == 401){
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    //TODO make a fetch dosages
+                    fetchMedicationsAndDosagesAndPersons()
+                    newNotification("updated scheduled dosage successfully", "success")
                 }
             })
-            .catch(error=>{
-                newNotification(error,"error")
+            .catch(error => {
+                newNotification(error, "error")
             })
         handleLoadingBarTurnOff()
     }
@@ -463,27 +421,19 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify(newPerson) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status == 200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
-                            throw apiResponse.errorMessage
-                        }else{
-                            newNotification("added new person successfully","success")
-                        }
-                    })
-                }else if( response.status == 401){
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                if (apiResponse.error) {
+                    throw apiResponse.errorMessage
+                } else {
+                    fetchPersons()
+                    newNotification("added new person successfully", "success")
                 }
             })
-            .catch(error=>{
-                newNotification(error,"error")
+            .catch(error => {
+                newNotification(error, "error")
             })
         handleLoadingBarTurnOff()
-
     };
     /**
      * Removes a person
@@ -505,29 +455,22 @@ export const ApiContainer = (props: any) => {
             body: JSON.stringify(removePerson) // body data type must match "Content-Type" header
         })
             .then(response => {
-                if(response.status == 200){
-                    response.json().then(apiResponse=>{
-                        if(apiResponse.error){
+                return checkResponseCodes(response)
+            }).then(apiResponse => {
+                        if (apiResponse.error) {
                             throw apiResponse.errorMessage
-                        }else{
-                            newNotification("removed person successfully","success")
+                        } else {
+                            fetchPersons()
+                            newNotification("removed person successfully", "success")
                         }
                     })
-                }else if( response.status == 401){
-                    throw "Login has expired please log back in"
-                }else{
-                    response.json().then(apiResponse=>{
-                        throw apiResponse
-                    })
-                }
-            })
-            .catch(error=>{
-                newNotification(error,"error")
+            .catch(error => {
+                newNotification(error, "error")
             })
         handleLoadingBarTurnOff()
     };
 
-    //endregion
+//endregion
 
     return (
         <ApiContext.Provider value={{

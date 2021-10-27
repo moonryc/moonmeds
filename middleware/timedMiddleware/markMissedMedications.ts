@@ -17,7 +17,7 @@ import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
  * checks for missed medications every minute
  * @constructor
  */
-cron.schedule('* 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
 
     let missedMedications = await MedicationDosageModel.find({
         hasBeenTaken: false,
