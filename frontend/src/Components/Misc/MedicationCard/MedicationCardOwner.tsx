@@ -82,6 +82,7 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
     // }
     //
     //
+
     useEffect(() => {
         if (selectedUser == null) {
             props.updateMedicationDetails(props.medication.prescriptionName, props.medication.nextFillDay, props.medication.userNotes, props.medication.prescriptionDosage, "",props.medication.endDate,props.medication.inDefinite)
@@ -148,7 +149,7 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
 
-                    if (params.inputValue !== '') {
+                    if (params.inputValue !== '' && people.filter(person=> params.inputValue == person.name).length<1) {
                         filtered.push({
                             color: "",
                             inputValue: params.inputValue,
@@ -176,14 +177,14 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                 renderOption={(props, option) => <li {...props}>{option.name}</li>}
                 sx={{ width: 300 }}
                 freeSolo
-                renderInput={(params) => <TextField {...params} label="Free solo dialog" />}
+                renderInput={(params) => <TextField {...params} label="Medication Owner" />}
             />
             <Dialog open={open} onClose={handleClose}>
                 <form onSubmit={handleSubmit}>
-                    <DialogTitle>Add a new film</DialogTitle>
+                    <DialogTitle>Add a Owner</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Did you miss any film in our list? Please, add it!
+                            Add a new Medication Owner
                         </DialogContentText>
                         <TextField
                             autoFocus
@@ -216,8 +217,8 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Add</Button>
+                        <Button variant={"contained"} onClick={handleClose}>Cancel</Button>
+                        <Button variant={"contained"} type="submit">Add</Button>
                     </DialogActions>
                 </form>
             </Dialog>

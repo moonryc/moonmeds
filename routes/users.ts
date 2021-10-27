@@ -10,6 +10,7 @@ import getPersons from "../services/users/getPersons";
 import getUserMedications from "../services/medication/getUserMedications";
 import getUserMedicationDosages from "../services/medication/getUserMedicationDosages";
 import {Request, Response} from "express";
+import {IApiResponse} from "../Types/ApiResponse";
 
 const router = express.Router();
 
@@ -17,12 +18,19 @@ const router = express.Router();
 const JwtAuthenticate = passport.authenticate('jwt', {session: false});
 
 
+let apiResponse:IApiResponse ={
+    error: false,
+    errorMessage: "",
+    payload: undefined,
+}
+
+
 router.get('/callback', JwtAuthenticate, (req: any, res: any, next) => {
-        res.status(200).json({success: true, msg: "you are authorized"})
-    }
-);
+        return res.status(200).json({success: true, msg: "you are authorized"})
+    });
 
 router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
+
     try {
         let response:{error:boolean,medicationArray:any,medicationDosagesArray:any,persons:any} = {
             error: false,
@@ -33,77 +41,112 @@ router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
         await getUserMedications(req).then(data=>response.medicationArray = data)
         await getUserMedicationDosages(req).then(data=>response.medicationDosagesArray = data)
         await getPersons(req).then(data=>response.persons = data.persons)
-
-        res.status(200).json(response)
+        apiResponse.payload = response
+        return res.status(200).json(apiResponse)
     } catch (e) {
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 
 })
 
 router.get('/usersPersons', JwtAuthenticate, (req, res, next) => {
     try {
-        let persons = getPersons(req)
-        res.status(200).json({error: false, persons: persons})
+        apiResponse.payload = getPersons(req)
+        return res.status(200).json(apiResponse)
     } catch (e) {
-        res.status(200).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 })
 
-router.put('/addPerson', JwtAuthenticate, (req: Request, res: Response, next) => {
+router.put('/addPerson', JwtAuthenticate, async (req: Request, res: Response, next) => {
     try {
-        addPerson(req, res)
+        await addPerson(req, res).then(r=>{
+            return res.status(200).json(apiResponse)
+        }).catch(error=>{
+            apiResponse.error = true
+            apiResponse.errorMessage = error
+            return res.status(400).json(apiResponse)
+        })
+
     } catch (e) {
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 })
 
 router.put("/removePerson", JwtAuthenticate, (req: Request, res: Response, next) => {
     try {
         removePerson(req, res)
+        return res.status(200).json(apiResponse)
     } catch (e) {
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 })
 
 router.post('/login', (req: Request, res: Response, next) => {
         if (!req.body.userName) {
-            return res.status(401).json({msg: "Username is blank"})
+            apiResponse.error = true
+            apiResponse.errorMessage = "Username is blank"
+            return res.status(400).json(apiResponse)
         }
         if (req.body.password == undefined) {
-            return res.status(401).json({msg: "Password is blank"})
+            apiResponse.error = true
+            apiResponse.errorMessage = "Password is blank"
+            return res.status(400).json(apiResponse)
         } else {
             UserModel.findOne({userName: req.body.userName})
                 .then((user) => {
                     if (!user) {
-                        return res.status(401).json({success: false, msg: "could not find users"})
+                        apiResponse.error = true
+                        apiResponse.errorMessage = "Could not find User"
+                        return res.status(400).json(apiResponse)
                     } else {
 
                         bcrypt.compare(req.body.password, user.hash, (err, isPasswordValid) => {
                             if (isPasswordValid) {
                                 const jwt = issueJWT(user)
-                                return res.status(200).json({
-                                    success: true,
+                                apiResponse.payload = {
                                     user: user,
                                     token: jwt.token,
                                     expiresIn: jwt.expires
-                                })
+                                }
+                                return res.status(200).json(apiResponse)
                             } else {
-                                res.status(401).json({success: false, msg: "Wrong password entered"})
+                                apiResponse.error = true
+                                apiResponse.errorMessage = "Wrong password entered"
+                                res.status(401).json(apiResponse)
                             }
                         })
                     }
                 })
-                .catch((err) => res.send(err))
+                .catch((err) => {
+                    apiResponse.error = true
+                    apiResponse.errorMessage = err
+                    res.status(400).json(apiResponse)
+                })
         }
     }
 );
 
-router.post('/register', (req: Request, res: Response, next) => {
+router.post('/register', async (req: Request, res: Response, next) => {
     try {
-        newUser(req, res)
+        await newUser(req, res).then(user=>{
+            const jwt = issueJWT(user)
+            apiResponse.payload = { user: user, token: jwt.token, expiresIn: jwt.expires}
+            return res.status(200).json(apiResponse)
+        })
+
     } catch (e) {
-        return res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 
 });

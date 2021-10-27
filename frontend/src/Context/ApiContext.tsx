@@ -102,6 +102,7 @@ export const ApiContainer = (props: any) => {
                     setLoggedIn(false)
                 }
             })
+            .catch(err => newNotification(err, "error"))
     }
 
     /**
@@ -123,15 +124,26 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify({userName: userName, password: password}) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    //TODO login failed
-                    setLoggedIn(false)
+            .then(response => {
+                if (response.status == 200) {
+                    response.json().then(apiResponse => {
+                        //if there is an error
+                        if (apiResponse.error) {
+                            throw apiResponse.errorMessage
+                        } else {
+                            reactLocalStorage.set('JWTToken', apiResponse.payload.token)
+                            setLoggedIn(true)
+                        }
+                    })
                 } else {
-                    reactLocalStorage.set('JWTToken', data.token)
-                    setLoggedIn(true)
+                    response.json().then(error => {
+                        throw error
+                    })
                 }
+            })
+            .catch(error => {
+                setLoggedIn(false);
+                newNotification(error, "error")
             })
     }
 
@@ -155,15 +167,22 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify({userName: userName, password: password, emailAddress: emailAddress}) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    //TODO
-                    setLoggedIn(false)
-                } else {
-                    reactLocalStorage.set('JWTToken', data.token)
-                    setLoggedIn(true)
+            .then(response => {
+                if(response.status==200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            setLoggedIn(true)
+                            reactLocalStorage.set("JWTToken",apiResponse.payload.token)
+                        }
+                    })
+                }else{
+                    response.json().then(error=>{throw error})
                 }
+            }).catch(error=>{
+                setLoggedIn(false)
+                newNotification(error,"error")
             })
     }
 
@@ -182,18 +201,32 @@ export const ApiContainer = (props: any) => {
                 'Authorization': reactLocalStorage.get('JWTToken')
             },
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    console.log(data.msg)
+            .then(response => {
+                if (response.status == 200) {
+                    response.json().then(apiResponse => {
+                        if (apiResponse.error) {
+                            throw apiResponse.errorMessage
+                        } else {
+                            setUserMedications(apiResponse.payload.medicationArray)
+                            setUserMedicationDosages(apiResponse.payload.medicationDosagesArray)
+                            setUsersPeople(apiResponse.payload.persons)
+                        }
+                    })
+                } else if (response.status == 401) {
+                    setLoggedIn(false)
+                    throw "Login has expired please log back in"
                 } else {
-                    setUserMedications(data.medicationArray)
-                    setUserMedicationDosages(data.medicationDosagesArray)
-                    setUsersPeople(data.persons)
+                    response.json().then(error => {
+                        throw error
+                    })
                 }
-                // newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
-            }).catch(e => console.log(e))
+            }).catch(error => {
+                newNotification(error, "error")
+            })
+
+        // newNotification(data.alert.message,data.alert.severity)
+        handleLoadingBarTurnOff()
+
     }
 
     const fetchPersons = async (): Promise<void> => {
@@ -206,17 +239,27 @@ export const ApiContainer = (props: any) => {
                 'Authorization': reactLocalStorage.get("JWTToken")
             },
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    console.log(data.error)
+            .then(response => {
+                if (response.status == 200) {
+                    response.json().then(apiResponse => {
+                        if (apiResponse.error) {
+                            throw apiResponse.errorMessage
+                        } else {
+                            setUsersPeople(apiResponse.payload)
+                        }
+                    })
+                } else if (response.status == 401) {
+                    setLoggedIn(false)
+                    throw "session expired please log back in"
                 } else {
-                    setUsersPeople(data.persons)
+                    response.json().then(error => {
+                        throw error
+                    })
                 }
-                // newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
+            }).catch(error => {
+                newNotification(error, "error")
             })
-
+        handleLoadingBarTurnOff()
     }
 
     //region Put
@@ -240,16 +283,28 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    //TODO
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status==200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("Medication Successfully added","success")
+                        }
+                    })
+                }else if(response.status == 401){
+                    setLoggedIn(false)
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                fetchMedicationsAndDosagesAndPersons()
-                handleLoadingBarTurnOff()
             })
+            .catch(error => {
+                newNotification(error,"error")
+            })
+        handleLoadingBarTurnOff()
     };
     /**
      * Update selected medication
@@ -270,16 +325,27 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify(medicationObject) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    //TODO
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status == 200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("updated medication successfully","success")
+                        }
+                    })
+                }else if( response.status == 401){
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                fetchMedicationsAndDosagesAndPersons()
-                handleLoadingBarTurnOff()
             })
+            .catch(error=>{
+                newNotification(error,"error")
+            })
+                handleLoadingBarTurnOff()
     };
     /**
      * Deletes an array of medications
@@ -304,17 +370,27 @@ export const ApiContainer = (props: any) => {
                 removePastMedicationDosages: removePastMedicationDosages
             }) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    //TODO
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status == 200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("Deleted medications successfully","success")
+                        }
+                    })
+                }else if( response.status == 401){
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                fetchMedicationsAndDosagesAndPersons()
-                handleLoadingBarTurnOff()
-                // newNotification(data.alert.message,data.alert.severity)
             })
+            .catch(error=>{
+                newNotification(error,"error")
+            })
+        handleLoadingBarTurnOff()
 
 
     };
@@ -345,16 +421,27 @@ export const ApiContainer = (props: any) => {
                 timeTaken: timeTaken
             }) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    console.log(data.error)
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status == 200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("updated scheduled dosage successfully","success")
+                        }
+                    })
+                }else if( response.status == 401){
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                fetchMedicationsAndDosagesAndPersons()
-                handleLoadingBarTurnOff()
             })
+            .catch(error=>{
+                newNotification(error,"error")
+            })
+        handleLoadingBarTurnOff()
     }
     /**
      * Add a person to the users account to assign a medication too
@@ -375,16 +462,27 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify(newPerson) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    //TODO
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status == 200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("added new person successfully","success")
+                        }
+                    })
+                }else if( response.status == 401){
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                // newNotification(data.alert.message,data.alert.severity)
-                handleLoadingBarTurnOff()
             })
+            .catch(error=>{
+                newNotification(error,"error")
+            })
+        handleLoadingBarTurnOff()
 
     };
     /**
@@ -406,21 +504,27 @@ export const ApiContainer = (props: any) => {
             },
             body: JSON.stringify(removePerson) // body data type must match "Content-Type" header
         })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.error) {
-                    //TODO
-                } else {
-                    //TODO
+            .then(response => {
+                if(response.status == 200){
+                    response.json().then(apiResponse=>{
+                        if(apiResponse.error){
+                            throw apiResponse.errorMessage
+                        }else{
+                            newNotification("removed person successfully","success")
+                        }
+                    })
+                }else if( response.status == 401){
+                    throw "Login has expired please log back in"
+                }else{
+                    response.json().then(apiResponse=>{
+                        throw apiResponse
+                    })
                 }
-                fetchMedicationsAndDosagesAndPersons()
-                handleLoadingBarTurnOff()
-                // newNotification(data.alert.message,data.alert.severity)
             })
-            .catch(error => {
-                //TODO
-                handleLoadingBarTurnOff()
+            .catch(error=>{
+                newNotification(error,"error")
             })
+        handleLoadingBarTurnOff()
     };
 
     //endregion
