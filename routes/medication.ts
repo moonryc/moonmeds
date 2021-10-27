@@ -6,23 +6,38 @@ import convertMedicationBodyRequestHeaderDates from "../middleware/convertMedica
 import removeMedications from "../services/medication/removeMedications";
 import MedicationModel from "../Schemas/MedicationSchema";
 import getUserMedications from "../services/medication/getUserMedications";
-
+import {IApiResponse} from "../Types/ApiResponse";
 
 const router = express.Router();
-
-
 const JwtAuthenticate = passport.authenticate('jwt', {session: false});
 
-router.get("/userMedications",JwtAuthenticate,(req,res,next)=>{
-    getUserMedications(req)
+let apiResponse:IApiResponse ={
+    error: false,
+    errorMessage: "",
+    payload: undefined
+}
+
+router.get("/userMedications",JwtAuthenticate, async (req,res,next)=>{
+
+    try{
+        await getUserMedications(req).then(response=>apiResponse.payload = response)
+        return res.status(200).json(apiResponse)
+    }catch (e) {
+        apiResponse.error=true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
+    }
+
 })
 
 router.put('/removeMedications', JwtAuthenticate, (req, res, next) => {
     try {
         removeMedications(req, res)
-        res.status(200).json({error: false, msg: "success"})
+        return res.status(200).json(apiResponse)
     } catch (e) {
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        return res.status(400).json(apiResponse)
     }
 
 })
@@ -37,13 +52,14 @@ router.use(convertMedicationBodyRequestHeaderDates)
 /**
  * Creates a new medication
  */
-router.put('/newMedication', JwtAuthenticate, (req, res, next) => {
+router.put('/newMedication', JwtAuthenticate, async (req, res, next) => {
     try {
-        createNewMedication(req, res)
-        res.status(200).json({error: false, msg: " New Medication Added "})
+        await createNewMedication(req, res)
+        res.status(200).json(apiResponse)
     } catch (e) {
-        console.log(e)
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        res.status(400).json(apiResponse)
     }
 });
 
@@ -53,10 +69,11 @@ router.put('/newMedication', JwtAuthenticate, (req, res, next) => {
 router.put('/updateMedication', JwtAuthenticate, (req, res, next) => {
     try {
         updateMedication(req, res)
-        res.status(200).json({error: false, msg: "Medication has been updated"})
+        res.status(200).json(apiResponse)
     } catch (e) {
-        console.log(e)
-        res.status(401).json({error: true, msg: e})
+        apiResponse.error = true
+        apiResponse.errorMessage = e
+        res.status(400).json(apiResponse)
     }
 
 })

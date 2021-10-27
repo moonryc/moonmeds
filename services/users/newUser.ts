@@ -2,7 +2,7 @@ import UserModel from "../../Schemas/UserSchema";
 import issueJWT from "../../middleware/issueJwt";
 import bcrypt = require("bcryptjs");
 
-const newUser = (req:any,res:any) => {
+const newUser = async (req:any,res:any) => {
 
     const createUser = async () => {
 
@@ -41,13 +41,11 @@ const newUser = (req:any,res:any) => {
 
             newUser.save()
                 .then((user: any) => {
-                    const jwt = issueJWT(user)
-                    res.status(200).json({error: false, user: user, token: jwt.token, expiresIn: jwt.expires})
+                    return user
                 })
                 .catch((err: any | string): any => {
                     throw err
                 })
-
         }
     }
     createUser().then()

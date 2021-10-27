@@ -12,11 +12,7 @@ const RemovePerson = (req:any, res:any) => {
         }
     }, (err, doc) => {
         if (err) {
-            console.log(err)
             throw err
-
-        } else {
-            res.status(200).json({error: false, msg: "success"})
         }
     })
 }

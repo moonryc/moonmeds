@@ -18,7 +18,7 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
     //TODO make this functional
     const {putUpdateMedicationDosage} = useContext(ApiContext);
 
-    const prefix = props.medication.prescriptionName + " | " + props.medication.prescriptionName + " : " + props.medication.amount
+    const prefix = props.medication.medicationOwner + " | " + props.medication.prescriptionName + " : " + props.medication.amount
     const numberOfDaysBeforeRefill = differenceInDays(new Date(props.medication.nextFillDay),new Date(props.medication.timeToTake));
 
 
