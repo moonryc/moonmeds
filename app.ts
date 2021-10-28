@@ -18,7 +18,7 @@ import indexRouter from "./routes";
 //endregion
 
 const app = express();
-// app.disable('etag')
+app.disable('etag')
 //region View handler setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

@@ -17,9 +17,9 @@ import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
 
 
 interface IMedicationCardOwnerProps {
-    medication: IMedicationBase,
+    getMedicationOwner(name:string|null):void
+    medicationOwner:string
 
-    updateMedicationDetails(prescriptionName: string, nextFilledDate: Date, userNotes: string, prescriptionDosage: number, medicationOwner: string,endDate:Date,inDefinite:boolean): void
 }
 
 
@@ -36,58 +36,14 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const [people, setPeople] = useState<IAutoFillPerson[]>(usersPeople);
 
-    const [selectedUser, setSelectedUser] = useState<string | null>(props.medication.medicationOwner);
-    //
-    // const [isAddingAUserDialogOpen, setIsAddingAUserDialogOpen] = useState(false);
-    // const [newUserValue, setNewUserValue] = useState<IPersonNameAndColor>({
-    //             name: '',
-    //             color: '',
-    //         });
-    //
-    //
-    // const handleSubmitNewUser = () => {
-    //     putAddPerson(newUserValue)
-    //     handleCloseDialog()
-    // }
-    //
-    // /**
-    //  * Closes Dialog for adding user and resets the dialog values to blank
-    //  */
-    // const handleCloseDialog = () => {
-    //     setNewUserValue({name:'',color:''})
-    //     setIsAddingAUserDialogOpen(false)
-    // };
-    //
-    //
-    // const autoCompleteOnChange = (event: any, newValue: any) => {
-    //
-    //     if (!usersPeople.includes(newValue) && newValue != null) {
-    //         // timeout to avoid instant validation of the dialog's form.
-    //         setTimeout(() => {
-    //             setIsAddingAUserDialogOpen(true);
-    //             setNewUserValue({name:'',color:''});
-    //         });
-    //
-    //     } else {
-    //         setSelectedUser(newValue);
-    //     }
-    // }
-    //
-    // const autoCompleteFilterOptions = (options: any, params: any) => {
-    //     const filtered = filter(options, params);
-    //     if (params !== '') {
-    //         filtered.push(`Add "${params.inputValue}"`);
-    //     }
-    //     return filtered;
-    // }
-    //
-    //
+    const [selectedUser, setSelectedUser] = useState<string | null>(props.medicationOwner);
+
 
     useEffect(() => {
-        if (selectedUser == null) {
-            props.updateMedicationDetails(props.medication.prescriptionName, props.medication.nextFillDay, props.medication.userNotes, props.medication.prescriptionDosage, "",props.medication.endDate,props.medication.inDefinite)
-        } else {
-            props.updateMedicationDetails(props.medication.prescriptionName, props.medication.nextFillDay, props.medication.userNotes, props.medication.prescriptionDosage, selectedUser,props.medication.endDate,props.medication.inDefinite)
+        if(selectedUser == null){
+            props.getMedicationOwner("Defult User")
+        }else{
+            props.getMedicationOwner(selectedUser)
         }
     }, [selectedUser]);
 
@@ -119,9 +75,10 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
     };
 
     return (
-        <div>
+        <>
             <Autocomplete
                 value={value}
+                fullWidth={true}
                 onChange={(event, newValue) => {
                     if (typeof newValue === 'string') {
                         // timeout to avoid instant validation of the dialog's form.
@@ -175,7 +132,6 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                 clearOnBlur
                 handleHomeEndKeys
                 renderOption={(props, option) => <li {...props}>{option.name}</li>}
-                sx={{ width: 300 }}
                 freeSolo
                 renderInput={(params) => <TextField {...params} label="Medication Owner" />}
             />
@@ -222,7 +178,7 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                     </DialogActions>
                 </form>
             </Dialog>
-        </div>
+        </>
     );
 }
 

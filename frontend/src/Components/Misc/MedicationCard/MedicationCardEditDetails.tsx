@@ -130,7 +130,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
             <Divider/>
             <Typography paragraph>
                 <br/>
-                <MedicationCardOwner  medication={props.medication} updateMedicationDetails={props.updateMedicationDetails}/>
+
             </Typography>
             <Typography paragraph>
                 <br/>

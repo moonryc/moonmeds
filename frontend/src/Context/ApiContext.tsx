@@ -19,8 +19,8 @@ export interface IApiContextState {
     postRegister: (userName: string, password: string, emailAddress: string) => void,
     fetchMedicationsAndDosagesAndPersons: () => void,
     fetchPersons: () => void,
-    putNewMedication: (medicationObject: IMedicationBase) => void,
-    putUpdateExistingMedication: (medicationObject: IMedicationBase) => void,
+    putNewMedication: (medicationObject: IMedicationBase) => Promise<any>,
+    putUpdateExistingMedication: (medicationObject: IMedicationBase) => Promise<any>,
     putDeleteSelectedMedications: (medicationIdArray: string[], removePastMedicationDosages: boolean) => void,
     putUpdateMedicationDosage: (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date) => void,
     putAddPerson: (newPerson: IPersonNameAndColor) => void,
@@ -255,7 +255,7 @@ export const ApiContainer = (props: any) => {
      * Create a new medication
      * @param medicationObject
      */
-    const putNewMedication = async (medicationObject: IMedicationBase) => {
+    const putNewMedication = async (medicationObject: IMedicationBase):Promise<any> => {
         handleLoadingBarTurnOn()
         let url = "/medication/newMedication"
         await fetch(url, {
