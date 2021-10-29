@@ -76,7 +76,7 @@ const MedicationCardHeader = (props:IMedicationCardHeaderProps) => {
                 }
                 title={props.medication.prescriptionName}
                 //TODO:(TRAVIS) I cant get the color to work properly
-                subheader={<Chip sx={{backgroundColor:color}} icon={<Face/>} label={props.medication.medicationOwner} />}
+                subheader={<Chip sx={{backgroundColor:props.medication.medicationOwner.color}} icon={<Face/>} label={props.medication.medicationOwner.name} />}
             />
             }
         </div>

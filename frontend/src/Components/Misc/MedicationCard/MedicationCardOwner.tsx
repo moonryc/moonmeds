@@ -6,7 +6,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, IconButton, InputAdornment,
     TextField
 } from "@mui/material";
 import {Autocomplete} from "@mui/lab";
@@ -14,19 +14,21 @@ import {UserContext} from "../../../Context/UserContext";
 import {ApiContext} from "../../../Context/ApiContext";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
+import {Edit} from "@mui/icons-material";
 
 
 interface IMedicationCardOwnerProps {
-    getMedicationOwner(name:string|null):void
-    medicationOwner:string
+    getMedicationOwner(name: string | null): void
+
+    medicationOwner: IPersonNameAndColor
 
 }
-
 
 
 interface IAutoFillPerson extends IPersonNameAndColor {
     inputValue?: string;
 }
+
 const filter = createFilterOptions<IAutoFillPerson>()
 
 const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
@@ -36,18 +38,18 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const [people, setPeople] = useState<IAutoFillPerson[]>(usersPeople);
 
-    const [selectedUser, setSelectedUser] = useState<string | null>(props.medicationOwner);
+    const [selectedUser, setSelectedUser] = useState<string | null>(props.medicationOwner.name);
 
 
     useEffect(() => {
-        if(selectedUser == null){
-            props.getMedicationOwner("Defult User")
-        }else{
+        if (selectedUser == null) {
+            props.getMedicationOwner("Default User")
+        } else {
             props.getMedicationOwner(selectedUser)
         }
     }, [selectedUser]);
 
-    const [value, setValue] = React.useState<IAutoFillPerson | null>(null);
+    const [value, setValue] = React.useState<IAutoFillPerson | null>({name: props.medicationOwner.name, color: ""});
     const [open, toggleOpen] = React.useState(false);
 
     const handleClose = () => {
@@ -70,15 +72,28 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
             color: dialogValue.color,
         });
 
-        putAddPerson({name:dialogValue.name, color:dialogValue.color})
+        putAddPerson({name: dialogValue.name, color: dialogValue.color})
         handleClose();
     };
 
+    let colorOptions = [
+        {label: "red"},
+        {label: "green"},
+        {label: "orange"},
+        {label: "pink"},
+        {label: "grey"},
+        {label: "purple"},
+        {label: "white"},
+        {label: "yellow"},
+    ]
+
+
     return (
         <>
+            <>
             <Autocomplete
                 value={value}
-                fullWidth={true}
+                fullWidth
                 onChange={(event, newValue) => {
                     if (typeof newValue === 'string') {
                         // timeout to avoid instant validation of the dialog's form.
@@ -97,24 +112,14 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                         });
                     } else {
                         setValue(newValue);
-                        if(newValue != null){
+                        if (newValue != null) {
 
-                        setSelectedUser(newValue.name)
+                            setSelectedUser(newValue.name)
                         }
                     }
                 }}
                 filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
-
-                    if (params.inputValue !== '' && people.filter(person=> params.inputValue == person.name).length<1) {
-                        filtered.push({
-                            color: "",
-                            inputValue: params.inputValue,
-                            name: `Add "${params.inputValue}"`
-                        });
-                    }
-
-                    return filtered;
+                    return filter(options, params);
                 }}
                 id="free-solo-dialog-demo"
                 options={people}
@@ -129,11 +134,16 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                     return option.name;
                 }}
                 selectOnFocus
+                openOnFocus
                 clearOnBlur
                 handleHomeEndKeys
                 renderOption={(props, option) => <li {...props}>{option.name}</li>}
-                freeSolo
-                renderInput={(params) => <TextField {...params} label="Medication Owner" />}
+                forcePopupIcon={false}
+                renderInput={(params) => <TextField
+                    {...params}
+                    InputProps={{...params.InputProps,endAdornment:(<React.Fragment><InputAdornment position={"end"}> <IconButton onClick={()=>toggleOpen(true)}><Edit/></IconButton> </InputAdornment></React.Fragment>)}}
+                    label="Medication Owner"
+                />}
             />
             <Dialog open={open} onClose={handleClose}>
                 <form onSubmit={handleSubmit}>
@@ -145,6 +155,7 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                         <TextField
                             autoFocus
                             margin="dense"
+                            fullWidth
                             id="name"
                             value={dialogValue.name}
                             onChange={(event) =>
@@ -155,21 +166,20 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                             }
                             label="name"
                             type="text"
-                            variant="standard"
+                            variant="outlined"
                         />
-                        <TextField
-                            margin="dense"
-                            id="name"
-                            value={dialogValue.color}
-                            onChange={(event) =>
-                                setDialogValue({
-                                    ...dialogValue,
-                                    color: event.target.value,
-                                })
-                            }
-                            label="color"
-                            type="string"
-                            variant="standard"
+
+                        <Autocomplete
+                            disablePortal
+                            fullWidth
+                            id="colors"
+                            options={colorOptions}
+                            onChange={(event: any) => {
+
+                                    setDialogValue({...dialogValue, color: event.target.value});
+
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Color"/>}
                         />
                     </DialogContent>
                     <DialogActions>
@@ -178,6 +188,19 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
                     </DialogActions>
                 </form>
             </Dialog>
+            </>
+
+            {/*<Autocomplete*/}
+
+            {/*    id="combo-box-demo"*/}
+            {/*    options={colorOptions}*/}
+            {/*    fullWidth*/}
+            {/*    renderInput={(params) => <TextField {...params} label="Movie"*/}
+            {/*                                        */}
+            {/*    />}*/}
+            {/*/>*/}
+
+            {/*<TextField fullWidth InputProps={{endAdornment:<IconButton><Edit/></IconButton>}}/>*/}
         </>
     );
 }

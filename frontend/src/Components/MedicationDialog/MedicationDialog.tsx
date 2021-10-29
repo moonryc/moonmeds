@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Button,
-    ButtonGroup,
+    ButtonGroup, Collapse,
     Dialog,
     DialogActions,
     DialogContent, DialogContentText,
@@ -21,7 +21,8 @@ interface IMedicationDialog {
     isOpen: boolean
     isNewMedication: boolean
     medication: IMedicationBase
-    closeDialog(medicationObject:IMedicationBase):void
+
+    closeDialog(medicationObject: IMedicationBase): void
 }
 
 const MedicationDialog = (props: IMedicationDialog) => {
@@ -30,7 +31,7 @@ const MedicationDialog = (props: IMedicationDialog) => {
         medicationId: "",
         userId: "",
         prescriptionName: "",
-        medicationOwner: "",
+        medicationOwner: {name:"",color:""},
         prescriptionDosage: 0,
         nextFillDay: new Date(),
         inDefinite: true,
@@ -57,7 +58,7 @@ const MedicationDialog = (props: IMedicationDialog) => {
         ]
     }
 
-    const {putNewMedication,putUpdateExistingMedication} = useContext(ApiContext);
+    const {putNewMedication, putUpdateExistingMedication} = useContext(ApiContext);
 
     const [medicationObject, setMedicationObject] = useState(props.medication);
 
@@ -67,13 +68,13 @@ const MedicationDialog = (props: IMedicationDialog) => {
         setMedicationObject(tempMedication)
     }
 
-    const getEndDate = (endDate:Date) => {
+    const getEndDate = (endDate: Date) => {
         let tempMedication = {...medicationObject}
         tempMedication.endDate = endDate
         setMedicationObject(tempMedication)
     }
 
-    const getRefillDate = (endDate:Date) => {
+    const getRefillDate = (endDate: Date) => {
         let tempMedication = {...medicationObject}
         tempMedication.nextFillDay = endDate
         setMedicationObject(tempMedication)
@@ -84,35 +85,33 @@ const MedicationDialog = (props: IMedicationDialog) => {
     }, [medicationObject]);
 
 
-
     const submitMedication = async () => {
         await putNewMedication(medicationObject)
-            .then(response=>
+            .then(response =>
                 props.closeDialog(medicationTemplate))
 
     }
 
     const updateMedication = async () => {
         await putUpdateExistingMedication(medicationObject)
-            .then(response=>
+            .then(response =>
                 props.closeDialog(medicationTemplate))
 
     }
 
-    return (
-        <>
-            <Dialog
-                open={props.isOpen}
-                onBackdropClick={()=>props.closeDialog(medicationObject)}
-            >
-                <DialogTitle> {props.isNewMedication ? <>New
+    const InnerDialog = () => {
+        return (
+            <>
+                <DialogTitle sx={{textAlign: "center"}}> {props.isNewMedication ? <>New
                     Medication</> : <>{props.medication.prescriptionName}</>} </DialogTitle>
 
                 <DialogContent>
 
+                    <br/>
                     <TextField
                         variant={"outlined"}
                         fullWidth
+                        label={"Prescription Name"}
                         type={"string"}
                         value={medicationObject.prescriptionName}
                         onChange={(e) => setMedicationObject(prevState => ({
@@ -123,11 +122,14 @@ const MedicationDialog = (props: IMedicationDialog) => {
                     <br/>
                     <br/>
                     {/*todo slim this down*/}
-                    <MedicationCardOwner getMedicationOwner={(name:string)=>{
-                        setMedicationObject(prevState => ({...prevState,medicationOwner:name}))
-                    }} medicationOwner={medicationObject.medicationOwner}/>
+                    <MedicationCardOwner getMedicationOwner={(name: string) => {
+                        let temp = {...medicationObject}
+                        temp.medicationOwner.name = name
+                        setMedicationObject(temp)}}
+                        medicationOwner={medicationObject.medicationOwner}/>
 
 
+                    <br/>
                     <br/>
                     <TextField
                         variant={"outlined"}
@@ -145,8 +147,10 @@ const MedicationDialog = (props: IMedicationDialog) => {
                     <br/>
 
                     <DatePickerForDialog
-                        getEndDate={()=>{}}
-                        getMonthlyDate={()=>{}}
+                        getEndDate={() => {
+                        }}
+                        getMonthlyDate={() => {
+                        }}
                         isGetEndDate={false}
                         disable={false}
                         label={"Next Refill Date"}
@@ -182,22 +186,26 @@ const MedicationDialog = (props: IMedicationDialog) => {
                     </Paper>
                     <br/>
                     <br/>
-
-                    <DatePickerForDialog
-                        getEndDate={getEndDate}
-                        getMonthlyDate={()=>{}}
-                        isGetEndDate={true}
-                        disable={medicationObject.inDefinite}
-                        label={"Stop taking medication on"}
-                        isMonthly={false} index={0} getRefillDate={()=>{}} isRefill={false}/>
-                    <br/>
-                    <br/>
-
+                    <Collapse in={!medicationObject.inDefinite}>
+                        <DatePickerForDialog
+                            getEndDate={getEndDate}
+                            getMonthlyDate={() => {
+                            }}
+                            isGetEndDate={true}
+                            disable={medicationObject.inDefinite}
+                            label={"Stop taking medication on"}
+                            isMonthly={false} index={0} getRefillDate={() => {
+                        }} isRefill={false}/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </Collapse>
 
 
                     <TextField
                         variant={"outlined"}
                         label={"Notes"}
+                        value={medicationObject.userNotes}
                         fullWidth
                         multiline
                         onChange={(e) => setMedicationObject(prevState => ({
@@ -220,15 +228,37 @@ const MedicationDialog = (props: IMedicationDialog) => {
 
                 <DialogActions>
                     <ButtonGroup fullWidth>
-                        {props.isNewMedication ? <Button variant={"contained"} onClick={() => submitMedication()}>Create Medication</Button>
-                        :<Button variant={"contained"} onClick={()=>updateMedication()}>Update Medication</Button>}
+                        {props.isNewMedication ?
+                            <Button variant={"contained"} onClick={() => submitMedication()}>Create Medication</Button>
+                            :
+                            <Button variant={"contained"} onClick={() => updateMedication()}>Update Medication</Button>}
 
-                        <Button variant={"contained"} onClick={()=>props.closeDialog(medicationTemplate)}>Cancel</Button>
+                        <Button variant={"contained"}
+                                onClick={() => props.closeDialog(medicationTemplate)}>Cancel</Button>
                     </ButtonGroup>
                 </DialogActions>
 
-            </Dialog>
+            </>
+        )
+    }
 
+
+    return (
+        <>
+            {props.isNewMedication ?
+                <Dialog
+                    open={props.isOpen}
+                    onBackdropClick={() => props.closeDialog(medicationObject)}
+                >
+                    {InnerDialog()}
+                </Dialog> :
+                <Dialog
+                    open={props.isOpen}
+                    BackdropProps={{style: {backgroundColor: "transparent"}}}
+                    onBackdropClick={() => props.closeDialog(medicationObject)}
+                >
+                    {InnerDialog()}
+                </Dialog>}
         </>
     );
 };

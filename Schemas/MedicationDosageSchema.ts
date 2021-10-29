@@ -2,7 +2,12 @@
 import {ModelDefinition} from "./common";
 import {IMedicationDosagesBase} from "../Types/MedicationDosagesTypes";
 import {model, Schema} from "mongoose";
+import {IPersonNameAndColor} from "../Types/UserTypes";
 
+const PersonNameAndColorDefinition:ModelDefinition<IPersonNameAndColor> = {
+    name:{type:String,required:true},
+    color:{type:String,required:true},
+}
 
 const MedicationDosageDefinition:ModelDefinition<IMedicationDosagesBase> = {
     userId:{type:String,required:true},
@@ -12,7 +17,7 @@ const MedicationDosageDefinition:ModelDefinition<IMedicationDosagesBase> = {
     nextFillDay: {type:Date,required:true},
     endDate:{type:Date,required:true},
     amount: {type:Number, required:true},
-    medicationOwner:{type:String,required:true},
+    medicationOwner: {type:PersonNameAndColorDefinition,required:true},
     inDefinite:{type:Boolean,required:true},
     timeToTake:{type:Date,required:true},
     isDaily:{type:Boolean,required:true},

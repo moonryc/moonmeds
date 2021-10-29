@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import DisplayCalendar from "../Components/CalendarPageComponets/Calendar/DisplayCalendar";
 import AppbarTop from "../Components/Standalone/AppbarTop";
-import {Box, Button, Card, Dialog, DialogActions, DialogTitle, Fab, Grid, Paper} from "@mui/material";
+import {Box, Button, ButtonGroup, Card, Dialog, DialogActions, DialogTitle, Fab, Grid, Paper} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import MedicationCard from "../Components/Misc/MedicationCard/MedicationCard";
 import {ApiContext} from "../Context/ApiContext";
@@ -22,12 +22,11 @@ const MainLoggedInPage = () => {
     const [isListOfMedications, setIsListOfMedications] = useState(false);
 
 
-
     const [tempNewMedication, setTempNewMedication] = useState<IMedicationBase>({
         medicationId: "",
         userId: "",
         prescriptionName: "",
-        medicationOwner: "",
+        medicationOwner: {name:"",color:""},
         prescriptionDosage: 0,
         nextFillDay: new Date(),
         inDefinite: true,
@@ -61,10 +60,10 @@ const MainLoggedInPage = () => {
                     isOpen={isMakingNewMedication}
                     isNewMedication={true}
                     medication={tempNewMedication}
-                    closeDialog={(medicationObject:IMedicationBase) => {
+                    closeDialog={(medicationObject: IMedicationBase) => {
                         setTempNewMedication({...medicationObject})
-                            setIsMakingNewMedication(false)
-                        }}
+                        setIsMakingNewMedication(false)
+                    }}
                 />
             </>
         )
@@ -75,10 +74,11 @@ const MainLoggedInPage = () => {
             <>
                 <Dialog open={isListOfMedications} maxWidth={"xl"} fullWidth={true}>
                     <DialogTitle>Medications</DialogTitle>
-                    <DisplayMedicationList handleTabsChangeIndex={() => {
-                    }}/>
-                    <DialogActions><Button variant={"contained"}
-                                           onClick={() => setIsListOfMedications(!isListOfMedications)}>Close</Button></DialogActions>
+                    <DisplayMedicationList/>
+                    <DialogActions>
+                        <Button variant={"contained"} fullWidth
+                                onClick={() => setIsListOfMedications(!isListOfMedications)}>Close</Button>
+                    </DialogActions>
                 </Dialog>
             </>
         )
