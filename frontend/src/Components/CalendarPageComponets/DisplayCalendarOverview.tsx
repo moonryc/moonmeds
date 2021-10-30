@@ -148,9 +148,7 @@ const DisplayCalendarOverview = () => {
                                     <DisplayDateDetails selectedDate={{index: 0, date: selectedDay}}/>
                                 </TabPanel>
                                 {/*MEDICATION LIST*/}
-                                <TabPanel value={value} index={1} dir={theme.direction}>
-                                    <DisplayMedicationList handleTabsChangeIndex={handleTabsChangeIndex}/>
-                                </TabPanel>
+
                                 {/*NEW MEDICATION CARD*/}
                                 <TabPanel value={value} index={2} dir={theme.direction}>
                                     <MedicationCard
@@ -158,7 +156,7 @@ const DisplayCalendarOverview = () => {
                                         prescriptionName={''} prescriptionDosage={0}
                                         nextFillDay={new Date()}
                                         dosages={[]} userNotes={''}
-                                        medicationOwner={""} endDate={new Date()} inDefinite={false}/>
+                                        medicationOwner={{name:"",color:""}} endDate={new Date()} inDefinite={false}/>
                                 </TabPanel>
                             </SwipeableViews>
                         </Box>

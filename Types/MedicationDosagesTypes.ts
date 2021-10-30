@@ -1,4 +1,5 @@
 import {IWeekdays} from "./MedicationTypes";
+import {IPersonNameAndColor} from "./UserTypes";
 
 /**
  * An object representing a single medication
@@ -23,7 +24,7 @@ export interface IMedicationDosagesBase extends IWeekdays {
     endDate: Date,
     inDefinite: boolean,
     amount: number,
-    medicationOwner: string,
+    medicationOwner: IPersonNameAndColor,
     timeToTake: Date,
     isDaily: boolean,
     isWeekly: boolean,

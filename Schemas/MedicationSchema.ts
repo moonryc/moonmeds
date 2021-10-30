@@ -4,6 +4,7 @@ import {IDosagesDetails, IMedicationBase, IWeekdays} from "../Types/MedicationTy
 
 import {model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
+import {IPersonNameAndColor} from "../Types/UserTypes";
 
 const WeekdaysDefinition:ModelDefinition<IWeekdays>={
 
@@ -29,13 +30,18 @@ const DosagesDefinition:ModelDefinition<IDosagesDetails>={
 }
 
 
+const PersonNameAndColorDefinition:ModelDefinition<IPersonNameAndColor> = {
+    name:{type:String,required:true},
+    color:{type:String,required:true},
+}
+
 const MedicationDefinition:ModelDefinition<IMedicationBase> = {
     userId: {type:String,required:true},
     medicationId: {type:String,required:true},
     inDefinite:{type:Boolean,required:true},
     endDate:{type:Date,required:true},
     prescriptionName: {type:String, required:true},
-    medicationOwner: {type:String, required:true},
+    medicationOwner: {type:PersonNameAndColorDefinition,required:true},
     prescriptionDosage: {type:Number, required:true},
     nextFillDay: {type:Date, required:true},
     dosages: [{type: DosagesDefinition, required:true}],

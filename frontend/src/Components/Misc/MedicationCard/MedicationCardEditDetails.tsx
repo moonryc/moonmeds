@@ -111,7 +111,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
      * or prescription dosage changes
      */
     useEffect(() => {
-        props.updateMedicationDetails(prescriptionName, nextFillDate, userNotes, prescriptionDosage,props.medication.medicationOwner,medicationEndDate,isIndefinite)
+        // props.updateMedicationDetails(prescriptionName, nextFillDate, userNotes, prescriptionDosage,props.medication.medicationOwner,medicationEndDate,isIndefinite)
 
     }, [prescriptionName, nextFillDate, userNotes, prescriptionDosage]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -130,7 +130,7 @@ const MedicationCardEditDetails = (props: IMedicationCardEditDetails) => {
             <Divider/>
             <Typography paragraph>
                 <br/>
-                <MedicationCardOwner  medication={props.medication} updateMedicationDetails={props.updateMedicationDetails}/>
+
             </Typography>
             <Typography paragraph>
                 <br/>
