@@ -34,7 +34,8 @@ export const UserContainer = (props: any) => {
         <UserContext.Provider value={{
             loggedIn,
             setLoggedIn,
-            usersPeople,setUsersPeople
+            usersPeople,
+            setUsersPeople
         }}>
             {children}
         </UserContext.Provider>

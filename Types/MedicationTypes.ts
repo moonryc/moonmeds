@@ -7,12 +7,14 @@
  * @property dosages: IDosagesDetails[],
  * @property userNotes: string,
  */
+import {IPersonNameAndColor} from "./UserTypes";
+
 export interface IMedicationBase {
     userId:string
     inDefinite:boolean
     medicationId:string
     prescriptionName: string,
-    medicationOwner:string,
+    medicationOwner:IPersonNameAndColor,
     prescriptionDosage: number,
     nextFillDay: Date,
     endDate:Date,

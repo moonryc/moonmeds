@@ -1,18 +1,26 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Card from "@mui/material/Card";
-import {Box, Button, Checkbox, Dialog, Grid} from "@mui/material";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    CardContent,
+    CardHeader,
+    Checkbox,
+    Chip,
+    Dialog, DialogActions, DialogContent, DialogTitle,
+    Grid,
+    Paper,
+    Typography
+} from "@mui/material";
 import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {ApiContext} from "../../../Context/ApiContext";
 import {Skeleton} from "@mui/material";
+import {UserContext} from "../../../Context/UserContext";
+import MedicationDialog from "../../MedicationDialog/MedicationDialog";
 
-/**
- * @property handleTabsChangeIndex(index: number): void
- */
-interface IDisplayMedicationList {
-    handleTabsChangeIndex(index: number): void,
-}
 
 /**
  * This Component displays a list of MedicationCards, if the user has no medications tied to their account a prompt to create one will appear
@@ -20,7 +28,7 @@ interface IDisplayMedicationList {
  * @param props - handleTabsChangeIndex(index: number): void
  * @constructor
  */
-const DisplayMedicationList = (props: IDisplayMedicationList) => {
+const DisplayMedicationList = () => {
 
 
     //region Context
@@ -30,139 +38,165 @@ const DisplayMedicationList = (props: IDisplayMedicationList) => {
      */
     const {userMedications} = useContext(MedicationContext);
     const {loadingBar, putDeleteSelectedMedications} = useContext(ApiContext);
+    const {usersPeople} = useContext(UserContext);
 
-    //endregion
+    const [isInDeleteMode, setIsInDeleteMode] = useState(false);
 
-    //region useState
+    const [selectedMedication, setSelectedMedication] = useState<IMedicationBase>({
+        medicationId: "",
+        userId: "",
+        prescriptionName: "",
+        medicationOwner: {name:"",color:""},
+        prescriptionDosage: 0,
+        nextFillDay: new Date(),
+        inDefinite: true,
+        endDate: new Date(),
+        userNotes: "",
+        dosages: [
+            {
+                amount: 0,
+                time: new Date(),
+                isDaily: true,
+                isWeekly: false,
+                isOnceAMonth: false,
+                customOnceAMonthDate: new Date(),
+                customWeekDays: {
+                    monday: false,
+                    tuesday: false,
+                    wednesday: false,
+                    thursday: false,
+                    friday: false,
+                    saturday: false,
+                    sunday: false
+                }
+            }
+        ]
+    });
 
-    /**
-     * An array of medications Ids that are selected that the user wishes to be deleted
-     */
-    const [deleteArray, setDeleteArray] = useState<string[]>([]);
-    /**
-     * Is the user wishing to delete a medication from the medication list
-     */
-    const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
 
-    //endregion
-
-    //region functions
-
-    /**
-     * Toggles isDeletionEnabled between true and false
-     */
-    const toggleDeletion = () => {
-        setIsDeletionEnabled(!isDeletionEnabled)
-    }
-
-    /**
-     * if the checkbox is selected it will add the medication to the deleteArray,
-     * if it is then unselected it will then be removed from the list
-     * @param medication - IMedicationBase
-     */
-    const handleCheckBoxClick = (medication: IMedicationBase) => {
-
-        let tempArray: string[] = [...deleteArray];
-
-        if (tempArray.includes(medication.medicationId)) {
-            tempArray.splice(tempArray.indexOf(medication.medicationId), 1)
-        } else {
-            tempArray.push(medication.medicationId)
+    const getColor = (name: string) => {
+        for (let person of usersPeople) {
+            if (person.name == name) {
+                return person.color
+            }
         }
-        setDeleteArray(tempArray)
+        return "secondary"
     }
 
-    //endregion
+    //region ReactFunctions
 
-    //region ApiCalls
-
-    /**
-     * sends delete request and updates the dosages and medications and sets the deleteArray back to []
-     */
-    const handleDeleteMedicationsAction = async () => {
-        //TODO make false not always false
-        await putDeleteSelectedMedications(deleteArray,false)
-        setDeleteArray([])
-    }
-
-    //endregion
-
-    const displaySkeletonLoading = () => {
+    const MedicationList = () => {
         return (
             <>
-                <Skeleton variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/><Skeleton
-                variant="rectangular"/><br/><Skeleton variant="rectangular"/><br/>
+                {isInDeleteMode ? <ButtonGroup fullWidth>
+                        <Button variant={"contained"} onClick={() => setIsInDeleteMode(false)}>Cancel</Button>
+                        <Button variant={"contained"}> Delete Medications and Medication history</Button>
+                        <Button variant={"contained"}> Delete Medications and keep Medication history</Button>
+                    </ButtonGroup>
+                    : <Button variant={"contained"} onClick={() => setIsInDeleteMode(true)}>Delete
+                        Medications</Button>}
+
+                <Box sx={{flexGrow: 1}}>
+                    <Grid container spacing={2} sx={{padding: "1vh"}}>
+                        {userMedications.map((medication: IMedicationBase, index: number) => {
+                            return <>
+                                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} sx={{padding: "1vh"}} key={index}>
+                                    <Grid container spacing={1}>
+                                        {isInDeleteMode ? <Grid item>
+                                            <Checkbox/>
+                                        </Grid> : <></>}
+                                        <Grid item>
+                                            {SingleMedication(medication, index)}
+                                        </Grid>
+                                    </Grid>
+
+                                </Grid>
+                            </>
+                        })}
+                    </Grid>
+                </Box>
             </>
         )
     }
 
-    const deleteMedicationButtons = () => {
+
+
+    const SingleMedication = (medication: IMedicationBase, index: number) => {
+        const [openMedication, setOpenMedication] = useState(false);
+        const [editMedication, setEditMedication] = useState(false);
+        console.log("----------------")
+        console.log(medication)
+        console.log("----------------")
         return (
-            <Grid container>
-                <Grid item xs={6}>
-                    <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
-                            onClick={() => toggleDeletion()}>
-                        {isDeletionEnabled ? "Cancel" : "Delete medication"}
-                    </Button>
-                </Grid>
-                <Grid item xs={6}>
-                    {isDeletionEnabled ? <Button sx={{bgcolor: 'primary.light', color: 'text.primary'}}
-                                                 onClick={() => handleDeleteMedicationsAction()}>Delete
-                        Medications</Button> : <></>}
-                </Grid>
-            </Grid>
-        )
+            <>
+                <Paper>
+                    <Card variant={"outlined"}>
+                        <CardContent>
+                            <Box sx={{display: "flex"}}>
+                                <Box sx={{maxWidth: "75%"}}>
+                                    <Typography component={"span"}>
+                                        {medication.prescriptionName + " | "}
+                                    </Typography>
+                                    <br/>
+                                    <Chip label={medication.medicationOwner.name}
+                                          sx={{backgroundColor: medication.medicationOwner.color}}/>
+                                </Box>
+                                <Box sx={{alignContent: "right"}}>
+
+                                    <ButtonGroup orientation={"vertical"}>
+                                        <Button variant={"contained"} onClick={() => {
+                                            setSelectedMedication(medication)
+                                            setOpenMedication(true)
+                                        }}>Open</Button>
+                                        <Button variant={"contained"} onClick={() => {
+                                            setSelectedMedication(medication)
+                                            setEditMedication(true)
+                                        }}>Edit</Button>
+                                    </ButtonGroup>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Paper>
+                <MedicationDialog
+                    isOpen={editMedication}
+                    isNewMedication={false}
+                    medication={userMedications[index]}
+                    closeDialog={() => setEditMedication(false)}/>
+                <Dialog
+                    open={openMedication}
+                    onBackdropClick={()=>setOpenMedication(false)}
+                >
+                    <DialogTitle>{medication.prescriptionName}</DialogTitle>
+                    <Chip label={medication.medicationOwner.name}
+                          sx={{backgroundColor: medication.medicationOwner.color}}/>
+                    <DialogContent>
+                        {"Bottle dosage: " + medication.prescriptionDosage}<br/>
+                        {"Next Refill Date: " + medication.nextFillDay}<br/>
+                        {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAStop taking this medication: " + medication.prescriptionName}<br/>
+                        {"Notes: " + medication.prescriptionName}<br/>
+                        {medication.dosages.map(dose=>{
+                            return(
+                                <>
+                                    {"Take " + dose.amount + " at " + dose.time}
+                                </>
+                            )
+                        })}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant={"contained"} fullWidth onClick={()=>setOpenMedication(false)}>Close</Button>
+                    </DialogActions>
+                </Dialog>
+            </>)
     }
 
+    //endregion
+
     return (
+        <>
+            {loadingBar ? <Skeleton/> : MedicationList()}
 
-        <Box sx={{maxHeight: '70vh', overflow: 'auto'}}>
-
-
-            <Card>
-                {loadingBar ? displaySkeletonLoading() : <>
-
-                    <br/>
-                    {deleteMedicationButtons()}
-                    {userMedications?.length == 0 || userMedications == null ?
-                        <Button onClick={() => {}}>New Medication</Button> :
-                        <>
-
-                            {userMedications.map((medication: IMedicationBase) =>
-                                <>
-                                    <Grid container>
-                                        {/*//TODO(TRAVIS) FLEXBOX FUCKER*/}
-                                        {isDeletionEnabled ? <Grid item>
-                                            <Checkbox key={medication.medicationId}
-                                                      onClick={() => handleCheckBoxClick(medication)}/>
-                                        </Grid> : <></>
-                                        }
-                                        <Grid item>
-                                            {/*handleTabsChangeIndex is  a blank function because it is uneeded here but is needed when creating a new medication*/}
-                                            <MedicationCard
-                                                isNewCard={false}
-                                                userId={medication.userId}
-                                                medicationId={medication.medicationId}
-                                                endDate={medication.endDate}
-                                                inDefinite={medication.inDefinite}
-                                                prescriptionName={medication.prescriptionName}
-                                                prescriptionDosage={medication.prescriptionDosage}
-                                                nextFillDay={medication.nextFillDay}
-                                                dosages={medication.dosages}
-                                                userNotes={medication.userNotes}
-                                                medicationOwner={medication.medicationOwner}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <br/>
-                                </>)}
-                        </>
-                    }
-                </>}
-            </Card>
-        </Box>
+        </>
     );
 };
 

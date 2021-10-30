@@ -111,7 +111,7 @@ const MedicationCard = (props: IMedicationCardProps) => {
         tempMedicationDetails.prescriptionName = prescriptionName
         tempMedicationDetails.nextFillDay = nextFilledDate
         tempMedicationDetails.prescriptionDosage = prescriptionDosage
-        tempMedicationDetails.medicationOwner = medicationOwner
+        // tempMedicationDetails.medicationOwner = medicationOwner
         tempMedicationDetails.endDate = endDate
         tempMedicationDetails.inDefinite = inDefinite
         tempMedicationDetails.userNotes = userNotes

@@ -51,10 +51,14 @@ router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
 
 })
 
-router.get('/usersPersons', JwtAuthenticate, (req, res, next) => {
+router.get('/usersPersons', JwtAuthenticate, async (req, res, next) => {
+
     try {
-        apiResponse.payload = getPersons(req)
-        return res.status(200).json(apiResponse)
+
+        await getPersons(req).then(data=> {
+            apiResponse.payload = data.persons
+            return res.status(200).json(apiResponse)
+        })
     } catch (e) {
         apiResponse.error = true
         apiResponse.errorMessage = e

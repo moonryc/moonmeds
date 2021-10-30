@@ -1,3 +1,4 @@
+//@ts-nocheck
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 
 /**
