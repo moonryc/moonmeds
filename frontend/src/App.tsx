@@ -43,8 +43,9 @@ function App() {
                 <Route exact path="/Err" component={ErrorPage}/>
                 <Route exact path="/MedicationPage" component={loggedIn ? LoggedInHomePage : Homepage}/>
                 <Route exact path="/UserAccount" component={loggedIn ? MainLoggedInPage : Homepage}/>
+                <Route exact path="/Login" component={!loggedIn ? LoginPage : Homepage}/>
                 <NotificationsParent/>
-                <LoginPage/>
+
             </>
             }
         </div>

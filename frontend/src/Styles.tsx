@@ -1,7 +1,7 @@
 //#region Wrappers and backgrounds
 export const wrapperStyle = {
-    height: 'vh',
-    width: 'vw'
+    height: '100vh',
+    width: '100vw'
 }
 export const flexWrapperStyle = {
     height: '100vh',
