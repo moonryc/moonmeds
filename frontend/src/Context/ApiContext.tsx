@@ -14,17 +14,17 @@ export interface IApiContextState {
     setLoadingBar: (state: boolean) => void
 
 
-    checkIfJWTTokenIsValid: () => void,
+    checkIfJWTTokenIsValid: () => Promise<any>,
     postLogin: (userName: string, password: string) => Promise<any>,
     postRegister: (userName: string, password: string, emailAddress: string) => Promise<any>,
     fetchMedicationsAndDosagesAndPersons: () => Promise<any>,
-    fetchPersons: () => void,
+    fetchPersons: () => Promise<any>,
     putNewMedication: (medicationObject: IMedicationBase) => Promise<any>,
     putUpdateExistingMedication: (medicationObject: IMedicationBase) => Promise<any>,
-    putDeleteSelectedMedications: (medicationIdArray: string[], removePastMedicationDosages: boolean) => void,
-    putUpdateMedicationDosage: (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date) => void,
-    putAddPerson: (newPerson: IPersonNameAndColor) => void,
-    putRemovePerson: (removePerson: IPersonNameAndColor) => void,
+    putDeleteSelectedMedications: (medicationIdArray: string[], removePastMedicationDosages: boolean) => Promise<any>,
+    putUpdateMedicationDosage: (dosageId: string, hasBeenTaken: boolean, hasBeenMissed: boolean, timeTaken: Date) => Promise<any>,
+    putAddPerson: (newPerson: IPersonNameAndColor) => Promise<any>,
+    putRemovePerson: (removePerson: IPersonNameAndColor) => Promise<any>,
 }
 
 export const ApiContext = createContext<IApiContextState>({
