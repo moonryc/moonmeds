@@ -1,11 +1,12 @@
 import React from 'react';
+import {Typography} from "@mui/material";
 
 const Loading = () => {
     return (
         <div>
-            <p>
+            <Typography>
                 Loading...
-            </p>
+            </Typography>
         </div>
     );
 };

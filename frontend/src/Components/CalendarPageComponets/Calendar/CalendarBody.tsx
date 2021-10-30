@@ -62,31 +62,31 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     return (
         <Box >
             <br/>
-            <Grid container spacing={0}>{/*//@ts-ignore*/}
-                    <Grid sx={centeredTextStyle}item xs={1.71428571}>
+            <Grid container spacing={1} columns={7}>
+                    <Grid item xs={1} sx={centeredTextStyle}  >
                         Sun
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Mon
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Tues
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Wed
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Thurs
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Fri
                     </Grid>{/*//@ts-ignore*/}
-                    <Grid item xs={1.71428571} sx={centeredTextStyle}>
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Sat
                     </Grid>
                 {arrayOfMonthDays.map(day =>
                     //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
-                        <Grid sx={{...centeredTextStyle, height:['6vh',,,'10vh']}} item xs={1.71428571} key={arrayOfMonthDays.indexOf(day)}>
+                        <Grid sx={{...centeredTextStyle, height:['6vh',,,'10vh']}} item xs={1} key={arrayOfMonthDays.indexOf(day)}>
                             {day.index !=0 ?<CalendarDay index={day.index} date={day.date} isRenderedOnHomePage={true}/>:<></>}<br/>
                         </Grid>
                         // :<CalendarDay index={day.index} date={day.date}/>
