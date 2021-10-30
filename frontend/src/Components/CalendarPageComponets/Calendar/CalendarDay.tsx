@@ -45,7 +45,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
      * selected days medicationDetails are
      */
     const handleOnDayClick = () => {
-        setSelectedDay(props.date); //@ts-ignore
+        setSelectedDay(props.date);
         console.log(selectedDay)
 
     }

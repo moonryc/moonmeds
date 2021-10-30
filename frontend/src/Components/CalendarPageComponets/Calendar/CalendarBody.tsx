@@ -63,24 +63,24 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         <Box >
             <br/>
             <Grid container spacing={1} columns={7}>
-                    <Grid item xs={1} sx={centeredTextStyle}  >
+                    <Grid item xs={1} sx={centeredTextStyle}>
                         Sun
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Mon
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Tues
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Wed
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Thurs
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Fri
-                    </Grid>{/*//@ts-ignore*/}
+                    </Grid>
                     <Grid item xs={1} sx={centeredTextStyle}>
                         Sat
                     </Grid>

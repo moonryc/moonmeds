@@ -102,7 +102,6 @@ const MainLoggedInPage = () => {
                         <Paper elevation={0}
                                sx={{overflow: 'auto', position: 'relative', height: ['60vh', '60vh', '60vh', '80vh'],}}>
                             <DisplayCalendar/>
-                            {/*//@ts-ignore*/}
                             <Box sx={{position: 'absolute', bottom: '6px', left: '6px'}}>
                                 <Fab size="small" color="secondary" aria-label="add" variant={"extended"}
                                      onClick={() => setIsMakingNewMedication(!isMakingNewMedication)}>
