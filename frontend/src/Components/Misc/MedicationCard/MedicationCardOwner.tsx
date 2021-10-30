@@ -1,79 +1,72 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-    Button,
-    createFilterOptions,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle, IconButton, InputAdornment,
-    TextField
+    Box, Button,
+    Chip,
+    createFilterOptions, Dialog, DialogActions, DialogContent, DialogTitle,
+    FormControl, IconButton, InputAdornment,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    SelectChangeEvent, TextField,
+
 } from "@mui/material";
-import {Autocomplete} from "@mui/lab";
 import {UserContext} from "../../../Context/UserContext";
 import {ApiContext} from "../../../Context/ApiContext";
-import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
+import {Theme, useTheme} from '@mui/material/styles';
+import medication from "../../../../../routes/medication";
 import {Edit} from "@mui/icons-material";
 
 
 interface IMedicationCardOwnerProps {
-    getMedicationOwner(name: string | null): void
+    getMedicationOwner(name: string | null, color: string | null): void
 
     medicationOwner: IPersonNameAndColor
 
 }
 
 
-interface IAutoFillPerson extends IPersonNameAndColor {
-    inputValue?: string;
-}
-
-const filter = createFilterOptions<IAutoFillPerson>()
-
 const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const {usersPeople} = useContext(UserContext);
-    const {putAddPerson, fetchPersons} = useContext(ApiContext);
+    const {putAddPerson} = useContext(ApiContext);
 
-    const [people, setPeople] = useState<IAutoFillPerson[]>(usersPeople);
 
-    const [selectedUser, setSelectedUser] = useState<string | null>(props.medicationOwner.name);
+    const [selectedUser, setSelectedUser] = useState<IPersonNameAndColor>(props.medicationOwner);
+
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
+    const [newUser, setNewUser] = useState<IPersonNameAndColor>({name:"",color:""});
 
 
     useEffect(() => {
+        console.log(selectedUser)
         if (selectedUser == null) {
-            props.getMedicationOwner("Default User")
+            props.getMedicationOwner("Default User", "secondary")
         } else {
-            props.getMedicationOwner(selectedUser)
+            props.getMedicationOwner(selectedUser.name, selectedUser.color)
         }
     }, [selectedUser]);
 
-    const [value, setValue] = React.useState<IAutoFillPerson | null>({name: props.medicationOwner.name, color: ""});
-    const [open, toggleOpen] = React.useState(false);
+    useEffect(() => {
 
-    const handleClose = () => {
-        setDialogValue({
-            name: '',
-            color: '',
-        });
-        toggleOpen(false);
-    };
+        console.log("-------------------")
+        console.log(usersPeople)
+        console.log("-------------------")
+    }, [usersPeople]);
 
-    const [dialogValue, setDialogValue] = React.useState({
-        name: '',
-        color: '',
-    });
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setValue({
-            name: dialogValue.name,
-            color: dialogValue.color,
+    const handleSubmit = () => {
+        setSelectedUser({
+            name: "",
+            color: "",
         });
 
-        putAddPerson({name: dialogValue.name, color: dialogValue.color})
-        handleClose();
+        putAddPerson({name: newUser.name, color: newUser.color})
+        setDialogOpen(false)
+        setNewUser({name:"",color:""})
+        console.log(usersPeople)
     };
 
     let colorOptions = [
@@ -90,117 +83,63 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     return (
         <>
-            <>
-            <Autocomplete
-                value={value}
-                fullWidth
-                onChange={(event, newValue) => {
-                    if (typeof newValue === 'string') {
-                        // timeout to avoid instant validation of the dialog's form.
-                        setTimeout(() => {
-                            toggleOpen(true);
-                            setDialogValue({
-                                name: newValue,
-                                color: '',
-                            });
-                        });
-                    } else if (newValue && newValue.inputValue) {
-                        toggleOpen(true);
-                        setDialogValue({
-                            name: newValue.inputValue,
-                            color: '',
-                        });
-                    } else {
-                        setValue(newValue);
-                        if (newValue != null) {
-
-                            setSelectedUser(newValue.name)
-                        }
-                    }
-                }}
-                filterOptions={(options, params) => {
-                    return filter(options, params);
-                }}
-                id="free-solo-dialog-demo"
-                options={people}
-                getOptionLabel={(option) => {
-                    // e.g value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                        return option;
-                    }
-                    if (option.inputValue) {
-                        return option.inputValue;
-                    }
-                    return option.name;
-                }}
-                selectOnFocus
-                openOnFocus
-                clearOnBlur
-                handleHomeEndKeys
-                renderOption={(props, option) => <li {...props}>{option.name}</li>}
-                forcePopupIcon={false}
-                renderInput={(params) => <TextField
-                    {...params}
-                    InputProps={{...params.InputProps,endAdornment:(<React.Fragment><InputAdornment position={"end"}> <IconButton onClick={()=>toggleOpen(true)}><Edit/></IconButton> </InputAdornment></React.Fragment>)}}
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Medication Owner</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedUser}
                     label="Medication Owner"
-                />}
-            />
-            <Dialog open={open} onClose={handleClose}>
-                <form onSubmit={handleSubmit}>
-                    <DialogTitle>Add a Owner</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Add a new Medication Owner
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            fullWidth
-                            id="name"
-                            value={dialogValue.name}
-                            onChange={(event) =>
-                                setDialogValue({
-                                    ...dialogValue,
-                                    name: event.target.value,
-                                })
-                            }
-                            label="name"
-                            type="text"
-                            variant="outlined"
-                        />
+                    renderValue={(selectedUser) => (
+                        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
+                            {selectedUser.name !== "" ?
+                                <Chip label={selectedUser.name} sx={{backgroundColor: selectedUser.color}}/> : <></>}
+                        </Box>
+                    )}
+                    onChange={(e) => {
+                        let personParsed = JSON.parse(e.target.value.toString());
+                        setSelectedUser({...personParsed});
+                    }}
+                    IconComponent={() => (<></>)}
+                    input={
+                        <OutlinedInput
+                            id="select-multiple-chip"
+                            label="Chip"
+                            endAdornment={
+                                <InputAdornment
+                                    position={"end"}
+                                    sx={{position: "absolute", right: 3}}>
+                                    <IconButton onClick={() => setDialogOpen(true)}>
+                                        <Edit/>
+                                    </IconButton>
+                                </InputAdornment>}
+                        />}
+                >
+                    {usersPeople.map(person => {
+                        return (
+                            <MenuItem
+                                value={JSON.stringify(person)}
+                                key={person.name}
+                            > <Chip label={person.name} sx={{backgroundColor: person.color}}/></MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
 
-                        <Autocomplete
-                            disablePortal
-                            fullWidth
-                            id="colors"
-                            options={colorOptions}
-                            onChange={(event: any) => {
-
-                                    setDialogValue({...dialogValue, color: event.target.value});
-
-                            }}
-                            renderInput={(params) => <TextField {...params} label="Color"/>}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant={"contained"} onClick={handleClose}>Cancel</Button>
-                        <Button variant={"contained"} type="submit">Add</Button>
-                    </DialogActions>
-                </form>
+            <Dialog open={dialogOpen}>
+                <DialogTitle>Create a new Owner</DialogTitle>
+                <DialogContent>
+                    <TextField variant={"filled"} value={newUser.name} onChange={(e)=>{
+                        setNewUser(prevValue=>({...prevValue,name:e.target.value}))}}/>
+                    <TextField variant={"filled"} value={newUser.color} onChange={(e)=>{
+                        setNewUser(prevValue=>({...prevValue,color:e.target.value}))}}/>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant={"contained"} onClick={(e)=>handleSubmit()}>Create Owner</Button>
+                    <Button variant={"contained"} onClick={()=>setDialogOpen(false)}>Cancel</Button>
+                </DialogActions>
             </Dialog>
-            </>
 
-            {/*<Autocomplete*/}
-
-            {/*    id="combo-box-demo"*/}
-            {/*    options={colorOptions}*/}
-            {/*    fullWidth*/}
-            {/*    renderInput={(params) => <TextField {...params} label="Movie"*/}
-            {/*                                        */}
-            {/*    />}*/}
-            {/*/>*/}
-
-            {/*<TextField fullWidth InputProps={{endAdornment:<IconButton><Edit/></IconButton>}}/>*/}
         </>
     );
 }
