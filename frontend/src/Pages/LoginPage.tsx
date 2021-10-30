@@ -11,8 +11,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
 
     const handleClick = (userName:string,password:string) => {
-        postLogin(userName,password);
-        window.location.href = "/UserAccount"
+        postLogin(userName,password).then(response=> window.location.href = "/UserAccount");
     }
 
     return (

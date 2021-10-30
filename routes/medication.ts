@@ -1,3 +1,4 @@
+//@ts-nocheck
 import express = require('express');
 import passport = require("passport");
 import createNewMedication from "../services/medication/newMedication";
