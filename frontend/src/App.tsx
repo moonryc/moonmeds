@@ -3,10 +3,8 @@ import './App.css';
 import Homepage from "./Pages/Startup/Homepage";
 import LoggedInHomePage from "./Pages/Startup/LoggedInHomePage";
 import {UserContext} from "./Context/UserContext";
-import CalendarOverViewPage from "./Pages/CalenderOverviewPage";
 import ErrorPage from "./Pages/ErrorPage";
 import {Route} from "react-router-dom";
-import UserAccountPage from "./Pages/UserAccountPage";
 import NotificationsParent from "./Components/Misc/Notifications/NotificationsParent";
 import {ApiContext} from "./Context/ApiContext";
 import MainLoggedInPage from "./Pages/MainLoggedInPage";
@@ -39,7 +37,6 @@ function App() {
         <div>
             {loggedIn == null ? <></> : <>
                 <Route exact path="/" component={loggedIn ? LoggedInHomePage : Homepage}/>
-                <Route exact path="/CalendarOverview" component={loggedIn ? CalendarOverViewPage : Homepage}/>
                 <Route exact path="/Err" component={ErrorPage}/>
                 <Route exact path="/MedicationPage" component={loggedIn ? LoggedInHomePage : Homepage}/>
                 <Route exact path="/UserAccount" component={loggedIn ? MainLoggedInPage : Homepage}/>

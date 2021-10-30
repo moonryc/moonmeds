@@ -10,8 +10,7 @@ import {CalendarContext} from "../../Context/CalendarContext";
 import DisplayCalendar from "./Calendar/DisplayCalendar";
 import {Card, Grid, LinearProgress} from "@mui/material";
 import DisplayDateDetails from "./DateDetails/DisplayDateDetails";
-import DisplayMedicationList from "./MedicationList/DisplayMedicationList";
-import MedicationCard from "../Misc/MedicationCard/MedicationCard";
+
 import {ApiContext} from "../../Context/ApiContext";
 
 
@@ -151,12 +150,7 @@ const DisplayCalendarOverview = () => {
 
                                 {/*NEW MEDICATION CARD*/}
                                 <TabPanel value={value} index={2} dir={theme.direction}>
-                                    <MedicationCard
-                                        userId={''} medicationId={""} isNewCard={true}
-                                        prescriptionName={''} prescriptionDosage={0}
-                                        nextFillDay={new Date()}
-                                        dosages={[]} userNotes={''}
-                                        medicationOwner={{name:"",color:""}} endDate={new Date()} inDefinite={false}/>
+
                                 </TabPanel>
                             </SwipeableViews>
                         </Box>
