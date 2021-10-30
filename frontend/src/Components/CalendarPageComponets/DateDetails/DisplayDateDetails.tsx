@@ -1,11 +1,13 @@
 import React, {useContext, useMemo} from 'react';
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Typography} from "@mui/material";
-import {toDate} from "date-fns";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, Typography} from "@mui/material";
+import {differenceInDays, format, parseISO, toDate} from "date-fns";
 import {CalendarContext} from "../../../Context/CalendarContext";
-import MedicationDosageDetails from "../../Misc/MedicationDosageDetails";
 import {centeredTextStyle, titleStyle} from "../../../Styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {Face} from "@mui/icons-material";
+import MedicationIcon from "@mui/icons-material/Medication";
+import {ApiContext} from "../../../Context/ApiContext";
 
 
 interface IDisplayDateDetailsProp {
@@ -13,17 +15,16 @@ interface IDisplayDateDetailsProp {
 }
 
 
-const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
+const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
 
     const date = useMemo(() => toDate(props.selectedDate.date).toDateString(), [props.selectedDate.date])
-    //
-    const {selectedDayDetails} = useContext(CalendarContext);
-    //
 
-    console.log(selectedDayDetails)
+    const {selectedDayDetails} = useContext(CalendarContext);
+    const {putUpdateMedicationDosage} = useContext(ApiContext);
+
 
     return (
-        <Box sx={{height: '74vh', overflow: 'auto', padding:'3vh'}}>
+        <Box sx={{height: '74vh', overflow: 'auto', padding: '3vh'}}>
             <Typography variant={'h4'} sx={{...titleStyle, ...centeredTextStyle}}> Date Details</Typography>
             <Typography variant={'h5'}>
                 {date.toString()}
@@ -31,23 +32,39 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
 
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
                     <Typography>Medications Taken</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
+                    <Typography variant={'body2'} sx={{fontSize: '25px', color: 'text.primary',}}>
                         {selectedDayDetails.map(medicationDosage => {
                                 return medicationDosage.hasBeenTaken ?
                                     <>
-                                        <MedicationDosageDetails
-                                            medication={medicationDosage}
-                                            medicationTaken={true}
-                                            medicationToTake={false}
-                                            missedMedications={false}
-                                            upcomingRefill={false}/>
+                                        <Box sx={{
+                                            bgcolor: "green",
+                                            width: "100%",
+                                            height: 60,
+                                            borderRadius: 2,
+                                            position: 'relative'
+                                        }}>
+                                            <Typography sx={{
+                                                marginLeft: '1vh',
+                                                fontSize: '20px',
+                                                top: '22.5%',
+                                                position: 'absolute'
+                                            }}><Chip sx={{bgcolor: medicationDosage.medicationOwner.color}} icon={<Face/>}
+                                                     label={medicationDosage.medicationOwner.name}/>{" | "}<Chip
+                                                sx={{bgcolor: medicationDosage.medicationOwner.color}}
+                                                icon={<MedicationIcon/>}
+                                                label={medicationDosage.prescriptionName}/>{" | Dosage was taken at "}{format(parseISO(medicationDosage.timeTaken), 'h:mm aa')}
+                                            </Typography>
+                                            <Button variant={"contained"}
+                                                    sx={{position: 'absolute', right: "2.5%", top: '20%'}}
+                                                    onClick={() => putUpdateMedicationDosage(medicationDosage.dosageId, false, medicationDosage.hasBeenMissed, new Date())}>Undo</Button>
+                                        </Box>
 
                                         <br/>
                                     </> :
@@ -59,23 +76,40 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
             </Accordion>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
                     <Typography>Medications To Take</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
+                    <Typography variant={'body2'} sx={{fontSize: '25px', color: 'text.primary',}}>
                         {selectedDayDetails.map(medicationDosage => {
                                 return !medicationDosage.hasBeenTaken && !medicationDosage.hasBeenMissed ?
                                     <>
-                                        <MedicationDosageDetails
-                                            medication={medicationDosage}
-                                            medicationTaken={false}
-                                            medicationToTake={true}
-                                            missedMedications={false}
-                                            upcomingRefill={false}/>
+                                        <Box sx={{
+                                            bgcolor: "orange",
+                                            width: "100%",
+                                            height: 60,
+                                            borderRadius: 2,
+                                            position: 'relative'
+                                        }}>
+                                            <Typography sx={{
+                                                marginLeft: '1vh',
+                                                fontSize: '20px',
+                                                top: '22.5%',
+                                                position: 'absolute'
+                                            }}><Chip sx={{bgcolor: medicationDosage.medicationOwner.color}} icon={<Face/>}
+                                                     label={medicationDosage.medicationOwner.name}/>{" | "}<Chip
+                                                sx={{bgcolor: medicationDosage.medicationOwner.color}}
+                                                icon={<MedicationIcon/>}
+                                                label={medicationDosage.prescriptionName}/>{" | Dosage to be taken at "}{format(parseISO(medicationDosage.timeToTake.toString()), 'h:mm aa').toString()}
+                                            </Typography>
+                                            <Button variant={"contained"}
+                                                    sx={{position: 'absolute', right: "2.5%", top: '20%'}}
+                                                    onClick={() => putUpdateMedicationDosage(medicationDosage.dosageId, true, medicationDosage.hasBeenMissed, new Date())}>Mark
+                                                as Taken</Button>
+                                        </Box>
                                         <br/>
                                         {/*//TODO TRAVIS ADD PADDING*/}
                                     </> :
@@ -87,23 +121,40 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
             </Accordion>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
                     <Typography>Missed Medications</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
+                    <Typography variant={'body2'} sx={{fontSize: '25px', color: 'text.primary',}}>
                         {selectedDayDetails.map(medicationDosage => {
                                 return medicationDosage.hasBeenMissed && !medicationDosage.hasBeenTaken ?
                                     <>
-                                        <MedicationDosageDetails
-                                            medication={medicationDosage}
-                                            medicationTaken={false}
-                                            medicationToTake={false}
-                                            missedMedications={true}
-                                            upcomingRefill={false}/>
+                                        <Box sx={{
+                                            bgcolor: "red",
+                                            width: "100%",
+                                            height: 60,
+                                            borderRadius: 2,
+                                            position: 'relative'
+                                        }}>
+                                            <Typography sx={{
+                                                marginLeft: '1vh',
+                                                fontSize: '20px',
+                                                top: '22.5%',
+                                                position: 'absolute'
+                                            }}><Chip sx={{bgcolor: medicationDosage.medicationOwner.color}} icon={<Face/>}
+                                                     label={medicationDosage.medicationOwner.name}/>{" | "}<Chip
+                                                sx={{bgcolor: medicationDosage.medicationOwner.color}}
+                                                icon={<MedicationIcon/>}
+                                                label={medicationDosage.prescriptionName}/>{" | Dosage was missed at "}{format(parseISO(medicationDosage.timeToTake.toString()), 'h:mm aa').toString()}
+                                            </Typography>
+                                            <Button variant={"contained"}
+                                                    sx={{position: 'absolute', right: "2.5%", top: '20%'}}
+                                                    onClick={() => putUpdateMedicationDosage(medicationDosage.dosageId, true, medicationDosage.hasBeenMissed, new Date())}>Mark
+                                                as taken</Button>
+                                        </Box>
                                         <br/>
                                     </> :
                                     <span key={Math.random()}/>
@@ -114,23 +165,48 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
             </Accordion>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
                     <Typography>Medications To Refill</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography variant={'body2'} sx={{fontSize:'25px', color: 'text.primary', }}>
+                    <Typography variant={'body2'} sx={{fontSize: '25px', color: 'text.primary',}}>
                         {selectedDayDetails.map(medicationDosage => {
-                                return(<>
-                                    <MedicationDosageDetails
-                                        medication={medicationDosage}
-                                        medicationTaken={false}
-                                        medicationToTake={false}
-                                        missedMedications={false}
-                                        upcomingRefill={true}/>
-                                    <br/>
+                                const numberOfDaysBeforeRefill = differenceInDays(new Date(medicationDosage.nextFillDay), new Date(medicationDosage.timeToTake));
+                                return (<>
+                                    {numberOfDaysBeforeRefill <= 7 ? <>
+                                        <Box sx={{
+                                            bgcolor: "blue",
+                                            width: "100%",
+                                            height: 60,
+                                            borderRadius: 2,
+                                            position: 'relative'
+                                        }}>
+                                            <Typography sx={{
+                                                marginLeft: '1vh',
+                                                fontSize: '.75vw',
+                                                top: '22.5%',
+                                                position: 'absolute'
+                                            }}>
+                                                <Chip sx={{bgcolor: medicationDosage.medicationOwner.color}} icon={<Face/>}
+                                                      label={medicationDosage.medicationOwner.name}/>{" | "}
+                                                <Chip
+                                                    sx={{bgcolor: medicationDosage.medicationOwner.color}}
+                                                    icon={<MedicationIcon/>}
+                                                    label={medicationDosage.prescriptionName}/>
+                                                {" | refill in " + differenceInDays(new Date(medicationDosage.nextFillDay), new Date()) + " days"}
+                                            </Typography>
+                                            <Button
+                                                variant={"contained"}
+                                                sx={{position: 'absolute', right: "2.5%", top: '20%'}}
+                                            >
+                                                Refill
+                                            </Button>
+                                        </Box>
+                                        <br/>
+                                    </> : <></>}
                                     {/*//TODO TRAVIS ADD PADDING*/}
                                 </>)
                             }

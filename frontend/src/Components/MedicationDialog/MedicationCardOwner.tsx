@@ -11,11 +11,11 @@ import {
     SelectChangeEvent, TextField,
 
 } from "@mui/material";
-import {UserContext} from "../../../Context/UserContext";
-import {ApiContext} from "../../../Context/ApiContext";
-import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
+import {UserContext} from "../../Context/UserContext";
+import {ApiContext} from "../../Context/ApiContext";
+import {IPersonNameAndColor} from "../../../../Types/UserTypes";
 import {Theme, useTheme} from '@mui/material/styles';
-import medication from "../../../../../routes/medication";
+import medication from "../../../../routes/medication";
 import {Edit} from "@mui/icons-material";
 
 
