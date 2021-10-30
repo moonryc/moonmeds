@@ -31,7 +31,7 @@ const MedicationDialog = (props: IMedicationDialog) => {
         medicationId: "",
         userId: "",
         prescriptionName: "",
-        medicationOwner: {name:"",color:""},
+        medicationOwner: {name:"",color:"secondary"},
         prescriptionDosage: 0,
         nextFillDay: new Date(),
         inDefinite: true,

@@ -8,7 +8,7 @@ import {primaryIconTextStyle, titleStyle} from "../../Styles";
 const LoginButton = () => {
     return (
         <div>
-            <form action={"/auth/login"}>
+            <form action={"/Login"}>
                 <Button sx={titleStyle} type={"submit"} value={"login"}> <LoginIcon sx={primaryIconTextStyle}/>Login/ Sign up </Button>
             </form>
         </div>

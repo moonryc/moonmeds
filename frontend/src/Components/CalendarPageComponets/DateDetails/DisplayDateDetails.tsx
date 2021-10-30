@@ -20,6 +20,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
     const {selectedDayDetails} = useContext(CalendarContext);
     //
 
+    console.log(selectedDayDetails)
 
     return (
         <Box sx={{height: '74vh', overflow: 'auto', padding:'3vh'}}>
@@ -50,7 +51,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
 
                                         <br/>
                                     </> :
-                                    <p key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></p>
+                                    <span key={Math.random()}/>
                             }
                         )}
                     </Typography>
@@ -78,7 +79,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
                                         <br/>
                                         {/*//TODO TRAVIS ADD PADDING*/}
                                     </> :
-                                    <p key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></p>
+                                    <span key={Math.random()}/>
                             }
                         )}
                     </Typography>
@@ -105,7 +106,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp, ) => {
                                             upcomingRefill={false}/>
                                         <br/>
                                     </> :
-                                    <Typography sx={{fontSize:'1vw'}} key={medicationDosage.prescriptionName + medicationDosage.timeToTake}></Typography>
+                                    <span key={Math.random()}/>
                             }
                         )}
                     </Typography>

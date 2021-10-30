@@ -18,7 +18,7 @@ export const UserContext = createContext<IUserContextState>({
 
 
     usersPeople:[{name:"Default",color:"Grey"}],
-    setUsersPeople:(state:IPersonNameAndColor[])=>{},
+    setUsersPeople:(state:IPersonNameAndColor[])=>null,
 
 })
 

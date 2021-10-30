@@ -15,9 +15,9 @@ export interface IApiContextState {
 
 
     checkIfJWTTokenIsValid: () => void,
-    postLogin: (userName: string, password: string) => void,
-    postRegister: (userName: string, password: string, emailAddress: string) => void,
-    fetchMedicationsAndDosagesAndPersons: () => void,
+    postLogin: (userName: string, password: string) => Promise<any>,
+    postRegister: (userName: string, password: string, emailAddress: string) => Promise<any>,
+    fetchMedicationsAndDosagesAndPersons: () => Promise<any>,
     fetchPersons: () => void,
     putNewMedication: (medicationObject: IMedicationBase) => Promise<any>,
     putUpdateExistingMedication: (medicationObject: IMedicationBase) => Promise<any>,

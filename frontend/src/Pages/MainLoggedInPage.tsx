@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import DisplayCalendar from "../Components/CalendarPageComponets/Calendar/DisplayCalendar";
 import AppbarTop from "../Components/Standalone/AppbarTop";
-import {Box, Button, ButtonGroup, Card, Dialog, DialogActions, DialogTitle, Fab, Grid, Paper} from "@mui/material";
+import {Box, Button, Card, Dialog, DialogActions, DialogTitle, Fab, Grid, Paper} from "@mui/material";
 import {Add} from "@mui/icons-material";
-import MedicationCard from "../Components/Misc/MedicationCard/MedicationCard";
 import {ApiContext} from "../Context/ApiContext";
 import DisplayMedicationList from "../Components/CalendarPageComponets/MedicationList/DisplayMedicationList";
 import DisplayDateDetails from "../Components/CalendarPageComponets/DateDetails/DisplayDateDetails";
 import {CalendarContext} from "../Context/CalendarContext";
-import {backgroundStyle, flex1ItemStyle, flexWrapperStyle, wrapperStyle} from "../Styles";
+import {backgroundStyle, flex1ItemStyle, flexWrapperStyle} from "../Styles";
 import MedicationDialog from "../Components/MedicationDialog/MedicationDialog";
 import {IMedicationBase} from "../../../Types/MedicationTypes";
 
