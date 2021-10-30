@@ -44,8 +44,8 @@ const MedicationDosageDetails = (props: IMedicationDosageDetails) => {
         return setColor("secondary")
     }
 
-
-    const owner = <Chip sx={{backgroundColor:color}} icon={<Face/>} label={props.medication.medicationOwner} />
+//@ts-
+    const owner = <Chip sx={{bgcolor:color}} icon={<Face/>} label={props.medication.medicationOwner} />
     const medication = <Chip sx={{backgroundColor:color}} icon={<MedicationIcon/>} label={props.medication.prescriptionName}/>
     const prefix = " | " + props.medication.amount
     const numberOfDaysBeforeRefill = differenceInDays(new Date(props.medication.nextFillDay),new Date(props.medication.timeToTake));
