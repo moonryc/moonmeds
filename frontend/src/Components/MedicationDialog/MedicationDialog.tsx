@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import medication from "../../../../routes/medication";
 import {IDosagesDetails, IMedicationBase, IWeekdays} from "../../../../Types/MedicationTypes";
-import MedicationCardOwner from "../Misc/MedicationCard/MedicationCardOwner";
+import MedicationCardOwner from "./MedicationCardOwner";
 import DatePickerForDialog from "./DatePickerForDialog";
 import MedicationDialogDosages from "./MedicationDialogDosages";
 import {ToggleButton, ToggleButtonGroup} from "@mui/lab";

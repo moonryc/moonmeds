@@ -13,7 +13,6 @@ import {
     Paper,
     Typography
 } from "@mui/material";
-import MedicationCard from "../../Misc/MedicationCard/MedicationCard";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {ApiContext} from "../../../Context/ApiContext";
