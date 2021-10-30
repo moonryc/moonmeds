@@ -15,6 +15,11 @@ interface IDatePickerForDialogProps{
 
 }
 
+/**
+ * This is the logic for the Date picker for the medication creation/edit dialog box
+ * @param props
+ * @constructor
+ */
 const DatePickerForDialog = (props:IDatePickerForDialogProps) => {
 
     const [value, setValue] = React.useState<Date | null>(null);

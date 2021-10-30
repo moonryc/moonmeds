@@ -67,10 +67,10 @@ router.put('/newMedication', JwtAuthenticate, async (req, res, next) => {
 /**
  * Updates an existing medication
  */
-router.put('/updateMedication', JwtAuthenticate, (req, res, next) => {
+router.put('/updateMedication', JwtAuthenticate, async (req, res, next) => {
     try {
-        updateMedication(req, res)
-        res.status(200).json(apiResponse)
+        await updateMedication(req, res).then(response=>res.status(200).json(apiResponse))
+
     } catch (e) {
         apiResponse.error = true
         apiResponse.errorMessage = e

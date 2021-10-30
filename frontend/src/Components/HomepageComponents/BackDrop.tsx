@@ -2,6 +2,11 @@ import React from 'react';
 import BackDropImg from '../../Images/Homepage/BackDropImg.png';
 import {Box, CardMedia} from "@mui/material";
 
+
+/**
+ * This is logic for the homepage backdrop
+ * @constructor
+ */
 const BackDrop: React.FC<{[key: string]: any}> = () => {
     return(
        <Box

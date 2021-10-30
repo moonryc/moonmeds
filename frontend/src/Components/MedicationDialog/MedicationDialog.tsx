@@ -17,6 +17,13 @@ import MedicationDialogDosages from "./MedicationDialogDosages";
 import {ToggleButton, ToggleButtonGroup} from "@mui/lab";
 import {ApiContext} from "../../Context/ApiContext";
 
+/**
+ * @param isOpen - true is the dialog box is open
+ * @param isNewMedication - true if creating a new medication, false otherwise
+ * @param isNewMedication - a blank IMedicationBase object if new medication or an existing medicaitonObject
+ * to fill in the fields
+ * @function closeDialog - a function to close this dialog
+ */
 interface IMedicationDialog {
     isOpen: boolean
     isNewMedication: boolean
@@ -25,13 +32,19 @@ interface IMedicationDialog {
     closeDialog(medicationObject: IMedicationBase): void
 }
 
+/**
+ * Displays a dialog to create a new medication or edit an existing one
+ * @param props
+ * @constructor
+ */
 const MedicationDialog = (props: IMedicationDialog) => {
+
 
     let medicationTemplate = {
         medicationId: "",
         userId: "",
         prescriptionName: "",
-        medicationOwner: {name:"",color:"secondary"},
+        medicationOwner: {name: "", color: "secondary"},
         prescriptionDosage: 0,
         nextFillDay: new Date(),
         inDefinite: true,
@@ -62,29 +75,39 @@ const MedicationDialog = (props: IMedicationDialog) => {
 
     const [medicationObject, setMedicationObject] = useState(props.medication);
 
+    /**
+     * A callback function to update medication dosages
+     * @param listOfDosages - the desired modified list of dosages
+     */
     const updateMedicationDosages = (listOfDosages: IDosagesDetails[]) => {
         let tempMedication = {...medicationObject}
         tempMedication.dosages = listOfDosages
         setMedicationObject(tempMedication)
     }
 
+    /**
+     * A callback function to update the desired end date
+     * @param endDate - the deired end date
+     */
     const getEndDate = (endDate: Date) => {
         let tempMedication = {...medicationObject}
         tempMedication.endDate = endDate
         setMedicationObject(tempMedication)
     }
 
-    const getRefillDate = (endDate: Date) => {
+    /**
+     * A callback function to update the desired refillDate
+     * @param refillDate - desired refill date
+     */
+    const getRefillDate = (refillDate: Date) => {
         let tempMedication = {...medicationObject}
-        tempMedication.nextFillDay = endDate
+        tempMedication.nextFillDay = refillDate
         setMedicationObject(tempMedication)
     }
 
-    useEffect(() => {
-        console.log(medicationObject)
-    }, [medicationObject]);
-
-
+    /**
+     * Sends post request to create a new medication
+     */
     const submitMedication = async () => {
         await putNewMedication(medicationObject)
             .then(response =>
@@ -92,6 +115,9 @@ const MedicationDialog = (props: IMedicationDialog) => {
 
     }
 
+    /**
+     * Sends put request to update existing medication
+     */
     const updateMedication = async () => {
         await putUpdateExistingMedication(medicationObject)
             .then(response =>
@@ -99,9 +125,10 @@ const MedicationDialog = (props: IMedicationDialog) => {
 
     }
 
-    const InnerDialog = () => {
-        return (
-            <>
+    return (
+        <>
+
+            <Dialog open={props.isOpen} onBackdropClick={()=>props.closeDialog(medicationObject)}>
                 <DialogTitle sx={{textAlign: "center"}}> {props.isNewMedication ? <>New
                     Medication</> : <>{props.medication.prescriptionName}</>} </DialogTitle>
 
@@ -122,12 +149,13 @@ const MedicationDialog = (props: IMedicationDialog) => {
                     <br/>
                     <br/>
                     {/*todo slim this down*/}
-                    <MedicationCardOwner getMedicationOwner={(name: string,color:string) => {
+                    <MedicationCardOwner getMedicationOwner={(name: string, color: string) => {
                         let temp = {...medicationObject}
                         temp.medicationOwner.name = name
                         temp.medicationOwner.color = color
-                        setMedicationObject(temp)}}
-                        medicationOwner={medicationObject.medicationOwner}/>
+                        setMedicationObject(temp)
+                    }}
+                                         medicationOwner={medicationObject.medicationOwner}/>
 
 
                     <br/>
@@ -238,28 +266,7 @@ const MedicationDialog = (props: IMedicationDialog) => {
                                 onClick={() => props.closeDialog(medicationTemplate)}>Cancel</Button>
                     </ButtonGroup>
                 </DialogActions>
-
-            </>
-        )
-    }
-
-
-    return (
-        <>
-            {props.isNewMedication ?
-                <Dialog
-                    open={props.isOpen}
-                    onBackdropClick={() => props.closeDialog(medicationObject)}
-                >
-                    {InnerDialog()}
-                </Dialog> :
-                <Dialog
-                    open={props.isOpen}
-                    BackdropProps={{style: {backgroundColor: "transparent"}}}
-                    onBackdropClick={() => props.closeDialog(medicationObject)}
-                >
-                    {InnerDialog()}
-                </Dialog>}
+            </Dialog>
         </>
     );
 };

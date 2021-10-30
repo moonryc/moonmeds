@@ -26,7 +26,11 @@ interface IMedicationCardOwnerProps {
 
 }
 
-
+/**
+ * This component handles selecting and adding a medication owner logic for the medication creation/edit dialog
+ * @param props
+ * @constructor
+ */
 const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
     const {usersPeople} = useContext(UserContext);
@@ -34,14 +38,13 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
 
 
     const [selectedUser, setSelectedUser] = useState<IPersonNameAndColor>(props.medicationOwner);
-
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-
     const [newUser, setNewUser] = useState<IPersonNameAndColor>({name:"",color:""});
 
-
+    /**
+     * passes the selected medication owner up to the parent component MedicationDialog
+     */
     useEffect(() => {
-        console.log(selectedUser)
         if (selectedUser == null) {
             props.getMedicationOwner("Default User", "secondary")
         } else {
@@ -49,24 +52,21 @@ const MedicationCardOwner = (props: IMedicationCardOwnerProps) => {
         }
     }, [selectedUser]);
 
-    useEffect(() => {
-
-        console.log("-------------------")
-        console.log(usersPeople)
-        console.log("-------------------")
-    }, [usersPeople]);
 
 
-    const handleSubmit = () => {
+    /**
+     * clears the fields and closes out of the dialog
+     */
+    const handleSubmit = async () => {
         setSelectedUser({
             name: "",
             color: "",
         });
 
-        putAddPerson({name: newUser.name, color: newUser.color})
-        setDialogOpen(false)
-        setNewUser({name:"",color:""})
-        console.log(usersPeople)
+        await putAddPerson({name: newUser.name, color: newUser.color}).then(response=> {
+            setDialogOpen(false)
+            setNewUser({name: "", color: ""})
+        })
     };
 
     let colorOptions = [

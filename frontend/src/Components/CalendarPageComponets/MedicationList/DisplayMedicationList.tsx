@@ -19,25 +19,19 @@ import {ApiContext} from "../../../Context/ApiContext";
 import {Skeleton} from "@mui/material";
 import {UserContext} from "../../../Context/UserContext";
 import MedicationDialog from "../../MedicationDialog/MedicationDialog";
+import medication from "../../../../../routes/medication";
 
 
 /**
- * This Component displays a list of MedicationCards, if the user has no medications tied to their account a prompt to create one will appear
- * if the user has medications the ability to delete selected medications will be avalible
- * @param props - handleTabsChangeIndex(index: number): void
+ * This component handels all logic for rendering the list of medications associated with the users account
  * @constructor
  */
 const DisplayMedicationList = () => {
 
 
-    //region Context
-    /**
-     * Medication Context to get the array of the users medication
-     * Api Context to get the loadingBar and to deleteSelectedMedications
-     */
-    const {userMedications} = useContext(MedicationContext);
+
     const {loadingBar, putDeleteSelectedMedications} = useContext(ApiContext);
-    const {usersPeople} = useContext(UserContext);
+    const {userMedications} = useContext(MedicationContext);
 
     const [isInDeleteMode, setIsInDeleteMode] = useState(false);
 
@@ -45,7 +39,7 @@ const DisplayMedicationList = () => {
         medicationId: "",
         userId: "",
         prescriptionName: "",
-        medicationOwner: {name:"",color:""},
+        medicationOwner: {name:"",color:"secondary"},
         prescriptionDosage: 0,
         nextFillDay: new Date(),
         inDefinite: true,
@@ -71,20 +65,68 @@ const DisplayMedicationList = () => {
             }
         ]
     });
+    const [openMedication, setOpenMedication] = useState(false);
+    const [editMedication, setEditMedication] = useState(false);
 
-
-    const getColor = (name: string) => {
-        for (let person of usersPeople) {
-            if (person.name == name) {
-                return person.color
-            }
-        }
-        return "secondary"
-    }
+    useEffect(()=>{
+        console.log(selectedMedication)
+    },[selectedMedication])
 
     //region ReactFunctions
 
+    /**
+     * Renders a single medication item in the Medications list
+     * @param medication
+     * @param index
+     * @constructor
+     */
+    const SingleMedication = (medication: IMedicationBase, index: number) => {
+
+        medication = {...medication}
+
+        return (
+            <>
+                <Paper>
+                    <Card variant={"outlined"}>
+                        <CardContent>
+                            <Box sx={{display: "flex"} }>
+                                <Box sx={{maxWidth: "75%"}}>
+                                    <Typography component={"span"} key={Math.random()}>
+                                        {medication.prescriptionName + " | "}
+                                    </Typography>
+                                    <br/>
+                                    <Chip label={medication.medicationOwner.name}
+                                          sx={{backgroundColor: medication.medicationOwner.color}}/>
+                                </Box>
+                                <Box key={Math.random()} sx={{alignContent: "right"}}>
+
+                                    <ButtonGroup orientation={"vertical"}>
+                                        <Button variant={"contained"} onClick={() => {
+                                            setSelectedMedication({...medication})
+                                            setOpenMedication(true)
+                                        }}>Open</Button>
+                                        <Button key={Math.random()} variant={"contained"} onClick={() => {
+                                            setSelectedMedication({...medication})
+                                            setEditMedication(true)
+                                        }}>Edit</Button>
+                                    </ButtonGroup>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Paper>
+
+
+            </>)
+    }
+
+    /**
+     * Creates the grid of medications and the logic for deleting medications
+     * TODO FINISH LOGIC SO THAT YOU CAN ACTUALLY DELETE MEDICATIONS
+     * @constructor
+     */
     const MedicationList = () => {
+
         return (
             <>
                 {isInDeleteMode ? <ButtonGroup fullWidth>
@@ -95,7 +137,7 @@ const DisplayMedicationList = () => {
                     : <Button variant={"contained"} onClick={() => setIsInDeleteMode(true)}>Delete
                         Medications</Button>}
 
-                <Box sx={{flexGrow: 1}}>
+                <Box sx={{flexGrow: 1}} key={Math.random()}>
                     <Grid container spacing={2} sx={{padding: "1vh"}}>
                         {userMedications.map((medication: IMedicationBase, index: number) => {
                             return <>
@@ -108,92 +150,62 @@ const DisplayMedicationList = () => {
                                             {SingleMedication(medication, index)}
                                         </Grid>
                                     </Grid>
-
                                 </Grid>
                             </>
                         })}
                     </Grid>
                 </Box>
+                <MedicationDialog
+                    isOpen={editMedication}
+                    isNewMedication={false}
+                    medication={selectedMedication}
+                    closeDialog={() => setEditMedication(false)}/>
             </>
+
         )
     }
 
 
 
-    const SingleMedication = (medication: IMedicationBase, index: number) => {
-        const [openMedication, setOpenMedication] = useState(false);
-        const [editMedication, setEditMedication] = useState(false);
-        console.log("----------------")
-        console.log(medication)
-        console.log("----------------")
-        return (
-            <>
-                <Paper>
-                    <Card variant={"outlined"}>
-                        <CardContent>
-                            <Box sx={{display: "flex"}}>
-                                <Box sx={{maxWidth: "75%"}}>
-                                    <Typography component={"span"}>
-                                        {medication.prescriptionName + " | "}
-                                    </Typography>
-                                    <br/>
-                                    <Chip label={medication.medicationOwner.name}
-                                          sx={{backgroundColor: medication.medicationOwner.color}}/>
-                                </Box>
-                                <Box sx={{alignContent: "right"}}>
 
-                                    <ButtonGroup orientation={"vertical"}>
-                                        <Button variant={"contained"} onClick={() => {
-                                            setSelectedMedication(medication)
-                                            setOpenMedication(true)
-                                        }}>Open</Button>
-                                        <Button variant={"contained"} onClick={() => {
-                                            setSelectedMedication(medication)
-                                            setEditMedication(true)
-                                        }}>Edit</Button>
-                                    </ButtonGroup>
-                                </Box>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Paper>
-                <MedicationDialog
-                    isOpen={editMedication}
-                    isNewMedication={false}
-                    medication={userMedications[index]}
-                    closeDialog={() => setEditMedication(false)}/>
-                <Dialog
-                    open={openMedication}
-                    onBackdropClick={()=>setOpenMedication(false)}
-                >
-                    <DialogTitle>{medication.prescriptionName}</DialogTitle>
-                    <Chip label={medication.medicationOwner.name}
-                          sx={{backgroundColor: medication.medicationOwner.color}}/>
-                    <DialogContent>
-                        {"Bottle dosage: " + medication.prescriptionDosage}<br/>
-                        {"Next Refill Date: " + medication.nextFillDay}<br/>
-                        {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAStop taking this medication: " + medication.prescriptionName}<br/>
-                        {"Notes: " + medication.prescriptionName}<br/>
-                        {medication.dosages.map(dose=>{
-                            return(
-                                <>
-                                    {"Take " + dose.amount + " at " + dose.time}
-                                </>
-                            )
-                        })}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant={"contained"} fullWidth onClick={()=>setOpenMedication(false)}>Close</Button>
-                    </DialogActions>
-                </Dialog>
-            </>)
-    }
+
+
 
     //endregion
 
     return (
         <>
             {loadingBar ? <Skeleton/> : MedicationList()}
+
+            <Dialog
+                open={openMedication}
+                onBackdropClick={()=>setOpenMedication(false)}
+            >
+                <DialogTitle>{selectedMedication.prescriptionName}</DialogTitle>
+                <Chip label={selectedMedication.medicationOwner.name}
+                      sx={{backgroundColor: selectedMedication.medicationOwner.color}}/>
+
+
+
+
+                <DialogContent>
+                    {"Bottle dosage: " + selectedMedication.prescriptionDosage}<br/>
+                    {"Next Refill Date: " + selectedMedication.nextFillDay}<br/>
+                    {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAStop taking this medication: " + selectedMedication.prescriptionName}<br/>
+                    {"Notes: " + selectedMedication.prescriptionName}<br/>
+                    {selectedMedication.dosages.map(dose=>{
+                        return(
+                            <>
+                                {"Take " + dose.amount + " at " + dose.time}
+                            </>
+                        )
+                    })}
+                </DialogContent>
+                <DialogActions>
+                    <Button variant={"contained"} fullWidth onClick={()=>setOpenMedication(false)}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
 
         </>
     );

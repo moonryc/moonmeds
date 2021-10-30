@@ -10,17 +10,14 @@ import removeFutureMedicationDosages from "../medicationDosages/removeFutureMedi
  * @param res - the post res
  * @constructor
  */
-const updateMedication = (req:any, res:any) => {
+const updateMedication = async (req:any, res:any) => {
 
-    MedicationModel.findOneAndUpdate(req.body.medicationId, req.body, {new: true}, (err, doc) => {
-        if (err) {
-            throw err
-        } else {
-            removeFutureMedicationDosages(req, req.body.medicationId)
-            createDosages(req.body, true)
-        }
-    })
-
+    let updateModel = await MedicationModel.findOneAndUpdate({medicationId:req.body.medicationId}, req.body, {new: true})
+    console.log(updateModel)
+    if(updateModel){
+        removeFutureMedicationDosages(req, req.body.medicationId)
+        createDosages(req.body, true)
+    }
 
 }
 

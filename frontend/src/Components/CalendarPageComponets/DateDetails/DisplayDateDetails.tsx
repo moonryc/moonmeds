@@ -14,7 +14,12 @@ interface IDisplayDateDetailsProp {
     selectedDate: ICalendarDay
 }
 
-
+/**
+ * This component displays medications that need to be taken, have been taken,
+ * missed medications, and upcoming refills for a specified day
+ * @param props
+ * @constructor
+ */
 const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
 
     const date = useMemo(() => toDate(props.selectedDate.date).toDateString(), [props.selectedDate.date])
@@ -24,7 +29,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
 
 
     return (
-        <Box sx={{height: '74vh', overflow: 'auto', padding: '3vh'}}>
+        <Box key={Math.random()} sx={{height: '74vh', overflow: 'auto', padding: '3vh'}}>
             <Typography variant={'h4'} sx={{...titleStyle, ...centeredTextStyle}}> Date Details</Typography>
             <Typography variant={'h5'}>
                 {date.toString()}
@@ -43,14 +48,14 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
                         {selectedDayDetails.map(medicationDosage => {
                                 return medicationDosage.hasBeenTaken ?
                                     <>
-                                        <Box sx={{
+                                        <Box key={Math.random()} sx={{
                                             bgcolor: "green",
                                             width: "100%",
                                             height: 60,
                                             borderRadius: 2,
                                             position: 'relative'
                                         }}>
-                                            <Typography sx={{
+                                            <Typography key={Math.random()} sx={{
                                                 marginLeft: '1vh',
                                                 fontSize: '20px',
                                                 top: '22.5%',
@@ -87,7 +92,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
                         {selectedDayDetails.map(medicationDosage => {
                                 return !medicationDosage.hasBeenTaken && !medicationDosage.hasBeenMissed ?
                                     <>
-                                        <Box sx={{
+                                        <Box key={Math.random()} sx={{
                                             bgcolor: "orange",
                                             width: "100%",
                                             height: 60,
@@ -132,7 +137,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
                         {selectedDayDetails.map(medicationDosage => {
                                 return medicationDosage.hasBeenMissed && !medicationDosage.hasBeenTaken ?
                                     <>
-                                        <Box sx={{
+                                        <Box key={Math.random()} sx={{
                                             bgcolor: "red",
                                             width: "100%",
                                             height: 60,
@@ -177,7 +182,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp,) => {
                                 const numberOfDaysBeforeRefill = differenceInDays(new Date(medicationDosage.nextFillDay), new Date(medicationDosage.timeToTake));
                                 return (<>
                                     {numberOfDaysBeforeRefill <= 7 ? <>
-                                        <Box sx={{
+                                        <Box key={Math.random()} sx={{
                                             bgcolor: "blue",
                                             width: "100%",
                                             height: 60,
