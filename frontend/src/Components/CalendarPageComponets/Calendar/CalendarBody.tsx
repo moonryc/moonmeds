@@ -58,7 +58,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
         setArrayOfMonthDays(tempArray)
         console.log(arrayOfMonthDays)
         console.log(firstDay)
-    }, [firstDay]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [firstDay,props.numberOfDaysInMonth]);// eslint-disable-line react-hooks/exhaustive-deps
     return (
         <Box >
             <br/>
