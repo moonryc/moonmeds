@@ -103,11 +103,12 @@ const MedicationDialog = (props: IMedicationDialog) => {
   };
 
   const getMedicationOwner = useCallback((name: string, color: string) => {
-    let temp = { ...medicationObject };
-    temp.medicationOwner.name = name;
-    temp.medicationOwner.color = color;
-    setMedicationObject(temp);
-  }, [medicationObject])
+    setMedicationObject(temp => {
+      temp.medicationOwner.name = name;
+      temp.medicationOwner.color = color;
+      return { ...temp };
+    });
+  }, [])
 
   return (
     <>
