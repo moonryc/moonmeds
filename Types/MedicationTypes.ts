@@ -7,17 +7,17 @@
  * @property dosages: IDosagesDetails[],
  * @property userNotes: string,
  */
-import {IPersonNameAndColor} from "./UserTypes";
+import { IPersonNameAndColor } from "./UserTypes";
 
 export interface IMedicationBase {
-    userId:string
-    inDefinite:boolean
-    medicationId:string
+    userId: string
+    inDefinite: boolean
+    medicationId: string
     prescriptionName: string,
-    medicationOwner:IPersonNameAndColor,
+    medicationOwner: IPersonNameAndColor,
     prescriptionDosage: number,
     nextFillDay: Date,
-    endDate:Date,
+    endDate: Date,
     dosages: IDosagesDetails[],
     userNotes: string,
 }
@@ -34,7 +34,7 @@ export interface IMedicationBase {
  @property customWeekDays: IWeekdays
  */
 export interface IDosagesDetails {
-    amount:number,
+    amount: number,
     time: Date,
     isDaily: boolean,
     isWeekly: boolean,

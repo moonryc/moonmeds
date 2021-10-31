@@ -1,4 +1,3 @@
-import {Document, Model, model, Types, Schema, Query} from "mongoose"
 
 /**
  * User
@@ -8,14 +7,14 @@ import {Document, Model, model, Types, Schema, Query} from "mongoose"
  * @property people - array of strings
  */
 export interface IUser {
-    userName:string
-    hash:string,
-    emailAddress:string,
+    userName: string
+    hash: string,
+    emailAddress: string,
     persons: IPersonNameAndColor[]
 }
 
 export interface IPersonNameAndColor {
-    name:string
-    color:string
+    name: string
+    color: string
 }
 

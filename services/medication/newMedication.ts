@@ -1,8 +1,6 @@
+import { Types } from "mongoose";
 import MedicationModel from "../../Schemas/MedicationSchema";
-import * as mongoose from "mongoose";
 import createDosages from "../medicationDosages/createDosages";
-import {Types} from "mongoose";
-
 
 /**
  * creates a new medication if the medication is not a duplicate
@@ -10,24 +8,24 @@ import {Types} from "mongoose";
  * @param res - then post response
  * @constructor
  */
-const createNewMedication = async (req:any, res:any) => {
+const createNewMedication = async (req: any, res: any) => {
     //dont create a new medication if it is a duplicate
     await MedicationModel.exists({
         userId: req.user._id,
         prescriptionName: req.body.prescriptionName,
         prescriptionOwner: req.body.prescriptionOwner
-    },(err,doc)=>{
-        if(err){
+    }, (err, doc) => {
+        if (err) {
             throw err
         }
-        if(doc){
+        if (doc) {
             throw "Medication already exists"
-        }else{
+        } else {
             req.body.medicationId = new Types.ObjectId()
             req.body.userId = req.user._id
             const newMedication = new MedicationModel(req.body)
             newMedication.save()
-                .catch((error:any) => {
+                .catch((error: any) => {
                     throw error
                 })
             createDosages(req.body, true)

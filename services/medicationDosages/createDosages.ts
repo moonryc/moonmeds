@@ -1,11 +1,10 @@
-import {IMedicationBase} from "../../Types/MedicationTypes";
-import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
-import * as mongoose from "mongoose"
-import CreateWeeklyDosages from "./CreateWeeklyDosages";
-import CreateMonthlyDosages from "./CreateMonthlyDosages";
+import { getHours, getMinutes, setHours, setMinutes, startOfToday, startOfTomorrow } from "date-fns";
+import { Types } from "mongoose";
+import { IMedicationDosagesBase } from "../../Types/MedicationDosagesTypes";
+import { IMedicationBase } from "../../Types/MedicationTypes";
 import CreateDailyDosages from "./CreateDailyDosages";
-import {getHours, getMinutes, setHours, setMinutes, startOfToday, startOfTomorrow} from "date-fns";
-import {Types} from "mongoose";
+import CreateMonthlyDosages from "./CreateMonthlyDosages";
+import CreateWeeklyDosages from "./CreateWeeklyDosages";
 
 /**
  * Creates medication dosages for the medication that is passed
@@ -14,33 +13,20 @@ import {Types} from "mongoose";
  * @param todayAndTomorrow - true if updating or creating a new medication, false otherwise
  * @constructor
  */
-const createDosages = (medication:IMedicationBase,todayAndTomorrow:boolean) => {
+const createDosages = (medication: IMedicationBase, todayAndTomorrow: boolean) => {
 
     //loop through the dosages
-    for(let dose of medication.dosages){
+    for (let dose of medication.dosages) {
+
+        const { customWeekDays, time, ...rest } = dose;
 
         //creates a new dosage object
-        let newDosage:IMedicationDosagesBase = {
-            userId: medication.userId,
-            medicationId: medication.medicationId,
-            prescriptionName: medication.prescriptionName,
-            medicationOwner: medication.medicationOwner,
-            nextFillDay: medication.nextFillDay,
-            inDefinite: medication.inDefinite,
-            endDate: medication.endDate,
-            amount: dose.amount,
-            timeToTake: dose.time,
-            isDaily: dose.isDaily,
-            isWeekly: dose.isWeekly,
-            isOnceAMonth: dose.isOnceAMonth,
-            customOnceAMonthDate: dose.customOnceAMonthDate,
-            monday: dose.customWeekDays.monday,
-            tuesday: dose.customWeekDays.tuesday,
-            wednesday: dose.customWeekDays.wednesday,
-            thursday: dose.customWeekDays.thursday,
-            friday: dose.customWeekDays.friday,
-            saturday: dose.customWeekDays.saturday,
-            sunday: dose.customWeekDays.sunday,
+        let newDosage: IMedicationDosagesBase = {
+            ...rest,
+            ...medication,
+            ...customWeekDays,
+
+            timeToTake: time,
 
             //create
             dosageId: new Types.ObjectId().toString(),
@@ -72,16 +58,16 @@ const createDosages = (medication:IMedicationBase,todayAndTomorrow:boolean) => {
         //endregion
 
 
-        if(newDosage.isDaily){
-            CreateDailyDosages(newDosage,todayAndTomorrow,today,tomorrow)
+        if (newDosage.isDaily) {
+            CreateDailyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
-        else if(newDosage.isWeekly){
-            CreateWeeklyDosages(newDosage,todayAndTomorrow,today,tomorrow)
+        else if (newDosage.isWeekly) {
+            CreateWeeklyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
-        else if(newDosage.isOnceAMonth){
-            CreateMonthlyDosages(newDosage,todayAndTomorrow,today,tomorrow)
+        else if (newDosage.isOnceAMonth) {
+            CreateMonthlyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
-        else{
+        else {
             console.log("error")
         }
     }
