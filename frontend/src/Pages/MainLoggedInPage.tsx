@@ -33,41 +33,33 @@ const MainLoggedInPage = () => {
 
   const [tempNewMedication, setTempNewMedication] = useState<IMedicationBase>(makeMedication());
 
-  const newMedicationDialog = () => {
-    return (
-      <>
-        <MedicationDialog
-          isOpen={isMakingNewMedication}
-          isNewMedication={true}
-          medication={tempNewMedication}
-          closeDialog={(medicationObject: IMedicationBase) => {
-            setTempNewMedication({ ...medicationObject });
-            setIsMakingNewMedication(false);
-          }}
-        />
-      </>
-    );
-  };
-
-  const listOfMedicationDialog = () => {
-    return (
-      <>
-        <Dialog open={isListOfMedications} maxWidth={"xl"} fullWidth={true}>
-          <DialogTitle>Medications</DialogTitle>
-          <DisplayMedicationList />
-          <DialogActions>
-            <Button
-              variant={"contained"}
-              fullWidth
-              onClick={() => setIsListOfMedications(!isListOfMedications)}
-            >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  };
+  // const newMedicationDialog = () => {
+  //   return (
+  //     <>
+  //
+  //     </>
+  //   );
+  // };
+  //
+  // const listOfMedicationDialog = () => {
+  //   return (
+  //     <>
+  //       <Dialog open={isListOfMedications} maxWidth={"xl"} fullWidth={true}>
+  //         <DialogTitle>Medications</DialogTitle>
+  //
+  //         <DialogActions>
+  //           <Button
+  //             variant={"contained"}
+  //             fullWidth
+  //             onClick={() => setIsListOfMedications(!isListOfMedications)}
+  //           >
+  //             Close
+  //           </Button>
+  //         </DialogActions>
+  //       </Dialog>
+  //     </>
+  //   );
+  // };
 
   useEffect(() => {
     fetchMedicationsAndDosagesAndPersons();
@@ -77,8 +69,6 @@ const MainLoggedInPage = () => {
     <Box sx={flexWrapperStyle}>
       <AppbarTop />
       <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",,,'row'] }}>
-        {newMedicationDialog()}
-        {listOfMedicationDialog()}
         <Box sx={{height:'100%', width:['100%','100%','100%','450px'],  display: "flex", flexDirection: "column"}}>
         <Box sx={{width:'100%', height:'450px'}}>
           <Paper
@@ -130,6 +120,16 @@ const MainLoggedInPage = () => {
               </Box>
             </Card>
       </Box>
+      <DisplayMedicationList closeListOfMedications={()=>setIsListOfMedications(false)} isDialogOpen={isListOfMedications}/>
+      <MedicationDialog
+          isOpen={isMakingNewMedication}
+          isNewMedication={true}
+          medication={tempNewMedication}
+          closeDialog={(medicationObject: IMedicationBase) => {
+            setTempNewMedication({ ...medicationObject });
+            setIsMakingNewMedication(false);
+          }}
+      />
     </Box>
   );
 };

@@ -94,7 +94,7 @@ const CalendarBody:React.FC<ICalendarBodyProps> = ({numberOfDaysInMonth,firstDay
               {day.index !== 0 ? (
                 <CalendarDay
                   date={day.date}
-                />
+                 index={0} isRenderedOnHomePage={false}/>
               ) : (
                 <></>
               )}
