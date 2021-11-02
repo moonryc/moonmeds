@@ -2,14 +2,15 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
 import {
   Button, Collapse,
   DialogContentText,
-  Divider,
-  Paper,
+  Divider, FormControl, InputLabel, MenuItem,
+  Paper, Select,
   TextField
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IDosagesDetails } from "../../../../Types/MedicationTypes";
 import DatePickerForDialog from "./DatePickerForDialog";
 import TimePickerForDialog from "./TimePickerForDialog";
+import {makeDosageDetails} from "../../typeConstructors";
 
 /**
  * @property medication - IMedicationBase
@@ -18,7 +19,6 @@ import TimePickerForDialog from "./TimePickerForDialog";
  */
 export interface IMedicationCardAddDosagesProps {
   medicationDosages: IDosagesDetails[];
-  isNewCard: boolean;
   updateMedicationDosages(listOfDosages: IDosagesDetails[]): void;
 }
 
@@ -28,9 +28,9 @@ export interface IMedicationCardAddDosagesProps {
  * @param props - {medication: IMedicationBase, isNewCard:boolean,updateMedicationDosages(listOfDosages:IDosagesDetails[]):void}
  * @constructor
  */
-const MedicationDialogDosages = (props: IMedicationCardAddDosagesProps) => {
+const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medicationDosages,updateMedicationDosages}) => {
   const [dosages, setDosages] = useState<IDosagesDetails[]>(
-    props.medicationDosages
+    medicationDosages
   );
 
   /**
@@ -61,8 +61,9 @@ const MedicationDialogDosages = (props: IMedicationCardAddDosagesProps) => {
    * updates the medicationDetails property in MedicationCard component when the dosages changes
    */
   useEffect(() => {
-    props.updateMedicationDosages(dosages);
+    updateMedicationDosages(dosages);
   }, [dosages]); // eslint-disable-line react-hooks/exhaustive-deps
+  //TODO as Sara what she meant by the line above
 
   return (
     <>
@@ -72,7 +73,7 @@ const MedicationDialogDosages = (props: IMedicationCardAddDosagesProps) => {
         return (
           <>
             <TextField
-              fullWidth
+              sx={{width:"60%"}}
               variant={"outlined"}
               type={"number"}
               label={"Dosage"}
@@ -83,6 +84,30 @@ const MedicationDialogDosages = (props: IMedicationCardAddDosagesProps) => {
                 setDosages(tempArray);
               }}
             />
+
+            <FormControl sx={{width: "35%"}}>
+              <InputLabel id="demo-simple-select-label">Dosage Type</InputLabel>
+              <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={dose.amountDosageType}
+                  label="Dosage Type"
+                  onChange={(e) =>{
+                      let tempArray = [...dosages];
+                      tempArray[index].amountDosageType = e.target.value;
+                      setDosages(tempArray);
+                  }}
+              >
+                <MenuItem value={"Milligram"}>Milligram</MenuItem>
+                <MenuItem value={"Gram"}>Gram</MenuItem>
+                <MenuItem value={"Milliliter"}>Milliliter</MenuItem>
+                <MenuItem value={"Liter"}>Liter</MenuItem>
+                <MenuItem value={"Drop"}>Drop</MenuItem>
+                <MenuItem value={"Tablet"}>Tablet</MenuItem>
+
+
+              </Select>
+            </FormControl>
             <br />
             <br />
             <TimePickerForDialog getTime={getTime} index={index} />
@@ -257,24 +282,7 @@ const MedicationDialogDosages = (props: IMedicationCardAddDosagesProps) => {
       <Button
         onClick={() =>
           setDosages((prevState) => [
-            ...prevState,
-            {
-              amount: 0,
-              time: new Date(),
-              isDaily: false,
-              isWeekly: false,
-              isOnceAMonth: false,
-              customOnceAMonthDate: new Date(),
-              customWeekDays: {
-                monday: false,
-                tuesday: false,
-                wednesday: false,
-                thursday: false,
-                friday: false,
-                saturday: false,
-                sunday: false,
-              },
-            },
+            ...prevState, makeDosageDetails(),
           ])
         }
         size={"small"}

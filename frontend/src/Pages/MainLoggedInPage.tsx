@@ -33,52 +33,16 @@ const MainLoggedInPage = () => {
 
   const [tempNewMedication, setTempNewMedication] = useState<IMedicationBase>(makeMedication());
 
-  const newMedicationDialog = () => {
-    return (
-      <>
-        <MedicationDialog
-          isOpen={isMakingNewMedication}
-          isNewMedication={true}
-          medication={tempNewMedication}
-          closeDialog={(medicationObject: IMedicationBase) => {
-            setTempNewMedication({ ...medicationObject });
-            setIsMakingNewMedication(false);
-          }}
-        />
-      </>
-    );
-  };
 
-  const listOfMedicationDialog = () => {
-    return (
-      <>
-        <Dialog open={isListOfMedications} maxWidth={"xl"} fullWidth={true}>
-          <DialogTitle>Medications</DialogTitle>
-          <DisplayMedicationList />
-          <DialogActions>
-            <Button
-              variant={"contained"}
-              fullWidth
-              onClick={() => setIsListOfMedications(!isListOfMedications)}
-            >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  };
 
   useEffect(() => {
-    fetchMedicationsAndDosagesAndPersons();
+    fetchMedicationsAndDosagesAndPersons().then(r => r);
   }, [fetchMedicationsAndDosagesAndPersons]);
 
   return (
     <Box sx={flexWrapperStyle}>
       <AppbarTop />
       <Box sx={{ ...flex1ItemStyle, ...backgroundStyle }}>
-        {newMedicationDialog()}
-        {listOfMedicationDialog()}
         <Grid container spacing={2}>
           <Grid item xs={12} lg={6}>
             <Paper
@@ -127,7 +91,20 @@ const MainLoggedInPage = () => {
           </Grid>
         </Grid>
       </Box>
+      <MedicationDialog
+          isOpen={isMakingNewMedication}
+          isNewMedication={true}
+          medication={tempNewMedication}
+          closeDialog={(medicationObject: IMedicationBase) => {
+            setTempNewMedication({ ...medicationObject });
+            setIsMakingNewMedication(false);
+          }}
+      />
+      <DisplayMedicationList
+          isDialogOpen={isListOfMedications}
+          closeListOfMedications={()=>{setIsListOfMedications(false)} } />
     </Box>
+
   );
 };
 

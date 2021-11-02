@@ -21,6 +21,7 @@ const WeekdaysDefinition:ModelDefinition<IWeekdays>={
 const DosagesDefinition:ModelDefinition<IDosagesDetails>={
 
     amount: {type:Number,required:true},
+    amountDosageType: {type:String,required:true},
     time: {type:Date,required:true},
     isDaily: {type:Boolean,required:true},
     isWeekly: {type:Boolean,required:true},
@@ -43,6 +44,7 @@ const MedicationDefinition:ModelDefinition<IMedicationBase> = {
     prescriptionName: {type:String, required:true},
     medicationOwner: {type:PersonNameAndColorDefinition,required:true},
     prescriptionDosage: {type:Number, required:true},
+    prescriptionDosageType: {type:String,required:true},
     nextFillDay: {type:Date, required:true},
     dosages: [{type: DosagesDefinition, required:true}],
     userNotes:{type:String, required:true},

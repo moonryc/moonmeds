@@ -75,7 +75,7 @@ const DisplayCalendar = () => {
       </Grid>
       <CalendarBody
         numberOfDaysInMonth={numberOfDaysInSelectedMonth}
-        firstDay={dayOfTheWeekOfTheFirstOfTheMonth}
+        firstDayValue={dayOfTheWeekOfTheFirstOfTheMonth}
       />
     </Box>
   );
