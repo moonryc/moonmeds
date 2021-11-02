@@ -1,6 +1,6 @@
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { createTheme } from "@mui/material";
+import {createTheme, CssBaseline} from "@mui/material";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { createBrowserHistory } from "history";
 import React from "react";
@@ -15,7 +15,9 @@ import { UserContainer } from "./Context/UserContext";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
+
 const customHistory = createBrowserHistory();
+
 
 const theme = createTheme({
   palette: {
@@ -40,6 +42,7 @@ const theme = createTheme({
       disabled: "#fff",
       disabledBackground: "#fff",
     },
+
   },
   breakpoints: {
     values: {
@@ -50,6 +53,9 @@ const theme = createTheme({
       xl: 1536,
     },
   },
+    // '&::-webkit-scrollbar': {
+    //   width: '15px',
+    // }
 });
 
 ReactDOM.render(

@@ -9,21 +9,22 @@ interface ICalendarHeaderProps {
   month: Date;
 }
 
-const CalendarHeader:React.FC<ICalendarHeaderProps> = ({goBackAMonth,goForwardAMonth,month}) => {
+const CalendarHeader = (props: ICalendarHeaderProps) => {
   return (
     <Typography
       sx={{
+          width:'100%',
         ...centeredTextStyle,
-        textAlign: ["right", "right", "right", "center"],
-        fontSize: ["2vw"],
+        textAlign: ["right"],
+        fontSize: ['15px'],
       }}
     >
-      <IconButton onClick={() => goBackAMonth()}>
-        <ArrowBack sx={{ ...subTextStyle, fontSize: ["2vw"] }} />
+      <IconButton onClick={() => props.goBackAMonth()}>
+        <ArrowBack sx={{ ...subTextStyle, fontSize: ['15px'] }} />
       </IconButton>
-      <>{month.toDateString()}</>
-      <IconButton onClick={() => goForwardAMonth()}>
-        <ArrowForward sx={{ ...subTextStyle, fontSize: ["2vw"] }} />
+      <>{props.month.toDateString()}</>
+      <IconButton onClick={() => props.goForwardAMonth()}>
+        <ArrowForward sx={{ ...subTextStyle, fontSize: ['15px'] }} />
       </IconButton>
     </Typography>
   );
