@@ -33,8 +33,8 @@ const CalendarDay = (
   >(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
   const [calendarDayColor, setCalendarDayColor] = useState({
     bgcolor: "primary.main",
-    width: ["5vw", "5vw", "5vw", "55px"],
-    height: ["5vw", "5vw", "5vw", "55px"],
+    width: ['40px'],
+    height: ['40px'],
     color: "#000000",
     border: 0,
     borderRadius: "50%",
@@ -95,8 +95,8 @@ const CalendarDay = (
       setCalendarDayColor({
         bgcolor: "primary.main",
         border: 1,
-        width: ["5vw", "5vw", "5vw", "55px"],
-        height: ["5vw", "5vw", "5vw", "55px"],
+        width: ['40px'],
+        height: ['40px'],
         borderRadius: "50%",
         color: "text.primary",
         borderColor: "primary.light",
@@ -107,8 +107,8 @@ const CalendarDay = (
     if (isMissed) {
       setCalendarDayColor({
         bgcolor: "primary.main",
-        width: ["5vw", "5vw", "5vw", "55px"],
-        height: ["5vw", "5vw", "5vw", "55px"],
+        width: ['40px'],
+        height: ['40px'],
         color: "#ff0000",
         border: 0,
         borderRadius: "50%",
@@ -120,8 +120,8 @@ const CalendarDay = (
     if (isDayAFillday) {
       setCalendarDayColor({
         bgcolor: "primary.main",
-        width: ["5vw", "5vw", "5vw", "55px"],
-        height: ["5vw", "5vw", "5vw", "55px"],
+        width: ['40px'],
+        height: ['40px'],
         color: "#ffe800",
         border: 0,
         borderRadius: "50%",
@@ -132,8 +132,8 @@ const CalendarDay = (
 
     setCalendarDayColor({
       bgcolor: "primary.main",
-      width: ["5vw", "5vw", "5vw", "55px"],
-      height: ["5vw", "5vw", "5vw", "55px"],
+      width: ['40px'],
+      height: ['40px'],
       color: "text.primary",
       border: 0,
       borderRadius: "50%",
@@ -176,7 +176,7 @@ const CalendarDay = (
         sx={{
           ...calendarDayColor,
           ...isSelectedDay,
-          fontSize: ["3vw", undefined, undefined, "35px"],
+          fontSize: ['20px'],
         }}
         onClick={() => handleOnDayClick()}
       >

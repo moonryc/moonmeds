@@ -58,7 +58,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     console.log(firstDay);
   }, [firstDay, props.numberOfDaysInMonth]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <Box>
+    <Box sx={{ overflow:'visible'}}>
       <br />
       <Grid container spacing={1} columns={7}>
         <Grid item xs={1} sx={centeredTextStyle}>
@@ -86,7 +86,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
           (day) => (
             //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
             <Grid
-              sx={{ ...centeredTextStyle, height: ["6vh", undefined, undefined, "10vh"] }}
+              sx={{ ...centeredTextStyle, height: ['50px'],  }}
               item
               xs={1}
               key={arrayOfMonthDays.indexOf(day)}

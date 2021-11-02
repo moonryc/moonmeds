@@ -39,7 +39,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
   return (
     <Box
       key={Math.random()}
-      sx={{ height: "74vh", overflow: "auto", padding: "3vh" }}
+      sx={{ height: "77vh", overflow: "auto", padding: "3vh" }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
         {" "}

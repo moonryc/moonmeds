@@ -50,29 +50,29 @@ const DisplayCalendar = () => {
   }, [selectedDate]);
 
   return (
-    <Box sx={{ padding: "2.5vh", maxHeight: "90%" }}>
-      <Grid container>
-        <Grid sx={{ minWidth: "5px" }} item xs={6} lg={12}>
-          {" "}
+    <Box sx={{ padding: "2.5vh", overflow:'visible' }}>
+      <Box sx={{width:'100%',display:'flex'}}>
           <Typography
             sx={{
+              width:'30%',
               ...centeredTextStyle,
-              textAlign: ["left", "left", "left", "center"],
-              fontSize: ["2vw", "2vw", "2vw", "2vw"],
+              textAlign: ["left"],
+              fontSize: ['15px'],
             }}
           >
             Calendar
           </Typography>
-        </Grid>
 
-        <Grid sx={{ minWidth: "5px" }} item xs={6} lg={12}>
+
+      <Box sx={{width:'70%',}}>
           <CalendarHeader
             goForwardAMonth={goForwardAMonth}
             goBackAMonth={goBackAMonth}
             month={selectedDate}
           />
-        </Grid>
-      </Grid>
+      </Box>
+      </Box>
+
       <CalendarBody
         numberOfDaysInMonth={numberOfDaysInSelectedMonth}
         firstDay={dayOfTheWeekOfTheFirstOfTheMonth}

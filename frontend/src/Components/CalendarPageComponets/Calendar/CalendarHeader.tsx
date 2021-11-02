@@ -13,17 +13,18 @@ const CalendarHeader = (props: ICalendarHeaderProps) => {
   return (
     <Typography
       sx={{
+          width:'100%',
         ...centeredTextStyle,
-        textAlign: ["right", "right", "right", "center"],
-        fontSize: ["2vw"],
+        textAlign: ["right"],
+        fontSize: ['15px'],
       }}
     >
       <IconButton onClick={() => props.goBackAMonth()}>
-        <ArrowBack sx={{ ...subTextStyle, fontSize: ["2vw"] }} />
+        <ArrowBack sx={{ ...subTextStyle, fontSize: ['15px'] }} />
       </IconButton>
       <>{props.month.toDateString()}</>
       <IconButton onClick={() => props.goForwardAMonth()}>
-        <ArrowForward sx={{ ...subTextStyle, fontSize: ["2vw"] }} />
+        <ArrowForward sx={{ ...subTextStyle, fontSize: ['15px'] }} />
       </IconButton>
     </Typography>
   );
