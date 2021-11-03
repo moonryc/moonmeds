@@ -66,9 +66,9 @@ const MainLoggedInPage = () => {
   }, [fetchMedicationsAndDosagesAndPersons]);
 
   return (
-    <Box sx={flexWrapperStyle}>
+    <Box sx={flexWrapperStyle} key={1}>
       <AppbarTop />
-      <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",,,'row'] }}>
+      <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",undefined,undefined,'row'] }}>
         <Box sx={{height:'100%', width:['100%','100%','100%','450px'],  display: "flex", flexDirection: "column"}}>
         <Box sx={{width:'100%', height:'450px'}}>
           <Paper

@@ -15,6 +15,9 @@ function App() {
   const { loggedIn, setLoggedIn } = useContext<any>(UserContext);
   const { checkIfJWTTokenIsValid } = useContext<any>(ApiContext);
 
+    /**
+     * Checks if the user is logged in and if the JWT token is still valid.
+     */
   const checkIfUserIsLoggedIn = useCallback(
       () => {
         if (reactLocalStorage.get("JWTToken") != null) {
@@ -30,15 +33,12 @@ function App() {
 
 
   /**
-   * Travis so help me god if you remove the [] on this useEffect
-   * for real though the empty array is needed because this makes it only render on the initial webpage load
-   * otheriwse it will run over and over and over causing issues
+   * This effect is used to check if the user is logged in.
    */
   useEffect(() => {
     checkIfUserIsLoggedIn();
   }, [checkIfUserIsLoggedIn]);
-  //TODO sara this doesnt work
-  //Travis see comment above
+
 
   return (
     <div>

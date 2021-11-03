@@ -13,7 +13,7 @@ import {
     Paper, Select,
     TextField
 } from "@mui/material";
-import React, {useCallback, useContext, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {
     IDosagesDetails,
     IMedicationBase
@@ -23,8 +23,6 @@ import {makeMedication} from "../../typeConstructors";
 import DatePickerForDialog from "./DatePickerForDialog";
 import MedicationCardOwner from "./MedicationCardOwner";
 import MedicationDialogDosages from "./MedicationDialogDosages";
-
-
 
 
 /**
@@ -50,10 +48,17 @@ interface IMedicationDialog {
 const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication, medication, closeDialog}) => {
     let medicationTemplate = makeMedication()
 
-    const {putNewMedication, putUpdateExistingMedication} =
-        useContext(ApiContext);
+    const {putNewMedication, putUpdateExistingMedication} = useContext(ApiContext);
 
     const [medicationObject, setMedicationObject] = useState(medication);
+    const [errorDontSubmit, setErrorDontSubmit] = useState(false);
+
+
+    useEffect(() => {
+        setMedicationObject({...medication})
+    }, [medication]);
+
+
 
     /**
      * A callback function to update medication dosages
@@ -111,6 +116,49 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
         });
     }, [])
 
+
+    /**
+     * prevents you from submitting a medication with empty fields
+     */
+    useEffect(() => {
+        if(medicationObject.prescriptionName === ""){
+            return setErrorDontSubmit(true);
+        }
+        else if(medicationObject.medicationOwner.name === ""){
+            return setErrorDontSubmit(true)
+        }
+        else if(medicationObject.nextFillDay === undefined){
+            return setErrorDontSubmit(true)
+        }
+        else if(!medicationObject.inDefinite && medicationObject.endDate === undefined){
+            return setErrorDontSubmit(true)
+        }
+
+
+        for(let dose of medicationObject.dosages){
+            if(dose.amountDosageType === "") {
+                return setErrorDontSubmit(true)
+            }else if(dose.time === undefined){
+                return setErrorDontSubmit(true)
+            }
+            if(dose.isWeekly){
+                let numberOfTrueDays = 0;
+                for(const [day,value] of Object.entries(dose.customWeekDays)){
+                    if(value === true){
+                        numberOfTrueDays++;
+                    }
+                }
+                if (numberOfTrueDays === 0) {
+                    return setErrorDontSubmit(true)
+                }
+            }
+        }
+
+        return setErrorDontSubmit(false)
+
+    }, [medicationObject]);
+    
+
     return (
         <>
             <Dialog
@@ -118,12 +166,11 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                 onBackdropClick={() => closeDialog(medicationObject)}
             >
                 <DialogTitle sx={{textAlign: "center"}}>
-                    {" "}
                     {isNewMedication ? (
                         <>New Medication</>
                     ) : (
                         <>{medication.prescriptionName}</>
-                    )}{" "}
+                    )}
                 </DialogTitle>
 
                 <DialogContent>
@@ -153,46 +200,46 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                     <br/>
 
 
-                            <TextField
-                                sx={{width: "60%"}}
-                                variant={"outlined"}
-                                label={"Dosage"}
-                                placeholder={"Dosage"}
-                                type={"number"}
-                                value={medicationObject.prescriptionDosage}
-                                onChange={(e) =>
-                                    setMedicationObject((prevState) => ({
-                                        ...prevState,
-                                        prescriptionDosage: parseFloat(e.target.value),
-                                    }))
-                                }
-                            />
+                    <TextField
+                        sx={{width: "60%"}}
+                        variant={"outlined"}
+                        label={"Dosage"}
+                        placeholder={"Dosage"}
+                        type={"number"}
+                        value={medicationObject.prescriptionDosage}
+                        onChange={(e) =>
+                            setMedicationObject((prevState) => ({
+                                ...prevState,
+                                prescriptionDosage: parseFloat(e.target.value),
+                            }))
+                        }
+                    />
 
 
-                            <FormControl sx={{width: "35%"}}>
-                                <InputLabel id="demo-simple-select-label">Dosage Type</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={medicationObject.prescriptionDosageType}
-                                    label="Dosage Type"
-                                    onChange={(e) =>
-                                        setMedicationObject((prevState) => ({
-                                            ...prevState,
-                                            prescriptionDosageType: e.target.value,
-                                        }))
-                                    }
-                                >
-                                    <MenuItem value={"Milligram"}>Milligram</MenuItem>
-                                    <MenuItem value={"Gram"}>Gram</MenuItem>
-                                    <MenuItem value={"Milliliter"}>Milliliter</MenuItem>
-                                    <MenuItem value={"Liter"}>Liter</MenuItem>
-                                    <MenuItem value={"Drop"}>Drop</MenuItem>
-                                    <MenuItem value={"Tablet"}>Tablet</MenuItem>
+                    <FormControl sx={{width: "35%"}}>
+                        <InputLabel id="demo-simple-select-label">Dosage Type</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={medicationObject.prescriptionDosageType}
+                            label="Dosage Type"
+                            onChange={(e) =>
+                                setMedicationObject((prevState) => ({
+                                    ...prevState,
+                                    prescriptionDosageType: e.target.value,
+                                }))
+                            }
+                        >
+                            <MenuItem value={"Milligram"}>Milligram</MenuItem>
+                            <MenuItem value={"Gram"}>Gram</MenuItem>
+                            <MenuItem value={"Milliliter"}>Milliliter</MenuItem>
+                            <MenuItem value={"Liter"}>Liter</MenuItem>
+                            <MenuItem value={"Drop"}>Drop</MenuItem>
+                            <MenuItem value={"Tablet"}>Tablet</MenuItem>
 
 
-                                </Select>
-                            </FormControl>
+                        </Select>
+                    </FormControl>
 
 
                     <br/>
@@ -210,7 +257,7 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                         index={0}
                         getRefillDate={getRefillDate}
                         isRefill={true}
-                    />
+                     datePassed={medicationObject.nextFillDay}/>
                     <br/>
                     <br/>
 
@@ -228,7 +275,6 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                                     }))
                                 }
                             >
-                                {" "}
                                 Never
                             </ToggleButton>
                             {/*disabled={!medicationObject.inDefinite}*/}
@@ -261,7 +307,7 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                             getRefillDate={() => {
                             }}
                             isRefill={false}
-                        />
+                         datePassed={medicationObject.endDate}/>
                         {/* TODO: don't use break elements, use styles instead */}
                         <br/>
                         <br/>
@@ -297,11 +343,11 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                 <DialogActions>
                     <ButtonGroup fullWidth>
                         {isNewMedication ? (
-                            <Button variant={"contained"} onClick={() => submitMedication()}>
+                            <Button disabled={errorDontSubmit} variant={"contained"} onClick={() => submitMedication()}>
                                 Create Medication
                             </Button>
                         ) : (
-                            <Button variant={"contained"} onClick={() => updateMedication()}>
+                            <Button disabled={errorDontSubmit} variant={"contained"} onClick={() => updateMedication()}>
                                 Update Medication
                             </Button>
                         )}

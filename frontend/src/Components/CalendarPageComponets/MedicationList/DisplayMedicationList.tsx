@@ -2,27 +2,32 @@ import {
     Box,
     Button,
     ButtonGroup,
-    CardContent, Checkbox,
+    CardContent,
+    Checkbox,
     Chip,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
-    Paper, Skeleton, Typography
+    Paper,
+    Skeleton,
+    Typography
 } from "@mui/material";
 import Card from "@mui/material/Card";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {ApiContext} from "../../../Context/ApiContext";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import MedicationDialog from "../../MedicationDialog/MedicationDialog";
 import {makeMedication} from "../../../typeConstructors";
+import MedicationOverViewDialog from "../DateDetails/MedicationOverViewDialog";
 
 
 interface IDisplayMedicationList {
-    isDialogOpen:boolean,
-    closeListOfMedications():void,
+    isDialogOpen: boolean,
+
+    closeListOfMedications(): void,
 }
 
 
@@ -30,7 +35,7 @@ interface IDisplayMedicationList {
  * This component handels all logic for rendering the list of medications associated with the users account
  * @constructor
  */
-const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,closeListOfMedications}) => {
+const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, closeListOfMedications}) => {
     const {loadingBar, putDeleteSelectedMedications} = useContext(ApiContext);
     const {userMedications} = useContext(MedicationContext);
 
@@ -46,83 +51,79 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
 
     //region ReactFunctions
 
-    interface ISingleMedicationProps{
-        medication:IMedicationBase,
-        index:number,
+    interface ISingleMedicationProps {
+        medication: IMedicationBase,
+        index: number,
+
+        getSetSelectedMedication(medication: IMedicationBase): void
     }
 
     /**
      * Renders a single medication item in the Medications list
      * @param medication
      * @param index
+     * @param setSelectedMedication
      * @constructor
      */
-    const SingleMedication:React.FC<ISingleMedicationProps> = ({medication,index}) => {
+    const SingleMedication: React.FC<ISingleMedicationProps> = ({medication, index, getSetSelectedMedication}) => {
         medication = {...medication};
 
         return (
             <>
-                <Paper key={Math.random()}>
-                    <Card sx={{minWidth: "100%"}} variant={"outlined"} key={Math.random()}>
-                        <CardContent key={Math.random()}>
-                            <Box sx={{display: "flex"}} key={Math.random()}>
-                                <Box sx={{maxWidth: "100%"}} key={Math.random()}>
-                                    <Typography component={"span"} key={Math.random()}>
-                                        {medication.prescriptionName + " | "}
-                                    </Typography>
-                                    <br/>
-                                    <Chip key={Math.random()}
-                                        label={medication.medicationOwner.name}
-                                        sx={{backgroundColor: medication.medicationOwner.color}}
-                                    />
-                                </Box>
-                                <Box key={Math.random()} sx={{alignContent: "right"}}>
-                                    <ButtonGroup orientation={"vertical"} key={Math.random()}>
-                                        <Button
-                                            key={Math.random()}
-                                            variant={"contained"}
-                                            onClick={() => {
-                                                setSelectedMedication({...medication});
-                                                setOpenMedication(true);
-                                            }}
-                                        >
-                                            Open
-                                        </Button>
-                                        <Button
-                                            key={Math.random()}
-                                            variant={"contained"}
-                                            onClick={() => {
-                                                setSelectedMedication({...medication});
-                                                setEditMedication(true);
-                                                console.log({...medication})
-                                            }}
-                                        >
-                                            Edit
-                                        </Button>
-                                    </ButtonGroup>
-                                </Box>
+                <Card sx={{minWidth: "100%"}} variant={"outlined"} key={Math.random()}>
+                    <CardContent key={Math.random()}>
+                        <Box sx={{display: "flex"}} key={Math.random()}>
+                            <Box sx={{maxWidth: "100%"}} key={Math.random()}>
+                                <Typography component={"span"} key={Math.random()}>
+                                    {medication.prescriptionName + " | "}
+                                </Typography>
+                                <br/>
+                                <Chip key={Math.random()}
+                                      label={medication.medicationOwner.name}
+                                      sx={{backgroundColor: medication.medicationOwner.color}}
+                                />
                             </Box>
-                        </CardContent>
-                    </Card>
-                </Paper>
+                            <Box sx={{alignContent: "right"}}>
+                                <ButtonGroup orientation={"vertical"} key={Math.random()}>
+                                    <Button
+                                        variant={"contained"}
+                                        onClick={() => {
+                                            getSetSelectedMedication({...medication});
+                                            setOpenMedication(true);
+                                        }}
+                                    >
+                                        Open
+                                    </Button>
+                                    <Button
+                                        variant={"contained"}
+                                        onClick={() => {
+                                            getSetSelectedMedication({...medication});
+                                            setEditMedication(true);
+                                            console.log({...medication})
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                </ButtonGroup>
+                            </Box>
+                        </Box>
+                    </CardContent>
+                </Card>
+
+
             </>
         );
     };
 
-    const deleteSelectedMedicationsKeepHistory = () => {
-      putDeleteSelectedMedications(medicationIdDeleteArray, false).then(r=>r);
-    }
-
-    const deleteSelectedMedicationsEraseHistory = () => {
-        putDeleteSelectedMedications(medicationIdDeleteArray, true).then(r=>r);
+    interface IMedicationList {
+        getSetSelectedMedication(medication: IMedicationBase): void
     }
 
     /**
      * Creates the grid of medications and the logic for deleting medications
-     * TODO FINISH LOGIC SO THAT YOU CAN ACTUALLY DELETE MEDICATIONS
      * @constructor
      */
-    const MedicationList = () => {
+    const MedicationList: React.FC<IMedicationList> = ({getSetSelectedMedication}) => {
         return (
             <>
                 {isInDeleteMode ? (
@@ -133,10 +134,10 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
                             >
                                 Cancel
                             </Button>
-                            <Button variant={"contained"} onClick={()=>deleteSelectedMedicationsEraseHistory()}>
+                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsEraseHistory()}>
                                 Delete Medications and Medication history
                             </Button>
-                            <Button variant={"contained"} onClick={()=>deleteSelectedMedicationsKeepHistory()}>
+                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsKeepHistory()}>
                                 Delete Medications and keep Medication history
                             </Button>
                         </ButtonGroup>) :
@@ -149,11 +150,11 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
                     (medication: IMedicationBase, index: number) => {
                         return (
 
-                            <Grid key={Math.random()}>
+                            <Box key={"Grid" + index}>
                                 <Grid container spacing={1} key={Math.random()}>
                                     {isInDeleteMode ? (
-                                        <Grid item key={Math.random()}>
-                                            <Checkbox key={Math.random()} onChange={()=>{
+                                        <><Grid item xs={1} key={Math.random()}>
+                                            <Checkbox onChange={() => {
                                                 setMedicationIdDeleteArray(prevState => {
                                                     if (prevState.includes(medication.medicationId)) {
                                                         return prevState.filter(id => id !== medication.medicationId);
@@ -163,14 +164,24 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
                                                 })
                                             }}/>
                                         </Grid>
+                                            <Grid item xs={10} key={Math.random()}>
+                                                <SingleMedication
+                                                    index={index} medication={medication}
+                                                    getSetSelectedMedication={getSetSelectedMedication}/>
+                                            </Grid></>
                                     ) : (
-                                        <div key={Math.random()}></div>
+                                        <>
+                                            {/*TODO: SPOTEXX CENTER THIS*/}
+                                            <Grid item xs={11}>
+                                                <SingleMedication
+                                                    index={index} medication={medication}
+                                                    getSetSelectedMedication={getSetSelectedMedication}/>
+                                            </Grid>
+                                        </>
+
                                     )}
-                                    <Grid item key={Math.random()}>
-                                        <SingleMedication index={index} medication={medication}/>
-                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            </Box>
                         );
                     }
                 )}
@@ -183,43 +194,20 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
     //endregion
 
 
-    const MedicationOverViewDialog = () => {
-        return (
-            <Dialog
-            open={openMedication}
-            onBackdropClick={() => setOpenMedication(false)}
-        >
-            <DialogTitle>{selectedMedication.prescriptionName}</DialogTitle>
-            <Chip
-                label={selectedMedication.medicationOwner.name}
-                sx={{backgroundColor: selectedMedication.medicationOwner.color}}
-            />
-
-            <DialogContent>
-                {"Bottle dosage: " + selectedMedication.prescriptionDosage}
-                <br/>
-                {"Next Refill Date: " + selectedMedication.nextFillDay}
-                <br/>
-                {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAStop taking this medication: " +
-                selectedMedication.prescriptionName}
-                <br/>
-                {"Notes: " + selectedMedication.prescriptionName}
-                <br/>
-                {selectedMedication.dosages.map((dose) => {
-                    return <>{"Take " + dose.amount + " at " + dose.time}</>;
-                })}
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    variant={"contained"}
-                    fullWidth
-                    onClick={() => setOpenMedication(false)}
-                >
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>)
+    const deleteSelectedMedicationsKeepHistory = () => {
+        putDeleteSelectedMedications(medicationIdDeleteArray, false).then(r => r);
     }
+
+    const deleteSelectedMedicationsEraseHistory = () => {
+        putDeleteSelectedMedications(medicationIdDeleteArray, true).then(r => r);
+    }
+
+    const setCloseOverViewDialog= useCallback((value:boolean) => {
+            setOpenMedication(value);
+        },
+        [],
+    );
+
 
 
     return (
@@ -227,21 +215,40 @@ const DisplayMedicationList:React.FC<IDisplayMedicationList> = ({isDialogOpen,cl
             {/*List of Medications Dialog*/}
             <Dialog open={isDialogOpen} maxWidth={"xs"} fullWidth>
                 <DialogTitle>Medications</DialogTitle>
-                {loadingBar ? <Skeleton/> : <MedicationList/>}
+                {loadingBar ?
+                    <>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                        <Skeleton/>
+                    </> :
+                    <MedicationList getSetSelectedMedication={(medication: IMedicationBase) => {
+                        setSelectedMedication(medication)
+                    }}/>}
                 <DialogActions>
-                        <Button
-                            variant={"contained"}
-                            fullWidth
-                            onClick={()=>closeListOfMedications()}
-                        >
-                            Close
-                        </Button>
+                    <Button
+                        variant={"contained"}
+                        fullWidth
+                        onClick={() => closeListOfMedications()}
+                    >
+                        Close
+                    </Button>
                 </DialogActions>
             </Dialog>
 
 
             {/*Display Dialog of a selected Medication as a general overview*/}
-            <MedicationOverViewDialog/>
+            <MedicationOverViewDialog
+                openMedication={openMedication}
+                selectedMedication={selectedMedication}
+                setOpenMedication={setCloseOverViewDialog}/>
 
             {/*Display Edit medication dialog of selected medication*/}
             <MedicationDialog

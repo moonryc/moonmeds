@@ -60,9 +60,9 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index:number) => {
               return medicationDosage.hasBeenTaken ? (
-                <>
+                <div key={index}>
                   <Box
                     key={Math.random()}
                     sx={{
@@ -113,7 +113,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   </Box>
 
                   <br />
-                </>
+                </div>
               ) : (
                 <span key={Math.random()} />
               );
@@ -134,10 +134,10 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index:number) => {
               return !medicationDosage.hasBeenTaken &&
                 !medicationDosage.hasBeenMissed ? (
-                <>
+                <div key={index}>
                   <Box
                     key={Math.random()}
                     sx={{
@@ -190,7 +190,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   </Box>
                   <br />
                   {/*//TODO TRAVIS ADD PADDING*/}
-                </>
+                </div>
               ) : (
                 <span key={Math.random()} />
               );
@@ -211,10 +211,10 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index:number) => {
               return medicationDosage.hasBeenMissed &&
                 !medicationDosage.hasBeenTaken ? (
-                <>
+                <div key={index}>
                   <Box
                     key={Math.random()}
                     sx={{
@@ -266,7 +266,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Button>
                   </Box>
                   <br />
-                </>
+                </div>
               ) : (
                 <span key={Math.random()} />
               );
@@ -287,13 +287,13 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index:number) => {
               const numberOfDaysBeforeRefill = differenceInDays(
                 new Date(medicationDosage.nextFillDay),
                 new Date(medicationDosage.timeToTake)
               );
               return (
-                <>
+                <div key={index}>
                   {numberOfDaysBeforeRefill <= 7 ? (
                     <>
                       <Box
@@ -353,7 +353,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     <></>
                   )}
                   {/*//TODO TRAVIS ADD PADDING*/}
-                </>
+                </div>
               );
             })}
           </Typography>

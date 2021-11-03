@@ -261,7 +261,7 @@ const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medic
                 isMonthly={true}
                 getRefillDate={() => { }}
                 isRefill={false}
-              />
+               datePassed={dose.customOnceAMonthDate}/>
             </Collapse>
             <br />
             <Button

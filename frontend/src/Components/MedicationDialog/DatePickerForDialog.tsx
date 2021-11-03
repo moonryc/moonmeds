@@ -15,6 +15,7 @@ interface IDatePickerForDialogProps {
     isMonthly: boolean;
     index: number;
     isRefill: boolean;
+    datePassed:Date|null
 }
 
 /**
@@ -22,19 +23,22 @@ interface IDatePickerForDialogProps {
  * @param props
  * @constructor
  */
-const DatePickerForDialog: React.FC<IDatePickerForDialogProps> = ({
-                                                                      getEndDate,
-                                                                      getRefillDate,
-                                                                      getMonthlyDate,
-                                                                      isGetEndDate,
-                                                                      disable,
-                                                                      label,
-                                                                      isMonthly,
-                                                                      index,
-                                                                      isRefill,
-                                                                  }) => {
+const DatePickerForDialog: React.FC<IDatePickerForDialogProps> = (
+    {
+        getEndDate,
+        getRefillDate,
+        getMonthlyDate,
+        isGetEndDate,
+        disable,
+        label,
+        isMonthly,
+        index,
+        isRefill,
+        datePassed
+    }
+) => {
 
-    const [value, setValue] = React.useState<Date | null>(null);
+    const [value, setValue] = React.useState<Date|null>(datePassed);
 
     useEffect(() => {
         if (isGetEndDate) {
@@ -57,7 +61,7 @@ const DatePickerForDialog: React.FC<IDatePickerForDialogProps> = ({
                 onChange={(newValue) => {
                     setValue(newValue);
                 }}
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={(params) => <TextField fullWidth {...params} value={value}/>}
             />
         </>
     );

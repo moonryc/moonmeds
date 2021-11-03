@@ -1,8 +1,9 @@
 import {Edit} from "@mui/icons-material";
 import {
     Box,
-    Button,
-    Chip, Dialog,
+    Button, ButtonGroup,
+    Chip,
+    Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -12,7 +13,8 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
-    Select, TextField
+    Select,
+    TextField
 } from "@mui/material";
 import React, {useContext, useEffect, useState} from "react";
 import {IPersonNameAndColor} from "../../../../Types/UserTypes";
@@ -38,6 +40,8 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
     const [selectedUser, setSelectedUser] = useState<IPersonNameAndColor>(medicationOwner);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [newUser, setNewUser] = useState<IPersonNameAndColor>(makePersonNameAndColor());
+    const [doesUserAlreadyExist, setDoesUserAlreadyExist] = useState(false);
+
 
     /**
      * passes the selected medication owner up to the parent component MedicationDialog
@@ -55,7 +59,6 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
      */
     const handleSubmit = async () => {
         setSelectedUser(makePersonNameAndColor());
-        console.log("submited")
         await putAddPerson({name: newUser.name, color: newUser.color}).then(
             (response) => {
                 setDialogOpen(false);
@@ -63,6 +66,19 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
             }
         );
     };
+
+    /**
+     * function to check if the name property in newUser is
+     * already present in the usersPeople array as a name property
+     */
+    const checkDoesUserAlreadyExists = () => {
+        for (const user of usersPeople) {
+            if (user.name.toLowerCase() === newUser.name.toLowerCase()) {
+                return setDoesUserAlreadyExist(true);
+            }
+        }
+        setDoesUserAlreadyExist(false);
+    }
 
     let colorOptions = [
         {label: "red"},
@@ -76,64 +92,11 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
         {label: "secondary"},
     ];
 
+    useEffect(() => {
+        checkDoesUserAlreadyExists()
+        // console.log(doesUserAlreadyExist)
+    }, [newUser.name]);
 
-    const CreateNewMedicationOwnerDialog = () => {
-        return (
-            <Dialog open={dialogOpen}>
-                <DialogTitle>Create a new Owner</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        fullWidth
-                        variant={'outlined'}
-                        type={"string"}
-                        value={newUser.name}
-                        onChange={(e) =>
-                            setNewUser((prevValue) => ({
-                                ...prevValue,
-                                name: e.target.value,
-                            }))
-                        }
-                    />
-                    <br/>
-                    <br/>
-
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Color</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={newUser.color}
-                            label="Color"
-                            onChange={(e) => {
-                                setNewUser((prevValue) => ({
-                                    ...prevValue,
-                                    color: e.target.value,
-                                }));
-
-                            }}
-                        >
-                            {colorOptions.map((option: { label: string }) => {
-                                    return (
-                                        <MenuItem key={option.label} value={option.label}>
-                                            {option.label}
-                                        </MenuItem>)
-                                }
-                            )}
-                        </Select>
-                    </FormControl>
-
-                </DialogContent>
-                <DialogActions>
-                    <Button variant={"contained"} onClick={(e) => handleSubmit()}>
-                        Create Owner
-                    </Button>
-                    <Button variant={"contained"} onClick={() => setDialogOpen(false)}>
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        )
-    }
 
 
     return (
@@ -155,8 +118,7 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                             ) : (
                                 <></>
                             )}
-                        </Box>
-                    )}
+                        </Box>)}
                     onChange={(e) => {
                         let personParsed = JSON.parse(e.target.value.toString());
                         setSelectedUser({...personParsed});
@@ -164,8 +126,9 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                     IconComponent={() => <></>}
                     input={
                         <OutlinedInput
+                            notched={true}
                             id="select-multiple-chip"
-                            label="Chip"
+                            label="Medication Owner"
                             endAdornment={
                                 <InputAdornment
                                     position={"end"}
@@ -193,7 +156,88 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                 </Select>
             </FormControl>
 
-            <CreateNewMedicationOwnerDialog/>
+            <Dialog open={dialogOpen}>
+                <DialogTitle>Create a new Owner</DialogTitle>
+                <DialogContent>
+
+                    <TextField
+                        fullWidth
+                        id={"newUserName"}
+                        key={"newUserName"}
+                        variant={'outlined'}
+                        error={doesUserAlreadyExist}
+                        value={newUser.name}
+                        onChange={(e) => {
+                            setNewUser((prevValue) => ({
+                                ...prevValue,
+                                name: e.target.value,
+                            }))
+                        }}
+
+                    />
+                    <br/>
+                    <br/>
+
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Color</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={JSON.stringify(newUser)}
+                            label="Color"
+                            renderValue={(newUser) => (
+                                <Box sx={{display: "flex", flexWrap: "wrap", gap: 0.5}}>
+                                    {JSON.parse(newUser).name !== "" ? (
+                                        <Chip
+                                            label={JSON.parse(newUser).name}
+                                            sx={{backgroundColor: JSON.parse(newUser).color}}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+                                </Box>)}
+                            input={
+                                <OutlinedInput
+                                    notched={true}
+                                    id="select-multiple-chip"
+                                    label="Color"
+                                />
+                            }
+                            onChange={(e) => {
+                                setNewUser((prevValue) => ({
+                                    ...prevValue,
+                                    color: e.target.value,
+                                }));
+                            }}
+                        >
+                            {colorOptions.map((option: { label: string }) => {
+                                    return (
+                                        <MenuItem key={option.label} value={option.label}>
+                                            <Chip
+                                                label={newUser.name}
+                                                sx={{backgroundColor: option.label, cursor: 'pointer', minWidth: "75%"}}
+                                            />
+                                        </MenuItem>)
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+
+                </DialogContent>
+                <DialogActions>
+                    <ButtonGroup fullWidth>
+                    <Button disabled={doesUserAlreadyExist} variant={"contained"} onClick={(e) => handleSubmit()}>
+                        Create
+                    </Button>
+                    <Button variant={"contained"} onClick={() => {
+                        setNewUser(makePersonNameAndColor)
+                        setDialogOpen(false)
+                    }}>
+                        Cancel
+                    </Button>
+                    </ButtonGroup>
+                </DialogActions>
+            </Dialog>
 
         </>
     );
