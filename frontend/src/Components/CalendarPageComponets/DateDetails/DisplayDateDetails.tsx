@@ -39,7 +39,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
   return (
     <Box
       key={Math.random()}
-      sx={{ height: "77vh", overflow: "auto", padding: "3vh" }}
+      sx={{ height: ['100%',,,"77vh"], overflow: "auto", padding: "3vh" }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
         {" "}
@@ -68,18 +68,24 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     sx={{
                       bgcolor: "green",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       key={Math.random()}
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
+
                       }}
                     >
                       <Chip
@@ -98,7 +104,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                      sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -143,17 +149,22 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     sx={{
                       bgcolor: "orange",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
                       }}
                     >
                       <Chip
@@ -175,7 +186,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                      sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -189,7 +200,6 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     </Button>
                   </Box>
                   <br />
-                  {/*//TODO TRAVIS ADD PADDING*/}
                 </>
               ) : (
                 <span key={Math.random()} />
@@ -220,17 +230,26 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     sx={{
                       bgcolor: "red",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
+                        display:'flex',
+                        alignContent:'center'
+
+
                       }}
                     >
                       <Chip
@@ -252,7 +271,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                       sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -301,17 +320,22 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                         sx={{
                           bgcolor: "blue",
                           width: "100%",
-                          height: 60,
+                          height: '100%',
                           borderRadius: 2,
                           position: "relative",
+                          display:'flex',
+                          alignContent:'center'
                         }}
                       >
                         <Typography
                           sx={{
                             marginLeft: "1vh",
-                            fontSize: ".75vw",
+                            fontSize: "15px",
                             top: "22.5%",
-                            position: "absolute",
+                            position: "relative",
+                            width:'70%',
+                            flex:'1',
+                            p:'12px',
                           }}
                         >
                           <Chip
@@ -338,11 +362,7 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                         </Typography>
                         <Button
                           variant={"contained"}
-                          sx={{
-                            position: "absolute",
-                            right: "2.5%",
-                            top: "20%",
-                          }}
+                          sx={{m:'1vw', }}
                         >
                           Refill
                         </Button>
@@ -352,7 +372,6 @@ const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
                   ) : (
                     <></>
                   )}
-                  {/*//TODO TRAVIS ADD PADDING*/}
                 </>
               );
             })}

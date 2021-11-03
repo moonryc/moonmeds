@@ -76,54 +76,54 @@ const MainLoggedInPage = () => {
   return (
     <Box sx={flexWrapperStyle}>
       <AppbarTop />
-      <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",,,'row'] }}>
+      <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",,,'row'], height:'10000px'}}>
         {newMedicationDialog()}
         {listOfMedicationDialog()}
-        <Box sx={{height:'100%', width:['100%','100%','100%','450px'],  display: "flex", flexDirection: "column"}}>
-        <Box sx={{width:'100%', height:'450px'}}>
-          <Paper
-            elevation={0}
-            sx={{
-              overflow: "auto",
-              position: "relative",
-              height:'450px'
-            }}
-          >
-            <DisplayCalendar />
-            <Box sx={{ position: "absolute", bottom: "6px", left: "6px" }}>
-              <Fab
-                size="small"
-                color="secondary"
-                aria-label="add"
-                variant={"extended"}
-                onClick={() =>
-                  setIsMakingNewMedication(!isMakingNewMedication)
-                }
-              >
-                <Add /> Add
-              </Fab>
-            </Box>
-            <Box sx={{ position: "absolute", bottom: "6px", right: "6px" }}>
-              <Fab
-                size="small"
-                color="secondary"
-                aria-label="add"
-                variant={"extended"}
-                onClick={() => setIsListOfMedications(!isListOfMedications)}
-              >
-                <Add /> List
-              </Fab>
-            </Box>
-          </Paper>
-        </Box>
+        <Box sx={{height:[undefined,,,'100%'], width:['100%','100%','100%','450px'],  display: "flex", flexDirection: "column"}}>
+          <Box sx={{width:'100%', height:'450px'}}>
+            <Paper
+              elevation={0}
+              sx={{
+                overflow: "auto",
+                position: "relative",
+                height:'450px'
+              }}
+            >
+              <DisplayCalendar />
+              <Box sx={{ position: "absolute", bottom: "6px", left: "6px" }}>
+                <Fab
+                  size="small"
+                  color="secondary"
+                  aria-label="add"
+                  variant={"extended"}
+                  onClick={() =>
+                    setIsMakingNewMedication(!isMakingNewMedication)
+                  }
+                >
+                  <Add /> Add
+                </Fab>
+              </Box>
+              <Box sx={{ position: "absolute", bottom: "6px", right: "6px" }}>
+                <Fab
+                  size="small"
+                  color="secondary"
+                  aria-label="add"
+                  variant={"extended"}
+                  onClick={() => setIsListOfMedications(!isListOfMedications)}
+                >
+                  <Add /> List
+                </Fab>
+              </Box>
+            </Paper>
+          </Box>
         <Box sx={{  flex: 1, pt:'1vw', pb:['1vw',,,'0vw'] }}>
-          <Paper elevation={0} sx={{height:'100%', maxHeight:'100%'}}>
+          <Paper elevation={0} sx={{height:[undefined,,,'100%'], maxHeight:'100%'}}>
             <Typography sx={{p:'3vh'}}>test <br/> what will go here <br/> who knows? <br/> you sussy baka you. <br/> heh, titties</Typography>
           </Paper>
         </Box>
         </Box>
-            <Card sx={{ width: "100%", height: "100%",ml:[undefined,,,'1vw'] }}>
-              <Box sx={{ bgcolor: "background.paper", width: "100%",  }}>
+            <Card sx={{ position:'relative', width: "100%", height: '100%',ml:[undefined,,,'1vw'] }}>
+              <Box sx={{ bgcolor: "background.paper", width: "100%", height:'100%'  }}>
                 <DisplayDateDetails
                   selectedDate={{ index: 0, date: selectedDay }}
                 />
