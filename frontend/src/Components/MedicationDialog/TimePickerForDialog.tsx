@@ -7,18 +7,19 @@ interface ITimePickerForDialog {
   index: number;
 }
 
-//TODO: same thing, make React.FC
-const TimePickerForDialog = (props: ITimePickerForDialog) => {
+
+const TimePickerForDialog:React.FC<ITimePickerForDialog> = ({getTime,index}) => {
   const [value, setValue] = React.useState<Date | null>(new Date());
 
   useEffect(() => {
     if (value == null) {
-      props.getTime(new Date(), props.index);
+      getTime(new Date(), index);
     } else {
-      props.getTime(value, props.index);
+      getTime(value, index);
     }
     //TODO: change this effect dependancy array to include "getTime"
   }, [value]);
+  //TODO: ASK SARA WHY getTime SHOULD BE IN THE DEPENDENCY ARRAY
 
   return (
     <>

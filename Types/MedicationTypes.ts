@@ -16,6 +16,7 @@ export interface IMedicationBase {
     prescriptionName: string,
     medicationOwner: IPersonNameAndColor,
     prescriptionDosage: number,
+    prescriptionDosageType: string,
     nextFillDay: Date,
     endDate: Date,
     dosages: IDosagesDetails[],
@@ -35,6 +36,7 @@ export interface IMedicationBase {
  */
 export interface IDosagesDetails {
     amount: number,
+    amountDosageType: string
     time: Date,
     isDaily: boolean,
     isWeekly: boolean,

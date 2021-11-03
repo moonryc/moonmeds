@@ -7,15 +7,15 @@ import CalendarDay from "./CalendarDay";
 
 interface ICalendarBodyProps {
   numberOfDaysInMonth: number;
-  firstDay: Date;
+  firstDayValue: Date;
 }
 
 //TODO DOCSTRINGS on here
 
-const CalendarBody = (props: ICalendarBodyProps) => {
+const CalendarBody:React.FC<ICalendarBodyProps> = ({numberOfDaysInMonth,firstDayValue}) => {
   //the day of week, 0 represents Sunday
-  // const [firstDay, setFirstDay] = useState(getDay(props.firstDay));
-  const firstDay = useMemo(() => getDay(props.firstDay), [props.firstDay]);
+  // const [firstDay, setFirstDay] = useState(getDay(firstDayValue));
+  const firstDay = useMemo(() => getDay(firstDayValue), [firstDayValue]);
   const [arrayOfMonthDays, setArrayOfMonthDays] = useState<ICalendarDay[]>([
     {
       index: 0,
@@ -36,16 +36,16 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     let tempArray: ICalendarDay[] = [];
     for (let i = 0; i < firstDay; i++) {
       if (i === 0) {
-        let date = sub(props.firstDay, { days: 1 });
+        let date = sub(firstDayValue, { days: 1 });
         tempArray.push({ index: 0, date: date });
       } else {
         let date = sub(tempArray[0].date, { days: 1 });
         tempArray.unshift({ index: 0, date: date });
       }
     }
-    for (let i = 0; i < props.numberOfDaysInMonth; i++) {
+    for (let i = 0; i < numberOfDaysInMonth; i++) {
       if (i === 0) {
-        tempArray.push({ index: 1, date: props.firstDay });
+        tempArray.push({ index: 1, date: firstDayValue });
       } else {
         tempArray.push({
           index: i + 1,
@@ -56,7 +56,7 @@ const CalendarBody = (props: ICalendarBodyProps) => {
     setArrayOfMonthDays(tempArray);
     console.log(arrayOfMonthDays);
     console.log(firstDay);
-  }, [firstDay, props.numberOfDaysInMonth]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [firstDay, numberOfDaysInMonth]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box sx={{ overflow:'visible'}}>
       <br />
@@ -93,10 +93,8 @@ const CalendarBody = (props: ICalendarBodyProps) => {
             >
               {day.index !== 0 ? (
                 <CalendarDay
-                  index={day.index}
                   date={day.date}
-                  isRenderedOnHomePage={true}
-                />
+                 index={0} isRenderedOnHomePage={false}/>
               ) : (
                 <></>
               )}

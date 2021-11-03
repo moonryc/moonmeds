@@ -27,10 +27,10 @@ interface IDisplayDateDetailsProp {
  * @param props
  * @constructor
  */
-const DisplayDateDetails = (props: IDisplayDateDetailsProp) => {
+const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) => {
   const date = useMemo(
-    () => toDate(props.selectedDate.date).toDateString(),
-    [props.selectedDate.date]
+    () => toDate(selectedDate.date).toDateString(),
+    [selectedDate.date]
   );
 
   const { selectedDayDetails } = useContext(CalendarContext);

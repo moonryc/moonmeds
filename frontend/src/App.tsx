@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, {useCallback, useContext, useEffect} from "react";
 import { Route } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import "./App.css";
@@ -15,18 +15,29 @@ function App() {
   const { loggedIn, setLoggedIn } = useContext<any>(UserContext);
   const { checkIfJWTTokenIsValid } = useContext<any>(ApiContext);
 
+  const checkIfUserIsLoggedIn = useCallback(
+      () => {
+        if (reactLocalStorage.get("JWTToken") != null) {
+          checkIfJWTTokenIsValid();
+          return null
+        } else {
+          setLoggedIn(false);
+          return false;
+        }
+      },
+      [checkIfJWTTokenIsValid, setLoggedIn]
+  );
+
+
   /**
    * Travis so help me god if you remove the [] on this useEffect
    * for real though the empty array is needed because this makes it only render on the initial webpage load
-   * otheriwse it will run over and over and over causeing issues
+   * otheriwse it will run over and over and over causing issues
    */
   useEffect(() => {
-    if (reactLocalStorage.get("JWTToken") != null) {
-      checkIfJWTTokenIsValid();
-    } else {
-      setLoggedIn(false);
-    }
-  }, [checkIfJWTTokenIsValid, setLoggedIn]);
+    checkIfUserIsLoggedIn();
+  }, [checkIfUserIsLoggedIn]);
+  //TODO sara this doesnt work
   //Travis see comment above
 
   return (
