@@ -39,7 +39,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
   return (
     <Box
       key={Math.random()}
-      sx={{ height: "77vh", overflow: "auto", padding: "3vh" }}
+      sx={{ height: ['100%',,,"77vh"], overflow: "auto", padding: "3vh" }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
         {" "}
@@ -60,26 +60,32 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage,index:number) => {
+            {selectedDayDetails.map((medicationDosage) => {
               return medicationDosage.hasBeenTaken ? (
-                <div key={index}>
+                <>
                   <Box
                     key={Math.random()}
                     sx={{
                       bgcolor: "green",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       key={Math.random()}
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
+
                       }}
                     >
                       <Chip
@@ -98,7 +104,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                      sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -113,7 +119,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   </Box>
 
                   <br />
-                </div>
+                </>
               ) : (
                 <span key={Math.random()} />
               );
@@ -134,26 +140,31 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage,index:number) => {
+            {selectedDayDetails.map((medicationDosage) => {
               return !medicationDosage.hasBeenTaken &&
                 !medicationDosage.hasBeenMissed ? (
-                <div key={index}>
+                <>
                   <Box
                     key={Math.random()}
                     sx={{
                       bgcolor: "orange",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
                       }}
                     >
                       <Chip
@@ -175,7 +186,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                      sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -189,8 +200,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Button>
                   </Box>
                   <br />
-                  {/*//TODO TRAVIS ADD PADDING*/}
-                </div>
+                </>
               ) : (
                 <span key={Math.random()} />
               );
@@ -211,26 +221,35 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage,index:number) => {
+            {selectedDayDetails.map((medicationDosage) => {
               return medicationDosage.hasBeenMissed &&
                 !medicationDosage.hasBeenTaken ? (
-                <div key={index}>
+                <>
                   <Box
                     key={Math.random()}
                     sx={{
                       bgcolor: "red",
                       width: "100%",
-                      height: 60,
+                      height: '100%',
                       borderRadius: 2,
                       position: "relative",
+                      display:'flex',
+                      alignContent:'center'
                     }}
                   >
                     <Typography
                       sx={{
                         marginLeft: "1vh",
-                        fontSize: "20px",
+                        fontSize: "15px",
                         top: "22.5%",
-                        position: "absolute",
+                        position: "relative",
+                        width:'70%',
+                        flex:'1',
+                        p:'12px',
+                        display:'flex',
+                        alignContent:'center'
+
+
                       }}
                     >
                       <Chip
@@ -252,7 +271,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Typography>
                     <Button
                       variant={"contained"}
-                      sx={{ position: "absolute", right: "2.5%", top: "20%" }}
+                       sx={{m:'1vw', }}
                       onClick={() =>
                         putUpdateMedicationDosage(
                           medicationDosage.dosageId,
@@ -266,7 +285,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Button>
                   </Box>
                   <br />
-                </div>
+                </>
               ) : (
                 <span key={Math.random()} />
               );
@@ -287,13 +306,13 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage,index:number) => {
+            {selectedDayDetails.map((medicationDosage) => {
               const numberOfDaysBeforeRefill = differenceInDays(
                 new Date(medicationDosage.nextFillDay),
                 new Date(medicationDosage.timeToTake)
               );
               return (
-                <div key={index}>
+                <>
                   {numberOfDaysBeforeRefill <= 7 ? (
                     <>
                       <Box
@@ -301,17 +320,22 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                         sx={{
                           bgcolor: "blue",
                           width: "100%",
-                          height: 60,
+                          height: '100%',
                           borderRadius: 2,
                           position: "relative",
+                          display:'flex',
+                          alignContent:'center'
                         }}
                       >
                         <Typography
                           sx={{
                             marginLeft: "1vh",
-                            fontSize: ".75vw",
+                            fontSize: "15px",
                             top: "22.5%",
-                            position: "absolute",
+                            position: "relative",
+                            width:'70%',
+                            flex:'1',
+                            p:'12px',
                           }}
                         >
                           <Chip
@@ -338,11 +362,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                         </Typography>
                         <Button
                           variant={"contained"}
-                          sx={{
-                            position: "absolute",
-                            right: "2.5%",
-                            top: "20%",
-                          }}
+                          sx={{m:'1vw', }}
                         >
                           Refill
                         </Button>
@@ -352,8 +372,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   ) : (
                     <></>
                   )}
-                  {/*//TODO TRAVIS ADD PADDING*/}
-                </div>
+                </>
               );
             })}
           </Typography>
