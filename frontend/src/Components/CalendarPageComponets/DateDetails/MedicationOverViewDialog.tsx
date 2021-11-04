@@ -1,6 +1,7 @@
 import {Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import React from "react";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
+import {format, formatISO9075, getHours, getMinutes, getTime} from "date-fns";
 
 interface IMedicationOverViewDialog {
     selectedMedication: IMedicationBase;
@@ -23,7 +24,7 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
                 {selectedMedication.dosages.map((dose, index: number) => {
                     return (
                         <>
-                                <p> Take {dose.amount} {dose.amountDosageType} of {selectedMedication.prescriptionName} at {dose.time}</p> : <></>
+                            <p key={index}> Take {dose.amount} {dose.amountDosageType} of {selectedMedication.prescriptionName} at {format(new Date(dose.time),'h:mm aa')}</p>
                         </>)
                 })}
             </>
@@ -43,17 +44,10 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
             />
 
             <DialogContent>
-                {"Bottle dosage: " + selectedMedication.prescriptionDosage}
-                <br/>
-                {"Next Refill Date: " + selectedMedication.nextFillDay}
-                <br/>
+                <p>Bottle dosage: {selectedMedication.prescriptionDosage} {selectedMedication.prescriptionDosageType}</p>
+                <p>Next Refill Date: {format(new Date(selectedMedication.nextFillDay),"dd/mm/yyyy")}</p>
+                <p>Notes: {selectedMedication.prescriptionName}</p>
                 <TakeDoseAtTime/>
-                <br/>
-                {"Notes: " + selectedMedication.prescriptionName}
-                <br/>
-                {selectedMedication.dosages.map((dose, index: number) => {
-                    return <p key={index}>{"Take " + dose.amount + " at " + dose.time}</p>;
-                })}
             </DialogContent>
             <DialogActions>
                 <Button

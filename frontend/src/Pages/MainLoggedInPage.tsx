@@ -33,36 +33,9 @@ const MainLoggedInPage = () => {
 
   const [tempNewMedication, setTempNewMedication] = useState<IMedicationBase>(makeMedication());
 
-  // const newMedicationDialog = () => {
-  //   return (
-  //     <>
-  //
-  //     </>
-  //   );
-  // };
-  //
-  // const listOfMedicationDialog = () => {
-  //   return (
-  //     <>
-  //       <Dialog open={isListOfMedications} maxWidth={"xl"} fullWidth={true}>
-  //         <DialogTitle>Medications</DialogTitle>
-  //
-  //         <DialogActions>
-  //           <Button
-  //             variant={"contained"}
-  //             fullWidth
-  //             onClick={() => setIsListOfMedications(!isListOfMedications)}
-  //           >
-  //             Close
-  //           </Button>
-  //         </DialogActions>
-  //       </Dialog>
-  //     </>
-  //   );
-  // };
 
   useEffect(() => {
-    fetchMedicationsAndDosagesAndPersons();
+    fetchMedicationsAndDosagesAndPersons().then(r => r);
   }, [fetchMedicationsAndDosagesAndPersons]);
 
   return (

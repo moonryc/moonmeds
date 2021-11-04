@@ -41,7 +41,7 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [newUser, setNewUser] = useState<IPersonNameAndColor>(makePersonNameAndColor());
     const [doesUserAlreadyExist, setDoesUserAlreadyExist] = useState(false);
-
+    const [medicationOwnerEmpty, setMedicationOwnerEmpty] = useState(false);
 
     /**
      * passes the selected medication owner up to the parent component MedicationDialog
@@ -108,6 +108,7 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                     id="medication Owner"
                     value={JSON.stringify(selectedUser)}
                     label="Medication Owner"
+                    error={medicationOwnerEmpty}
                     renderValue={(selectedUser) => (
                         <Box sx={{display: "flex", flexWrap: "wrap", gap: 0.5}}>
                             {JSON.parse(selectedUser).name !== "" ? (
@@ -122,6 +123,11 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                     onChange={(e) => {
                         let personParsed = JSON.parse(e.target.value.toString());
                         setSelectedUser({...personParsed});
+                        if(personParsed.name ===""){
+                            setMedicationOwnerEmpty(true)
+                        }else{
+                            setMedicationOwnerEmpty(false)
+                        }
                     }}
                     IconComponent={() => <></>}
                     input={
