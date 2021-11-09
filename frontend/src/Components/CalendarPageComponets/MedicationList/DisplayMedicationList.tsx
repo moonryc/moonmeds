@@ -70,10 +70,10 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
         return (
             <>
-                <Card sx={{minWidth: "100%"}} variant={"outlined"} key={Math.random()}>
-                    <CardContent key={Math.random()}>
+                <Card  sx={{width:'100%'}} variant={"outlined"} key={Math.random()}>
+                    <CardContent key={Math.random()} >
                         <Box sx={{display: "flex"}} key={Math.random()}>
-                            <Box sx={{maxWidth: "100%"}} key={Math.random()}>
+                            <Box sx={{width: "100%"}} key={Math.random()}>
                                 <Typography component={"span"} key={Math.random()}>
                                     {medication.prescriptionName + " | "}
                                 </Typography>
@@ -127,7 +127,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
         return (
             <>
                 {isInDeleteMode ? (
-                        <ButtonGroup fullWidth>
+                        <ButtonGroup orientation='vertical' fullWidth sx={{pb:'1vw'}}>
                             <Button
                                 variant={"contained"}
                                 onClick={() => setIsInDeleteMode(false)}
@@ -141,7 +141,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                                 Delete Medications and keep Medication history
                             </Button>
                         </ButtonGroup>) :
-                    (<Button variant={"contained"} onClick={() => setIsInDeleteMode(true)}>
+                    (<Button variant={"contained"} onClick={() => setIsInDeleteMode(true)} sx={{mb:'1vw'}} fullWidth>
                         Delete Medications
                     </Button>)}
 
@@ -150,10 +150,10 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                     (medication: IMedicationBase, index: number) => {
                         return (
 
-                            <Box key={"Grid" + index}>
-                                <Grid container spacing={1} key={Math.random()}>
+                            <Box  key={"Grid" + index}>
+                                <Grid container spacing={12} key={Math.random()}>
                                     {isInDeleteMode ? (
-                                        <><Grid item xs={1} key={Math.random()}>
+                                        <><Grid sx={{display:'flex'}} item xs={12} key={Math.random()}>
                                             <Checkbox onChange={() => {
                                                 setMedicationIdDeleteArray(prevState => {
                                                     if (prevState.includes(medication.medicationId)) {
@@ -163,8 +163,8 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                                                     }
                                                 })
                                             }}/>
-                                        </Grid>
-                                            <Grid item xs={10} key={Math.random()}>
+
+
                                                 <SingleMedication
                                                     index={index} medication={medication}
                                                     getSetSelectedMedication={getSetSelectedMedication}/>
@@ -172,7 +172,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                                     ) : (
                                         <>
                                             {/*TODO: SPOTEXX CENTER THIS*/}
-                                            <Grid item xs={11}>
+                                            <Grid item xs={12}>
                                                 <SingleMedication
                                                     index={index} medication={medication}
                                                     getSetSelectedMedication={getSetSelectedMedication}/>
@@ -213,7 +213,8 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
     return (
         <>
             {/*List of Medications Dialog*/}
-            <Dialog open={isDialogOpen} maxWidth={"xs"} fullWidth>
+            <Dialog open={isDialogOpen} maxWidth={"xs"} fullWidth >
+                <Box sx={{p:'1vw'}}>
                 <DialogTitle>Medications</DialogTitle>
                 {loadingBar ?
                     <>
@@ -241,6 +242,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                         Close
                     </Button>
                 </DialogActions>
+                </Box>
             </Dialog>
 
 

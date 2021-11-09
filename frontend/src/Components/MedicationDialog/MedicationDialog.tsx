@@ -1,5 +1,6 @@
 import {ToggleButton, ToggleButtonGroup} from "@mui/lab";
 import {
+    Box,
     Button,
     ButtonGroup,
     Collapse,
@@ -166,10 +167,11 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
 
 
         return (
-            <>
+            <Box >
                 <Dialog
                     open={isOpen}
                     onBackdropClick={() => closeDialog(medicationObject)}
+
                 >
                     <DialogTitle sx={{textAlign: "center"}}>
                         {isNewMedication ? (
@@ -394,7 +396,7 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
                         </ButtonGroup>
                     </DialogActions>
                 </Dialog>
-            </>
+            </Box>
         );
     }
 ;
