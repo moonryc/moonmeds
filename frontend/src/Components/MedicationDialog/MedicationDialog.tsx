@@ -97,9 +97,10 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
          */
         const updateMedicationDosages = useCallback(
             (listOfDosages: IDosagesDetails[]) => {
-                let tempMedication = {...medicationObject};
-                tempMedication.dosages = listOfDosages;
-                setMedicationObject(tempMedication);
+                setMedicationObject((prevState) =>{
+                    prevState.dosages = listOfDosages;
+                    return {...prevState}
+                } );
             },
             []
         );
@@ -110,9 +111,10 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
          */
         const getEndDate = useCallback(
             (endDate: Date) => {
-                let tempMedication = {...medicationObject};
-                tempMedication.endDate = endDate;
-                setMedicationObject(tempMedication);
+                setMedicationObject((prevState => {
+                    prevState.endDate = endDate
+                    return {...prevState}
+                }));
             },
             []
         );
@@ -123,12 +125,14 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
          */
         const getRefillDate = useCallback(
             (refillDate: Date) => {
-                let tempMedication = {...medicationObject};
-                tempMedication.nextFillDay = refillDate;
-                setMedicationObject(tempMedication);
+                setMedicationObject( (prevState:IMedicationBase) => {
+                    prevState.nextFillDay= refillDate;
+                    return {...prevState}
+                } );
             },
             []
         );
+
 
         const getMedicationOwner = useCallback(
             (name: string, color: string) => {
