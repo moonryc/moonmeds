@@ -11,7 +11,7 @@ import {
     DialogTitle,
     Grid,
     Paper,
-    Skeleton,
+    Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
     Typography
 } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -57,6 +57,20 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
         getSetSelectedMedication(medication: IMedicationBase): void
     }
+    const columns = [
+        { id: "med", label: "Medication", minWidth: 60 },
+        { id: "owner", label: "Owner", minWidth: 60 },
+        { id: "nextDose", label: "Next Dose", minWidth: 60 },
+        { id: "nextRefill", label: "Next Refill", minWidth: 60 },
+    ];
+    const rows = userMedications.map((medication:IMedicationBase, index) => {
+        return {
+            med: medication.prescriptionName,
+            owner: medication.medicationOwner.name,
+            nextDose: medication.endDate,
+            nextRefill: medication.nextFillDay,
+        };
+    });
 
     /**
      * Renders a single medication item in the Medications list
@@ -230,9 +244,63 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                         <Skeleton/>
                         <Skeleton/>
                     </> :
-                    <MedicationList getSetSelectedMedication={(medication: IMedicationBase) => {
-                        setSelectedMedication(medication)
-                    }}/>}
+                    // <MedicationList getSetSelectedMedication={(medication: IMedicationBase) => {
+                    //     setSelectedMedication(medication)
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center" colSpan={2}>
+                                        Country
+                                    </TableCell>
+                                    <TableCell align="center" colSpan={3}>
+                                        Details
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            //align={column.align}
+                                            style={{ top: 57, minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .map((row) => {
+                                        return (
+
+                                            <TableRow
+                                                hover
+                                                role="checkbox"
+                                                tabIndex={-1}
+                                                key={Math.random()}
+                                            >
+                                                {columns.map((column) => {//@ts-ignore
+                                                    const value = row[column.id];
+                                                    return (//@ts-ignore
+                                                        <TableCell key={column.id} align={column.align}><Button>
+                                                            {/*//@ts-ignore*/}
+                                                            {column.format && typeof value === "number"
+                                                                // @ts-ignore
+                                                                ? column.format(value)
+                                                                : value}</Button>
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+
+                                        );
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    //}}/>
+                     }
                 <DialogActions>
                     <Button
                         variant={"contained"}
