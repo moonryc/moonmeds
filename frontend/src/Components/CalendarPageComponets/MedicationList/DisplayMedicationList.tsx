@@ -22,6 +22,8 @@ import {MedicationContext} from "../../../Context/MedicationContext";
 import MedicationDialog from "../../MedicationDialog/MedicationDialog";
 import {makeMedication} from "../../../typeConstructors";
 import MedicationOverViewDialog from "../DateDetails/MedicationOverViewDialog";
+import {backgroundStyle, centeredTextStyle} from "../../../Styles";
+import {Face} from "@mui/icons-material";
 
 
 interface IDisplayMedicationList {
@@ -57,20 +59,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
         getSetSelectedMedication(medication: IMedicationBase): void
     }
-    const columns = [
-        { id: "med", label: "Medication", minWidth: 60 },
-        { id: "owner", label: "Owner", minWidth: 60 },
-        { id: "nextDose", label: "Next Dose", minWidth: 60 },
-        { id: "nextRefill", label: "Next Refill", minWidth: 60 },
-    ];
-    const rows = userMedications.map((medication:IMedicationBase, index) => {
-        return {
-            med: medication.prescriptionName,
-            owner: medication.medicationOwner.name,
-            nextDose: medication.endDate,
-            nextRefill: medication.nextFillDay,
-        };
-    });
+
 
     /**
      * Renders a single medication item in the Medications list
@@ -222,44 +211,60 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
         [],
     );
 
+    const columns = [
+        { id: "med", label: "Medication", minWidth: 60 },
+        { id: "owner", label: "Owner", minWidth: 60 },
+        { id: "edit", label: "Edit", minWidth: 60 },
+        { id: "delete", label: "Delete", minWidth: 60 },
+    ];
+    const rows = userMedications.map((medication:IMedicationBase, ) => {
+        return {
+            med: <Chip sx={{ bgcolor: medication.medicationOwner.color }}
+                       icon={<Face />}
+                       label={medication.prescriptionName.length > 15 ? medication.prescriptionName.slice(0,15)+'...' : medication.prescriptionName}
+                       title={medication.prescriptionName}
+                       onClick={() => {setOpenMedication(true)}}
+                        />,
+            owner: <Chip sx={{ bgcolor: medication.medicationOwner.color }}
+                         icon={<Face />}
+                         label={medication.medicationOwner.name.length > 10? medication.medicationOwner.name.slice(0,15)+'...' : medication.medicationOwner.name}
+                         title={medication.medicationOwner.name}
+                         onClick={() => {setOpenMedication(true);}}
+                    />,
+            edit: <Button>Edit</Button>,//TODO mooon set these two buttons up please
+            delete:<Button>Delete</Button>
 
+        };
+    });
 
     return (
         <>
             {/*List of Medications Dialog*/}
-            <Dialog open={isDialogOpen} maxWidth={"xs"} fullWidth >
+            <Dialog open={isDialogOpen}  fullWidth >
                 <Box sx={{p:'1vw'}}>
                 <DialogTitle>Medications</DialogTitle>
-                {loadingBar ?
-                    <>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                        <Skeleton/>
-                    </> :
-                    // <MedicationList getSetSelectedMedication={(medication: IMedicationBase) => {
-                    //     setSelectedMedication(medication)
+                {/*{loadingBar ?*/}
+                {/*    <>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*        <Skeleton/>*/}
+                {/*    </> :*/}
+                {/*     <MedicationList getSetSelectedMedication={(medication: IMedicationBase) => {*/}
+                {/*         setSelectedMedication(medication)}}/>}*/}
                     <TableContainer sx={{ maxHeight: 440 }}>
-                        <Table stickyHeader aria-label="sticky table">
+                        <Table aria-label="sticky table">
                             <TableHead>
-                                <TableRow>
-                                    <TableCell align="center" colSpan={2}>
-                                        Country
-                                    </TableCell>
-                                    <TableCell align="center" colSpan={3}>
-                                        Details
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
+                                <TableRow sx={{bgcolor:'background.paper'}}>
                                     {columns.map((column) => (
-                                        <TableCell
+                                        <TableCell sx={{textAlign:'center'}}
                                             key={column.id}
                                             //align={column.align}
                                             style={{ top: 57, minWidth: column.minWidth }}
@@ -283,12 +288,12 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                                                 {columns.map((column) => {//@ts-ignore
                                                     const value = row[column.id];
                                                     return (//@ts-ignore
-                                                        <TableCell key={column.id} align={column.align}><Button>
+                                                        <TableCell key={column.id} align={'center'}>
                                                             {/*//@ts-ignore*/}
                                                             {column.format && typeof value === "number"
                                                                 // @ts-ignore
                                                                 ? column.format(value)
-                                                                : value}</Button>
+                                                                : value}
                                                         </TableCell>
                                                     );
                                                 })}
@@ -299,8 +304,6 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    //}}/>
-                     }
                 <DialogActions>
                     <Button
                         variant={"contained"}
