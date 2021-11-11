@@ -231,7 +231,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                          title={medication.medicationOwner.name}
                          onClick={() => {setOpenMedication(true);}}
                     />,
-            edit: <Button>Edit</Button>,//TODO mooon set these two buttons up please
+            edit: <Button onClick={()=>{setEditMedication(true)}}>Edit</Button>,//TODO mooon back end this stuff please
             delete:<Button>Delete</Button>
 
         };
