@@ -83,19 +83,19 @@ app.use(passport.initialize());
 // cors to allow cross origin resource sharing
 
 
-// const whitelist = ['http://localhost:3000/',  "https://moonmeds.herokuapp.com/"]
-// const corsOptions = {
-//     credentials: true,
-//     origin: function(origin: any, callback:any) {
-//         if (whitelist.indexOf(origin) !== -1) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     }
-// }
-//
-// app.use(cors(corsOptions));
+const whitelist = ['http://localhost:3000/',  "https://moonmeds.herokuapp.com/"]
+const corsOptions = {
+    credentials: true,
+    origin: function(origin: any, callback:any) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
+app.use(cors(corsOptions));
 
 
 // #endregion
