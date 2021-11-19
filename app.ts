@@ -50,7 +50,7 @@ require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
 require('./middleware/passport')
 //Passport
 app.use(passport.initialize());
-app.use(cors())
+// app.use(cors())
 
 //TODO remeber what this does
 // app.use((req, res, next) => {
@@ -77,14 +77,26 @@ app.use(cors())
 // app.use(csurf({cookie:true}));
 //endregion
 
-//#region app.use(cors)
-//cors to allow cross origin resource sharing
-// app.use(
-//     cors({
-//         origin: 'http://localhost:3000',
-//         credentials: true,
-//     }));
-//#endregion
+// #region app.use(cors)
+// cors to allow cross origin resource sharing
+
+
+const whitelist = ['http://localhost:3000/',  "https://moonmeds.herokuapp.com/"]
+const corsOptions = {
+    credentials: true,
+    origin: function(origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
+app.use(cors(corsOptions));
+
+
+// #endregion
 
 //region routes
 app.use('/',indexRouter)
