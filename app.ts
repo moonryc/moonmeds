@@ -1,9 +1,9 @@
 //region Development
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
     console.log('dotenv loaded')
-}
+// }
 //endregion
 
 //region Imports
@@ -96,16 +96,16 @@ app.use('/',indexRouter)
 
 //region Host the React Build
 
-if (process.env.NODE_ENV != "development") {
+if (process.env.NODE_ENV != "DEV") {
 // Pick up React index.html file
     app.use(
-        express.static(path.join(__dirname, "/build"))
+        express.static(path.join(__dirname, "/frontend/build"))
     );
 
     app.get("*", (req, res) => {
         res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
             .sendFile(
-                path.join(__dirname, "/build/index.html")
+                path.join(__dirname, "/frontend/build/index.html")
             );
     })
 

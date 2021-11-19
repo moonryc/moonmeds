@@ -23,7 +23,7 @@ import MedicationDialog from "../../MedicationDialog/MedicationDialog";
 import {makeMedication} from "../../../typeConstructors";
 import MedicationOverViewDialog from "../DateDetails/MedicationOverViewDialog";
 import {backgroundStyle, centeredTextStyle} from "../../../Styles";
-import {Face} from "@mui/icons-material";
+import {Face, Medication} from "@mui/icons-material";
 import {format} from "date-fns";
 
 
@@ -54,12 +54,12 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
     //region ReactFunctions
 
-    interface ISingleMedicationProps {
-        medication: IMedicationBase,
-        index: number,
-
-        getSetSelectedMedication(medication: IMedicationBase): void
-    }
+    // interface ISingleMedicationProps {
+    //     medication: IMedicationBase,
+    //     index: number,
+    //
+    //     getSetSelectedMedication(medication: IMedicationBase): void
+    // }
 
 
     /**
@@ -69,131 +69,131 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
      * @param setSelectedMedication
      * @constructor
      */
-    const SingleMedication: React.FC<ISingleMedicationProps> = ({medication, index, getSetSelectedMedication}) => {
-        medication = {...medication};
+    // const SingleMedication: React.FC<ISingleMedicationProps> = ({medication, index, getSetSelectedMedication}) => {
+    //     medication = {...medication};
+    //
+    //     return (
+    //         <>
+    //             <Card  sx={{width:'100%'}} variant={"outlined"} key={Math.random()}>
+    //                 <CardContent key={Math.random()} >
+    //                     <Box sx={{display: "flex"}} key={Math.random()}>
+    //                         <Box sx={{width: "100%"}} key={Math.random()}>
+    //                             <Typography component={"span"} key={Math.random()}>
+    //                                 {medication.prescriptionName + " | "}
+    //                             </Typography>
+    //                             <br/>
+    //                             <Chip key={Math.random()}
+    //                                   label={medication.medicationOwner.name}
+    //                                   sx={{backgroundColor: medication.medicationOwner.color}}
+    //                             />
+    //                         </Box>
+    //                         <Box sx={{alignContent: "right"}}>
+    //                             <ButtonGroup orientation={"vertical"} key={Math.random()}>
+    //                                 <Button
+    //                                     variant={"contained"}
+    //                                     onClick={() => {
+    //                                         getSetSelectedMedication({...medication});
+    //                                         setOpenMedication(true);
+    //                                     }}
+    //                                 >
+    //                                     Open
+    //                                 </Button>
+    //                                 <Button
+    //                                     variant={"contained"}
+    //                                     onClick={() => {
+    //                                         getSetSelectedMedication({...medication});
+    //                                         setEditMedication(true);
+    //                                         console.log({...medication})
+    //                                     }}
+    //                                 >
+    //                                     Edit
+    //                                 </Button>
+    //                             </ButtonGroup>
+    //                         </Box>
+    //                     </Box>
+    //                 </CardContent>
+    //             </Card>
+    //
+    //
+    //         </>
+    //     );
+    // };
 
-        return (
-            <>
-                <Card  sx={{width:'100%'}} variant={"outlined"} key={Math.random()}>
-                    <CardContent key={Math.random()} >
-                        <Box sx={{display: "flex"}} key={Math.random()}>
-                            <Box sx={{width: "100%"}} key={Math.random()}>
-                                <Typography component={"span"} key={Math.random()}>
-                                    {medication.prescriptionName + " | "}
-                                </Typography>
-                                <br/>
-                                <Chip key={Math.random()}
-                                      label={medication.medicationOwner.name}
-                                      sx={{backgroundColor: medication.medicationOwner.color}}
-                                />
-                            </Box>
-                            <Box sx={{alignContent: "right"}}>
-                                <ButtonGroup orientation={"vertical"} key={Math.random()}>
-                                    <Button
-                                        variant={"contained"}
-                                        onClick={() => {
-                                            getSetSelectedMedication({...medication});
-                                            setOpenMedication(true);
-                                        }}
-                                    >
-                                        Open
-                                    </Button>
-                                    <Button
-                                        variant={"contained"}
-                                        onClick={() => {
-                                            getSetSelectedMedication({...medication});
-                                            setEditMedication(true);
-                                            console.log({...medication})
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                </ButtonGroup>
-                            </Box>
-                        </Box>
-                    </CardContent>
-                </Card>
-
-
-            </>
-        );
-    };
-
-    interface IMedicationList {
-        getSetSelectedMedication(medication: IMedicationBase): void
-    }
+    // interface IMedicationList {
+    //     getSetSelectedMedication(medication: IMedicationBase): void
+    // }
 
     /**
      * Creates the grid of medications and the logic for deleting medications
      * @constructor
      */
-    const MedicationList: React.FC<IMedicationList> = ({getSetSelectedMedication}) => {
-        return (
-            <>
-                {isInDeleteMode ? (
-                        <ButtonGroup orientation='vertical' fullWidth sx={{pb:'1vw'}}>
-                            <Button
-                                variant={"contained"}
-                                onClick={() => setIsInDeleteMode(false)}
-                            >
-                                Cancel
-                            </Button>
-                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsEraseHistory()}>
-                                Delete Medications and Medication history
-                            </Button>
-                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsKeepHistory()}>
-                                Delete Medications and keep Medication history
-                            </Button>
-                        </ButtonGroup>) :
-                    (<Button variant={"contained"} onClick={() => setIsInDeleteMode(true)} sx={{mb:'1vw'}} fullWidth>
-                        Delete Medications
-                    </Button>)}
-
-
-                {userMedications.map(
-                    (medication: IMedicationBase, index: number) => {
-                        return (
-
-                            <Box  key={"Grid" + index}>
-                                <Grid container spacing={12} key={Math.random()}>
-                                    {isInDeleteMode ? (
-                                        <><Grid sx={{display:'flex'}} item xs={12} key={Math.random()}>
-                                            <Checkbox onChange={() => {
-                                                setMedicationIdDeleteArray(prevState => {
-                                                    if (prevState.includes(medication.medicationId)) {
-                                                        return prevState.filter(id => id !== medication.medicationId);
-                                                    } else {
-                                                        return [...prevState, medication.medicationId];
-                                                    }
-                                                })
-                                            }}/>
-
-
-                                                <SingleMedication
-                                                    index={index} medication={medication}
-                                                    getSetSelectedMedication={getSetSelectedMedication}/>
-                                            </Grid></>
-                                    ) : (
-                                        <>
-                                            {/*TODO: SPOTEXX CENTER THIS*/}
-                                            <Grid item xs={12}>
-                                                <SingleMedication
-                                                    index={index} medication={medication}
-                                                    getSetSelectedMedication={getSetSelectedMedication}/>
-                                            </Grid>
-                                        </>
-
-                                    )}
-                                </Grid>
-                            </Box>
-                        );
-                    }
-                )}
-
-
-            </>
-        );
-    };
+    // const MedicationList: React.FC<IMedicationList> = ({getSetSelectedMedication}) => {
+    //     return (
+    //         <>
+    //             {isInDeleteMode ? (
+    //                     <ButtonGroup orientation='vertical' fullWidth sx={{pb:'1vw'}}>
+    //                         <Button
+    //                             variant={"contained"}
+    //                             onClick={() => setIsInDeleteMode(false)}
+    //                         >
+    //                             Cancel
+    //                         </Button>
+    //                         <Button variant={"contained"} onClick={() => deleteSelectedMedicationsEraseHistory()}>
+    //                             Delete Medications and Medication history
+    //                         </Button>
+    //                         <Button variant={"contained"} onClick={() => deleteSelectedMedicationsKeepHistory()}>
+    //                             Delete Medications and keep Medication history
+    //                         </Button>
+    //                     </ButtonGroup>) :
+    //                 (<Button variant={"contained"} onClick={() => setIsInDeleteMode(true)} sx={{mb:'1vw'}} fullWidth>
+    //                     Delete Medications
+    //                 </Button>)}
+    //
+    //
+    //             {userMedications.map(
+    //                 (medication: IMedicationBase, index: number) => {
+    //                     return (
+    //
+    //                         <Box  key={"Grid" + index}>
+    //                             <Grid container spacing={12} key={Math.random()}>
+    //                                 {isInDeleteMode ? (
+    //                                     <><Grid sx={{display:'flex'}} item xs={12} key={Math.random()}>
+    //                                         <Checkbox onChange={() => {
+    //                                             setMedicationIdDeleteArray(prevState => {
+    //                                                 if (prevState.includes(medication.medicationId)) {
+    //                                                     return prevState.filter(id => id !== medication.medicationId);
+    //                                                 } else {
+    //                                                     return [...prevState, medication.medicationId];
+    //                                                 }
+    //                                             })
+    //                                         }}/>
+    //
+    //
+    //                                             <SingleMedication
+    //                                                 index={index} medication={medication}
+    //                                                 getSetSelectedMedication={getSetSelectedMedication}/>
+    //                                         </Grid></>
+    //                                 ) : (
+    //                                     <>
+    //                                         {/*TODO: SPOTEXX CENTER THIS*/}
+    //                                         <Grid item xs={12}>
+    //                                             <SingleMedication
+    //                                                 index={index} medication={medication}
+    //                                                 getSetSelectedMedication={getSetSelectedMedication}/>
+    //                                         </Grid>
+    //                                     </>
+    //
+    //                                 )}
+    //                             </Grid>
+    //                         </Box>
+    //                     );
+    //                 }
+    //             )}
+    //
+    //
+    //         </>
+    //     );
+    // };
 
     //endregion
 
@@ -223,7 +223,7 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
         return {
             med: <Chip sx={{ bgcolor: medication.medicationOwner.color, width:'100%', display:'flex', justifyContent:'left' }}
                        style={{margin:'left'}}
-                       icon={<Face />}
+                       icon={<Medication/>}
                        label={medication.prescriptionName.length > 15 ? medication.prescriptionName.slice(0,15)+'...' : medication.prescriptionName}
                        title={medication.prescriptionName}
                        onClick={() => {
