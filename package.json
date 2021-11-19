@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node app.ts"
+    "start": "ts-node app.ts",
+    "heroku-postbuild": "cd frontend && yarn && npm run build"
   },
   "dependencies": {
     "@types/mongoose": "^5.11.97",
