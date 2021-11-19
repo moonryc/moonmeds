@@ -19,7 +19,7 @@ export const makeMedication = () => ({
 export const makePersonNameAndColor = ()=>({
     name: "",
     color: "secondary",
-    _id:"1"
+    _id:1
 } as IPersonNameAndColor)
 
 export const makeDosageDetails = () => ({

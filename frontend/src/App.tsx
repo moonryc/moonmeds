@@ -22,11 +22,10 @@ function App() {
       () => {
         if (reactLocalStorage.get("JWTToken") != null) {
           checkIfJWTTokenIsValid();
-          return null
         } else {
           setLoggedIn(false);
-          return false;
         }
+        return false;
       },
       [checkIfJWTTokenIsValid, setLoggedIn]
   );

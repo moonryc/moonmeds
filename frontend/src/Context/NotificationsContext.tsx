@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, {createContext, useCallback, useState} from "react";
 import { IAlerts } from "../../../Types/AlertMessageTypes";
 
 export interface INotificationsContextState {
@@ -30,23 +30,25 @@ export const NotificationsContainer = (props: any) => {
    * @param message - the message you wish to be added to the notification (can be any type not just strings)
    * @param severity - must be "error"|"warning"|"info"|"success"
    */
-  const newNotification = (
-    message: any,
-    severity: "error" | "warning" | "info" | "success"
-  ): void => {
-    if (typeof message != typeof "") {
-      message = JSON.stringify(message);
-    }
-    setNotifications((notifications) => [
-      ...notifications,
-      {
-        message: message,
-        numberOfOccurrences: 1,
-        severity: severity,
-        notificationDate: new Date(),
+  const newNotification = useCallback(
+      (message: any,
+       severity: "error" | "warning" | "info" | "success") => {
+        if (typeof message != typeof "") {
+          message = JSON.stringify(message);
+        }
+        setNotifications((notifications) => [
+          ...notifications,
+          {
+            message: message,
+            numberOfOccurrences: 1,
+            severity: severity,
+            notificationDate: new Date(),
+          },
+        ]);
       },
-    ]);
-  };
+      [ setNotifications],
+  );
+
 
   /**
    * Removes a notification from the notification array
