@@ -53,21 +53,23 @@ app.use(passport.initialize());
 // app.use(cors())
 
 //TODO remeber what this does
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
-//     res.setHeader(
-//         'Access-Control-Allow-Headers',
-//         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-//     );
-//     next();
-// });
-// app.options('*', (req, res,next) => {
-//     res.json({
-//         status: 'OK'
-//     });
-//     next()
-// });
+if(process.env.Node_ENV !== "DEV"){
+    app.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', 'https://moonmeds.herokuapp.com/');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        );
+        next();
+    });
+app.options('*', (req, res,next) => {
+    res.json({
+        status: 'OK'
+    });
+    next()
+});
+}
 
 
 //region Security
