@@ -40,7 +40,7 @@ router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
         }
         await getUserMedications(req).then(data=>response.medicationArray = data)
         await getUserMedicationDosages(req).then(data=>response.medicationDosagesArray = data)
-        await getPersons(req).then(data=>response.persons = data.persons)
+        await getPersons(req).then(data=>response.persons = data!.persons)
         apiResponse.payload = response
         return res.status(200).json(apiResponse)
     } catch (e) {
@@ -56,7 +56,7 @@ router.get('/usersPersons', JwtAuthenticate, async (req, res, next) => {
     try {
 
         await getPersons(req).then(data=> {
-            apiResponse.payload = data.persons
+            apiResponse.payload = data!.persons
             return res.status(200).json(apiResponse)
         })
     } catch (e) {
