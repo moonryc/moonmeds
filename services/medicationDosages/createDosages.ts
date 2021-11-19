@@ -2,9 +2,9 @@ import { getHours, getMinutes, setHours, setMinutes, startOfToday, startOfTomorr
 import { Types } from "mongoose";
 import { IMedicationDosagesBase } from "../../Types/MedicationDosagesTypes";
 import { IMedicationBase } from "../../Types/MedicationTypes";
-import CreateDailyDosages from "./CreateDailyDosages";
-import CreateMonthlyDosages from "./CreateMonthlyDosages";
-import CreateWeeklyDosages from "./CreateWeeklyDosages";
+import createDailyDosages from "./CreateDailyDosages";
+import createMonthlyDosages from "./CreateMonthlyDosages";
+import createWeeklyDosages from "./CreateWeeklyDosages";
 
 /**
  * Creates medication dosages for the medication that is passed
@@ -59,13 +59,13 @@ const createDosages = (medication: IMedicationBase, todayAndTomorrow: boolean) =
 
 
         if (newDosage.isDaily) {
-            CreateDailyDosages(newDosage, todayAndTomorrow, today, tomorrow)
+            createDailyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
         else if (newDosage.isWeekly) {
-            CreateWeeklyDosages(newDosage, todayAndTomorrow, today, tomorrow)
+            createWeeklyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
         else if (newDosage.isOnceAMonth) {
-            CreateMonthlyDosages(newDosage, todayAndTomorrow, today, tomorrow)
+            createMonthlyDosages(newDosage, todayAndTomorrow, today, tomorrow)
         }
         else {
             console.log("error")
