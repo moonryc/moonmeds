@@ -80,9 +80,9 @@ const MainLoggedInPage = () => {
           </Paper>
         </Box>
         <Box sx={{  flex: 1, pt:'1vw', pb:['1vw',,,'0vw'] }}>
-          <Paper elevation={0} sx={{height:[undefined,,,'100%'], maxHeight:'100%'}}>
-            <Typography sx={{p:'3vh'}}>test <br/> what will go here <br/> who knows? <br/> you sussy baka you. <br/> heh, titties</Typography>
-          </Paper>
+          {/*<Paper elevation={0} sx={{height:[undefined,,,'100%'], maxHeight:'100%'}}>*/}
+          {/*  /!*<Typography sx={{p:'3vh'}}>test <br/> what will go here <br/> who knows? <br/> you sussy baka you. <br/> heh, titties</Typography>*!/*/}
+          {/*</Paper>*/}
         </Box>
         </Box>
             <Card sx={{ position:'relative', width: "100%", height: '100%',ml:[undefined,,,'1vw'] }}>

@@ -24,6 +24,7 @@ import {makeMedication} from "../../../typeConstructors";
 import MedicationOverViewDialog from "../DateDetails/MedicationOverViewDialog";
 import {backgroundStyle, centeredTextStyle} from "../../../Styles";
 import {Face} from "@mui/icons-material";
+import {format} from "date-fns";
 
 
 interface IDisplayMedicationList {
@@ -214,25 +215,41 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
     const columns = [
         { id: "med", label: "Medication", minWidth: 60 },
         { id: "owner", label: "Owner", minWidth: 60 },
+        { id: "refill", label:"Next Refill", minWidth:60},
         { id: "edit", label: "Edit", minWidth: 60 },
-        { id: "delete", label: "Delete", minWidth: 60 },
+        { id: isInDeleteMode?"delete":null, label: isInDeleteMode?"Delete":null, minWidth:isInDeleteMode?60:0 },
     ];
     const rows = userMedications.map((medication:IMedicationBase, ) => {
         return {
-            med: <Chip sx={{ bgcolor: medication.medicationOwner.color }}
+            med: <Chip sx={{ bgcolor: medication.medicationOwner.color, width:'100%', display:'flex', justifyContent:'left' }}
+                       style={{margin:'left'}}
                        icon={<Face />}
                        label={medication.prescriptionName.length > 15 ? medication.prescriptionName.slice(0,15)+'...' : medication.prescriptionName}
                        title={medication.prescriptionName}
-                       onClick={() => {setOpenMedication(true)}}
-                        />,
-            owner: <Chip sx={{ bgcolor: medication.medicationOwner.color }}
+                       onClick={() => {
+                           setSelectedMedication({...medication});
+                           setOpenMedication(true)}}
+                        />,//@ts-ignore
+            owner: <Chip sx={{ bgcolor: medication.medicationOwner.color , width:'100%',display:'flex', justifyContent:'left'}}
                          icon={<Face />}
                          label={medication.medicationOwner.name.length > 10? medication.medicationOwner.name.slice(0,15)+'...' : medication.medicationOwner.name}
                          title={medication.medicationOwner.name}
-                         onClick={() => {setOpenMedication(true);}}
                     />,
-            edit: <Button onClick={()=>{setEditMedication(true)}}>Edit</Button>,//TODO mooon back end this stuff please
-            delete:<Button>Delete</Button>
+            refill: format(new Date(medication.nextFillDay),'MM/dd/yyyy'),
+            edit: <Button onClick={()=>{
+                setSelectedMedication({...medication})
+                setEditMedication(true)}}>Edit</Button>,
+            delete:<Checkbox
+                 onChange={() => {
+                setMedicationIdDeleteArray(prevState => {
+                    if (prevState.includes(medication.medicationId)) {
+                        return prevState.filter(id => id !== medication.medicationId);
+                    } else {
+                        return [...prevState, medication.medicationId];
+                    }
+                });console.log(medicationIdDeleteArray);
+                }}
+                />
 
         };
     });
@@ -305,13 +322,35 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                         </Table>
                     </TableContainer>
                 <DialogActions>
-                    <Button
-                        variant={"contained"}
-                        fullWidth
-                        onClick={() => closeListOfMedications()}
-                    >
-                        Close
-                    </Button>
+                    {isInDeleteMode ? (
+                        <ButtonGroup orientation='vertical' fullWidth sx={{pb:'1vw'}}>
+                            <Button
+                                variant={"contained"}
+                                onClick={() => setIsInDeleteMode(false)}
+                            >
+                                Cancel
+                            </Button>
+                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsEraseHistory()}>
+                                Delete Medications and Medication history
+                            </Button>
+                            <Button variant={"contained"} onClick={() => deleteSelectedMedicationsKeepHistory()}>
+                                Delete Medications and keep Medication history
+                            </Button>
+                        </ButtonGroup>) :
+                        <Box sx={{display:'flex', width:'100%'}}>
+                            <ButtonGroup fullWidth>
+                                <Button
+                                    variant={"contained"}
+                                    fullWidth
+                                    onClick={() => closeListOfMedications()}
+                                >
+                                    Close
+                                </Button>
+                                    <Button variant={"contained"} onClick={() => setIsInDeleteMode(true)} sx={{}} fullWidth>
+                                    Delete Medications
+                                </Button>
+                            </ButtonGroup>
+                        </Box>}
                 </DialogActions>
                 </Box>
             </Dialog>
