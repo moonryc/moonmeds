@@ -8,7 +8,7 @@ import UserModel from "../Schemas/UserSchema";
 import passport from 'passport'
 
 
-const pathToKey = path.join('./Cryptography/id_rsa_pub.pem')
+const pathToKey = path.join('./cryptography/id_rsa_pub.pem')
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8')
 
 const options = {
