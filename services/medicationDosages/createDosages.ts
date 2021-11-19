@@ -2,9 +2,9 @@ import { getHours, getMinutes, setHours, setMinutes, startOfToday, startOfTomorr
 import { Types } from "mongoose";
 import { IMedicationDosagesBase } from "../../Types/MedicationDosagesTypes";
 import { IMedicationBase } from "../../Types/MedicationTypes";
-import createDailyDosages from "./CreateDailyDosages";
-import createMonthlyDosages from "./CreateMonthlyDosages";
-import createWeeklyDosages from "./CreateWeeklyDosages";
+import createDailyDosages from "./createDailyDosages";
+import createMonthlyDosages from "./createMonthlyDosages";
+import createWeeklyDosages from "./createWeeklyDosages";
 
 /**
  * Creates medication dosages for the medication that is passed
