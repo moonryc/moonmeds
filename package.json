@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ts-node app.ts",
-    "heroku-postbuild": "cd frontend && npm run build"
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@types/mongoose": "^5.11.97",
