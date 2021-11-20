@@ -1,8 +1,8 @@
 //region Development
 //@ts-nocheck
 // if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-    console.log('dotenv loaded')
+require('dotenv').config()
+console.log('dotenv loaded')
 // }
 //endregion
 
@@ -53,23 +53,23 @@ app.use(passport.initialize());
 // app.use(cors())
 
 // //TODO remeber what this does
-if(process.env.Node_ENV !== "DEV"){
-    app.use((req, res, next) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://moonmeds.herokuapp.com/');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
-        res.setHeader(
-            'Access-Control-Allow-Headers',
-            'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-        );
-        next();
-    });
-app.options('*', (req, res,next) => {
-    res.json({
-        status: 'OK'
-    });
-    next()
-});
-}
+// if (process.env.Node_ENV !== "DEV") {
+//     app.use((req, res, next) => {
+//         res.setHeader('Access-Control-Allow-Origin', 'https://moonmeds.herokuapp.com/');
+//         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE, OPTIONS');
+//         res.setHeader(
+//             'Access-Control-Allow-Headers',
+//             'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//         );
+//         next();
+//     });
+//     app.options('*', (req, res, next) => {
+//         res.json({
+//             status: 'OK'
+//         });
+//         next()
+//     });
+// }
 
 
 //region Security
@@ -83,16 +83,15 @@ app.options('*', (req, res,next) => {
 // cors to allow cross origin resource sharing
 
 
-const whitelist = ['http://localhost:3000/',  "https://moonmeds.herokuapp.com/"]
+const whitelist = ['http://localhost:3000/', "https://moonmeds.herokuapp.com/"]
 const corsOptions = {
     credentials: true,
-    origin: function(origin: any, callback:any) {
+    origin: function (origin: any, callback: any) {
         console.log("-------------")
         console.log("origin")
         console.log(origin)
         console.log("-------------")
-        if (whitelist.indexOf(origin) !== -1) {
-
+        if (whitelist.indexOf(origin) !== -1 || origin === undefined) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
@@ -106,7 +105,7 @@ app.use(cors(corsOptions));
 // #endregion
 
 //region routes
-app.use('/',indexRouter)
+app.use('/', indexRouter)
 
 //endregion
 
