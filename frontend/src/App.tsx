@@ -49,7 +49,7 @@ function App() {
           <Route
             exact
             path="/"
-            component={loggedIn ? MainLoggedInPage : Homepage}
+            component={loggedIn ? MainLoggedInPage : LoginPage}
           />
           <Route exact path="/Err" component={ErrorPage} />
           <Route
@@ -57,14 +57,14 @@ function App() {
             path="/Login"
             component={loggedIn ? ()=>{
                 window.location.href = "/";
-                return MainLoggedInPage()
+                return <></>
             } : LoginPage}
           />
             <Route
                 exact path="/signup"
                 component={loggedIn ? ()=> {
                     window.location.href = "/"
-                    return MainLoggedInPage()
+                    return <></>
                 } : SignUpPage}
             />
           <NotificationsParent />
