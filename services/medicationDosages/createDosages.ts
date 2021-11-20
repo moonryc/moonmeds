@@ -15,27 +15,35 @@ import createWeeklyDosages from "./createWeeklyDosages";
  */
 const createDosages = (medication: IMedicationBase, todayAndTomorrow: boolean) => {
 
+    console.log("----------------");
+    console.log("creating Dosages");
+    console.log("----------------");
+
     //loop through the dosages
     for (let dose of medication.dosages) {
 
-        const { customWeekDays, time, ...rest } = dose;
-
+        const { customWeekDays, time,...rest } = dose;
+        const {medicationOwner, ...restMedication} = medication;
         //creates a new dosage object
         let newDosage: IMedicationDosagesBase = {
             ...rest,
-            ...medication,
+            ...restMedication,
             ...customWeekDays,
 
             timeToTake: time,
+            medicationOwner: {
+                name: medication.medicationOwner.name,
+                color: medication.medicationOwner.color
+            },
 
             //create
             dosageId: new Types.ObjectId().toString(),
-
             //When created this should always be false/undefined
             timeTaken: undefined,
             hasBeenMissed: false,
             hasBeenTaken: false,
         }
+
 
         //gets tomorrows date and sets the time to that of which the medication should be taken
         //region tomorrow

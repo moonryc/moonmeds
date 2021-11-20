@@ -21,7 +21,7 @@ const createNewMedication = async (req: any, res: any) => {
         if (doc) {
             throw "Medication already exists"
         } else {
-            req.body.medicationId = new Types.ObjectId()
+            req.body.medicationId = new Types.ObjectId().toString()
             req.body.userId = req.user._id
             const newMedication = new MedicationModel(req.body)
             newMedication.save()

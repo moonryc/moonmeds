@@ -1,10 +1,6 @@
-
 //@ts-nocheck
-
 require('dotenv').config()
 console.log('dotenv loaded')
-
-
 
 //region Imports
 import express = require('express');
@@ -50,7 +46,6 @@ require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
 require('./middleware/passport')
 //Passport
 app.use(passport.initialize());
-// app.use(cors())
 
 // //TODO remeber what this does
 if (process.env.Node_ENV !== "DEV") {
@@ -80,10 +75,7 @@ if (process.env.Node_ENV !== "DEV") {
 // app.use(csurf({cookie:true}));
 //endregion
 
-// #region app.use(cors)
 // cors to allow cross origin resource sharing
-
-
 const whitelist = [undefined, 'http://localhost:3000', 'http://localhost:3001/', "https://moonmeds.herokuapp.com"]
 const corsOptions = {
     credentials: true,
@@ -99,19 +91,11 @@ const corsOptions = {
         }
     }
 }
-
 app.use(cors(corsOptions));
 
+//endregion
 
-// #endregion
-
-//region routes
 app.use('/', indexRouter)
-
-//endregion
-
-
-//endregion
 
 //region Host the React Build
 
@@ -130,9 +114,6 @@ if (process.env.NODE_ENV != "DEV") {
 
 }
 //endregion
-
-
-//region Views
 
 //region 404 Catcher
 // catch 404 and forward to error handler

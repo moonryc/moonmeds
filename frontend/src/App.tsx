@@ -55,7 +55,10 @@ function App() {
           <Route
             exact
             path="/Login"
-            component={loggedIn ? MainLoggedInPage : LoginPage}
+            component={loggedIn ? ()=>{
+                window.location.href = "/";
+                return MainLoggedInPage()
+            } : LoginPage}
           />
             <Route
                 exact path="/signup"
