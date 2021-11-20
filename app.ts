@@ -87,7 +87,12 @@ const whitelist = ['http://localhost:3000/',  "https://moonmeds.herokuapp.com/"]
 const corsOptions = {
     credentials: true,
     origin: function(origin: any, callback:any) {
+        console.log("-------------")
+        console.log("origin")
+        console.log(origin)
+        console.log("-------------")
         if (whitelist.indexOf(origin) !== -1) {
+
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
