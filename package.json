@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node app.ts",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "start:dev": "nodemon app.ts"
+    "start:dev": "nodemon app.ts --inspect --trace-warnings"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

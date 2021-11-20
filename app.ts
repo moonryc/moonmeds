@@ -84,7 +84,7 @@ if (process.env.Node_ENV !== "DEV") {
 // cors to allow cross origin resource sharing
 
 
-const whitelist = [undefined, 'http://localhost:3000/', "https://moonmeds.herokuapp.com"]
+const whitelist = [undefined, 'http://localhost:3000', 'http://localhost:3001/', "https://moonmeds.herokuapp.com"]
 const corsOptions = {
     credentials: true,
     origin: function (origin: any, callback: any) {

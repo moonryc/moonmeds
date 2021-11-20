@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import {Types} from "mongoose";
 import MedicationModel from "../../Schemas/MedicationSchema";
 import createDosages from "../medicationDosages/createDosages";
 

@@ -34,6 +34,7 @@ const DosagesDefinition:ModelDefinition<IDosagesDetails>={
 const PersonNameAndColorDefinition:ModelDefinition<IPersonNameAndColor> = {
     name:{type:String,required:true},
     color:{type:String,required:true},
+    _id:{type:String,required:true},
 }
 
 const MedicationDefinition:ModelDefinition<IMedicationBase> = {
