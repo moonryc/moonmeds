@@ -84,7 +84,7 @@ if (process.env.Node_ENV !== "DEV") {
 // cors to allow cross origin resource sharing
 
 
-const whitelist = ['http://localhost:3000/', "https://moonmeds.herokuapp.com/"]
+const whitelist = [undefined, 'http://localhost:3000/', "https://moonmeds.herokuapp.com/"]
 const corsOptions = {
     credentials: true,
     origin: function (origin: any, callback: any) {
@@ -92,7 +92,7 @@ const corsOptions = {
         console.log("origin")
         console.log(origin)
         console.log("-------------")
-        if (whitelist.indexOf(origin) !== -1 || origin === undefined) {
+        if (whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
@@ -122,7 +122,7 @@ if (process.env.NODE_ENV != "DEV") {
     );
 
     app.get("*", (req, res) => {
-        res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
+        res.set("Content-Security-Policy", "default-src *; style-src 'self' https://* 'unsafe-inline'; script-src 'self' https://* 'unsafe-inline' 'unsafe-eval'")
             .sendFile(
                 path.join(__dirname, "/frontend/build/index.html")
             );
@@ -148,7 +148,7 @@ app.use(function (err: any, req: any, res: any, next: any) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+    console.log(err)
     // render the error page
     res.status(err.status || 500);
     res.render('error');
