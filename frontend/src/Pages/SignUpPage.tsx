@@ -14,16 +14,19 @@ import {
     wrapperStyle
 } from "../Styles";
 
-const LoginPage = () => {
-    const {postLogin} = useContext(ApiContext);
+const SignUpPage = () => {
+    const {postRegister} = useContext(ApiContext);
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
 
-    const handleClick = (userName: string, password: string) => {
-        postLogin(userName, password).then(
-            (response) => (window.location.href = "/")
-        );
+    const handleClick = (userName: string, password: string, emailAddress:string) => {
+        if(userName.length > 0 && password.length > 0 && emailAddress.length > 0) {
+            postRegister(userName, password, emailAddress).then(
+                (response) => (window.location.href = "/")
+            );
+        }
     };
 
     return (
@@ -39,7 +42,7 @@ const LoginPage = () => {
                 marginTop: theme => theme.spacing(8),
                 paddingBottom: theme => theme.spacing(3)
             }}>
-                Sign In
+                Sign Up
             </Typography>
             <Paper
                 sx={{
@@ -55,7 +58,21 @@ const LoginPage = () => {
                     margin="normal"
                     required
                     fullWidth
-                    id="email"
+                    id="Email"
+                    label="Email"
+                    autoComplete="Email" //@ts-ignore
+                    autoFocustype={"text"}
+                    type={'email'}
+                    name={"email"}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <TextField
+                    sx={{color: "#fff"}}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="Username"
                     label="Username"
                     autoComplete="user" //@ts-ignore
                     autoFocustype={"text"}
@@ -76,24 +93,17 @@ const LoginPage = () => {
                 />
                 <br/>
                 <br/>
-                <div style={{display: "flex"}}>
 
-                    {/*<div style={{ flex: 1 }}></div>*/}
-                    {/*<FormControlLabel*/}
-                    {/*  control={<Checkbox value="remember" color="primary" />}*/}
-                    {/*  label="Remember me" //TODO moooooon back end this!!!*/}
-                    {/*/>*/}
-                </div>
                 <Button variant="contained" color="primary" fullWidth type={"submit"}
-                        onClick={() => handleClick(userName, password)}>
-                    Login
+                        onClick={() => handleClick(userName, password, email)}>
+                    Create Account
                 </Button>
                 <br/>
                 <br/>
                 <Button variant="contained" color="primary" fullWidth type={"submit"} onClick={() => {
-                    window.location.href = "/signup";
+                    window.location.href = "/login";
                 }}>
-                    Create Account
+                    Login To Existing Account
                 </Button>
             </Paper>
         </Box>
@@ -101,4 +111,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignUpPage;

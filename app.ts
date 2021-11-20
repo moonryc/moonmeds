@@ -1,10 +1,10 @@
-//region Development
+
 //@ts-nocheck
-// if (process.env.NODE_ENV !== 'production') {
+
 require('dotenv').config()
 console.log('dotenv loaded')
-// }
-//endregion
+
+
 
 //region Imports
 import express = require('express');

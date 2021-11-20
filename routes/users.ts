@@ -5,7 +5,6 @@ import passport = require("passport");
 import issueJWT from "../middleware/issueJwt";
 import addPerson from "../services/users/addPerson";
 import removePerson from "../services/users/removePerson";
-import newUser from "../services/users/newUser";
 import getPersons from "../services/users/getPersons";
 import getUserMedications from "../services/medication/getUserMedications";
 import getUserMedicationDosages from "../services/medication/getUserMedicationDosages";
@@ -139,17 +138,55 @@ router.post('/login', (req: Request, res: Response, next) => {
     }
 );
 
-router.post('/register', async (req: Request, res: Response, next) => {
+router.post('/register', (req: Request, res: Response, next) => {
     try {
-        await newUser(req, res).then(user=>{
-            const jwt = issueJWT(user)
+
+        if (!req.body.userName) {
+            throw "Username is blank"
+        }
+        if (!req.body.emailAddress) {
+            throw "Email is blank"
+        }
+        if (!req.body.password) {
+            throw "Password is blank"
+        }
+
+        //check and see if the email or username already exists
+        UserModel.find(
+            {$or: [{userName: req.body.userName}, {emailAddress: req.body.emailAddress}]},
+            (err: any, user: any) => {
+                if (err) {
+                    throw err
+                }
+                if (user.length > 0) {
+                    throw "Username or Email already exists"
+                } else {
+                    const newUser = new UserModel({
+                        userName: req.body.userName,
+                        hash: bcrypt.hashSync(req.body.password, 10),
+                        emailAddress: req.body.emailAddress,
+                        persons: [{name: "Default", color: "grey"}]
+                    });
+
+                    newUser.save()
+                        .then((user: any) => {
+                            const jwt = issueJWT(user)
             apiResponse.payload = { user: user, token: jwt.token, expiresIn: jwt.expires}
             return res.status(200).json(apiResponse)
-        })
+
+                        })
+                        .catch((err: any | string): any => {
+                            throw err
+                        })
+                }
+            }
+        )
+
 
     } catch (e) {
         apiResponse.error = true
         apiResponse.errorMessage = e
+        console.log(e)
         return res.status(400).json(apiResponse)
     }
 

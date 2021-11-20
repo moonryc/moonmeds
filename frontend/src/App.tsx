@@ -9,6 +9,7 @@ import ErrorPage from "./Pages/ErrorPage";
 import LoginPage from "./Pages/LoginPage";
 import MainLoggedInPage from "./Pages/MainLoggedInPage";
 import Homepage from "./Pages/Startup/Homepage";
+import SignUpPage from "./Pages/SignUpPage";
 
 
 function App() {
@@ -56,6 +57,13 @@ function App() {
             path="/Login"
             component={loggedIn ? MainLoggedInPage : LoginPage}
           />
+            <Route
+                exact path="/signup"
+                component={loggedIn ? ()=> {
+                    window.location.href = "/"
+                    return MainLoggedInPage()
+                } : SignUpPage}
+            />
           <NotificationsParent />
         </>
       )}

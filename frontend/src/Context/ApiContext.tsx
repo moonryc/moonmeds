@@ -145,10 +145,7 @@ export const ApiContainer = (props: any) => {
      * @param userName
      * @param password
      */
-    const postLogin = async (
-        userName: string,
-        password: string
-    ): Promise<void> => {
+    const postLogin = async (userName: string, password: string): Promise<void> => {
         let url = "/users/login";
         // Default options are marked with *
         await fetch(url, {
@@ -185,11 +182,7 @@ export const ApiContainer = (props: any) => {
      * @param password
      * @param emailAddress
      */
-    const postRegister = async (
-        userName: string,
-        password: string,
-        emailAddress: string
-    ): Promise<void> => {
+    const postRegister = async (userName: string, password: string, emailAddress: string): Promise<void> => {
         let url = "/users/register";
         // Default options are marked with *
         await fetch(url, {
