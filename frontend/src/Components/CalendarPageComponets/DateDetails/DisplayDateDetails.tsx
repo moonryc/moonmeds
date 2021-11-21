@@ -38,7 +38,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
 
   return (
     <Box
-      key={Math.random()}
+      
       sx={{ height: ['100%',,,"77vh"], overflow: "auto", padding: "3vh" }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
@@ -60,11 +60,10 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index) => {
               return medicationDosage.hasBeenTaken ? (
-                <>
+                <div key={index}>
                   <Box
-                    key={Math.random()}
                     sx={{
                       bgcolor: "green",
                       width: "100%",
@@ -76,7 +75,6 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     }}
                   >
                     <Typography
-                      key={Math.random()}
                       sx={{
                         marginLeft: "1vh",
                         fontSize: "15px",
@@ -119,9 +117,9 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   </Box>
 
                   <br />
-                </>
+                </div>
               ) : (
-                <span key={Math.random()} />
+                <span  />
               );
             })}
           </Typography>
@@ -140,12 +138,11 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index) => {
               return !medicationDosage.hasBeenTaken &&
                 !medicationDosage.hasBeenMissed ? (
-                <>
+                <div key={index}>
                   <Box
-                    key={Math.random()}
                     sx={{
                       bgcolor: "orange",
                       width: "100%",
@@ -200,9 +197,9 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Button>
                   </Box>
                   <br />
-                </>
+                </div>
               ) : (
-                <span key={Math.random()} />
+                <span  />
               );
             })}
           </Typography>
@@ -221,12 +218,12 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index) => {
               return medicationDosage.hasBeenMissed &&
                 !medicationDosage.hasBeenTaken ? (
-                <>
+                <div key={index}>
                   <Box
-                    key={Math.random()}
+                    
                     sx={{
                       bgcolor: "red",
                       width: "100%",
@@ -285,9 +282,9 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                     </Button>
                   </Box>
                   <br />
-                </>
+                </div>
               ) : (
-                <span key={Math.random()} />
+                <span  />
               );
             })}
           </Typography>
@@ -306,17 +303,17 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
             variant={"body2"}
             sx={{ fontSize: "25px", color: "text.primary" }}
           >
-            {selectedDayDetails.map((medicationDosage) => {
+            {selectedDayDetails.map((medicationDosage,index) => {
               const numberOfDaysBeforeRefill = differenceInDays(
                 new Date(medicationDosage.nextFillDay),
                 new Date(medicationDosage.timeToTake)
               );
               return (
-                <>
+                <div key={index}>
                   {numberOfDaysBeforeRefill <= 7 ? (
                     <>
                       <Box
-                        key={Math.random()}
+                        
                         sx={{
                           bgcolor: "blue",
                           width: "100%",
@@ -372,7 +369,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                   ) : (
                     <></>
                   )}
-                </>
+                </div>
               );
             })}
           </Typography>

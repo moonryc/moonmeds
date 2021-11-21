@@ -1,20 +1,23 @@
-import {Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import React from "react";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {format, formatISO9075, getHours, getMinutes, getTime} from "date-fns";
+import {FaceOutlined} from "@mui/icons-material";
 
 interface IMedicationOverViewDialog {
     selectedMedication: IMedicationBase;
     openMedication: boolean
 
     setOpenMedication(value: boolean): void
+    setEditMedication(value: boolean): void
 }
 
 
 const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
                                                                            selectedMedication,
                                                                            openMedication,
-                                                                           setOpenMedication
+                                                                           setOpenMedication,
+                                                                           setEditMedication
                                                                        }) => {
 
 
@@ -23,9 +26,9 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
             <>
                 {selectedMedication.dosages.map((dose, index: number) => {
                     return (
-                        <>
-                            <p key={index}> Take {dose.amount} {dose.amountDosageType} of {selectedMedication.prescriptionName} at {format(new Date(dose.time),'h:mm aa')}</p>
-                        </>)
+                        <div key={index}>
+                            <p> Take {dose.amount} {dose.amountDosageType} of {selectedMedication.prescriptionName} at {format(new Date(dose.time),'h:mm aa')}</p>
+                        </div>)
                 })}
             </>
         )
@@ -36,12 +39,19 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
         <Dialog
             open={openMedication}
             onBackdropClick={() => setOpenMedication(false)}
+            maxWidth={'xs'}
+            fullWidth
         >
-            <DialogTitle>{selectedMedication.prescriptionName}</DialogTitle>
+            <DialogTitle sx={{textAlign:"center"}}>
+                {selectedMedication.prescriptionName}
+            </DialogTitle>
+            <Box maxWidth={"sx"} sx={{textAlign:"center"}}>
             <Chip
+                icon={<FaceOutlined/>}
                 label={selectedMedication.medicationOwner.name}
-                sx={{backgroundColor: selectedMedication.medicationOwner.color}}
+                sx={{backgroundColor: selectedMedication.medicationOwner.color, maxWidth: "sx"}}
             />
+            </Box>
 
             <DialogContent>
                 <p>Bottle dosage: {selectedMedication.prescriptionDosage} {selectedMedication.prescriptionDosageType}</p>
@@ -50,6 +60,17 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
                 <TakeDoseAtTime/>
             </DialogContent>
             <DialogActions>
+                <Button
+                    variant={"contained"}
+                    fullWidth
+                    onClick={() => {
+                        setEditMedication(true)
+                        setOpenMedication(false)
+                    }}
+                >
+                    Edit
+                </Button>
+
                 <Button
                     variant={"contained"}
                     fullWidth

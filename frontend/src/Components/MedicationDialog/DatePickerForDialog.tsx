@@ -41,6 +41,11 @@ const DatePickerForDialog: React.FC<IDatePickerForDialogProps> = (
     const [value, setValue] = React.useState<Date|null>(datePassed);
 
     useEffect(() => {
+            setValue(datePassed)
+    }, [datePassed]);
+
+
+    useEffect(() => {
         if (isGetEndDate) {
             getEndDate(value);
         }

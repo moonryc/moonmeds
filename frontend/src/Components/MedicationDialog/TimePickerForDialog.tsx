@@ -5,11 +5,16 @@ import React, { useEffect } from "react";
 interface ITimePickerForDialog {
   getTime(time: Date, index: number): void;
   index: number;
+  time: Date;
 }
 
 
-const TimePickerForDialog:React.FC<ITimePickerForDialog> = ({getTime,index}) => {
-  const [value, setValue] = React.useState<Date | null>(new Date());
+const TimePickerForDialog:React.FC<ITimePickerForDialog> = ({getTime,index,time}) => {
+  const [value, setValue] = React.useState<Date | null>(time);
+
+  useEffect(() => {
+    setValue(time);
+  }, [time]);
 
   useEffect(() => {
     if (value == null) {

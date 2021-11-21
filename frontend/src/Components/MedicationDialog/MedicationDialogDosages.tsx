@@ -33,6 +33,8 @@ const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medic
     medicationDosages
   );
 
+
+
   /**
    * Removes a dosage from the array of dosages at the given index
    * @param dosageIndex - number
@@ -71,7 +73,7 @@ const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medic
       <br />
       {dosages.map((dose, index) => {
         return (
-          <>
+          <div key={"dosages" + index}>
             <TextField
               sx={{width:"60%"}}
               variant={"outlined"}
@@ -110,7 +112,7 @@ const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medic
             </FormControl>
             <br />
             <br />
-            <TimePickerForDialog getTime={getTime} index={index} />
+            <TimePickerForDialog getTime={getTime} index={index}  time={dose.time}/>
             <br />
             <br />
             <Paper>
@@ -275,7 +277,7 @@ const MedicationDialogDosages:React.FC<IMedicationCardAddDosagesProps> = ({medic
             <br />
             <Divider />
             <br />
-          </>
+          </div>
         );
       })}
       <br />
