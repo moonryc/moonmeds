@@ -18,7 +18,7 @@ const UserDefinition:ModelDefinition<IUser>  = {
     userName:  { type: String, required: true },
     hash: {type: String, required: true},
     emailAddress: {type: String, required: true},
-    persons: [{type: PersonDefinition, required: true}]
+    persons: [{type: Schema.Types.Mixed, required: true}]
 
 }
 

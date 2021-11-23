@@ -165,7 +165,7 @@ router.post('/register', (req: Request, res: Response, next) => {
                         userName: req.body.userName,
                         hash: bcrypt.hashSync(req.body.password, 10),
                         emailAddress: req.body.emailAddress,
-                        persons: [{name: "Default", color: "grey"}]
+                        persons: null
                     });
 
                     newUser.save()

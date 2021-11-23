@@ -241,7 +241,7 @@ export const ApiContainer = (props: any) => {
                 } else {
                     setUserMedications(apiResponse.payload.medicationArray);
                     setUserMedicationDosages(apiResponse.payload.medicationDosagesArray);
-                    setUsersPeople([...apiResponse.payload.persons,makePersonNameAndColor()]);
+                    setUsersPeople([...apiResponse.payload.persons]);
                 }
             })
             .catch((error) => {
@@ -268,7 +268,7 @@ export const ApiContainer = (props: any) => {
                 if (apiResponse.error) {
                     throw apiResponse.errorMessage;
                 } else {
-                    setUsersPeople([...apiResponse.payload,makePersonNameAndColor()]);
+                    setUsersPeople([...apiResponse.payload]);
                 }
             })
             .catch((error) => {
