@@ -47,8 +47,9 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
      * passes the selected medication owner up to the parent component MedicationDialog
      */
     useEffect(() => {
-        if (selectedUser == null) {
-            getMedicationOwner("Default User", "secondary");
+        if (selectedUser === null || selectedUser.name === "" || selectedUser.color === "secondary") {
+            // @ts-ignore
+            getMedicationOwner([]);
         } else {
             getMedicationOwner(selectedUser.name, selectedUser.color);
         }
@@ -85,11 +86,8 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
         {label: "green"},
         {label: "orange"},
         {label: "pink"},
-        {label: "grey"},
         {label: "purple"},
-        {label: "white"},
         {label: "yellow"},
-        {label: "secondary"},
     ];
 
     useEffect(() => {
@@ -111,7 +109,7 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
                     error={medicationOwnerEmpty}
                     renderValue={(selectedUser) => (
                         <Box sx={{display: "flex", flexWrap: "wrap", gap: 0.5}}>
-                            {JSON.parse(selectedUser).name !== "" ? (
+                            {JSON.parse(selectedUser) === null || JSON.parse(selectedUser).color !== undefined ? (
                                 <Chip
                                     label={JSON.parse(selectedUser).name}
                                     sx={{backgroundColor: JSON.parse(selectedUser).color}}
