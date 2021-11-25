@@ -52,10 +52,9 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
 
     const [selectedMedication, setSelectedMedication] = useState<IMedicationBase>(makeMedication());
-    const [backUpSelectedMedication, setBackUpSelectedMedication] = useState(selectedMedication);
 
-    const [openMedication, setOpenMedication] = useState(false);
-    const [editMedication, setEditMedication] = useState(false);
+    const [openMedication, setOpenMedication] = useState<boolean>(false);
+    const [editMedication, setEditMedication] = useState<boolean>(false);
 
 
     const deleteSelectedMedicationsKeepHistory = () => {
@@ -74,11 +73,17 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
 
     const setOpenEditDialog = useCallback((value: boolean) => {
             setEditMedication(value);
-            setBackUpSelectedMedication({...selectedMedication});
         },
         [],
     );
-    
+
+    const setCloseEditDialog = useCallback((medicationObject: IMedicationBase) => {
+            setEditMedication(false);
+        },
+        [],
+    );
+
+
     return (
         <>
             {/*List of Medications Dialog*/}
@@ -105,7 +110,10 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
                                             }}
                                             /> : <></>}
                                             <ListItemButton
-                                                sx={{'&:hover':{bgcolor:'secondary.main', opacity:0.5},'& .MuiButtonBase-root':{opacity:1}}}
+                                                sx={{
+                                                    '&:hover': {bgcolor: 'secondary.main', opacity: 0.5},
+                                                    '& .MuiButtonBase-root': {opacity: 1}
+                                                }}
                                                 disabled={isInDeleteMode}
                                                 onClick={() => {
                                                     setSelectedMedication({...medication});
@@ -167,18 +175,15 @@ const DisplayMedicationList: React.FC<IDisplayMedicationList> = ({isDialogOpen, 
             {/*Display Dialog of a selected Medication as a general overview*/}
             <MedicationOverViewDialog
                 openMedication={openMedication}
-                selectedMedication={selectedMedication}
+                selectedMedication={{...selectedMedication}}
                 setOpenMedication={setCloseOverViewDialog} setEditMedication={setOpenEditDialog}/>
 
             {/*Display Edit medication dialog of selected medication*/}
             <MedicationDialog
                 isOpen={editMedication}
                 isNewMedication={false}
-                medication={selectedMedication}
-                closeDialog={() => {
-                    setEditMedication(false)
-                    setSelectedMedication({...backUpSelectedMedication})
-                }}/>
+                medication={{...selectedMedication}}
+                closeDialog={setCloseEditDialog}/>
 
 
         </>

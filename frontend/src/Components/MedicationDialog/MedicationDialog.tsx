@@ -374,7 +374,7 @@ const MedicationDialog: React.FC<IMedicationDialog> = ({isOpen, isNewMedication,
 
                         <MedicationDialogDosages
                             updateMedicationDosages={updateMedicationDosages}
-                            medicationDosages={medicationObject.dosages}
+                            medicationDosages={[...medicationObject.dosages]}
                         />
                         <Divider/>
                     </DialogContent>
