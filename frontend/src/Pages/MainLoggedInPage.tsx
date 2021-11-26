@@ -10,7 +10,7 @@ import {
   Grid,
   Paper, Typography
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { IMedicationBase } from "../../../Types/MedicationTypes";
 import DisplayCalendar from "../Components/CalendarPageComponets/Calendar/DisplayCalendar";
 import DisplayDateDetails from "../Components/CalendarPageComponets/DateDetails/DisplayDateDetails";
@@ -37,9 +37,9 @@ const MainLoggedInPage = () => {
   useEffect(() => {
     fetchMedicationsAndDosagesAndPersons().then(r => r);
   }, [fetchMedicationsAndDosagesAndPersons]);
-
+    
   return (
-    <Box sx={flexWrapperStyle} key={1}>
+    <Box sx={{...flexWrapperStyle, height:[undefined,,,'100vh']}} key={1}>
       <AppbarTop />
       <Box sx={{ ...flex1ItemStyle, ...backgroundStyle,   display: "flex", flexDirection: ["column",undefined,undefined,'row'] }}>
         <Box sx={{height:'100%', width:['100%','100%','100%','450px'],  display: "flex", flexDirection: "column"}}>
@@ -85,8 +85,8 @@ const MainLoggedInPage = () => {
           {/*</Paper>*/}
         </Box>
         </Box>
-            <Card sx={{ position:'relative', width: "100%", height: '100%',ml:[undefined,,,'1vw'] }}>
-              <Box sx={{ bgcolor: "background.paper", width: "100%", height:'100%'  }}>
+          <Card sx={{ position:'relative', width: "100%", height: '100%',ml:[undefined,,,'1vw'] }}>
+              <Box sx={{ bgcolor: "background.paper", width: "100%", height:'100%' }}>
                 <DisplayDateDetails
                   selectedDate={{ index: 0, date: selectedDay }}
                 />

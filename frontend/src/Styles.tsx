@@ -4,14 +4,12 @@ export const wrapperStyle = {
   width: "100vw",
 };
 export const flexWrapperStyle = {
-  height: "100vh",
   display: "flex",
   flexDirection: "column",
 } as const;
 ////
 export const flex1ItemStyle = {
   flex: 1,
-  height: "100%",
   padding: "5vmin",
 };
 ////

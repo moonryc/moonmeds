@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import { ICalendarDay } from "../../../../../Types/CalendarType";
 import {
   Accordion,
@@ -32,14 +32,39 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
     () => toDate(selectedDate.date).toDateString(),
     [selectedDate.date]
   );
-
+  const [size, setSize] = useState<object>();
   const { selectedDayDetails } = useContext(CalendarContext);
   const { putUpdateMedicationDosage } = useContext(ApiContext);
+  const ref = useRef({})
 
-  return (
-    <Box
+  const updateDimensions = () => {
+    //@ts-ignore
+    if (ref.current) setSize(ref.current.offsetWidth);
+  };
+  useEffect(() => {
+
+    window.addEventListener("resize", updateDimensions);
+    //@ts-ignore
+    setSize(ref.current.offsetWidth);
+    return () => {
+      console.log("dismount");
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
+
+  const truncateString = (string:string) => {
+    //@ts-ignore
+    if(string.length > ref.current.offsetWidth/25) {
+      //@ts-ignore
+      return string.slice(0, ref.current.offsetWidth/25) + "...";
+    }else {
+      return string;
+    }
+  }
+return (
+    <Box ref={ref}
       
-      sx={{ height: ['100%',,,"77vh"], overflow: "auto", padding: "3vh" }}
+      sx={{padding: "3vh" }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
         {" "}
@@ -83,21 +108,27 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                         width:'70%',
                         flex:'1',
                         p:'12px',
+                        lineHeight:'35px'
 
                       }}
                     >
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<Face />}
-                        label={medicationDosage.medicationOwner.name}
+                        //@ts-ignore
+                        label={truncateString(medicationDosage.medicationOwner.name)}
+                        title={medicationDosage.medicationOwner.name}
                       />
-                      {" | "}
+                      {"  "}
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<MedicationIcon />}
-                        label={medicationDosage.prescriptionName}
+                        //@ts-ignore
+                        //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}
+                         label={truncateString(medicationDosage.prescriptionName)}
+                        title={medicationDosage.prescriptionName}
                       />
-                      {" | Dosage was taken at "}
+                      {"  Dosage was taken at "}
                       {format(parseISO(medicationDosage.timeTaken), "h:mm aa")}
                     </Typography>
                     <Button
@@ -162,20 +193,25 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                         width:'70%',
                         flex:'1',
                         p:'12px',
+                        lineHeight:'35px'
                       }}
                     >
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<Face />}
-                        label={medicationDosage.medicationOwner.name}
+                        //@ts-ignore
+                        label={truncateString(medicationDosage.medicationOwner.name)}
+                        title={medicationDosage.medicationOwner.name}
                       />
-                      {" | "}
+                      {"  "}
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<MedicationIcon />}
-                        label={medicationDosage.prescriptionName}
+                        //@ts-ignore
+                        label={truncateString(medicationDosage.prescriptionName)}
+                        title={medicationDosage.prescriptionName}
                       />
-                      {" | Dosage to be taken at "}
+                      {" Dosage to be taken at "}
                       {format(
                         parseISO(medicationDosage.timeToTake.toString()),
                         "h:mm aa"
@@ -223,7 +259,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                 !medicationDosage.hasBeenTaken ? (
                 <div key={index}>
                   <Box
-                    
+
                     sx={{
                       bgcolor: "red",
                       width: "100%",
@@ -243,8 +279,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                         width:'70%',
                         flex:'1',
                         p:'12px',
-                        display:'flex',
-                        alignContent:'center'
+                        lineHeight:'35px'
 
 
                       }}
@@ -252,15 +287,19 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<Face />}
-                        label={medicationDosage.medicationOwner.name}
+                        //@ts-ignore
+                        label={truncateString(medicationDosage.medicationOwner.name)}
+                        title={medicationDosage.medicationOwner.name}
                       />
-                      {" | "}
+                      {"  "}
                       <Chip
                         sx={{ bgcolor: medicationDosage.medicationOwner.color }}
                         icon={<MedicationIcon />}
-                        label={medicationDosage.prescriptionName}
+                        //@ts-ignore
+                        label={truncateString(medicationDosage.prescriptionName)}
+                        title={medicationDosage.prescriptionName}
                       />
-                      {" | Dosage was missed at "}
+                      {" Dosage was missed at "}
                       {format(
                         parseISO(medicationDosage.timeToTake.toString()),
                         "h:mm aa"
@@ -333,6 +372,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                             width:'70%',
                             flex:'1',
                             p:'12px',
+                            lineHeight:'35px'
                           }}
                         >
                           <Chip
@@ -340,17 +380,19 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
                               bgcolor: medicationDosage.medicationOwner.color,
                             }}
                             icon={<Face />}
-                            label={medicationDosage.medicationOwner.name}
+                            label={truncateString(medicationDosage.medicationOwner.name)}
+                            title={medicationDosage.medicationOwner.name}
                           />
-                          {" | "}
+                          {"  "}
                           <Chip
                             sx={{
                               bgcolor: medicationDosage.medicationOwner.color,
                             }}
                             icon={<MedicationIcon />}
-                            label={medicationDosage.prescriptionName}
+                            label={truncateString(medicationDosage.prescriptionName)}
+                            title={medicationDosage.prescriptionName}
                           />
-                          {" | refill in " +
+                          {" refill in " +
                             differenceInDays(
                               new Date(medicationDosage.nextFillDay),
                               new Date()
