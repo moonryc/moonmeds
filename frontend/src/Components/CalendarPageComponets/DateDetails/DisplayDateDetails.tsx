@@ -64,7 +64,7 @@ const DisplayDateDetails:React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =>
 return (
     <Box ref={ref}
       
-      sx={{padding: "3vh" }}
+      sx={{padding: "3vh", height:'100%' }}
     >
       <Typography variant={"h4"} sx={{ ...titleStyle, ...centeredTextStyle }}>
         {" "}
