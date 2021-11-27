@@ -17,8 +17,5 @@ const PersonDefinition: ModelDefinition<IPersonNameAndColor> = {
 
 const PersonSchema = new Schema(PersonDefinition)
 
-const PersonModel = model<IUser & Document>('Person', PersonSchema);
+const PersonModel = model<IUser & Document>(process.env.PERSONS_MODEL_NAME, PersonSchema);
 export default PersonModel;
-
-
-

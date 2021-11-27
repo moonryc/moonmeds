@@ -55,5 +55,5 @@ const MedicationDefinition:ModelDefinition<IMedicationBase> = {
 // @ts-ignore
 const MedicationSchema = new Schema(MedicationDefinition)
 
-const MedicationModel = model<IMedicationBase & Document>('MedicationTest', MedicationSchema);
+const MedicationModel = model<IMedicationBase & Document>(process.env.MEDICATION_MODEL_NAME, MedicationSchema);
 export default MedicationModel;

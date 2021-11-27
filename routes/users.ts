@@ -72,6 +72,7 @@ router.put('/addPerson', JwtAuthenticate, async (req: Request, res: Response, ne
         }).catch(error=>{
             apiResponse.error = true
             apiResponse.errorMessage = error
+            console.log(error)
             return res.status(400).json(apiResponse)
         })
 
@@ -165,7 +166,7 @@ router.post('/register', (req: Request, res: Response, next) => {
                         userName: req.body.userName,
                         hash: bcrypt.hashSync(req.body.password, 10),
                         emailAddress: req.body.emailAddress,
-                        persons: null
+                        persons: []
                     });
 
                     newUser.save()

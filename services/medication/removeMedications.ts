@@ -15,8 +15,10 @@ const removeMedications = (req:any, res:any) => {
                 throw err
             } else {
                 if (req.body.removePastMedicationDosages) {
+                    console.log("Removing past and future medication dosages");
                     removeAllMedicationDosages(req, medicationId)
                 } else {
+                    console.log("Removing only future medication dosages");
                     removeFutureMedicationDosages(req, medicationId)
                 }
             }

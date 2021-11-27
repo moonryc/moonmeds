@@ -18,14 +18,14 @@ const UserDefinition:ModelDefinition<IUser>  = {
     userName:  { type: String, required: true },
     hash: {type: String, required: true},
     emailAddress: {type: String, required: true},
-    persons: [{type: Schema.Types.Mixed, required: true}]
+    persons: [{type: PersonDefinition, required: true}]
 
 }
 
 
 const UserSchema = new Schema(UserDefinition)
 
-const UserModel = model<IUser & Document>('User', UserSchema);
+const UserModel = model<IUser & Document>(process.env.USERS_MODEL_NAME, UserSchema);
 export default UserModel;
 
 

@@ -73,12 +73,16 @@ const MedicationCardOwner: React.FC<IMedicationCardOwnerProps> = ({medicationOwn
      * already present in the usersPeople array as a name property
      */
     const checkDoesUserAlreadyExists = () => {
-        for (const user of usersPeople) {
-            if (user.name.toLowerCase() === newUser.name.toLowerCase()) {
-                return setDoesUserAlreadyExist(true);
+
+        // @ts-ignore
+        if(usersPeople[0] !== "") {
+            for (const user of usersPeople) {
+                if (user.name.toLowerCase() === newUser.name.toLowerCase()) {
+                    return setDoesUserAlreadyExist(true);
+                }
             }
+            setDoesUserAlreadyExist(false);
         }
-        setDoesUserAlreadyExist(false);
     }
 
     let colorOptions = [

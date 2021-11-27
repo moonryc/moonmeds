@@ -4,6 +4,8 @@ import {Request} from "express";
 
 const AddPerson = async (req: any, res: any) => {
 
+    console.log(req.body.name);
+    console.log(req.body.color);
     let doesPersonExist =  await UserModel.find({_id: req.user._id, persons: {$elemMatch: {name: req.body.name}}})
     if(doesPersonExist.length>0){
             throw "Person Already Exists"
