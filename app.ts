@@ -89,9 +89,7 @@ const corsOptions = {
         } else {
             callback(new Error('Not allowed by CORS'))
         }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
+    }
 }
 app.use(cors(corsOptions));
 
