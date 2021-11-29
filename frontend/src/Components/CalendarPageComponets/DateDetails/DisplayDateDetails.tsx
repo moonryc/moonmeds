@@ -415,9 +415,6 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     );
                 })}
                 <Divider/>
-                <ListItem>
-                    <Typography> {' '}</Typography>
-                </ListItem>
 
             </List>
 
