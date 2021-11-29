@@ -142,8 +142,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 subheader={<li/>}
                 id={"list"}
             >
-                <Divider />
-                <ListSubheader  sx={{fontSize:'20px',color:'text.primary', textAlign:'center'}} id={'Taken'}>Medications Taken</ListSubheader>
+
+                <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}} id={'Taken'}>Medications
+                    Taken</ListSubheader>
                 {selectedDayDetails.map((medicationDosage, index) => {
                     return medicationDosage.hasBeenTaken ? (
                             <>
@@ -182,10 +183,10 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}{truncateString(medicationDosage.prescriptionName)}
                                                 title={medicationDosage.prescriptionName}
                                             >{truncateString(medicationDosage.prescriptionName)}</Typography>
-                                        <Typography component={'span'} sx={{color:'text.primary'}}>
-                                            Dosage was taken at
+                                            <Typography component={'span'} sx={{color: 'text.primary'}}>
+                                                Dosage was taken at
 
-                                            {format(parseISO(medicationDosage.timeTaken), "h:mm aa")}</Typography>
+                                                {format(parseISO(medicationDosage.timeTaken), "h:mm aa")}</Typography>
                                         </Typography>
                                         <Button
                                             variant={"contained"}
@@ -212,7 +213,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         );
                 })}
                 <Divider/>
-                <ListSubheader sx={{fontSize:'20px',color:'text.primary', textAlign:'center'}} id={'To-Take'}>Medications To Take</ListSubheader>
+
+                <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}} id={'To-Take'}>Medications
+                    To Take</ListSubheader>
                 {selectedDayDetails.map((medicationDosage, index) => {
                     return !medicationDosage.hasBeenTaken &&
                     !medicationDosage.hasBeenMissed ? (
@@ -244,13 +247,11 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                     >
                                         <Face sx={{color: medicationDosage.medicationOwner.color}}/>
                                         {"  "}
-                                        <Chip
-                                            sx={{bgcolor: medicationDosage.medicationOwner.color}}
-                                            icon={<MedicationIcon/>}
-                                            //@ts-ignore
-                                            label={truncateString(medicationDosage.prescriptionName)}
+                                        <Typography
+                                            component={'span'}
                                             title={medicationDosage.prescriptionName}
-                                        />
+                                        >
+                                            {truncateString(medicationDosage.prescriptionName)}</Typography>
                                         {" Dosage to be taken at "}
                                         {format(
                                             parseISO(medicationDosage.timeToTake.toString()),
@@ -259,7 +260,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                     </Typography>
                                     <Button
                                         variant={"contained"}
-                                        sx={{m: '1vw',}}
+                                        sx={{m: '1vw', bgcolor: 'orange'}}
                                         onClick={() =>
                                             putUpdateMedicationDosage(
                                                 medicationDosage.dosageId,
@@ -281,7 +282,8 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 })}
                 <Divider/>
 
-                <ListSubheader sx={{fontSize:'20px',color:'text.primary', textAlign:'center'}} id={'Missed-Medications'}>Missed Medications</ListSubheader>
+                <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                               id={'Missed-Medications'}>Missed Medications</ListSubheader>
                 {selectedDayDetails.map((medicationDosage, index) => {
                     return medicationDosage.hasBeenMissed &&
                     !medicationDosage.hasBeenTaken ? (

@@ -55,7 +55,8 @@ const MedicationOverViewDialog: React.FC<IMedicationOverViewDialog> = ({
 
             <DialogContent>
                 <p>Bottle dosage: {selectedMedication.prescriptionDosage} {selectedMedication.prescriptionDosageType}</p>
-                <p>Next Refill Date: {format(new Date(selectedMedication.nextFillDay),"dd/mm/yyyy")}</p>
+
+                <p>Next Refill Date: {format(new Date(selectedMedication.nextFillDay),"MM/dd/yyyy")}</p>
                 <p>Notes: {selectedMedication.prescriptionName}</p>
                 <TakeDoseAtTime/>
             </DialogContent>
