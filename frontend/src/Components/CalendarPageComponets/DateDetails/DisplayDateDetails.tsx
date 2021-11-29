@@ -120,7 +120,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             container.scrollTop = scrollTo.offsetTop;
                         }}>
                             <Badge
-                                badgeContent={selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) < 7).length}>
+                                badgeContent={selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
                                 <Update fontSize={"large"}/>
                             </Badge>
                         </IconButton>
@@ -128,7 +128,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 </Box>
             </Box>
 
-
+            <Divider/>
             <List
                 sx={{
                     width: '100%',
@@ -410,13 +410,14 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                         <br/>
                                     </>
                                 ) : (
-                                    <></>
+                                    <span/>
                                 )}
                             </ListItem>
                         </>
                     );
                 })}
-                <Divider/>
+                {selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ? <Divider/> : <span/>}
+
 
             </List>
 
