@@ -17,7 +17,7 @@ const router = express.Router();
 const JwtAuthenticate = passport.authenticate('jwt', {session: false});
 
 
-let apiResponse:IApiResponse ={
+let apiResponse: IApiResponse = {
     error: false,
     errorMessage: "",
     payload: undefined,
@@ -25,21 +25,21 @@ let apiResponse:IApiResponse ={
 
 
 router.get('/callback', JwtAuthenticate, (req: any, res: any, next) => {
-        return res.status(200).json({success: true, msg: "you are authorized"})
-    });
+    return res.status(200).json({success: true, msg: "you are authorized"})
+});
 
 router.get("/userData", JwtAuthenticate, async (req: any, res, next) => {
 
     try {
-        let response:{error:boolean,medicationArray:any,medicationDosagesArray:any,persons:any} = {
+        let response: { error: boolean, medicationArray: any, medicationDosagesArray: any, persons: any } = {
             error: false,
             medicationArray: [],
             medicationDosagesArray: [],
             persons: [],
         }
-        await getUserMedications(req).then(data=>response.medicationArray = data)
-        await getUserMedicationDosages(req).then(data=>response.medicationDosagesArray = data)
-        await getPersons(req).then(data=>response.persons = data!.persons)
+        await getUserMedications(req).then(data => response.medicationArray = data)
+        await getUserMedicationDosages(req).then(data => response.medicationDosagesArray = data)
+        await getPersons(req).then(data => response.persons = data!.persons)
         apiResponse.payload = response
         return res.status(200).json(apiResponse)
     } catch (e) {
@@ -54,7 +54,7 @@ router.get('/usersPersons', JwtAuthenticate, async (req, res, next) => {
 
     try {
 
-        await getPersons(req).then(data=> {
+        await getPersons(req).then(data => {
             apiResponse.payload = data!.persons
             return res.status(200).json(apiResponse)
         })
@@ -67,9 +67,9 @@ router.get('/usersPersons', JwtAuthenticate, async (req, res, next) => {
 
 router.put('/addPerson', JwtAuthenticate, async (req: Request, res: Response, next) => {
     try {
-        await addPerson(req, res).then(r=>{
+        await addPerson(req, res).then(r => {
             return res.status(200).json(apiResponse)
-        }).catch(error=>{
+        }).catch(error => {
             apiResponse.error = true
             apiResponse.errorMessage = error
             console.log(error)
@@ -153,14 +153,14 @@ router.post('/register', (req: Request, res: Response, next) => {
         }
 
         //check and see if the email or username already exists
-        UserModel.find(
-            {$or: [{userName: req.body.userName}, {emailAddress: req.body.emailAddress}]},
-            (err: any, user: any) => {
+        UserModel.find({$or: [{userName: req.body.userName}, {emailAddress: req.body.emailAddress}]}, (err: any, user: any) => {
                 if (err) {
                     throw err
                 }
                 if (user.length > 0) {
-                    throw "Username or Email already exists"
+                    apiResponse.error = true
+                    apiResponse.errorMessage = "Username or Email already exists"
+                    return res.status(400).json(apiResponse)
                 } else {
                     const newUser = new UserModel({
                         userName: req.body.userName,
@@ -172,16 +172,17 @@ router.post('/register', (req: Request, res: Response, next) => {
                     newUser.save()
                         .then((user: any) => {
                             const jwt = issueJWT(user)
-            apiResponse.payload = { user: user, token: jwt.token, expiresIn: jwt.expires}
-            return res.status(200).json(apiResponse)
+                            apiResponse.payload = {user: user, token: jwt.token, expiresIn: jwt.expires}
+                            return res.status(200).json(apiResponse)
 
                         })
                         .catch((err: any | string): any => {
                             throw err
                         })
                 }
-            }
-        )
+            })
+
+
 
 
     } catch (e) {
