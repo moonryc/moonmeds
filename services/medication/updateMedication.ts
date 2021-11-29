@@ -15,8 +15,10 @@ const updateMedication = async (req:any, res:any) => {
     let updateModel = await MedicationModel.findOneAndUpdate({medicationId:req.body.medicationId}, req.body, {new: true})
     console.log(updateModel)
     if(updateModel){
-        removeFutureMedicationDosages(req, req.body.medicationId)
-        createDosages(req.body, true)
+        await removeFutureMedicationDosages(req, req.body.medicationId).then(() => {
+            createDosages(req.body, true)
+        })
+
     }
 
 }

@@ -8,7 +8,7 @@ import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
  * @param req
  * @param medicationId
  */
-const removeFutureMedicationDosages = (req: any, medicationId: any) => {
+const removeFutureMedicationDosages = async (req: any, medicationId: any) => {
     MedicationDosageModel.find({
         timeToTake: { $gte: startOfToday() },
         medicationId: medicationId
