@@ -29,7 +29,7 @@ const TimePickerForDialog:React.FC<ITimePickerForDialog> = ({getTime,index,time}
   return (
     <>
       <DesktopTimePicker
-        label="For desktop"
+        label="Time to take medication"
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
