@@ -1,6 +1,18 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {Badge, Box, Button, Divider, Fab, IconButton, List, ListItem, ListSubheader, Typography,} from "@mui/material";
+import {
+    Badge,
+    Box,
+    Button,
+    Dialog, DialogActions, DialogContent, DialogTitle,
+    Divider,
+    Fab,
+    IconButton,
+    List,
+    ListItem,
+    ListSubheader,
+    Typography,
+} from "@mui/material";
 import {
     differenceInDays,
     format,
@@ -22,6 +34,9 @@ import {makeDosageDetails} from "../../../typeConstructors";
 import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
 import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
 import medication from "../../../../../routes/medication";
+import DatePickerForDialog from "../../MedicationDialog/DatePickerForDialog";
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 interface IDisplayDateDetailsProp {
     selectedDate: ICalendarDay;
@@ -57,6 +72,25 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     const [scrollToTake, toTakeRef] = useScroll()
     const [scrollToMissed, missedRef] = useScroll()
     const [scrollToRefill, refillRef] = useScroll()
+
+    //region refill
+
+    const [selectedRefillMedication, setSelectedRefillMedication] = useState<IMedicationBase>();
+    const [isRefillDialogOpen, setIsRefillDialogOpen] = useState<boolean>(false);
+
+    const getRefillDate =  useCallback(
+        (date:Date) => {
+            // setSelectedRefillMedication(prevState => {
+            //     prevState.nextFillDay = date
+            //     return {...prevState}
+            // })
+        },
+        [],
+    );
+
+
+    //endregion
+
 
     //region view future days
 
@@ -188,7 +222,6 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     const FutureDosages = () => {
         return (
-
             <Box ref={ref}
                  sx={{padding: "3vh", height: '100%', position: "relative"}}
             >
@@ -356,6 +389,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 <Button
                                                     variant={"contained"}
                                                     sx={{m: '1vw', bgcolor: 'blue'}}
+                                                    //TODO
                                                 >
                                                     Refill
                                                 </Button>
@@ -735,6 +769,33 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     return (
         <>
             {isAfter(new Date(date), new Date()) ? FutureDosages() : PastAndTodayDosages()}
+
+            <Dialog open={isRefillDialogOpen} >
+                <DialogTitle>
+                    <Typography variant={"h6"}>
+                        Refill Medication
+                    </Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <DatePickerForDialog
+                        getEndDate={()=>{}}
+                        getRefillDate={()=>{
+                            //TODO
+                            }}
+
+                        getMonthlyDate={()=>{}}
+                        isGetEndDate={false}
+                        disable={false}
+                        label={"Next Refill Date"}
+                        isMonthly={false}
+                        index={0}
+                        isRefill={true}
+                        datePassed={new Date()}/>
+                </DialogContent>
+                <DialogActions>
+                {/*    TODO*/}
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
