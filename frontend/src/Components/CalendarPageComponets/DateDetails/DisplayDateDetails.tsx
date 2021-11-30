@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {Badge, Box, Button, Divider, IconButton, List, ListItem, ListSubheader, Typography,} from "@mui/material";
+import {Badge, Box, Button, Divider, Fab, IconButton, List, ListItem, ListSubheader, Typography,} from "@mui/material";
 import {
     differenceInDays,
     format,
@@ -21,6 +21,7 @@ import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {makeDosageDetails} from "../../../typeConstructors";
 import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
 import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
+import medication from "../../../../../routes/medication";
 
 interface IDisplayDateDetailsProp {
     selectedDate: ICalendarDay;
@@ -42,18 +43,41 @@ const useScroll = () => {
  * @constructor
  */
 const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) => {
+
     const date = useMemo(
         () => toDate(selectedDate.date).toDateString(),
         [selectedDate.date]
     );
-    const [size, setSize] = useState<object>();
+
     const {selectedDayDetails} = useContext(CalendarContext);
     const {userMedications} = useContext(MedicationContext)
+    const {putUpdateMedicationDosage} = useContext(ApiContext);
 
+    const [scrollToTaken, takenRef] = useScroll()
+    const [scrollToTake, toTakeRef] = useScroll()
+    const [scrollToMissed, missedRef] = useScroll()
+    const [scrollToRefill, refillRef] = useScroll()
+
+    //region view future days
+
+    const filteredRefills = (dosageArray:IMedicationDosagesBase[]) => {
+
+        let tempArray:string[] = []
+        let medicationsToRefill:IMedicationDosagesBase[] = []
+
+        for(let dosage of dosageArray){
+
+            if(!tempArray.includes(dosage.medicationId) && differenceInDays(new Date(dosage.nextFillDay),new Date(date))<=7){
+                tempArray.push(dosage.medicationId)
+                medicationsToRefill.push(dosage)
+            }
+        }
+
+        return medicationsToRefill
+
+    }
     const [filteredFutureDosages, setFilteredFutureDosages] = useState<IMedicationDosagesBase[]>([]);
-
-    useEffect(() => {
-
+    const updateFilteredFutureDosages = () => {
         //filters out medications that arnt going to be taken on that date due to not being indefinite or stops taking medicaiton before that date
         let arrayOfValidFutureMedication: IMedicationBase[] = userMedications.filter((medication) => {
             return isBefore(medication.endDate, new Date(date)) || medication.inDefinite;
@@ -123,16 +147,20 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
         console.log(arrayOfValidDosages)
         setFilteredFutureDosages([...arrayOfValidDosages])
+    }
+
+    useEffect(() => {
+
+        updateFilteredFutureDosages()
 
     }, [userMedications])
 
+    //endregion
 
-    const {putUpdateMedicationDosage} = useContext(ApiContext);
+    //region String truncation
+
+    const [size, setSize] = useState<object>();
     const ref = useRef({})
-    // const toTakeRef = useRef({});
-
-    const [scrollToTake, toTakeRef] = useScroll()
-
 
     const updateDimensions = () => {
         //@ts-ignore
@@ -156,6 +184,8 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
         }
     }
 
+    //endregion
+
     const FutureDosages = () => {
         return (
 
@@ -172,26 +202,34 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     <Box sx={{display: "inline", flexWrap: "wrap"}}>
                         <Box sx={{display: "inline"}}>
 
-                            <IconButton onClick={() => {
-                                let list = document.querySelector("#list");
-                                let scrollTo = document.querySelector("#To-Take")
-                                // @ts-ignore
-                                list.scrollTo(0, scrollTo.scrollTop);
-                            }}>
+
+                                <Fab sx={{
+                                    ':hover': {
+                                        bgcolor: 'green', // theme.palette.primary.main
+                                        opacity: "50%"
+                                    },
+                                    bgcolor:"green",
+                                }}
+                                     size={"large"}
+                                onClick={()=> {
+                                    //@ts-ignore
+                                    scrollToTake()
+                                }}
+                                >
                                 <Badge
-                                    badgeContent={filteredFutureDosages.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}>
-                                    <WatchLater fontSize={"large"}/>
+                                    badgeContent={filteredFutureDosages.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}
+                                    color={"secondary"}>
+                                    <WatchLater sx={{color:"white"}} fontSize={"large"}/>
                                 </Badge>
-                            </IconButton>
+                                </Fab>
+                            {/*</IconButton>*/}
 
                             <IconButton onClick={() => {
-                                let container = document.getElementById("list");
-                                let scrollTo = document.getElementById("Upcoming-Refills")
                                 // @ts-ignore
-                                container.scrollTop = scrollTo.offsetTop;
+                                scrollToRefill()
                             }}>
                                 <Badge
-                                    badgeContent={filteredFutureDosages.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
+                                    badgeContent={filteredRefills(filteredFutureDosages).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
                                     <Update fontSize={"large"}/>
                                 </Badge>
                             </IconButton>
@@ -268,10 +306,10 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                     <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
                                    id={'Upcoming-Refills'}>Upcoming Refills</ListSubheader>
-                    {filteredFutureDosages.map((medicationDosage, index) => {
+                    {filteredRefills(filteredFutureDosages).map((medicationDosage, index) => {
                         const numberOfDaysBeforeRefill = differenceInDays(
                             new Date(medicationDosage.nextFillDay),
-                            new Date(medicationDosage.timeToTake)
+                            new Date(date)
                         );
                         return (
                             <>
@@ -331,11 +369,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             </>
                         );
                     })}
-                    {filteredFutureDosages.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
-                        <span/> : <Divider/>}
-
-
                 </List>
+                {filteredRefills(filteredFutureDosages).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
+                    <Divider/> :<span/>}
 
             </Box>
 
@@ -358,36 +394,16 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     <Box sx={{display: "inline", flexWrap: "wrap"}}>
                         <Box sx={{display: "inline"}}>
                             <IconButton onClick={() => {
-                                // let container = document.getElementById("list");
-                                // let scrollTo = document.getElementById("Taken")
-                                // // @ts-ignore
-                                // container.scrollTop = scrollTo.offsetTop;
-
-                                let list = document.querySelector("#list");
-                                let scrollTo = document.getElementById("Taken")
                                 // @ts-ignore
-                                list.scrollTo({behavior: "smooth", block: "end", inline: "nearest"}, scrollTo)
-                                // scrollTo.scrollIntoView({behavior:"smooth", block:"end",inline:"nearest"})
+                                scrollToTaken()
                             }}>
                                 <Badge badgeContent={selectedDayDetails.filter(detail => detail.hasBeenTaken).length}>
                                     <Check fontSize={"large"}/>
                                 </Badge>
                             </IconButton>
                             <IconButton onClick={() => {
-                                // let container = document.getElementById("list");
-                                // let scrollTo = document.getElementById("To-Take")
-                                // // @ts-ignore
-                                // container.scrollTop = scrollTo.offsetTop;
-                                let list = document.querySelector("#list");
-                                let scrollTo = document.querySelector("#To-Take")
                                 // @ts-ignore
-                                // list.scrollIntoView({behavior:"smooth", block:"end",inline:"nearest"}, scrollTo)
-                                // list.scrollTo(0,scrollTo.offsetTop);
-                                // list.scrollTo({
-                                //     behavior: "smooth",
-                                //     top:toTakeRef.current.offsetTop})
                                 scrollToTake()
-
                             }}>
                                 <Badge
                                     badgeContent={selectedDayDetails.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}>
@@ -397,10 +413,8 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         </Box>
                         <Box sx={{display: "inline"}}>
                             <IconButton onClick={() => {
-                                let container = document.getElementById("list");
-                                let scrollTo = document.getElementById("Missed-Medications")
                                 // @ts-ignore
-                                container.scrollTop = scrollTo.offsetTop;
+                                scrollToMissed()
                             }}>
                                 <Badge
                                     badgeContent={selectedDayDetails.filter(detail => !detail.hasBeenTaken && detail.hasBeenMissed).length}>
@@ -408,20 +422,17 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                 </Badge>
                             </IconButton>
                             <IconButton onClick={() => {
-                                let container = document.getElementById("list");
-                                let scrollTo = document.getElementById("Upcoming-Refills")
                                 // @ts-ignore
-                                container.scrollTop = scrollTo.offsetTop;
+                                scrollToRefill()
                             }}>
                                 <Badge
-                                    badgeContent={selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
+                                    badgeContent={filteredRefills(selectedDayDetails).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
                                     <Update fontSize={"large"}/>
                                 </Badge>
                             </IconButton>
                         </Box>
                     </Box>
                 </Box>
-{/*<Box sx={{height:"65vh"}}>*/}
                 <Divider/>
                 <List
                     sx={{
@@ -436,9 +447,10 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     subheader={<li/>}
                     id={"list"}
                 >
-
+                <Box ref={takenRef}>
                     <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}} id={'Taken'}>Medications
                         Taken</ListSubheader>
+                </Box>
                     {selectedDayDetails.map((medicationDosage, index) => {
                         return medicationDosage.hasBeenTaken ? (
                                 <>
@@ -577,8 +589,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     })}
                     <Divider/>
 
+                    <Box ref={missedRef}>
                     <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                   id={'Missed-Medications'}>Missed Medications</ListSubheader>
+                                   id={'Missed-Medications'}>Missed Medications</ListSubheader></Box>
                     {selectedDayDetails.map((medicationDosage, index) => {
                         return medicationDosage.hasBeenMissed &&
                         !medicationDosage.hasBeenTaken ? (
@@ -646,10 +659,10 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         );
                     })}
                     <Divider/>
-
+                    <Box ref={refillRef}>
                     <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                   id={'Upcoming-Refills'}>Upcoming Refills</ListSubheader>
-                    {selectedDayDetails.map((medicationDosage, index) => {
+                                   id={'Upcoming-Refills'}>Upcoming Refills</ListSubheader></Box>
+                    {filteredRefills(selectedDayDetails).map((medicationDosage, index) => {
                         const numberOfDaysBeforeRefill = differenceInDays(
                             new Date(medicationDosage.nextFillDay),
                             new Date(medicationDosage.timeToTake)
@@ -714,10 +727,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     })}
                     {selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
                         <span/> : <Divider/>}
-
-
                 </List>
-{/*</Box>*/}
             </Box>
         )
     }
