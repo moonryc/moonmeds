@@ -15,7 +15,7 @@ const CalendarHeader = (props: ICalendarHeaderProps) => {
       sx={{
           width:'100%',
         ...centeredTextStyle,
-        textAlign: ["right"],
+        textAlign: ["center"],
         fontSize: ['15px'],
       }}
     >
