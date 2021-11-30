@@ -16,36 +16,50 @@ const createWeeklyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow
         if (isMonday(todayOrTomorrow) && newDosage.monday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isTuesday(todayOrTomorrow) && newDosage.tuesday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isWednesday(todayOrTomorrow) && newDosage.wednesday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isThursday(todayOrTomorrow) && newDosage.thursday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isFriday(todayOrTomorrow) && newDosage.friday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isSaturday(todayOrTomorrow) && newDosage.saturday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
         if (isSunday(todayOrTomorrow) && newDosage.sunday) {
             newDosage.timeToTake = todayOrTomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
+            // @ts-ignore
+            newDosage._id = new Types.ObjectId().toString()
             arrayOfDosages.push({...newDosage})
         }
     }

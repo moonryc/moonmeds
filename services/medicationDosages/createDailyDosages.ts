@@ -22,7 +22,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
             newDosage.timeToTake = tomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
-
+            newDosageModel._id = new Types.ObjectId().toString()
             newDosageModel.save()
                 .catch((error:any) => {
                     throw error;
@@ -33,6 +33,7 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
                 newDosage.timeToTake = tomorrow
                 newDosage.dosageId = new Types.ObjectId().toString()
                 let newDosageModel = new MedicationDosageModel({...newDosage})
+                newDosageModel._id = new Types.ObjectId().toString()
                 newDosageModel.save()
                     .catch((error:any) => {
                         throw error;
@@ -46,6 +47,8 @@ const createDailyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorrow:
             newDosage.timeToTake = today
             newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
+            newDosageModel.dosageId = new Types.ObjectId().toString()
+            newDosageModel._id = new Types.ObjectId().toString()
             newDosageModel.save()
                 .then((res:any) => createDosagesForTomorrow())
                 .catch((error:any) => {

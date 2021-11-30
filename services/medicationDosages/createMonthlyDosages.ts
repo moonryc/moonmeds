@@ -38,6 +38,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
             newDosage.timeToTake = tomorrow
             newDosage.dosageId = new Types.ObjectId().toString()
             let newDosageModel = new MedicationDosageModel({...newDosage})
+            newDosageModel._id = new Types.ObjectId().toString()
             newDosageModel.save().then((res:any)=>res)
         }
     }
@@ -46,6 +47,7 @@ const createMonthlyDosages = (newDosage: IMedicationDosagesBase, todayAndTomorro
         newDosage.timeToTake = today
         newDosage.dosageId = new Types.ObjectId().toString()
         let newDosageModel = new MedicationDosageModel({...newDosage})
+        newDosageModel._id = new Types.ObjectId().toString()
         newDosageModel.save()
             .then((res:any)=>createDosagesTomorrow())
     } else {
