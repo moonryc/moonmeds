@@ -136,7 +136,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     const updateDimensions = () => {
         //@ts-ignore
-        if (ref.current) setSize(ref.current.offsetWidth);
+        if (ref.current) {setSize(ref.current.offsetWidth)};
     };
 
     useEffect(() => {
@@ -243,7 +243,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -302,7 +302,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
@@ -468,7 +468,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                                 }}
                                             >
-                                                <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                                <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                                 {"  "}
                                                 <Typography
                                                     component={'span'}
@@ -540,7 +540,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -611,7 +611,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -683,7 +683,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color}}/>
+                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}

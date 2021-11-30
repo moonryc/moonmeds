@@ -43,7 +43,7 @@ const LoginPage = () => {
             </Typography>
             <Paper
                 sx={{
-                    width: ["40vw", "400px"],
+                    width: ['70vw',,'700px'],
                     right: "30%",
                     top: "15%",
                     padding: theme => theme.spacing(1)

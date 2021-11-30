@@ -52,19 +52,10 @@ const DisplayCalendar = () => {
   return (
     <Box sx={{ padding: "2.5vh", overflow:'visible' }}>
       <Box sx={{width:'100%',display:'flex'}}>
-          <Typography
-            sx={{
-              width:'30%',
-              ...centeredTextStyle,
-              textAlign: ["left"],
-              fontSize: ['15px'],
-            }}
-          >
-            Calendar
-          </Typography>
 
 
-      <Box sx={{width:'70%',}}>
+
+      <Box sx={{width:'100%',}}>
           <CalendarHeader
             goForwardAMonth={goForwardAMonth}
             goBackAMonth={goBackAMonth}

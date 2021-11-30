@@ -21,11 +21,12 @@ import {ApiContext} from "../Context/ApiContext";
 import {CalendarContext} from "../Context/CalendarContext";
 import {backgroundStyle, flex1ItemStyle, flexWrapperStyle, wrapperStyle} from "../Styles";
 import {makeMedication} from "../typeConstructors";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 
 const MainLoggedInPage = () => {
     const {fetchMedicationsAndDosagesAndPersons} = useContext(ApiContext);
-    const {selectedDay} = useContext(CalendarContext);
+    const {setSelectedDay, selectedDay} = useContext(CalendarContext);
 
     const [isMakingNewMedication, setIsMakingNewMedication] = useState(false);
     const [isListOfMedications, setIsListOfMedications] = useState(false);
@@ -72,6 +73,17 @@ const MainLoggedInPage = () => {
                                     }
                                 >
                                     <Add/> Add
+                                </Fab>
+                            </Box>
+                            <Box sx={{position: "absolute", bottom: "6px", left: '50%', transform:'translate(-50%,0)'}}>
+                                <Fab
+                                    size="small"
+                                    color="secondary"
+                                    aria-label="add"
+                                    variant={"extended"}
+                                    onClick={() => setSelectedDay(new Date())}
+                                >
+                                    <CalendarTodayIcon sx={{mr:'3px'}}/>  Jump to Today
                                 </Fab>
                             </Box>
                             <Box sx={{position: "absolute", bottom: "6px", right: "6px"}}>
