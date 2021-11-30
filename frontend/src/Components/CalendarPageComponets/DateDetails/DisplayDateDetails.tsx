@@ -314,7 +314,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -373,7 +375,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                        ':active':{transition:'unidentified' }}}>
+                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
@@ -514,7 +518,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                                 }}
                                             >
-                                                <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                    ':active':{transition:'unidentified' }}}>
+                                                <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                 {"  "}
                                                 <Typography
                                                     component={'span'}
@@ -586,7 +592,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -658,7 +666,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -730,7 +740,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                        ':active':{transition:'unidentified' }}}>
+                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
