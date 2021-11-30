@@ -89,7 +89,7 @@ const MainLoggedInPage = () => {
                     </Box>
                 </Box>
                 <Card sx={{position: 'relative', width: "100%", minHeight: ['0hvw',,,'83.5vh'], ml: [undefined, , , '1vw'], mt:['1vw',,,'0vw']}}>
-                    <Box sx={{bgcolor: "background.paper", width: "100%", height: '100%'}}>
+                    <Box sx={{bgcolor: "background.paper", width: "100%", height: [undefined,,,'100%'], minHeight:['0hvw',,,'65vh']}}>
                         <DisplayDateDetails
                             selectedDate={{index: 0, date: selectedDay}}
                         />
