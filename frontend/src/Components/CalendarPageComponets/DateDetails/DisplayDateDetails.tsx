@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import {ICalendarDay} from "../../../../../Types/CalendarType";
-import {Badge, Box, Button, Divider, IconButton, List, ListItem, ListSubheader, Typography,} from "@mui/material";
+import {Badge, Box, IconButton, Button, Divider, List, ListItem, ListSubheader, Typography, Fab,} from "@mui/material";
 import {
     differenceInDays,
     format,
@@ -51,6 +51,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     const {userMedications} = useContext(MedicationContext)
 
     const [filteredFutureDosages, setFilteredFutureDosages] = useState<IMedicationDosagesBase[]>([]);
+
 
     useEffect(() => {
 
@@ -129,7 +130,6 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     const {putUpdateMedicationDosage} = useContext(ApiContext);
     const ref = useRef({})
-    // const toTakeRef = useRef({});
 
     const [scrollToTake, toTakeRef] = useScroll()
 
@@ -146,6 +146,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
         };
     }, [size]);
 
+
     const truncateString = (string: string) => {
         //@ts-ignore
         if (string.length > ref.current.offsetWidth / 25) {
@@ -155,6 +156,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
             return string;
         }
     }
+
 
     const FutureDosages = () => {
         return (
@@ -243,7 +245,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -302,7 +306,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                        ':active':{transition:'unidentified' }}}>
+                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
@@ -346,7 +352,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     const PastAndTodayDosages = () => {
         return (
             <Box ref={ref}
-                 sx={{padding: "3vh", height: '100%', position: "relative"}}
+                 sx={{padding: "3vh", height: '100%'}}
             >
 
                 <Typography variant={"h4"} sx={{...titleStyle, ...centeredTextStyle}}>
@@ -468,7 +474,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                                 }}
                                             >
-                                                <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                    ':active':{transition:'unidentified' }}}>
+                                                <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                 {"  "}
                                                 <Typography
                                                     component={'span'}
@@ -540,7 +548,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 lineHeight: '35px'
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -611,7 +621,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                             }}
                                         >
-                                            <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active':{transition:'unidentified' }}}>
+                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -683,7 +695,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         lineHeight: '35px'
                                                     }}
                                                 >
-                                                    <Face sx={{color: medicationDosage.medicationOwner.color,position:'relative', top:'.2em', height:'.9em', width:'1em'}}/>
+                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
+                                                        ':active':{transition:'unidentified' }}}>
+                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
