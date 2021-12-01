@@ -450,6 +450,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                             "h:mm aa"
                                         ).toString()}
                                     </Typography>
+                                    {isFuture ?
                                     <Button
                                         variant={"contained"}
                                         sx={{m: '1vw', bgcolor: 'orange'}}
@@ -463,7 +464,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                         }
                                     >
                                         Mark as Taken
-                                    </Button>
+                                    </Button>:<></>}
                                 </Box>
                                 <br/>
                             </ListItem>
