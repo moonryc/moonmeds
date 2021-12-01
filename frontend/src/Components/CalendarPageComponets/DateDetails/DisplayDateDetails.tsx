@@ -4,7 +4,10 @@ import {
     Badge,
     Box,
     Button,
-    Dialog, DialogActions, DialogContent, DialogTitle,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     Divider,
     Fab,
     IconButton,
@@ -17,8 +20,12 @@ import {
     differenceInDays,
     format,
     isAfter,
-    isBefore, isFriday,
-    isMonday, isSaturday, isSunday, isThursday,
+    isBefore,
+    isFriday,
+    isMonday,
+    isSaturday,
+    isSunday,
+    isThursday,
     isTuesday,
     isWednesday,
     parseISO,
@@ -30,13 +37,9 @@ import {AssignmentLate, Check, Face, Update, WatchLater} from "@mui/icons-materi
 import {ApiContext} from "../../../Context/ApiContext";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
-import {makeDosageDetails} from "../../../typeConstructors";
 import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
-import {IPersonNameAndColor} from "../../../../../Types/UserTypes";
-import medication from "../../../../../routes/medication";
 import DatePickerForDialog from "../../MedicationDialog/DatePickerForDialog";
-import {Simulate} from "react-dom/test-utils";
-import input = Simulate.input;
+
 
 interface IDisplayDateDetailsProp {
     selectedDate: ICalendarDay;
@@ -78,8 +81,8 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     const [selectedRefillMedication, setSelectedRefillMedication] = useState<IMedicationBase>();
     const [isRefillDialogOpen, setIsRefillDialogOpen] = useState<boolean>(false);
 
-    const getRefillDate =  useCallback(
-        (date:Date) => {
+    const getRefillDate = useCallback(
+        (date: Date) => {
             // setSelectedRefillMedication(prevState => {
             //     prevState.nextFillDay = date
             //     return {...prevState}
@@ -94,14 +97,14 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     //region view future days
 
-    const filteredRefills = (dosageArray:IMedicationDosagesBase[]) => {
+    const filteredRefills = (dosageArray: IMedicationDosagesBase[]) => {
 
-        let tempArray:string[] = []
-        let medicationsToRefill:IMedicationDosagesBase[] = []
+        let tempArray: string[] = []
+        let medicationsToRefill: IMedicationDosagesBase[] = []
 
-        for(let dosage of dosageArray){
+        for (let dosage of dosageArray) {
 
-            if(!tempArray.includes(dosage.medicationId) && differenceInDays(new Date(dosage.nextFillDay),new Date(date))<=7){
+            if (!tempArray.includes(dosage.medicationId) && differenceInDays(new Date(dosage.nextFillDay), new Date(date)) <= 7) {
                 tempArray.push(dosage.medicationId)
                 medicationsToRefill.push(dosage)
             }
@@ -220,138 +223,97 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     //endregion
 
-    const FutureDosages = () => {
+
+    const DateDetailsList = (dosagesList: IMedicationDosagesBase[], isFuture: boolean) => {
+
         return (
-            <Box ref={ref}
-                 sx={{padding: "3vh", height: '100%', position: "relative"}}
-            >
-
-                <Typography variant={"h4"} sx={{...titleStyle, ...centeredTextStyle}}>
-                    Date Details
-                </Typography>
+            <>
                 <Box sx={{display: 'flex', justifyContent: "space-between"}}>
-                    <Typography variant={"h5"} sx={{display: "inline"}}>{date.toString()}</Typography>
+                <Typography variant={"h5"} sx={{display: "inline"}}>{date.toString()}</Typography>
 
-                    <Box sx={{display: "inline", flexWrap: "wrap"}}>
-                        <Box sx={{display: "inline"}}>
-
-
-                                <Fab sx={{
-                                    ':hover': {
-                                        bgcolor: 'green', // theme.palette.primary.main
-                                        opacity: "50%"
-                                    },
-                                    bgcolor:"green",
-                                }}
-                                     size={"large"}
-                                onClick={()=> {
-                                    //@ts-ignore
-                                    scrollToTake()
-                                }}
-                                >
-                                <Badge
-                                    badgeContent={filteredFutureDosages.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}
-                                    color={"secondary"}>
-                                    <WatchLater sx={{color:"white"}} fontSize={"large"}/>
-                                </Badge>
-                                </Fab>
-                            {/*</IconButton>*/}
-
-                            <IconButton onClick={() => {
-                                // @ts-ignore
-                                scrollToRefill()
-                            }}>
-                                <Badge
-                                    badgeContent={filteredRefills(filteredFutureDosages).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
-                                    <Update fontSize={"large"}/>
-                                </Badge>
-                            </IconButton>
-                        </Box>
+                <Box sx={{display: "inline", flexWrap: "wrap"}}>
+                    <Box sx={{display: "inline"}}>
+                        <Fab
+                            sx={{margin:"5px",textAlign:"center"}}
+                            size={"small"}
+                            onClick={() => {
+                            // @ts-ignore
+                            scrollToTaken()
+                        }}>
+                            <Badge
+                                color={'secondary'}
+                                badgeContent={dosagesList.filter(detail => detail.hasBeenTaken).length}>
+                                <Check fontSize={"large"}/>
+                            </Badge>
+                        </Fab>
+                        <Fab
+                            sx={{margin:"5px"}}
+                            size={"small"}
+                            onClick={() => {
+                            // @ts-ignore
+                            scrollToTake()
+                        }}>
+                            <Badge
+                                color={'secondary'}
+                                badgeContent={dosagesList.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}>
+                                <WatchLater fontSize={"large"}/>
+                            </Badge>
+                        </Fab>
+                    </Box>
+                    <Box sx={{display: "inline"}}>
+                        <Fab
+                            sx={{margin:"5px"}}
+                            size={"small"}
+                            onClick={() => {
+                            // @ts-ignore
+                            scrollToMissed()
+                        }}>
+                            <Badge
+                                color={'secondary'}
+                                badgeContent={dosagesList.filter(detail => !detail.hasBeenTaken && detail.hasBeenMissed).length}>
+                                <AssignmentLate fontSize={"large"}/>
+                            </Badge>
+                        </Fab>
+                        <Fab
+                            sx={{margin:"5px"}}
+                            size={"small"}
+                            onClick={() => {
+                            // @ts-ignore
+                            scrollToRefill()
+                        }}>
+                            <Badge
+                                color={'secondary'}
+                                badgeContent={filteredRefills(dosagesList).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
+                                <Update fontSize={"large"}/>
+                            </Badge>
+                        </Fab>
                     </Box>
                 </Box>
-
+            </Box>
                 <Divider/>
-                <List
-                    sx={{
-                        width: '100%',
-                        height: '65vh',
-                        bgcolor: 'background.paper',
-                        position: 'relative',
-                        overflow: 'auto',
 
-                        '& ul': {padding: 0},
-                    }}
-                    subheader={<li/>}
-                    id={"list"}
-                >
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}} id={'To-Take'}>Medications
-                        To Take</ListSubheader>
-                    {filteredFutureDosages.map((medicationDosage, index) => {
-                        return (
-                            <>
-                                <Divider/>
-                                <ListItem key={index}>
-                                    <Box
-                                        sx={{
-                                            bgcolor: "background.paper",
-                                            width: "100%",
-                                            height: '100%',
-                                            borderRadius: 2,
-                                            position: "relative",
-                                            display: 'flex',
-                                            alignContent: 'center'
-                                        }}
-                                    >
-                                        <Typography
-                                            sx={{
-                                                marginLeft: "1vh",
-                                                fontSize: "15px",
-                                                top: "22.5%",
-                                                position: "relative",
-                                                width: '70%',
-                                                flex: '1',
-                                                p: '12px',
-                                                lineHeight: '35px'
-                                            }}
-                                        >
-                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                ':active':{transition:'unidentified' }}}>
-                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
-                                            {"  "}
-                                            <Typography
-                                                component={'span'}
-                                                title={medicationDosage.prescriptionName}
-                                            >
-                                                {truncateString(medicationDosage.prescriptionName)}</Typography>
-                                            {" Dosage to be taken at "}
-                                            {format(
-                                                parseISO(medicationDosage.timeToTake.toString()),
-                                                "h:mm aa"
-                                            ).toString()}
-                                        </Typography>
+            <List
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    bgcolor: 'background.paper',
+                    position: 'relative',
+                    overflow: 'auto',
+                    '& ul': {padding: 0},
+                }}
+                subheader={<li/>}
+            >
+                {isFuture ?
+                    <>
+                        <Box ref={takenRef}></Box>
+                            <ListSubheader  sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}>Medications
+                                Taken</ListSubheader>
 
-                                    </Box>
-                                    <br/>
-                                </ListItem>
-                            </>
-                        )
-                    })}
-                    <Divider/>
-
-
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                   id={'Upcoming-Refills'}>Upcoming Refills</ListSubheader>
-                    {filteredRefills(filteredFutureDosages).map((medicationDosage, index) => {
-                        const numberOfDaysBeforeRefill = differenceInDays(
-                            new Date(medicationDosage.nextFillDay),
-                            new Date(date)
-                        );
-                        return (
-                            <>
-                                <Divider/>
-                                <ListItem key={index}>
-                                    {numberOfDaysBeforeRefill <= 7 ? (
-                                        <>
+                        {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
+                            return medicationDosage.hasBeenTaken ? (
+                                    <>
+                                        <Divider/>
+                                        <ListItem key={index}>
                                             <Box
                                                 sx={{
                                                     bgcolor: "background.paper",
@@ -373,268 +335,150 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                         flex: '1',
                                                         p: '12px',
                                                         lineHeight: '35px'
+
                                                     }}
                                                 >
-                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                        ':active':{transition:'unidentified' }}}>
-                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
+                                                    <Fab sx={{
+                                                        bgcolor: medicationDosage.medicationOwner.color,
+                                                        height: '35px',
+                                                        width: '35px',
+                                                        ':hover': {bgcolor: medicationDosage.medicationOwner.color},
+                                                        ':active': {transition: 'unidentified'}
+                                                    }}>
+                                                        <Face sx={{
+                                                            color: 'white',
+                                                            position: 'relative',
+                                                            height: '1em',
+                                                            width: '1em'
+                                                        }}/></Fab>
                                                     {"  "}
                                                     <Typography
                                                         component={'span'}
+                                                        sx={{color: 'text.primary'}}
+                                                        //@ts-ignore
+                                                        //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}{truncateString(medicationDosage.prescriptionName)}
                                                         title={medicationDosage.prescriptionName}
                                                     >{truncateString(medicationDosage.prescriptionName)}</Typography>
-                                                    {" refill in " +
-                                                        differenceInDays(
-                                                            new Date(medicationDosage.nextFillDay),
-                                                            new Date()
-                                                        ) +
-                                                        " days"}
+                                                    <Typography component={'span'} sx={{color: 'text.primary'}}>
+                                                        Dosage was taken at
+
+                                                        {format(parseISO(medicationDosage.timeTaken), "h:mm aa")}</Typography>
                                                 </Typography>
                                                 <Button
                                                     variant={"contained"}
-                                                    sx={{m: '1vw', bgcolor: 'blue'}}
-                                                    //TODO
+                                                    sx={{m: '1vw', bgcolor: 'green'}}
+                                                    onClick={() =>
+                                                        putUpdateMedicationDosage(
+                                                            medicationDosage.dosageId,
+                                                            false,
+                                                            medicationDosage.hasBeenMissed,
+                                                            new Date()
+                                                        )
+                                                    }
                                                 >
-                                                    Refill
+                                                    Undo
                                                 </Button>
                                             </Box>
+
                                             <br/>
-                                        </>
-                                    ) : (
-                                        <span/>
-                                    )}
-                                </ListItem>
-                            </>
-                        );
-                    })}
-                </List>
-                {filteredRefills(filteredFutureDosages).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
-                    <Divider/> :<span/>}
+                                        </ListItem>
+                                    </>
+                                ) :
+                                (
+                                    <span/>
+                                );
+                        })}
+                        <Divider/></>
+                    : <></>
+                }
 
-            </Box>
-
-        )
-    }
-
-
-    const PastAndTodayDosages = () => {
-        return (
-            <Box ref={ref}
-                 sx={{padding: "3vh", height: '100%', position: "relative"}}
-            >
-
-                <Typography variant={"h4"} sx={{...titleStyle, ...centeredTextStyle}}>
-                    Date Details
-                </Typography>
-                <Box sx={{display: 'flex', justifyContent: "space-between"}}>
-                    <Typography variant={"h5"} sx={{display: "inline"}}>{date.toString()}</Typography>
-
-                    <Box sx={{display: "inline", flexWrap: "wrap"}}>
-                        <Box sx={{display: "inline"}}>
-                            <IconButton onClick={() => {
-                                // @ts-ignore
-                                scrollToTaken()
-                            }}>
-                                <Badge badgeContent={selectedDayDetails.filter(detail => detail.hasBeenTaken).length}>
-                                    <Check fontSize={"large"}/>
-                                </Badge>
-                            </IconButton>
-                            <IconButton onClick={() => {
-                                // @ts-ignore
-                                scrollToTake()
-                            }}>
-                                <Badge
-                                    badgeContent={selectedDayDetails.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}>
-                                    <WatchLater fontSize={"large"}/>
-                                </Badge>
-                            </IconButton>
-                        </Box>
-                        <Box sx={{display: "inline"}}>
-                            <IconButton onClick={() => {
-                                // @ts-ignore
-                                scrollToMissed()
-                            }}>
-                                <Badge
-                                    badgeContent={selectedDayDetails.filter(detail => !detail.hasBeenTaken && detail.hasBeenMissed).length}>
-                                    <AssignmentLate fontSize={"large"}/>
-                                </Badge>
-                            </IconButton>
-                            <IconButton onClick={() => {
-                                // @ts-ignore
-                                scrollToRefill()
-                            }}>
-                                <Badge
-                                    badgeContent={filteredRefills(selectedDayDetails).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
-                                    <Update fontSize={"large"}/>
-                                </Badge>
-                            </IconButton>
-                        </Box>
-                    </Box>
-                </Box>
-                <Divider/>
-                <List
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                        bgcolor: 'background.paper',
-                        position: 'relative',
-                        overflow: 'auto',
-
-                        '& ul': {padding: 0},
-                    }}
-                    subheader={<li/>}
-                    id={"list"}
-                >
-                <Box ref={takenRef}>
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}} id={'Taken'}>Medications
-                        Taken</ListSubheader>
-                </Box>
-                    {selectedDayDetails.map((medicationDosage, index) => {
-                        return medicationDosage.hasBeenTaken ? (
-                                <>
-                                    <Divider/>
-                                    <ListItem key={index}>
-                                        <Box
-                                            sx={{
-                                                bgcolor: "background.paper",
-                                                width: "100%",
-                                                height: '100%',
-                                                borderRadius: 2,
-                                                position: "relative",
-                                                display: 'flex',
-                                                alignContent: 'center'
-                                            }}
-                                        >
-                                            <Typography
-                                                sx={{
-                                                    marginLeft: "1vh",
-                                                    fontSize: "15px",
-                                                    top: "22.5%",
-                                                    position: "relative",
-                                                    width: '70%',
-                                                    flex: '1',
-                                                    p: '12px',
-                                                    lineHeight: '35px'
-
-                                                }}
-                                            >
-                                                <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                    ':active':{transition:'unidentified' }}}>
-                                                <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
-                                                {"  "}
-                                                <Typography
-                                                    component={'span'}
-                                                    sx={{color: 'text.primary'}}
-                                                    //@ts-ignore
-                                                    //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}{truncateString(medicationDosage.prescriptionName)}
-                                                    title={medicationDosage.prescriptionName}
-                                                >{truncateString(medicationDosage.prescriptionName)}</Typography>
-                                                <Typography component={'span'} sx={{color: 'text.primary'}}>
-                                                    Dosage was taken at
-
-                                                    {format(parseISO(medicationDosage.timeTaken), "h:mm aa")}</Typography>
-                                            </Typography>
-                                            <Button
-                                                variant={"contained"}
-                                                sx={{m: '1vw', bgcolor: 'green'}}
-                                                onClick={() =>
-                                                    putUpdateMedicationDosage(
-                                                        medicationDosage.dosageId,
-                                                        false,
-                                                        medicationDosage.hasBeenMissed,
-                                                        new Date()
-                                                    )
-                                                }
-                                            >
-                                                Undo
-                                            </Button>
-                                        </Box>
-
-                                        <br/>
-                                    </ListItem>
-                                </>
-                            ) :
-                            (
-                                <span/>
-                            );
-                    })}
-                    <Divider/>
-                    <Box ref={toTakeRef}>
-                        <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                       id={'To-Take'}>Medications
-                            To Take</ListSubheader></Box>
-                    {selectedDayDetails.map((medicationDosage, index) => {
-                        return !medicationDosage.hasBeenTaken &&
-                        !medicationDosage.hasBeenMissed ? (
-                            <>
-                                <Divider/>
-                                <ListItem key={index}>
-                                    <Box
+                <Box ref={toTakeRef}></Box>
+                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                                   >Medications
+                        To Take</ListSubheader>
+                {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
+                    return !medicationDosage.hasBeenTaken &&
+                    !medicationDosage.hasBeenMissed ? (
+                        <>
+                            <Divider/>
+                            <ListItem key={index}>
+                                <Box
+                                    sx={{
+                                        bgcolor: "background.paper",
+                                        width: "100%",
+                                        height: '100%',
+                                        borderRadius: 2,
+                                        position: "relative",
+                                        display: 'flex',
+                                        alignContent: 'center'
+                                    }}
+                                >
+                                    <Typography
                                         sx={{
-                                            bgcolor: "background.paper",
-                                            width: "100%",
-                                            height: '100%',
-                                            borderRadius: 2,
+                                            marginLeft: "1vh",
+                                            fontSize: "15px",
+                                            top: "22.5%",
                                             position: "relative",
-                                            display: 'flex',
-                                            alignContent: 'center'
+                                            width: '70%',
+                                            flex: '1',
+                                            p: '12px',
+                                            lineHeight: '35px'
                                         }}
                                     >
+                                        <Fab sx={{
+                                            bgcolor: medicationDosage.medicationOwner.color,
+                                            height: '35px',
+                                            width: '35px',
+                                            ':hover': {bgcolor: medicationDosage.medicationOwner.color},
+                                            ':active': {transition: 'unidentified'}
+                                        }}>
+                                            <Face sx={{
+                                                color: 'white',
+                                                position: 'relative',
+                                                height: '1em',
+                                                width: '1em'
+                                            }}/></Fab>
+                                        {"  "}
                                         <Typography
-                                            sx={{
-                                                marginLeft: "1vh",
-                                                fontSize: "15px",
-                                                top: "22.5%",
-                                                position: "relative",
-                                                width: '70%',
-                                                flex: '1',
-                                                p: '12px',
-                                                lineHeight: '35px'
-                                            }}
+                                            component={'span'}
+                                            title={medicationDosage.prescriptionName}
                                         >
-                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                ':active':{transition:'unidentified' }}}>
-                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
-                                            {"  "}
-                                            <Typography
-                                                component={'span'}
-                                                title={medicationDosage.prescriptionName}
-                                            >
-                                                {truncateString(medicationDosage.prescriptionName)}</Typography>
-                                            {" Dosage to be taken at "}
-                                            {format(
-                                                parseISO(medicationDosage.timeToTake.toString()),
-                                                "h:mm aa"
-                                            ).toString()}
-                                        </Typography>
-                                        <Button
-                                            variant={"contained"}
-                                            sx={{m: '1vw', bgcolor: 'orange'}}
-                                            onClick={() =>
-                                                putUpdateMedicationDosage(
-                                                    medicationDosage.dosageId,
-                                                    true,
-                                                    medicationDosage.hasBeenMissed,
-                                                    new Date()
-                                                )
-                                            }
-                                        >
-                                            Mark as Taken
-                                        </Button>
-                                    </Box>
-                                    <br/>
-                                </ListItem>
-                            </>
-                        ) : (
-                            <span/>
-                        );
-                    })}
-                    <Divider/>
+                                            {truncateString(medicationDosage.prescriptionName)}</Typography>
+                                        {" Dosage to be taken at "}
+                                        {format(
+                                            parseISO(medicationDosage.timeToTake.toString()),
+                                            "h:mm aa"
+                                        ).toString()}
+                                    </Typography>
+                                    <Button
+                                        variant={"contained"}
+                                        sx={{m: '1vw', bgcolor: 'orange'}}
+                                        onClick={() =>
+                                            putUpdateMedicationDosage(
+                                                medicationDosage.dosageId,
+                                                true,
+                                                medicationDosage.hasBeenMissed,
+                                                new Date()
+                                            )
+                                        }
+                                    >
+                                        Mark as Taken
+                                    </Button>
+                                </Box>
+                                <br/>
+                            </ListItem>
+                        </>
+                    ) : (
+                        <span/>
+                    );
+                })}
+                <Divider/>
 
-                    <Box ref={missedRef}>
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                   id={'Missed-Medications'}>Missed Medications</ListSubheader></Box>
-                    {selectedDayDetails.map((medicationDosage, index) => {
+                {isFuture ? <>
+                    <Box ref={missedRef}></Box>
+                        <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                                       >Missed Medications</ListSubheader>
+                    {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
                         return medicationDosage.hasBeenMissed &&
                         !medicationDosage.hasBeenTaken ? (
                             <>
@@ -666,9 +510,19 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                                             }}
                                         >
-                                            <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                ':active':{transition:'unidentified' }}}>
-                                            <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
+                                            <Fab sx={{
+                                                bgcolor: medicationDosage.medicationOwner.color,
+                                                height: '35px',
+                                                width: '35px',
+                                                ':hover': {bgcolor: medicationDosage.medicationOwner.color},
+                                                ':active': {transition: 'unidentified'}
+                                            }}>
+                                                <Face sx={{
+                                                    color: 'white',
+                                                    position: 'relative',
+                                                    height: '1em',
+                                                    width: '1em'
+                                                }}/></Fab>
                                             {"  "}
                                             <Typography
                                                 component={'span'}
@@ -703,86 +557,108 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         );
                     })}
                     <Divider/>
-                    <Box ref={refillRef}>
+                </> : <></>
+                }
+
+                <Box ref={refillRef}></Box>
                     <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
-                                   id={'Upcoming-Refills'}>Upcoming Refills</ListSubheader></Box>
-                    {filteredRefills(selectedDayDetails).map((medicationDosage, index) => {
-                        const numberOfDaysBeforeRefill = differenceInDays(
-                            new Date(medicationDosage.nextFillDay),
-                            new Date(medicationDosage.timeToTake)
-                        );
-                        return (
-                            <>
-                                <Divider/>
-                                <ListItem key={index}>
-                                    {numberOfDaysBeforeRefill <= 7 ? (
-                                        <>
-                                            <Box
+                                   >Upcoming Refills</ListSubheader>
+                {filteredRefills(dosagesList).map((medicationDosage: IMedicationDosagesBase, index) => {
+                    const numberOfDaysBeforeRefill = differenceInDays(
+                        new Date(medicationDosage.nextFillDay),
+                        new Date(medicationDosage.timeToTake)
+                    );
+                    return (
+                        <>
+                            <Divider/>
+                            <ListItem key={index}>
+                                {numberOfDaysBeforeRefill <= 7 ? (
+                                    <>
+                                        <Box
+                                            sx={{
+                                                bgcolor: "background.paper",
+                                                width: "100%",
+                                                height: '100%',
+                                                borderRadius: 2,
+                                                position: "relative",
+                                                display: 'flex',
+                                                alignContent: 'center'
+                                            }}
+                                        >
+                                            <Typography
                                                 sx={{
-                                                    bgcolor: "background.paper",
-                                                    width: "100%",
-                                                    height: '100%',
-                                                    borderRadius: 2,
+                                                    marginLeft: "1vh",
+                                                    fontSize: "15px",
+                                                    top: "22.5%",
                                                     position: "relative",
-                                                    display: 'flex',
-                                                    alignContent: 'center'
+                                                    width: '70%',
+                                                    flex: '1',
+                                                    p: '12px',
+                                                    lineHeight: '35px'
                                                 }}
                                             >
+                                                <Fab sx={{
+                                                    bgcolor: medicationDosage.medicationOwner.color,
+                                                    height: '35px',
+                                                    width: '35px',
+                                                    ':hover': {bgcolor: medicationDosage.medicationOwner.color},
+                                                    ':active': {transition: 'unidentified'}
+                                                }}>
+                                                    <Face sx={{
+                                                        color: 'white',
+                                                        position: 'relative',
+                                                        height: '1em',
+                                                        width: '1em'
+                                                    }}/></Fab>
+                                                {"  "}
                                                 <Typography
-                                                    sx={{
-                                                        marginLeft: "1vh",
-                                                        fontSize: "15px",
-                                                        top: "22.5%",
-                                                        position: "relative",
-                                                        width: '70%',
-                                                        flex: '1',
-                                                        p: '12px',
-                                                        lineHeight: '35px'
-                                                    }}
-                                                >
-                                                    <Fab sx={{bgcolor: medicationDosage.medicationOwner.color, height:'35px', width:'35px',':hover':{bgcolor: medicationDosage.medicationOwner.color},
-                                                        ':active':{transition:'unidentified' }}}>
-                                                    <Face sx={{color: 'white',position:'relative', height:'1em', width:'1em'}}/></Fab>
-                                                    {"  "}
-                                                    <Typography
-                                                        component={'span'}
-                                                        title={medicationDosage.prescriptionName}
-                                                    >{truncateString(medicationDosage.prescriptionName)}</Typography>
-                                                    {" refill in " +
-                                                        differenceInDays(
-                                                            new Date(medicationDosage.nextFillDay),
-                                                            new Date()
-                                                        ) +
-                                                        " days"}
-                                                </Typography>
-                                                <Button
-                                                    variant={"contained"}
-                                                    sx={{m: '1vw', bgcolor: 'blue'}}
-                                                >
-                                                    Refill
-                                                </Button>
-                                            </Box>
-                                            <br/>
-                                        </>
-                                    ) : (
-                                        <span/>
-                                    )}
-                                </ListItem>
-                            </>
-                        );
-                    })}
-                    {selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
-                        <span/> : <Divider/>}
-                </List>
-            </Box>
+                                                    component={'span'}
+                                                    title={medicationDosage.prescriptionName}
+                                                >{truncateString(medicationDosage.prescriptionName)}</Typography>
+                                                {" refill in " +
+                                                    differenceInDays(
+                                                        new Date(medicationDosage.nextFillDay),
+                                                        new Date()
+                                                    ) +
+                                                    " days"}
+                                            </Typography>
+                                            {/*<Button*/}
+                                            {/*    variant={"contained"}*/}
+                                            {/*    sx={{m: '1vw', bgcolor: 'blue'}}*/}
+                                            {/*>*/}
+                                            {/*    Refill*/}
+                                            {/*</Button>*/}
+                                        </Box>
+                                        <br/>
+                                    </>
+                                ) : (
+                                    <span/>
+                                )}
+                            </ListItem>
+                        </>
+                    );
+                })}
+                {selectedDayDetails.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
+                    <Divider/> :<span/> }
+            </List>
+            </>
         )
     }
 
     return (
         <>
-            {isAfter(new Date(date), new Date()) ? FutureDosages() : PastAndTodayDosages()}
+            <Box ref={ref}
+                 sx={{padding: "3vh", height: '100%', position: "relative"}}
+            >
+                <Typography variant={"h4"} sx={{...titleStyle, ...centeredTextStyle}}>
+                    Date Details
+                </Typography>
+                {/*<br/>*/}
+                {isAfter(new Date(date), new Date()) ? DateDetailsList(filteredFutureDosages, false) : DateDetailsList(selectedDayDetails, true)}
 
-            <Dialog open={isRefillDialogOpen} >
+            </Box>
+
+            <Dialog open={isRefillDialogOpen}>
                 <DialogTitle>
                     <Typography variant={"h6"}>
                         Refill Medication
@@ -790,12 +666,14 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 </DialogTitle>
                 <DialogContent>
                     <DatePickerForDialog
-                        getEndDate={()=>{}}
-                        getRefillDate={()=>{
+                        getEndDate={() => {
+                        }}
+                        getRefillDate={() => {
                             //TODO
-                            }}
+                        }}
 
-                        getMonthlyDate={()=>{}}
+                        getMonthlyDate={() => {
+                        }}
                         isGetEndDate={false}
                         disable={false}
                         label={"Next Refill Date"}
@@ -805,7 +683,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         datePassed={new Date()}/>
                 </DialogContent>
                 <DialogActions>
-                {/*    TODO*/}
+                    {/*    TODO*/}
                 </DialogActions>
             </Dialog>
         </>
