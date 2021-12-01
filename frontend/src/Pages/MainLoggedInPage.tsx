@@ -77,13 +77,14 @@ const MainLoggedInPage = () => {
                             </Box>
                             <Box sx={{position: "absolute", bottom: "6px", left: '50%', transform:'translate(-50%,0)'}}>
                                 <Fab
+                                    sx={{padding:'5px'}}
                                     size="small"
                                     color="secondary"
                                     aria-label="add"
                                     variant={"extended"}
                                     onClick={() => setSelectedDay(new Date())}
                                 >
-                                    <CalendarTodayIcon sx={{mr:'3px'}}/>  Jump to Today
+                                    <CalendarTodayIcon sx={{mr:'8px'}}/>  Jump to Today
                                 </Fab>
                             </Box>
                             <Box sx={{position: "absolute", bottom: "6px", right: "6px"}}>
@@ -101,7 +102,7 @@ const MainLoggedInPage = () => {
                     </Box>
                 </Box>
                 <Card elevation={0} sx={{ bgcolor:"background.paper",position: 'relative', width: "100%", minHeight: ['0hvw',,,'83.5vh'], ml: [undefined, , , '1vw'], mt:['1vw',,,'0vw']}}>
-                    <Box sx={{bgcolor: "background.paper", width: "100%", height: [undefined,,,'65vh'], minHeight:['0hvw',,,'65vh']}}>
+                    <Box sx={{bgcolor: "background.paper", width: "100%", height: [undefined,,,'65vh'], minHeight:['0hvw',,,'65vh'], maxHeight:[undefined,,,'65vh']}}>
                         <DisplayDateDetails
                             selectedDate={{index: 0, date: selectedDay}}
                         />
