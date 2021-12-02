@@ -114,6 +114,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
     }
     const [filteredFutureDosages, setFilteredFutureDosages] = useState<IMedicationDosagesBase[]>([]);
+
     const updateFilteredFutureDosages = () => {
         //filters out medications that arnt going to be taken on that date due to not being indefinite or stops taking medicaiton before that date
         let arrayOfValidFutureMedication: IMedicationBase[] = userMedications.filter((medication) => {
@@ -234,7 +235,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 <Box sx={{display: "inline", flexWrap: "wrap"}}>
                     <Box sx={{display: "inline"}}>
                         <Fab
-                            sx={{margin:"5px",textAlign:"center"}}
+                            sx={{margin:"5px",textAlign:"center", bgcolor:'taken.main'}}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -243,11 +244,11 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             <Badge
                                 color={'secondary'}
                                 badgeContent={dosagesList.filter(detail => detail.hasBeenTaken).length}>
-                                <Check fontSize={"large"}/>
+                                <Check  fontSize={"large"}/>
                             </Badge>
                         </Fab>
                         <Fab
-                            sx={{margin:"5px"}}
+                            sx={{margin:"5px", bgcolor:'toTake.main'}}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -262,7 +263,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     </Box>
                     <Box sx={{display: "inline"}}>
                         <Fab
-                            sx={{margin:"5px"}}
+                            sx={{margin:"5px", bgcolor:'missed.main'}}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -275,7 +276,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             </Badge>
                         </Fab>
                         <Fab
-                            sx={{margin:"5px"}}
+                            sx={{margin:"5px", bgcolor:'refills.main'}}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore

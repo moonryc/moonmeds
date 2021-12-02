@@ -39,7 +39,7 @@ const MainLoggedInPage = () => {
     }, [fetchMedicationsAndDosagesAndPersons]);
 
     return (
-        <Box sx={{...flexWrapperStyle, minHeight: '100vh'}} key={1}>
+        <Box sx={{...flexWrapperStyle, minHeight: '100vh', width:'100vw'}} key={1}>
             <AppbarTop/>
             <Box sx={{
                 ...flex1ItemStyle, ...backgroundStyle,

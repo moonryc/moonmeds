@@ -48,7 +48,8 @@ const CalendarDay = (
    */
   const handleOnDayClick = () => {
     setSelectedDay(props.date);
-    console.log(selectedDay);
+    console.log(medicationDosagesDetails);
+    // console.log(filteredFutureDosages)
   };
 
   const isToday = useCallback((): boolean => {
@@ -109,7 +110,7 @@ const CalendarDay = (
         bgcolor: "primary.main",
         width: ['40px'],
         height: ['40px'],
-        color: "#ff0000",
+        color: "missed.main",
         border: 0,
         borderRadius: "50%",
         borderColor: "primary.main",
@@ -122,7 +123,7 @@ const CalendarDay = (
         bgcolor: "primary.main",
         width: ['40px'],
         height: ['40px'],
-        color: "#ffe800",
+        color: "refills.main",
         border: 0,
         borderRadius: "50%",
         borderColor: "primary.main",
@@ -130,15 +131,15 @@ const CalendarDay = (
       return;
     }
 
-    setCalendarDayColor({
-      bgcolor: "primary.main",
-      width: ['40px'],
-      height: ['40px'],
-      color: "text.primary",
-      border: 0,
-      borderRadius: "50%",
-      borderColor: "primary.main",
-    });
+    // setCalendarDayColor({
+    //   bgcolor: "primary.main",
+    //   width: ['40px'],
+    //   height: ['40px'],
+    //   color: "text.primary",
+    //   border: 0,
+    //   borderRadius: "50%",
+    //   borderColor: "primary.main",
+    // });
   }, [isFillDay, isMissedDate, isToday]);
 
   /**
@@ -178,7 +179,7 @@ const CalendarDay = (
           ...isSelectedDay,
           fontSize: ['20px'],
         }}
-        onClick={() => handleOnDayClick()}
+        onClick={() => {handleOnDayClick();console.log(isMissedDate())}}
       >
         {getDate(props.date)}
       </IconButton>

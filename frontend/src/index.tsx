@@ -27,7 +27,19 @@ const theme = createTheme({
     },
     secondary: {
       main: "#6a1b9a",
-    },
+    },//@ts-ignore
+    taken:{//green
+        main:'#339900',
+    },//@ts-ignore
+    toTake:{//yellow
+        main:'#ffcc00',
+    },//@ts-ignore
+    missed:{//red
+        main:'#cc3300',
+    },//@ts-ignore
+    refills:{//blue
+        main:'#1a237e',
+    },//@ts-ignore
     text: {
       primary: "#ffffff",
       secondary: "#B0B3B8",
