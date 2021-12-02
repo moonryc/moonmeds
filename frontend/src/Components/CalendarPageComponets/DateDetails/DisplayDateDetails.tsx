@@ -235,7 +235,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                 <Box sx={{display: "inline", flexWrap: "wrap"}}>
                     <Box sx={{display: "inline"}}>
                         <Fab
-                            sx={{margin:"5px",textAlign:"center", bgcolor:'taken.main'}}
+                            sx={{margin:"5px",textAlign:"center", bgcolor:'taken.main',
+                                ':hover':{bgcolor:'taken.main'}
+                            }}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -248,7 +250,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             </Badge>
                         </Fab>
                         <Fab
-                            sx={{margin:"5px", bgcolor:'toTake.main'}}
+                            sx={{margin:"5px", bgcolor:'toTake.main',
+                                ':hover':{bgcolor:'toTake.main'}
+                            }}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -263,7 +267,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                     </Box>
                     <Box sx={{display: "inline"}}>
                         <Fab
-                            sx={{margin:"5px", bgcolor:'missed.main'}}
+                            sx={{margin:"5px", bgcolor:'missed.main',
+                                ':hover':{bgcolor:'missed.main'}
+                            }}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
@@ -276,7 +282,9 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                             </Badge>
                         </Fab>
                         <Fab
-                            sx={{margin:"5px", bgcolor:'refills.main'}}
+                            sx={{margin:"5px", bgcolor:'refills.main',
+                                ':hover':{bgcolor:'refills.main'}
+                            }}
                             size={"small"}
                             onClick={() => {
                             // @ts-ignore
