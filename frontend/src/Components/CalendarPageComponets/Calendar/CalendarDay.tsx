@@ -1,6 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import {
-  getDate
+  differenceInDays,
+  getDate, isAfter, isBefore, isFriday, isMonday, isSaturday, isSunday, isThursday, isTuesday, isWednesday
 } from "date-fns";
 import isSameDay from "date-fns/isSameDay";
 import React, { useCallback, useContext, useEffect, useState } from "react";
@@ -11,16 +12,15 @@ import { IMedicationDosagesBase } from "../../../../../Types/MedicationDosagesTy
 import { CalendarContext } from "../../../Context/CalendarContext";
 import { MedicationContext } from "../../../Context/MedicationContext";
 import { dosagesOnSpecifiedDay } from "../../../Services/MedicationServices";
+import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 
-const CalendarDay = (
-  props: ICalendarDay & { isRenderedOnHomePage: boolean }
-) => {
+const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) => {
   //region Context
   /**
    * Context from Calendar and Medication
    */
   const { setSelectedDay, selectedDay } = useContext(CalendarContext);
-  const { userMedicationDosages } = useContext(MedicationContext);
+  const { userMedicationDosages, userMedications } = useContext(MedicationContext);
   //endregion
 
   /**
@@ -28,9 +28,7 @@ const CalendarDay = (
    * TODO: This is to be used for styling
    *
    */
-  const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<
-    IMedicationDosagesBase[] | []
-  >(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
+  const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesBase[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
   const [calendarDayColor, setCalendarDayColor] = useState({
     bgcolor: "primary.main",
     width: ['40px'],
@@ -142,6 +140,84 @@ const CalendarDay = (
     // });
   }, [isFillDay, isMissedDate, isToday]);
 
+
+  const [filteredFutureDosages, setFilteredFutureDosages] = useState<IMedicationDosagesBase[]>([]);
+
+  const updateFilteredFutureDosages = () => {
+    //filters out medications that arnt going to be taken on that date due to not being indefinite or stops taking medicaiton before that date
+    let arrayOfValidFutureMedication: IMedicationBase[] = userMedications.filter((medication) => {
+      return isBefore(medication.endDate, new Date(props.date)) || medication.inDefinite;
+    })
+
+    let arrayOfValidDosages: IMedicationDosagesBase[] = []
+
+    for (let medication of arrayOfValidFutureMedication) {
+      for (let dosage of medication.dosages) {
+        let {time, customWeekDays} = dosage
+        let tempDosage: IMedicationDosagesBase = {
+          ...customWeekDays,
+          userId: medication.userId,
+          medicationId: medication.medicationId,
+          dosageId: "",
+          prescriptionName: medication.prescriptionName,
+          nextFillDay: medication.nextFillDay,
+          endDate: medication.endDate,
+          inDefinite: medication.inDefinite,
+          amount: dosage.amount,
+          medicationOwner: medication.medicationOwner,
+          timeToTake: time,
+          isDaily: dosage.isDaily,
+          isWeekly: dosage.isWeekly,
+          isOnceAMonth: dosage.isOnceAMonth,
+          customOnceAMonthDate: dosage.customOnceAMonthDate,
+          hasBeenTaken: false,
+          hasBeenMissed: false,
+          timeTaken: false
+        }
+
+
+        if (dosage.isDaily) {
+          arrayOfValidDosages.push(tempDosage)
+        } else if (dosage.isWeekly) {
+          let selectedDate = new Date(props.date)
+          if (dosage.customWeekDays.monday && isMonday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.tuesday && isTuesday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.wednesday && isWednesday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.thursday && isThursday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.friday && isFriday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.saturday && isSaturday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+          if (dosage.customWeekDays.sunday && isSunday(selectedDate)) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+
+        } else if (dosage.isOnceAMonth) {
+          //TODO more research about the number of days
+          if (differenceInDays(dosage.customOnceAMonthDate, new Date(props.date)) % 30 === 0) {
+            arrayOfValidDosages.push(tempDosage)
+          }
+        }
+      }
+    }
+
+    console.log(arrayOfValidDosages)
+    if(isAfter(props.date, new Date())){
+
+    setMedicationDosagesDetails([...arrayOfValidDosages])
+    }
+  }
+  
   /**
    * tests if the componet represents today
    * @return boolean - true if it is today, false otherwise
@@ -156,13 +232,17 @@ const CalendarDay = (
    */
   useEffect(() => {
     // let answer = getDatesUserMedication()
-    setMedicationDosagesDetails(
-      dosagesOnSpecifiedDay(props.date, userMedicationDosages)
-    );
-  }, [userMedicationDosages, props.date]);
+    if(!isAfter(props.date, new Date())){
+      setMedicationDosagesDetails(
+          dosagesOnSpecifiedDay(props.date, userMedicationDosages)
+      );
+    }
+    updateFilteredFutureDosages()
+    cssClassUpdater();
+  }, [userMedicationDosages, props.date,userMedications]);
 
   useEffect(() => {
-    cssClassUpdater();
+
   }, [cssClassUpdater]);
 
   return (
