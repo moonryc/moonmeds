@@ -33,7 +33,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
     bgcolor: "primary.main",
     width: ['40px'],
     height: ['40px'],
-    color: "#000000",
+    color: "rgba(0,0,0,0.83)",
     border: 0,
     borderRadius: "50%",
     borderColor: "primary.main",

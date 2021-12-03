@@ -1,6 +1,6 @@
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import {createTheme, CssBaseline} from "@mui/material";
+import {createTheme} from "@mui/material/styles";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { createBrowserHistory } from "history";
 import React from "react";
@@ -23,23 +23,27 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#1a237e",
+      main: "#333",
     },
     secondary: {
       main: "#6a1b9a",
-    },//@ts-ignore
+    },
     taken:{//green
         main:'#339900',
-    },//@ts-ignore
+        dark:'#006600',
+    },
     toTake:{//yellow
-        main:'#ffcc00',
-    },//@ts-ignore
+        main:'#ffb300',
+        dark:'#cc9900',
+    },
     missed:{//red
         main:'#cc3300',
-    },//@ts-ignore
+        dark:'#b30000',
+    },
     refills:{//blue
-        main:'#1a237e',
-    },//@ts-ignore
+        main:'#0d47a1',
+        dark:'#1a237e',
+    },
     text: {
       primary: "#ffffff",
       secondary: "#B0B3B8",
@@ -69,6 +73,22 @@ const theme = createTheme({
     //   width: '15px',
     // }
 });
+declare module '@mui/material/styles' {
+  interface Palette {
+    taken: Palette['primary'];
+    toTake: Palette['primary'];
+    missed: Palette['primary'];
+    refills: Palette['primary'];
+  }
+
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    taken?: PaletteOptions['primary'];
+    toTake?: PaletteOptions['primary'];
+    missed?: PaletteOptions['primary'];
+    refills?: PaletteOptions['primary'];
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>

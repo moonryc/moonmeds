@@ -10,21 +10,17 @@ export const flexWrapperStyle = {
 ////
 export const flex1ItemStyle = {
   flex: 1,
-  padding: "5vmin",
+  padding: "30px",
 };
 ////
 export const backgroundStyle = {
-  bgcolor: "primary.light",
+  bgcolor: "primary.dark",
 };
 ////
 export const rearPaperStyle = {
   bgcolor: "primary.light",
 };
 ////
-export const frontPaperStyle = {
-  bgcolor: "primary.main",
-  m: "2vh",
-};
 //#endregion
 //#region Text
 export const titleStyle = {

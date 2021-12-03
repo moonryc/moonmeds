@@ -8,7 +8,7 @@ import {
     DialogTitle,
     Fab,
     Grid,
-    Paper, Typography
+    Paper, Typography, useMediaQuery
 } from "@mui/material";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {IMedicationBase} from "../../../Types/MedicationTypes";
@@ -22,6 +22,8 @@ import {CalendarContext} from "../Context/CalendarContext";
 import {backgroundStyle, flex1ItemStyle, flexWrapperStyle, wrapperStyle} from "../Styles";
 import {makeMedication} from "../typeConstructors";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import LoginButton from "../Components/Misc/LoginButton";
+import LogoutButton from "../Components/Misc/LogoutButton";
 
 
 const MainLoggedInPage = () => {
@@ -37,10 +39,10 @@ const MainLoggedInPage = () => {
     useEffect(() => {
         fetchMedicationsAndDosagesAndPersons().then(r => r);
     }, [fetchMedicationsAndDosagesAndPersons]);
-
+    const xs = useMediaQuery('(min-width:0px) and (max-width:1199.99px)');
     return (
-        <Box sx={{...flexWrapperStyle, minHeight: '100vh', width:'100vw'}} key={1}>
-            <AppbarTop/>
+        <Box sx={{...flexWrapperStyle, minHeight: '100vh', width:'100vw', position:'relative'}} key={1}>
+
             <Box sx={{
                 ...flex1ItemStyle, ...backgroundStyle,
                 display: "flex", height:'100%',
@@ -62,7 +64,7 @@ const MainLoggedInPage = () => {
                             }}
                         >
                             <DisplayCalendar/>
-                            <Box sx={{position: "absolute", bottom: "6px", left: "6px"}}>
+                            <Box sx={{position: "absolute", bottom: "10px", left: "2px"}}>
                                 <Fab
                                     size="small"
                                     color="secondary"
@@ -75,7 +77,7 @@ const MainLoggedInPage = () => {
                                     <Add/> Add
                                 </Fab>
                             </Box>
-                            <Box sx={{position: "absolute", bottom: "6px", left: '50%', transform:'translate(-50%,0)'}}>
+                            <Box sx={{position: "absolute", bottom: "10px", left: '50%', transform:'translate(-50%,0)'}}>
                                 <Fab
                                     sx={{padding:'5px'}}
                                     size="small"
@@ -84,10 +86,10 @@ const MainLoggedInPage = () => {
                                     variant={"extended"}
                                     onClick={() => setSelectedDay(new Date())}
                                 >
-                                    <CalendarTodayIcon sx={{mr:'8px'}}/>  Jump to Today
+                                    <CalendarTodayIcon sx={{mr:'px'}}/>  Jump to Today
                                 </Fab>
                             </Box>
-                            <Box sx={{position: "absolute", bottom: "6px", right: "6px"}}>
+                            <Box sx={{position: "absolute", bottom: "10px", right: "2px"}}>
                                 <Fab
                                     size="small"
                                     color="secondary"
@@ -101,7 +103,7 @@ const MainLoggedInPage = () => {
                         </Paper>
                     </Box>
                 </Box>
-                <Card elevation={0} sx={{ bgcolor:"background.paper",position: 'relative', width: "100%", minHeight: ['0hvw',,,'83.5vh'], ml: [undefined, , , '1vw'], mt:['1vw',,,'0vw']}}>
+                <Card elevation={0} sx={{ bgcolor:"background.paper",position: 'relative', width: "100%", minHeight: ['0hvw',,,'83.5vh'], ml: [undefined, , , '20px'], mt:['1vw',,,'0vw']}}>
                     <Box sx={{bgcolor: "background.paper", width: "100%", height: [undefined,,,'65vh'], minHeight:['0hvw',,,'65vh'], maxHeight:[undefined,,,'65vh']}}>
                         <DisplayDateDetails
                             selectedDate={{index: 0, date: selectedDay}}
@@ -123,5 +125,5 @@ const MainLoggedInPage = () => {
         </Box>
     );
 };
-
+//@ts-ignore weird glitch
 export default MainLoggedInPage;
