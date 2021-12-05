@@ -185,7 +185,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
                 } else if (dosage.isOnceAMonth) {
                     //TODO more research about the number of days
-                    if (differenceInDays(dosage.customOnceAMonthDate, new Date(date)) % 30 === 0) {
+                    if (differenceInDays(new Date(dosage.customOnceAMonthDate), new Date(date)) % 30 === 0) {
                         arrayOfValidDosages.push(tempDosage)
                     }
                 }
