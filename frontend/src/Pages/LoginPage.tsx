@@ -1,18 +1,7 @@
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControlLabel, Paper, TextField,
-    Typography
-} from "@mui/material";
+import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import React, {useContext, useState} from "react";
 import {ApiContext} from "../Context/ApiContext";
-import {
-    backgroundStyle,
-    centeredTextStyle,
-    titleStyle,
-    wrapperStyle
-} from "../Styles";
+import {backgroundStyle, centeredTextStyle, titleStyle, wrapperStyle} from "../Styles";
 
 const LoginPage = () => {
     const {postLogin} = useContext(ApiContext);
@@ -43,7 +32,7 @@ const LoginPage = () => {
             </Typography>
             <Paper
                 sx={{
-                    width: ['70vw',,'700px'],
+                    width: ['70vw', , '700px'],
                     right: "30%",
                     top: "15%",
                     padding: theme => theme.spacing(1)
