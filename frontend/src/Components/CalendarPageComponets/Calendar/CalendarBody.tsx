@@ -60,33 +60,33 @@ const CalendarBody:React.FC<ICalendarBodyProps> = ({numberOfDaysInMonth,firstDay
   return (
     <Box sx={{ overflow:'visible'}}>
       <br />
-      <Grid container spacing={1} columns={7}>
-        <Grid item xs={1} sx={centeredTextStyle}>
+      <Grid container spacing={1} columns={7} sx={{display:'flex', alignContent:'center',justifyContent:'flex-start'}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Sun
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Mon
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Tues
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Wed
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Thurs
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Fri
         </Grid>
-        <Grid item xs={1} sx={centeredTextStyle}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
           Sat
         </Grid>
         {arrayOfMonthDays.map(
           (day) => (
             //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
             <Grid
-              sx={{ ...centeredTextStyle, height: ['50px'],  }}
+              sx={{ alignItems:'center', display:'flex', ...centeredTextStyle, }}
               item
               xs={1}
               key={arrayOfMonthDays.indexOf(day)}

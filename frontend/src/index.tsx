@@ -27,26 +27,31 @@ const theme = createTheme({
     },
     secondary: {
       main: "#6a1b9a",
+      light: "#bc35dc",
     },
     taken:{//green
         main:'#339900',
+        light:'#33cc33',
         dark:'#006600',
     },
     toTake:{//yellow
         main:'#ffb300',
+        light:'#ffcc00',
         dark:'#cc9900',
     },
     missed:{//red
         main:'#cc3300',
+        light:'#ff3300',
         dark:'#b30000',
     },
     refills:{//blue
         main:'#0d47a1',
+        light:'#3366cc',
         dark:'#1a237e',
     },
     text: {
       primary: "#ffffff",
-      secondary: "#B0B3B8",
+      secondary: "#caced3",
     },
     background: {
       paper: "#333",
