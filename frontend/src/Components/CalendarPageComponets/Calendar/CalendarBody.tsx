@@ -86,7 +86,7 @@ const CalendarBody:React.FC<ICalendarBodyProps> = ({numberOfDaysInMonth,firstDay
           (day) => (
             //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
             <Grid
-              sx={{ alignItems:'center', display:'flex', ...centeredTextStyle, }}
+              sx={{ alignItems:'center', display:'flex', ...centeredTextStyle}}
               item
               xs={1}
               key={arrayOfMonthDays.indexOf(day)}

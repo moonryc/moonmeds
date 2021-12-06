@@ -197,16 +197,22 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
                 return ({
                     border: 3,
                     borderColor: 'text.secondary',
-                    borderRadius: '5px'
+                    borderRadius: '5px',
+                    transform: 'translate(-2px,0px)'
                 })
             }
             if(checkIsToday()){
                 return ({
                     border: 1,
                     borderColor: 'text.secondary',
-                    borderRadius: '5px'
+                    borderRadius: '5px',
+                    transform: 'translate(0px,2px)'
                 })
-            }
+            }return({
+                border: 3,
+                borderColor:'primary.main',
+                borderRadius:'5px',
+            })
         }
         const alertStyling = () => {
             if (checkIsMissedDay()) {
