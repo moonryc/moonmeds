@@ -22,7 +22,6 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
      * TODO: This is to be used for styling
      *
      */
-    const [medicationDosagesDetails, setMedicationDosagesDetails] = useState<IMedicationDosagesBase[] | []>(dosagesOnSpecifiedDay(props.date, userMedicationDosages));
     const [calendarDayColor, setCalendarDayColor] = useState({
         bgcolor: "primary.main",
         width: ['40px'],
@@ -42,8 +41,6 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
      */
     const handleOnDayClick = () => {
         setSelectedDay(props.date);
-        console.log(medicationDosagesDetails);
-        // console.log(filteredFutureDosages)
     };
 
     // const isToday = useCallback((): boolean => {
@@ -198,7 +195,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
                 }}
                 onClick={() => {
                     handleOnDayClick();
-                    console.log(isMissedDate())
+                    // console.log(isMissedDate())
                 }}
             >
                 {getDate(props.date)}
