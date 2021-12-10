@@ -10,7 +10,7 @@ export const flexWrapperStyle = {
 ////
 export const flex1ItemStyle = {
   flex: 1,
-  padding: "30px",
+  padding: "15px",
 };
 ////
 export const backgroundStyle = {
