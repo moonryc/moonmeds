@@ -33,4 +33,18 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     })
 })
 
+router.get('/weeklyDosage',JwtAuthenticate,(req,res,next)=>{
+    // @ts-ignore
+    MedicationDosageModel.find({timeToTake:{$gte:req.body.dateStart,$lte:req.body.dateEnd}, userId:req.user._id},(err,doc)=>{
+        if(err){
+            apiResponse.error = true
+            apiResponse.errorMessage = "damn something went wrong getting the data"
+            res.status(400).json(apiResponse)
+        }else{
+            apiResponse.payload = doc
+            res.status(200).json(apiResponse)
+        }
+    })
+})
+
 export default router
