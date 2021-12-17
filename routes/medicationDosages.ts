@@ -33,14 +33,18 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     })
 })
 
-router.get('/weeklyDosage',JwtAuthenticate,(req,res,next)=>{
-    // @ts-ignore
-    MedicationDosageModel.find({timeToTake:{$gte:req.body.dateStart,$lte:req.body.dateEnd}, userId:req.user._id},(err,doc)=>{
+router.get('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
+
+    console.log(req.user._id)
+    console.log(req.body.startDate)
+    console.log(req.body.endDate)
+    MedicationDosageModel.find({ timeToTake:{$gte:new Date(req.body.startDate), $lte:new Date(req.body.endDate)}, userId:req.user._id},(err,doc)=>{
         if(err){
             apiResponse.error = true
             apiResponse.errorMessage = "damn something went wrong getting the data"
             res.status(400).json(apiResponse)
         }else{
+            console.log(doc)
             apiResponse.payload = doc
             res.status(200).json(apiResponse)
         }

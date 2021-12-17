@@ -282,7 +282,7 @@ export const ApiContainer = (props: any) => {
     const getDosagesBetweenTwoDates = async (dateStart:Date,dateEnd:Date): Promise<any> => {
 
             handleLoadingBarTurnOn();
-            let url = "/weeklyDosage";
+            let url = "/medicationDosages/medicationDosageDateRange";
             await fetch(url, {
                 method: "GET", // *GET, POST, PUT, DELETE, etc.
                 mode: "cors", // no-cors, *cors, same-origin
