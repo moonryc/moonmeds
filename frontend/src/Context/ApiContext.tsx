@@ -38,6 +38,7 @@ export interface IApiContextState {
     ) => Promise<any>;
     putAddPerson: (newPerson: IPersonNameAndColor) => Promise<any>;
     putRemovePerson: (removePerson: IPersonNameAndColor) => Promise<any>;
+    getDosagesBetweenTwoDates: (dateStart:Date, dateEnd:Date) => Promise<any>;
 }
 
 export const ApiContext = createContext<IApiContextState>({
@@ -72,6 +73,7 @@ export const ApiContext = createContext<IApiContextState>({
     ) => Promise,
     putAddPerson: async (newPerson: IPersonNameAndColor) => Promise,
     putRemovePerson: async (removePerson: IPersonNameAndColor) => Promise,
+    getDosagesBetweenTwoDates: async (dateStart:Date,dateEnd:Date) => Promise,
 });
 
 export const ApiContainer = (props: any) => {
@@ -276,6 +278,41 @@ export const ApiContainer = (props: any) => {
             });
         handleLoadingBarTurnOff();
     };
+
+    const getDosagesBetweenTwoDates = async (dateStart:Date,dateEnd:Date): Promise<any> => {
+
+            handleLoadingBarTurnOn();
+            let url = "/weeklyDosage";
+            await fetch(url, {
+                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: reactLocalStorage.get("JWTToken"),
+                },
+                body: JSON.stringify({dateStart:dateStart, dateEnd:dateEnd}), // body data type must match "Content-Type" header
+            })
+                .then((response) => {
+                    return checkResponseCodes(response);
+                })
+                .then((apiResponse) => {
+                    if (apiResponse.error) {
+                        throw apiResponse.errorMessage;
+                    } else {
+                        //TODO TRAVIS STORE THIS DATA SOMEWHERE
+                        console.log(apiResponse.payload)
+                        newNotification("Grabbed medication between the 2 selected days", "success");
+                    }
+                })
+                .catch((error) => {
+                    newNotification(error, "error");
+                });
+            handleLoadingBarTurnOff();
+
+    }
 
     //region Put
 
@@ -536,6 +573,7 @@ export const ApiContainer = (props: any) => {
                 putUpdateMedicationDosage,
                 putAddPerson,
                 putRemovePerson,
+                getDosagesBetweenTwoDates
             }}
         >
             {children}
