@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import {StyleSheet, Text, View} from 'react-native';
 import {UserContext} from "../Context/UserContext";
@@ -24,12 +24,16 @@ const styles = StyleSheet.create({
 
 const MainViewScreen = () => {
 
-    const {isLoggedIn,checkUserCredentials} = useContext(UserContext);
+    const {isLoggedIn,checkForValidToken} = useContext(UserContext);
 
-    checkUserCredentials()
+    useEffect(()=>{
+        checkForValidToken()
+    },[])
+
 
     return (
         <View style={styles.container}>
+
             {isLoggedIn === null ? <View/>: isLoggedIn ?  <HomeScreen/>: <LoginSignupScreen/> }
         </View>
     );

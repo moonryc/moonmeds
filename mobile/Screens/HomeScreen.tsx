@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {BottomNavigation} from "react-native-paper";
 import loginScreen from "./LoginSignup/LoginScreen";
 import signupScreen from "./LoginSignup/SignupScreen";
-
+import * as SecureStore from 'expo-secure-store';
 
 const HomeScreen = () => {
 
@@ -36,7 +36,8 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text>Hello</Text>
+            <Text>YOU ARE LOGGED IN!</Text>
+            <Text>{JSON.stringify(SecureStore.getItemAsync("moonmeds-JWT"))}</Text>
             <BottomNavigation
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}

@@ -1,42 +1,59 @@
 import React, {createContext, useState} from 'react';
 import * as SecureStore from 'expo-secure-store';
-import {Text, View} from 'react-native';
 
 interface UserContextInterface {
     isLoggedIn: boolean | null
     setIsLoggedIn: (value: boolean | null) => void;
-    checkUserCredentials: ()=> void;
+    checkForValidToken: () => void;
 }
 
 export const UserContext = createContext<UserContextInterface>({
     isLoggedIn: null,
-    setIsLoggedIn: () => {},
-    checkUserCredentials: () => {}
+    setIsLoggedIn: () => {
+    },
+    checkForValidToken: () => {
+    }
 })
 
 export const UserContextContainer = (props: any) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
-    const checkUserCredentials = () => {
-        const response = async () => {
-            await SecureStore.getItemAsync("moonmeds-JWT").then(r => {
-                console.log(r)
-                if (r) {
-                    setIsLoggedIn(true)
-                } else {
-                    setIsLoggedIn(true)
-                }
-            })
+    /**
+     * first checks if user has a token stored, if the user has a token stored it is
+     * then checked to see if the token has not expired
+     */
+    const checkForValidToken = async () => {
+
+        await SecureStore.getItemAsync("moonmeds-JWT").then(response => {
+            console.log(response)
+            if (response) {
+                fetch("https://moonmeds.herokuapp.com/users/callback",{
+                    method: "GET", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: "same-origin", // include, *same-origin, omit
+                    headers: {
+                        Authorization: response,
+                    },
+                }).then(callbackResponse=>{
+                    if(callbackResponse.ok){
+                        setIsLoggedIn(true)
+                    }else{
+                        setIsLoggedIn(false)
+                    }
+                })
+            } else {
+                setIsLoggedIn(false)
+            }
+        })
 
 
-        }
-        response().then()
     }
 
 
     return (
-        <UserContext.Provider value={{isLoggedIn, setIsLoggedIn,checkUserCredentials}}>
+        <UserContext.Provider value={{isLoggedIn, setIsLoggedIn, checkForValidToken}}>
             {props.children}
         </UserContext.Provider>
     );
