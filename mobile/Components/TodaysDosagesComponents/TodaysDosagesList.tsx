@@ -51,7 +51,7 @@ const TodaysDosagesList = () => {
         return (
             <View>
                 {
-                    missedDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                    userMedicationDosages.map((dosage: IMedicationDosagesBase, index: number) => {
                         if (dosage.hasBeenMissed && !dosage.hasBeenTaken) {
                             return (
                                 <View key={index}>
@@ -83,7 +83,7 @@ const TodaysDosagesList = () => {
         return (
             <View>
                 {
-                    upcomingDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                    userMedicationDosages.map((dosage: IMedicationDosagesBase, index: number) => {
                         if (!dosage.hasBeenMissed && !dosage.hasBeenTaken && isToday(new Date(dosage.timeToTake))) {
                             return (
                                 <View key={index}>
@@ -115,7 +115,7 @@ const TodaysDosagesList = () => {
         return (
             <View>
                 {
-                    upcomingRefillsArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                    userMedicationDosages.map((dosage: IMedicationDosagesBase, index: number) => {
                         if (dosage.hasBeenMissed && !dosage.hasBeenTaken && isToday(new Date(dosage.timeToTake))) {
                             return (
                                 <View key={index}>
@@ -147,7 +147,7 @@ const TodaysDosagesList = () => {
         return (
             <View>
                 {
-                    takenDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                    userMedicationDosages.map((dosage: IMedicationDosagesBase, index: number) => {
                         if (dosage.hasBeenTaken && isToday(new Date(dosage.timeToTake))) {
                             return (
                                 <View key={index}>
