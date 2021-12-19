@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
 
 const LoginSignupScreen = () => {
 
-    const {isLoggedIn} = useContext(UserContext);
-
     const Stack = createNativeStackNavigator()
 
     return (

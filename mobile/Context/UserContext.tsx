@@ -1,10 +1,14 @@
 import React, {createContext, useState} from 'react';
 import * as SecureStore from 'expo-secure-store';
+import {IPersonNameAndColor} from "../../Types/UserTypes";
 
 interface UserContextInterface {
     isLoggedIn: boolean | null
     setIsLoggedIn: (value: boolean | null) => void;
     checkForValidToken: () => void;
+
+    usersPeople: IPersonNameAndColor[];
+    setUsersPeople: (state: IPersonNameAndColor[]) => void;
 }
 
 export const UserContext = createContext<UserContextInterface>({
@@ -12,12 +16,19 @@ export const UserContext = createContext<UserContextInterface>({
     setIsLoggedIn: () => {
     },
     checkForValidToken: () => {
-    }
+    },
+
+    usersPeople: [{ name: "Default", color: "Grey" }],
+    setUsersPeople: (state: IPersonNameAndColor[]) => null,
 })
 
 export const UserContextContainer = (props: any) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+    const [usersPeople, setUsersPeople] = useState<IPersonNameAndColor[]>([
+        { name: "Default", color: "Grey" },
+    ]);
 
     /**
      * first checks if user has a token stored, if the user has a token stored it is
@@ -53,7 +64,7 @@ export const UserContextContainer = (props: any) => {
 
 
     return (
-        <UserContext.Provider value={{isLoggedIn, setIsLoggedIn, checkForValidToken}}>
+        <UserContext.Provider value={{isLoggedIn, setIsLoggedIn, checkForValidToken,usersPeople,setUsersPeople}}>
             {props.children}
         </UserContext.Provider>
     );

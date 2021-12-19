@@ -1,13 +1,13 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
-import MyStatusBar from "./Components/Misc/MyStatusBar";
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 
 import {NavigationContainer} from "@react-navigation/native";
 
 import MainViewScreen from "./Screens/MainViewScreen";
 import {UserContextContainer} from "./Context/UserContext";
-
+import ApiContextContainer from "./Context/ApiContext";
+import MedicationContextContainer from "./Context/MedicationContext";
 
 
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        width:"100%",
+        width: "100%",
 
     },
 });
@@ -32,18 +32,22 @@ const theme = {
     },
 };
 
-export default function App() {
-  return (
 
-      <PaperProvider theme={theme}>
-      <NavigationContainer>
-          <UserContextContainer>
-              <View style={styles.container}>
-              <MyStatusBar/>
-              <MainViewScreen/>
-              </View>
-          </UserContextContainer>
-      </NavigationContainer>
-  </PaperProvider>
-  );
+
+export default function App() {
+    return (
+        <PaperProvider theme={theme}>
+            <NavigationContainer>
+                <UserContextContainer>
+                    <MedicationContextContainer>
+                        <ApiContextContainer>
+                            <View style={styles.container}>
+                                <MainViewScreen/>
+                            </View>
+                        </ApiContextContainer>
+                    </MedicationContextContainer>
+                </UserContextContainer>
+            </NavigationContainer>
+        </PaperProvider>
+    );
 }

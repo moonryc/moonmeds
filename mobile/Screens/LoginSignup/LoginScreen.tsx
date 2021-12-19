@@ -3,12 +3,14 @@ import React, {useContext, useState} from 'react';
 import {Text, View} from 'react-native';
 import {Button, TextInput} from "react-native-paper";
 import {UserContext, UserContextContainer} from "../../Context/UserContext";
+import {ApiContext} from "../../Context/ApiContext";
 
 
 // @ts-ignore
 const LoginScreen = ({navigation}) => {
 
     const {setIsLoggedIn} = useContext(UserContext)
+    const {postLogin} =useContext(ApiContext)
 
 
     const [submitObject, setSubmitObject] = useState<{username:string,password:string}>({username:"",password:""});
@@ -32,7 +34,7 @@ const LoginScreen = ({navigation}) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, password: value}))
             }}/>
-            <Button style={{marginTop:30}} mode={"contained"} onPress={() => setIsLoggedIn(true)}>Login</Button>
+            <Button style={{marginTop:30}} mode={"contained"} onPress={() => postLogin(submitObject.username,submitObject.password)}>Login</Button>
             <Button style={{marginTop:30}} mode={"contained"} onPress={() => navigation.navigate("signup")}>Signup</Button>
         </View>
     );

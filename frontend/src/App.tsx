@@ -13,7 +13,7 @@ import SignUpPage from "./Pages/SignUpPage";
 
 function App() {
     const {loggedIn, setLoggedIn} = useContext<any>(UserContext);
-    const {checkIfJWTTokenIsValid} = useContext<any>(ApiContext);
+    const {checkIfJWTTokenIsValid, fetchMedicationsAndDosagesAndPersons} = useContext<any>(ApiContext);
 
     /**
      * Checks if the user is logged in and if the JWT token is still valid.
@@ -38,6 +38,10 @@ function App() {
         checkIfUserIsLoggedIn();
     }, [checkIfUserIsLoggedIn]);
 
+    // setInterval(()=>{
+    //     fetchMedicationsAndDosagesAndPersons()
+    //     console.log("sent fetch")
+    // },60*1000)
 
     return (
         <div>
