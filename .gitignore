@@ -6,3 +6,6 @@
 /.idea/
 /cryptography/id_rsa_priv.pem
 /cryptography/id_rsa_pub.pem
+/mobile/.expo
+/mobile/.expo-shared
+/mobile/node_modules
