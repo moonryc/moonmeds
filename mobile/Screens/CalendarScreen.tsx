@@ -1,12 +1,8 @@
 import React, {useState} from 'react';
-
-import {Text, View} from 'react-native';
-import {Appbar, Menu} from "react-native-paper";
-import SelectedMedication from "../Components/MedicationListComponents/SelectedMedication";
+import {Appbar} from "react-native-paper";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import loginScreen from "./LoginSignup/LoginScreen";
-import SignupScreen from "./LoginSignup/SignupScreen";
+import Calendar from "../Components/CalendarComponents/Calendar";
 
 const CalendarScreen = () => {
 
@@ -27,9 +23,7 @@ const CalendarScreen = () => {
 
     const Stack = createNativeStackNavigator()
 
-    const Test = () => {
-        return(<Text>Hello</Text>)
-    }
+
 
     return (
         <>
@@ -38,7 +32,7 @@ const CalendarScreen = () => {
                     screenOptions={{
                         header: (props:any) => <CustomNavigationBar {...props} />
                     }}>
-                    <Stack.Screen name={"Your Medications"} component={Test}/>
+                    <Stack.Screen name={"Calendar"} component={Calendar}/>
 
                 </Stack.Navigator>
             </NavigationContainer>

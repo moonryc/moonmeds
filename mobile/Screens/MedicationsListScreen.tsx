@@ -5,6 +5,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import EditMedication from "../Components/MedicationListComponents/EditMedication";
 import MedicationList from "../Components/MedicationListComponents/MedicationList";
+import SelectedMedication from "../Components/MedicationListComponents/SelectedMedication";
 
 
 const MedicationsListScreen = () => {
@@ -28,9 +29,9 @@ const MedicationsListScreen = () => {
                         anchor={
                             <Appbar.Action icon="menu" color="white" onPress={openMenu} />
                         }>
-                        <Menu.Item onPress={() => {console.log('Option 1 was pressed')}} title="New Medication" />
-                        <Menu.Item onPress={() => {console.log('Option 2 was pressed')}} title="Delete Medications" />
-                        <Menu.Item onPress={() => {console.log('Option 3 was pressed')}} title="Filter" />
+                        <Menu.Item icon={"plus"} onPress={() => {console.log('Option 1 was pressed')}} title="New Medication" />
+                        <Menu.Item icon={"trash"} onPress={() => {console.log('Option 2 was pressed')}} title="Delete Medications" />
+                        <Menu.Item icon={"filter"} onPress={() => {console.log('Option 3 was pressed')}} title="Filter" />
                     </Menu>
                 ) : null}
             </Appbar.Header>
@@ -49,7 +50,7 @@ const MedicationsListScreen = () => {
                     }}>
                     <Stack.Screen name={"Your Medications"} component={MedicationList}/>
                     {/*TODO*/}
-                    <Stack.Screen name={"Details"} component={EditMedication}/>
+                    <Stack.Screen name={"Details"} component={SelectedMedication}/>
 
                 </Stack.Navigator>
             </NavigationContainer>
