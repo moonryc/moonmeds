@@ -50,32 +50,37 @@ const TodaysDosagesList = () => {
     const MissedDosages = () => {
         return (
             <View>
+                {/*@ts-ignore*/}
+                <List.Subheader>Missed Dosages</List.Subheader>
+                <Divider/>
                 {
 
-                        missedDosagesArray === undefined ? <View/>: missedDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
-                                return (
-                                    <View key={index}>
-                                        <TouchableRipple
+                    missedDosagesArray === undefined ?
+                        <View/> : missedDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                            return (
+                                <View key={index}>
+                                    <TouchableRipple
 
-                                            onPress={() => console.log('Pressed')}
-                                            rippleColor="rgba(0, 0, 0, .32)"
-                                        >
-                                            <List.Item
-                                                title={dosage.prescriptionName}
-                                                description={dosage.medicationOwner.name}
-                                                onPress={() => {
-                                                }}
-                                                left={props => <List.Icon {...props} icon="pill"
-                                                                          color={dosage.medicationOwner.color}/>}
-                                            />
-                                        </TouchableRipple>
-                                        <Divider/>
-                                    </View>
-                                )
-                            })
+                                        onPress={() => console.log('Pressed')}
+                                        rippleColor="rgba(0, 0, 0, .32)"
+                                    >
+                                        <List.Item
+                                            title={dosage.prescriptionName}
+                                            description={dosage.timeToTake}
+                                            onPress={() => {
+                                            }}
+                                            left={props => <List.Icon {...props} icon="pill"
+                                                                      color={dosage.medicationOwner.color}/>}
+                                        />
+                                    </TouchableRipple>
+                                    <Divider/>
+                                </View>
+                            )
+                        })
 
 
                 }
+
             </View>
         )
     }
@@ -83,28 +88,32 @@ const TodaysDosagesList = () => {
     const UpcomingDosages = () => {
         return (
             <View>
+                {/*@ts-ignore*/}
+                <List.Subheader>Upcoming Dosages</List.Subheader>
+                <Divider/>
                 {
-                    upcomingDosagesArray === undefined ? <View/>: upcomingDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
-                        return (
-                            <View key={index}>
-                                <TouchableRipple
+                    upcomingDosagesArray === undefined ?
+                        <View/> : upcomingDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                            return (
+                                <View key={index}>
+                                    <TouchableRipple
 
-                                    onPress={() => console.log('Pressed')}
-                                    rippleColor="rgba(0, 0, 0, .32)"
-                                >
-                                    <List.Item
-                                        title={dosage.prescriptionName}
-                                        description={dosage.medicationOwner.name}
-                                        onPress={() => {
-                                        }}
-                                        left={props => <List.Icon {...props} icon="pill"
-                                                                  color={dosage.medicationOwner.color}/>}
-                                    />
-                                </TouchableRipple>
-                                <Divider/>
-                            </View>
-                        )
-                    })
+                                        onPress={() => console.log('Pressed')}
+                                        rippleColor="rgba(0, 0, 0, .32)"
+                                    >
+                                        <List.Item
+                                            title={dosage.prescriptionName}
+                                            description={dosage.timeToTake}
+                                            onPress={() => {
+                                            }}
+                                            left={props => <List.Icon {...props} icon="pill"
+                                                                      color={dosage.medicationOwner.color}/>}
+                                        />
+                                    </TouchableRipple>
+                                    <Divider/>
+                                </View>
+                            )
+                        })
                 }
             </View>
         )
@@ -113,28 +122,32 @@ const TodaysDosagesList = () => {
     const UpcomingRefills = () => {
         return (
             <View>
+                {/*@ts-ignore*/}
+                <List.Subheader>Upcoming Refills</List.Subheader>
+                <Divider/>
                 {
-                    upcomingRefillsArray === undefined ?<View/> :upcomingRefillsArray.map((dosage: IMedicationDosagesBase, index: number) => {
-                        return (
-                            <View key={index}>
-                                <TouchableRipple
+                    upcomingRefillsArray === undefined ?
+                        <View/> : upcomingRefillsArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                            return (
+                                <View key={index}>
+                                    <TouchableRipple
 
-                                    onPress={() => console.log('Pressed')}
-                                    rippleColor="rgba(0, 0, 0, .32)"
-                                >
-                                    <List.Item
-                                        title={dosage.prescriptionName}
-                                        description={dosage.medicationOwner.name}
-                                        onPress={() => {
-                                        }}
-                                        left={props => <List.Icon {...props} icon="pill"
-                                                                  color={dosage.medicationOwner.color}/>}
-                                    />
-                                </TouchableRipple>
-                                <Divider/>
-                            </View>
-                        )
-                    })
+                                        onPress={() => console.log('Pressed')}
+                                        rippleColor="rgba(0, 0, 0, .32)"
+                                    >
+                                        <List.Item
+                                            title={dosage.prescriptionName}
+                                            description={dosage.timeToTake}
+                                            onPress={() => {
+                                            }}
+                                            left={props => <List.Icon {...props} icon="pill"
+                                                                      color={dosage.medicationOwner.color}/>}
+                                        />
+                                    </TouchableRipple>
+                                    <Divider/>
+                                </View>
+                            )
+                        })
                 }
             </View>
         )
@@ -143,28 +156,32 @@ const TodaysDosagesList = () => {
     const TakenDosages = () => {
         return (
             <View>
+                {/*@ts-ignore*/}
+                <List.Subheader>Taken Dosages</List.Subheader>
+                <Divider/>
                 {
-                    takenDosagesArray === undefined ? <View/>: takenDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
-                        return (
-                            <View key={index}>
-                                <TouchableRipple
+                    takenDosagesArray === undefined ?
+                        <View/> : takenDosagesArray.map((dosage: IMedicationDosagesBase, index: number) => {
+                            return (
+                                <View key={index}>
+                                    <TouchableRipple
 
-                                    onPress={() => console.log('Pressed')}
-                                    rippleColor="rgba(0, 0, 0, .32)"
-                                >
-                                    <List.Item
-                                        title={dosage.prescriptionName}
-                                        description={dosage.medicationOwner.name}
-                                        onPress={() => {
-                                        }}
-                                        left={props => <List.Icon {...props} icon="pill"
-                                                                  color={dosage.medicationOwner.color}/>}
-                                    />
-                                </TouchableRipple>
-                                <Divider/>
-                            </View>
-                        )
-                    })
+                                        onPress={() => console.log('Pressed')}
+                                        rippleColor="rgba(0, 0, 0, .32)"
+                                    >
+                                        <List.Item
+                                            title={dosage.prescriptionName}
+                                            description={dosage.timeToTake}
+                                            onPress={() => {
+                                            }}
+                                            left={props => <List.Icon {...props} icon="pill"
+                                                                      color={dosage.medicationOwner.color}/>}
+                                        />
+                                    </TouchableRipple>
+                                    <Divider/>
+                                </View>
+                            )
+                        })
                 }
             </View>
         )
@@ -172,21 +189,13 @@ const TodaysDosagesList = () => {
 
     return (
         <ScrollView>
-            {/*@ts-ignore*/}
-            <List.Subheader>Missed Dosages</List.Subheader>
-            <Divider/>
+            
             <MissedDosages/>
-            {/*@ts-ignore*/}
-            <List.Subheader>Upcoming Dosages</List.Subheader>
-            <Divider/>
+
             <UpcomingDosages/>
-            {/*@ts-ignore*/}
-            <List.Subheader>Upcoming Refills</List.Subheader>
-            <Divider/>
+
             <UpcomingRefills/>
-            {/*@ts-ignore*/}
-            <List.Subheader>Taken Dosages</List.Subheader>
-            <Divider/>
+
             <TakenDosages/>
         </ScrollView>
     );

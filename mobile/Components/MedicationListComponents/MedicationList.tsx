@@ -27,7 +27,7 @@ const MedicationList = ({navigation,back}:any) => {
                                     description={medication.medicationOwner.name}
                                     onPress={()=>{
                                         setSelectedMedication({...medication})
-                                        navigation.navigate('Details')
+                                        navigation.navigate('Details', {medicationObject:medication})
                                     }}
                                     left={props => <List.Icon {...props} icon="pill" color={medication.medicationOwner.color} />}
                                 />

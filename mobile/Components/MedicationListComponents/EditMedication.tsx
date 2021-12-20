@@ -5,7 +5,7 @@ import {TextInput} from "react-native-paper";
 import {IMedicationBase} from "../../../Types/MedicationTypes";
 import {makeMedication} from "../../typeConstructors";
 
-const SelectedMedication = () => {
+const EditMedication = () => {
 
 
     const [medicationObject, setMedicationObject] = useState<IMedicationBase>(makeMedication());
@@ -23,4 +23,4 @@ const SelectedMedication = () => {
     );
 };
 
-export default SelectedMedication;
+export default EditMedication;

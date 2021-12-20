@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {ScrollView, Text, View} from 'react-native';
 import {IMedicationBase} from "../../../Types/MedicationTypes";
@@ -7,16 +7,22 @@ import {MedicationContext} from "../../Context/MedicationContext";
 import {makeMedication} from "../../typeConstructors";
 
 
-const SelectedMedication = () => {
+const SelectedMedication = ({route}:any) => {
 
-    const {userMedications, userMedicationDosages} = useContext(MedicationContext);
+    const [selectedMedication, setSelectedMedication] = useState<IMedicationBase>(route.params.medicationObject);
 
-    const [selectedMedication, setSelectedMedication] = useState<IMedicationBase>(makeMedication());
+
+    useEffect(()=>{
+        setSelectedMedication(route.params.medicationObject)
+    },[route.params.medicationObject])
+
+console.log(route.params.medicationObject)
 
 
     return (
         <ScrollView>
-
+            {selectedMedication === undefined ? <View/>:
+                <View>
             <Text>
                 Prescription Name: {selectedMedication.prescriptionName}
             </Text>
@@ -36,6 +42,8 @@ const SelectedMedication = () => {
             <Text>
                 Notes: {selectedMedication.userNotes}
             </Text>
+                </View>
+            }
 
         </ScrollView>
     );

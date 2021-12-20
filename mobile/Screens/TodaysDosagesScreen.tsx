@@ -27,11 +27,11 @@ const TodaysDosagesScreen = () => {
                         visible={visible}
                         onDismiss={closeMenu}
                         anchor={
-                            <Appbar.Action icon="menu" color="white" onPress={openMenu} />
+                            <Appbar.Action icon="filter" color="white" onPress={openMenu} />
                         }>
-                        <Menu.Item onPress={() => {console.log('Option 1 was pressed')}} title="New Medication" />
-                        <Menu.Item onPress={() => {console.log('Option 2 was pressed')}} title="Delete Medications" />
-                        <Menu.Item onPress={() => {console.log('Option 3 was pressed')}} title="Filter" />
+                        <Menu.Item icon={"face"} onPress={() => {console.log('Option 1 was pressed')}} title="By Person" />
+                        <Menu.Item icon={"list"} onPress={() => {console.log('Option 2 was pressed')}} title="Section" />
+
                     </Menu>
                 ) : null}
             </Appbar.Header>
