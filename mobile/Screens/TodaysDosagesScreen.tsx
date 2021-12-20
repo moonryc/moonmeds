@@ -30,7 +30,7 @@ const TodaysDosagesScreen = () => {
                             <Appbar.Action icon="filter" color="white" onPress={openMenu} />
                         }>
                         <Menu.Item icon={"face"} onPress={() => {console.log('Option 1 was pressed')}} title="By Person" />
-                        <Menu.Item icon={"list"} onPress={() => {console.log('Option 2 was pressed')}} title="Section" />
+                        <Menu.Item icon={"format-list-bulleted"} onPress={() => {console.log('Option 2 was pressed')}} title="By Section" />
 
                     </Menu>
                 ) : null}
