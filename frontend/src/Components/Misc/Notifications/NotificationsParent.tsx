@@ -24,7 +24,7 @@ const NotificationsParent = () => {
   const [priorityNotification, setPriorityNotification] =
     useState<IAlerts | null>(null);
 
-  const handleClose = (
+  const handleClose:any = (
     event: React.SyntheticEvent | React.MouseEvent,
     reason?: string
   ) => {
