@@ -107,7 +107,7 @@ const CalendarDay = (props: ICalendarDay & { isRenderedOnHomePage: boolean }) =>
             }
             return ({
                 border: 3,
-                borderColor: 'primary.main',
+                borderColor: 'primary.dark',
                 borderRadius: '5px',
             })
         }

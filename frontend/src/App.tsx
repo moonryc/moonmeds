@@ -38,10 +38,6 @@ function App() {
         checkIfUserIsLoggedIn();
     }, [checkIfUserIsLoggedIn]);
 
-    // setInterval(()=>{
-    //     fetchMedicationsAndDosagesAndPersons()
-    //     console.log("sent fetch")
-    // },60*1000)
 
     return (
         <div>

@@ -10,11 +10,14 @@ export const flexWrapperStyle = {
 ////
 export const flex1ItemStyle = {
   flex: 1,
-  padding: "15px",
+  
 };
 ////
+export const sideBackgroundStyle = {
+  backgroundColor: "primary.dark",
+};
 export const backgroundStyle = {
-  bgcolor: "primary.dark",
+  bgcolor: "primary.main",
 };
 ////
 export const rearPaperStyle = {
@@ -33,7 +36,9 @@ export const subTextStyle = {
 ////
 export const primaryIconTextStyle = {
   color: "text.primary",
-  mr: "15px",
+  ':hover': {
+    bgcolor: "primary.light",
+  },
 };
 ///
 export const centeredTextStyle = {

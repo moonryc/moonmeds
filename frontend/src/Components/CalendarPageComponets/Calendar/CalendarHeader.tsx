@@ -2,7 +2,6 @@ import {ArrowBack, ArrowForward} from "@mui/icons-material";
 import {Box, IconButton, Typography, useMediaQuery} from "@mui/material";
 import React from "react";
 import {centeredTextStyle, flexWrapperStyle, subTextStyle} from "../../../Styles";
-import LogoutButton from "../../Misc/LogoutButton";
 
 interface ICalendarHeaderProps {
     goForwardAMonth(): void;
@@ -33,7 +32,7 @@ const CalendarHeader = (props: ICalendarHeaderProps) => {
                     <ArrowForward sx={{...subTextStyle, fontSize: ['15px']}}/>
                 </IconButton>
             </Typography>
-            {xs?<LogoutButton/>:<span/>}
+            
         </Box>
     );
 };

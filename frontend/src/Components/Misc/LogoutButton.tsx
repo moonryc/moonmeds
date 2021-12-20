@@ -1,7 +1,7 @@
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {Box, Button, Typography, useMediaQuery} from "@mui/material";
-import {backgroundStyle, titleStyle} from "../../Styles";
+import {backgroundStyle, primaryIconTextStyle, titleStyle} from "../../Styles";
 import { reactLocalStorage } from "reactjs-localstorage";
 
 const LogoutButton = () => {
@@ -11,19 +11,17 @@ const LogoutButton = () => {
     window.location.href = "/";
   };
   return (
-    <Box sx={{width:xs?undefined:'200px',display:'flex',justifyContent:'right'}}>
-      {/*<form action={"/auth/logout"}>*/}
+
       <Button
-        sx={{...titleStyle, bgcolor:'primary.main'}}
+        sx={{...primaryIconTextStyle, margin:'5px'}}
         type={"submit"}
         onClick={() => handleClick()}
         value={"logout"}
       >
           {!xs?<LogoutIcon style={{ marginRight: "15px" }} />:null}
-        <Typography variant={xs?'body2':'h6'} sx={{fontSize:xs?'15px':null}}>Logout</Typography>
+        <Typography variant='h6'>Logout</Typography>
       </Button>
-      {/*</form>*/}
-    </Box>
+
   );
 };
 

@@ -4,7 +4,7 @@ import getDaysInMonth from "date-fns/getDaysInMonth";
 import startOfMonth from "date-fns/startOfMonth";
 import subMonths from "date-fns/subMonths";
 import React, { useEffect, useState } from "react";
-import { centeredTextStyle } from "../../../Styles";
+import { centeredTextStyle, sideBackgroundStyle } from "../../../Styles";
 import CalendarBody from "./CalendarBody";
 import CalendarHeader from "./CalendarHeader";
 
@@ -50,7 +50,7 @@ const DisplayCalendar = () => {
   }, [selectedDate]);
 
   return (
-    <Box sx={{ padding: "2.5vh", overflow:'visible' }}>
+    <Box sx={{...sideBackgroundStyle, padding: "2.5vh", overflow:'visible' }}>
       <Box sx={{width:'100%',display:'flex'}}>
 
 

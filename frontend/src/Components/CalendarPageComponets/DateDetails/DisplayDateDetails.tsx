@@ -33,14 +33,13 @@ import {
     toDate
 } from "date-fns";
 import {CalendarContext} from "../../../Context/CalendarContext";
-import {titleStyle} from "../../../Styles";
+import {sideBackgroundStyle, titleStyle} from "../../../Styles";
 import {AssignmentLate, Check, Face, Update, WatchLater} from "@mui/icons-material";
 import {ApiContext} from "../../../Context/ApiContext";
 import {MedicationContext} from "../../../Context/MedicationContext";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
 import DatePickerForDialog from "../../MedicationDialog/DatePickerForDialog";
-import LogoutButton from "../../Misc/LogoutButton";
 
 
 interface IDisplayDateDetailsProp {
@@ -723,13 +722,14 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     return (
         <>
             <Box
-                sx={{padding: "3vh", height: '100%', position: "relative"}}//@ts-ignore
+                sx={{paddingTop: "3vh", height: '100%', position: "relative",
+                ...sideBackgroundStyle}}
             >
                 <Box sx={{
                     display: 'flex',
                     flexDirection: ['column-reverse', , , 'row'],
                     position: 'relative',
-                    alignItems: 'center',
+                    alignItems: 'center'
                 }}>
                     <Typography variant={"h5"} sx={{
                         width: '200px',
@@ -742,7 +742,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                 sx={{...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto'}}>
                         Date Details
                     </Typography>
-                    {lg ? <LogoutButton/> : <span/>}
+                   
                 </Box>
                 {/*<br/>*/}
                 {isAfter(new Date(date), new Date()) ? DateDetailsList(filteredFutureDosages, false) : DateDetailsList(filteredSelectedDayDosages, true)}

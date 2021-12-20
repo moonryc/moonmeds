@@ -7,12 +7,17 @@ import {
     DialogActions,
     DialogTitle,
     Divider,
+    CardContent,
+    Chip,
+    DialogContent,
+    Grid,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText
 } from "@mui/material";
+import Card from "@mui/material/Card";
 import React, {useCallback, useContext, useState} from "react";
 import {IMedicationBase} from "../../../../../Types/MedicationTypes";
 import {ApiContext} from "../../../Context/ApiContext";
@@ -20,7 +25,9 @@ import {MedicationContext} from "../../../Context/MedicationContext";
 import MedicationDialog from "../../MedicationDialog/MedicationDialog";
 import {makeMedication} from "../../../typeConstructors";
 import MedicationOverViewDialog from "../DateDetails/MedicationOverViewDialog";
-import {Medication} from "@mui/icons-material";
+import {backgroundStyle, centeredTextStyle} from "../../../Styles";
+import {Face, Medication} from "@mui/icons-material";
+import {format} from "date-fns";
 
 
 interface IDisplayMedicationList {
