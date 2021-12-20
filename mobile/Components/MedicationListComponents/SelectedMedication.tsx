@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text} from 'react-native';
 import {IMedicationBase} from "../../../Types/MedicationTypes";
-import {Avatar, Chip, Surface} from "react-native-paper";
-import { StyleSheet } from 'react-native';
+import {Avatar, Surface} from "react-native-paper";
+import {useRoute} from "@react-navigation/native";
 
 const surface = StyleSheet.create({
     surface: {
@@ -26,14 +26,18 @@ const styles = StyleSheet.create({
     },
 });
 
-const SelectedMedication = ({route}:any) => {
+const SelectedMedication = () => {
+
+    const route:any = useRoute()
+
 
     const [selectedMedication, setSelectedMedication] = useState<IMedicationBase>(route.params.medicationObject);
 
 
     useEffect(()=>{
+        // @ts-ignore
         setSelectedMedication(route.params.medicationObject)
-    },[route.params.medicationObject])
+    },[route])
 
 
 

@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Appbar, Menu} from "react-native-paper";
 import {NavigationContainer} from "@react-navigation/native";
 
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import EditMedication from "../Components/MedicationListComponents/EditMedication";
 import MedicationList from "../Components/MedicationListComponents/MedicationList";
 import SelectedMedication from "../Components/MedicationListComponents/SelectedMedication";
 

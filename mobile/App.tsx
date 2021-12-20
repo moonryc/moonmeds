@@ -8,6 +8,7 @@ import MainViewScreen from "./Screens/MainViewScreen";
 import {UserContextContainer} from "./Context/UserContext";
 import ApiContextContainer from "./Context/ApiContext";
 import MedicationContextContainer from "./Context/MedicationContext";
+import StoreContextContainer from "./Store/StoreContext";
 
 
 const styles = StyleSheet.create({
@@ -41,9 +42,11 @@ export default function App() {
                 <UserContextContainer>
                     <MedicationContextContainer>
                         <ApiContextContainer>
+                            <StoreContextContainer>
                             <View style={styles.container}>
                                 <MainViewScreen/>
                             </View>
+                            </StoreContextContainer>
                         </ApiContextContainer>
                     </MedicationContextContainer>
                 </UserContextContainer>

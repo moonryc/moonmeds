@@ -61,6 +61,7 @@ const MainViewScreen = () => {
     return (
         <View style={styles.container}>
 
+
             {isLoggedIn === null ? <View/> : isLoggedIn ? <>
                 <BottomNavigation
                     barStyle={{height: 80, backgroundColor: '#694fad', justifyContent: "space-between"}}
@@ -69,6 +70,7 @@ const MainViewScreen = () => {
                     renderScene={renderScene}
                 />
             </> : <LoginSignupScreen/>}
+
         </View>
     );
 };
