@@ -1,56 +1,30 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
-
-import {NavigationContainer} from "@react-navigation/native";
-
-import MainViewScreen from "./Screens/MainViewScreen";
 import {UserContextContainer} from "./Context/UserContext";
 import ApiContextContainer from "./Context/ApiContext";
 import MedicationContextContainer from "./Context/MedicationContext";
 import StoreContextContainer from "./Store/StoreContext";
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: "100%",
-
-    },
-});
-
-
-const theme = {
-    ...DefaultTheme,
-    roundness: 2,
-    colors: {
-        ...DefaultTheme.colors,
-        primary: '#3498db',
-        accent: '#f1c40f',
-    },
-};
-
-
+import {ApplicationProvider, Layout} from "@ui-kitten/components";
+import * as eva from '@eva-design/eva';
+import Navigation from "./Navigation/Navigation";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
     return (
-        <PaperProvider theme={theme}>
-            <NavigationContainer>
+        <ApplicationProvider {...eva} theme={eva.dark}>
+            {/*{eva.dark} for dark mode*/}
+        <SafeAreaProvider>
+            <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <UserContextContainer>
                     <MedicationContextContainer>
                         <ApiContextContainer>
                             <StoreContextContainer>
-                            <View style={styles.container}>
-                                <MainViewScreen/>
-                            </View>
+                                <Navigation/>
                             </StoreContextContainer>
                         </ApiContextContainer>
                     </MedicationContextContainer>
                 </UserContextContainer>
-            </NavigationContainer>
-        </PaperProvider>
+            </Layout>
+        </SafeAreaProvider>
+        </ApplicationProvider>
     );
 }

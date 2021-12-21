@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 
 import {ScrollView, Text, View} from 'react-native';
-import {Button, List} from "react-native-paper";
 import {UserContext} from "../../Context/UserContext";
 import * as SecureStore from "expo-secure-store";
 import {ApiContext} from "../../Context/ApiContext";
+import {Button} from "@ui-kitten/components";
 
-const SimulateApiCalls = () => {
+const SimulateApiCallsScreen = () => {
 
     const {postLogin, fetchMedicationsDosagesPersons} = useContext(ApiContext);
 
@@ -28,15 +28,15 @@ const SimulateApiCalls = () => {
             <ScrollView style={{height: 80, width: "100%"}}>
                 <Text style={{justifyContent: "center"}}>{jwtToken}</Text>
             </ScrollView>
-            <Button style={{margin: 15}} mode={"contained"} onPress={() => checkForValidToken}>Check for valid
+            <Button style={{margin: 15}}  onPress={() => checkForValidToken}>Check for valid
                 token</Button>
-            <Button style={{margin: 15}} mode={"contained"} onPress={() => postLogin("moonryc", "qwerty")}>Simulate
+            <Button style={{margin: 15}}  onPress={() => postLogin("moonryc", "qwerty")}>Simulate
                 Login</Button>
-            <Button style={{margin: 15}} mode={"contained"} onPress={() => {
+            <Button style={{margin: 15}}  onPress={() => {
                 fetchMedicationsDosagesPersons()
             }}>Fetch data</Button>
         </ScrollView>
     );
 };
 
-export default SimulateApiCalls;
+export default SimulateApiCallsScreen;

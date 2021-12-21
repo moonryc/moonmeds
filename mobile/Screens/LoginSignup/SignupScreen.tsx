@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 
-import {Text, View} from 'react-native';
-import {Button, TextInput} from "react-native-paper";
+import {ScrollView, Text, View} from 'react-native';
+import {Button, Input} from "@ui-kitten/components";
+
 
 
 interface ISubmitObject {
@@ -28,12 +29,12 @@ const SignupScreen = () => {
 
 
     return (
-        <View style={{margin:30}}>
+        <ScrollView style={{margin:30}}>
 
-            {/*@ts-ignore*/}
-            <TextInput
+
+            <Input
                 style={{marginTop:30}}
-                mode={"flat"}
+
                 label={"First Name"}
                 value={submitObject.firstName}
                 onChangeText={(value) => {
@@ -41,39 +42,39 @@ const SignupScreen = () => {
                         ...prevState, firstName: value}))
                 }}/>
 
-            {/*@ts-ignore*/}
-            <TextInput style={{marginTop:30}} mode={"flat"} label={"Last Name"} value={submitObject.lastName} onChangeText={(value) => {
+
+            <Input style={{marginTop:30}}  label={"Last Name"} value={submitObject.lastName} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, lastName: value}))
             }}/>
 
-            {/*@ts-ignore*/}
-            <TextInput style={{marginTop:30}} mode={"flat"} label={"Username"} value={submitObject.username} onChangeText={(value) => {
+
+            <Input style={{marginTop:30}}  label={"Username"} value={submitObject.username} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, username: value}))
             }}/>
 
-            {/*@ts-ignore*/}
-            <TextInput style={{marginTop:30}} mode={"flat"} label={"Email"} value={submitObject.email} onChangeText={(value) => {
+
+            <Input style={{marginTop:30}}  label={"Email"} value={submitObject.email} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, email: value}))
             }}/>
 
-            {/*@ts-ignore*/}
-            <TextInput style={{marginTop:30}} mode={"flat"} label={"Password"} value={submitObject.password} onChangeText={(value) => {
+
+            <Input style={{marginTop:30}}  label={"Password"} value={submitObject.password} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, password: value}))
             }}/>
 
-            {/*@ts-ignore*/}
-            <TextInput style={{marginTop:30}} mode={"flat"} label={"Confirm Password"} value={submitObject.passwordCheck} onChangeText={(value) => {
+
+            <Input style={{marginTop:30}}  label={"Confirm Password"} value={submitObject.passwordCheck} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, passwordCheck: value}))
             }}/>
 
-            <Button style={{marginTop:30}} mode={"contained"}>Create account</Button>
+            <Button style={{marginTop:30}}>Create account</Button>
 
-        </View>
+        </ScrollView>
     );
 };
 
