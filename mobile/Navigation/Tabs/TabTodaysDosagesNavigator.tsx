@@ -10,7 +10,7 @@ import {
     TopNavigation,
     TopNavigationAction
 } from "@ui-kitten/components";
-import TodaysDosagesHomeScreen from "../../Screens/TodaysDosagesNavigator/TodaysDosagesHomeScreen";
+import TodaysDosagesHomeScreen from "../../Screens/TodaysDosagesScreens/TodaysDosagesHomeScreen";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import {SafeAreaView} from "react-native";
 import {TodaysDosagesStack} from '../StackNavigators';
