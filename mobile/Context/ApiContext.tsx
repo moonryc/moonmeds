@@ -40,7 +40,6 @@ const ApiContextContainer = (props: any) => {
                 console.log(`Response status: ${response.status}`)
                 if (response.ok) {
                     response.json().then(data => {
-                        console.log(data)
                         SecureStore.setItemAsync("moonmeds-JWT", data.payload.token)
                         setIsLoggedIn(true)
                     })
@@ -76,8 +75,6 @@ const ApiContextContainer = (props: any) => {
                             }
                         })
                         .then((apiResponse) => {
-                            console.log(apiResponse)
-
                             setUserMedications(apiResponse.payload.medicationArray);
                             setUserMedicationDosages(apiResponse.payload.medicationDosagesArray);
                             setUsersPeople([...apiResponse.payload.persons]);
