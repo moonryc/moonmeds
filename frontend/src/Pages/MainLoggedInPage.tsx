@@ -140,5 +140,4 @@ const MainLoggedInPage = () => {
         </Box>
     );
 };
-//@ts-ignore weird glitch
 export default MainLoggedInPage;
