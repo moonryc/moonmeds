@@ -1,18 +1,25 @@
 import React from 'react';
 
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Icon, IconRegistry, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
+import {
+    Divider,
+    Icon,
+    IconRegistry,
+    MenuItem,
+    OverflowMenu,
+    TopNavigation,
+    TopNavigationAction
+} from "@ui-kitten/components";
 import TodaysDosagesHomeScreen from "../../Screens/TodaysDosagesNavigator/TodaysDosagesHomeScreen";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import {SafeAreaView} from "react-native";
+import {TodaysDosagesStack} from '../StackNavigators';
 
 const BackIcon = (props: any) => (
     <Icon {...props} name='arrow-back'/>
 );
 
-const EditIcon = (props: any) => (
-    <Icon {...props} name='edit'/>
-);
+
 
 const MenuIcon = (props: any) => (
     <Icon {...props} name='more-vertical'/>
@@ -29,8 +36,6 @@ const LogoutIcon = (props: any) => (
 
 const TabTodaysDosagesNavigator = () => {
 
-    const TodaysDosagesStack = createNativeStackNavigator()
-
     const [menuVisible, setMenuVisible] = React.useState(false);
 
     const toggleMenu = () => {
@@ -43,7 +48,7 @@ const TabTodaysDosagesNavigator = () => {
 
     const renderRightActions = () => (
         <React.Fragment>
-            <TopNavigationAction icon={EditIcon}/>
+
             <OverflowMenu
                 anchor={renderMenuAction}
                 visible={menuVisible}
@@ -54,20 +59,16 @@ const TabTodaysDosagesNavigator = () => {
         </React.Fragment>
     );
 
-
-    const renderBackAction = () => (
-        <TopNavigationAction icon={BackIcon}/>
-    );
-
     const NavigationHeader = ({navigation, back}: any) => {
         return (
-
+            <React.Fragment>
                 <TopNavigation
                     alignment='center'
-                    title='TODAY'
-                    accessoryLeft={renderBackAction}
+                    title='TODAYS DOSAGES'
                     accessoryRight={renderRightActions}
                 />
+                <Divider/>
+            </React.Fragment>
 
         )
     }

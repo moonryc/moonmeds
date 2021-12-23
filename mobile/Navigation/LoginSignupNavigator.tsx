@@ -52,9 +52,9 @@ const LogoutIcon = (props: any) => (
 );
 
 
-const LoginSignupNavigator = () => {
+const LoginStack = createNativeStackNavigator()
 
-    const LoginStack = createNativeStackNavigator()
+const LoginSignupNavigator = () => {
 
     const [menuVisible, setMenuVisible] = React.useState(false);
 

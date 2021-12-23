@@ -7,11 +7,13 @@ import LoginSignupNavigator from "./LoginSignupNavigator";
 import {View,Text} from "react-native";
 import Constants from "expo-constants";
 import {StatusBar} from "expo-status-bar";
+import {ApiContext} from "../Context/ApiContext";
 
 
 const Navigation = () => {
 
     const {isLoggedIn, checkForValidToken} = useContext(UserContext);
+    const {fetchMedicationsDosagesPersons}= useContext(ApiContext)
 
 
     useEffect(() => {
@@ -20,18 +22,23 @@ const Navigation = () => {
     }, [])
 
     useEffect(()=>{
-        console.log(isLoggedIn)
+        console.log("is logged in is updated")
+
+
+        if(isLoggedIn){
+            fetchMedicationsDosagesPersons()
+            console.log("fetch ran")
+        }
     },[isLoggedIn])
 
     return (
 
-        <NavigationContainer>
+        <React.Fragment>
             <View style={{height: Constants.statusBarHeight}}>
                 <StatusBar style="auto" />
             </View>
-            {isLoggedIn === null ? <LoadingScreen/>: <View/>}
-            {isLoggedIn ? <HomeScreenNavigation/>:<LoginSignupNavigator/>}
-        </NavigationContainer>
+            {isLoggedIn === null ? <LoadingScreen/>: isLoggedIn ? <HomeScreenNavigation/>:<LoginSignupNavigator/>}
+        </React.Fragment>
 
     );
 };

@@ -1,10 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import SettingsHomeScreen from "../../Screens/SettingsScreens/SettingsHomeScreen";
-import {Icon, IconRegistry, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
-import {SafeAreaView} from "react-native";
+import {Divider, Icon, IconRegistry, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
+import {View} from "react-native";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import SimulateApiCallsScreen from "../../Screens/SettingsScreens/SimulateApiCallsScreen";
+import SettingsAccountSettingsScreen from "../../Screens/SettingsScreens/SettingsAccountSettingsScreen";
+import SettingsNotificationsScreen from "../../Screens/SettingsScreens/SettingsNotificationsScreen";
+import SettingsThemeScreen from "../../Screens/SettingsScreens/SettingsThemeScreen";
+import {SettingsStack} from "../StackNavigators";
 
 const BackIcon = (props: any) => (
     <Icon {...props} name='arrow-back'/>
@@ -30,44 +34,19 @@ const LogoutIcon = (props: any) => (
 
 const TabSettingsNavigator = ({navigation:{navigate}}:any) => {
 
-    const SettingsStack = createNativeStackNavigator()
-
-    const [menuVisible, setMenuVisible] = React.useState(false);
-
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
-    };
-
-    const renderMenuAction = () => (
-        <TopNavigationAction icon={MenuIcon} onPress={toggleMenu}/>
-    );
-
-    const renderRightActions = () => (
-        <React.Fragment>
-            <TopNavigationAction icon={EditIcon}/>
-            <OverflowMenu
-                anchor={renderMenuAction}
-                visible={menuVisible}
-                onBackdropPress={toggleMenu}>
-                <MenuItem accessoryLeft={InfoIcon} title='About'/>
-                <MenuItem accessoryLeft={LogoutIcon} title='Logout'/>
-            </OverflowMenu>
-        </React.Fragment>
-    );
 
 
-    const renderBackAction = () => (
-        <TopNavigationAction icon={BackIcon}/>
-    );
+    const NavigationHeader = ({navigation, back, route}: any) => {
 
-    const NavigationHeader = ({navigation, back}: any) => {
         return (
+            <React.Fragment>
                 <TopNavigation
                     alignment='center'
-                    title='TODAY'
-                    accessoryLeft={renderBackAction}
-                    accessoryRight={renderRightActions}
+                    title={route.name}
+                    accessoryLeft = {back? <TopNavigationAction icon={BackIcon} onPress={()=>navigation.goBack()}/>:<View/>}
                 />
+                <Divider/>
+            </React.Fragment>
         )
     }
 
@@ -79,8 +58,11 @@ const TabSettingsNavigator = ({navigation:{navigate}}:any) => {
                 header: (props: any) => <NavigationHeader {...props}/>,
             }}
         >
-            <SettingsStack.Screen name={"Settings Home"} component={SettingsHomeScreen}/>
+            <SettingsStack.Screen name={"Settings"} component={SettingsHomeScreen}/>
             <SettingsStack.Screen name={"Devtools"} component={SimulateApiCallsScreen}/>
+            <SettingsStack.Screen name={"Account Settings"} component={SettingsAccountSettingsScreen}/>
+            <SettingsStack.Screen name={"Notifications"} component={SettingsNotificationsScreen}/>
+            <SettingsStack.Screen name={"Theme"} component={SettingsThemeScreen}/>
         </SettingsStack.Navigator>
 </>
     );

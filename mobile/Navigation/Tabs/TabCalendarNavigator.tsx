@@ -1,17 +1,16 @@
 import React from 'react';
 import {
+    Divider,
     Icon,
     IconRegistry,
     MenuItem,
     OverflowMenu,
-    Text,
     TopNavigation,
     TopNavigationAction
 } from "@ui-kitten/components";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import CalendarHomeScreen from "../../Screens/CalendarScreens/CalendarHomeScreen";
-import {SafeAreaView} from "react-native";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
+import {CalendarStack} from '../StackNavigators';
 
 const BackIcon = (props: any) => (
     <Icon {...props} name='arrow-back'/>
@@ -35,8 +34,6 @@ const LogoutIcon = (props: any) => (
 
 
 const TabCalendarNavigator = () => {
-
-    const CalendarStack = createNativeStackNavigator()
 
     const [menuVisible, setMenuVisible] = React.useState(false);
 
@@ -68,14 +65,15 @@ const TabCalendarNavigator = () => {
 
     const NavigationHeader = ({navigation, back}: any) => {
         return (
-
-            <TopNavigation
-                alignment='center'
-                title='TODAY'
-                accessoryLeft={renderBackAction}
-                accessoryRight={renderRightActions}
-            />
-
+            <React.Fragment>
+                <TopNavigation
+                    alignment='center'
+                    title='TODAY'
+                    accessoryLeft={renderBackAction}
+                    accessoryRight={renderRightActions}
+                />
+                <Divider/>
+            </React.Fragment>
         )
     }
 

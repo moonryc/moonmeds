@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {
@@ -13,7 +13,7 @@ import TabCalendarNavigator from "./Tabs/TabCalendarNavigator";
 import TabTodaysDosagesNavigator from "./Tabs/TabTodaysDosagesNavigator";
 import TabRedBinderNavigator from "./Tabs/TabRedBinderNavigator";
 import TabSettingsNavigator from "./Tabs/TabSettingsNavigator";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {Navigator, Screen} from './StackNavigators';
 
 const styles = StyleSheet.create({
     container: {
@@ -50,11 +50,8 @@ const LogoutIcon = (props: any) => (
 
 const HomeScreenNavigation = () => {
 
-    const {Navigator, Screen} = createBottomTabNavigator();
 
-
-
-    const BottomTabBar = ({navigation, state}: any) => (
+    const BottomTabBar = useCallback(({navigation, state}: any) => (
         <BottomNavigation
             selectedIndex={state.index}
             onSelect={index => navigation.navigate(state.routeNames[index])}
@@ -64,9 +61,9 @@ const HomeScreenNavigation = () => {
             <BottomNavigationTab title='RED BINDER'/>
             <BottomNavigationTab title='SETTINGS'/>
         </BottomNavigation>
-    );
+    ), [])
 
-    const TabNavigator = () => (
+    const TabNavigator = useCallback(() => (
         <Navigator
             tabBar={(props: any) => <BottomTabBar {...props}/>}
             screenOptions={{headerShown: false}}
@@ -74,9 +71,9 @@ const HomeScreenNavigation = () => {
             <Screen name='Calendar' component={TabCalendarNavigator}/>
             <Screen name='Today' component={TabTodaysDosagesNavigator}/>
             <Screen name='Red Binder' component={TabRedBinderNavigator}/>
-            <Screen name='Settings' component={TabSettingsNavigator}/>
+            <Screen name='SettingsScreen' component={TabSettingsNavigator}/>
         </Navigator>
-    );
+    ),[]);
 
 
     return (
