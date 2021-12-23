@@ -1,20 +1,10 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {UserContext} from "../../Context/UserContext";
 import {SwipeRow} from 'react-native-swipe-list-view';
 import {MaterialIcons} from '@expo/vector-icons';
-import {
-    ScrollView,
-    StyleSheet,
-    TouchableNativeFeedback,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IPersonNameAndColor} from "../../../Types/UserTypes";
-import {Button, Card, Divider, Modal} from "@ui-kitten/components";
-import {Box} from "native-base";
-import {Text} from '@ui-kitten/components'
-import {Ionicons} from '@expo/vector-icons'
+import {Button, Card, Modal, Text} from "@ui-kitten/components";
 
 const styles = StyleSheet.create({
     container: {
@@ -28,7 +18,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#222b45',
         justifyContent: 'center',
         textAlignVertical: "center",
-        minHeight: 50,
+        minHeight: 75,
         borderBottomColor: "#151a31",
         borderBottomWidth: 1,
         color: "white",
@@ -40,7 +30,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         padding: 15,
-        maxHeight: 50,
+        maxHeight: 75,
         borderBottomColor: "#151a31",
         borderBottomWidth: 1,
         color: "white",

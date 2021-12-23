@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {Platform, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {
     BottomNavigation,
     BottomNavigationTab, Icon,
@@ -14,6 +14,7 @@ import TabTodaysDosagesNavigator from "./Tabs/TabTodaysDosagesNavigator";
 import TabRedBinderNavigator from "./Tabs/TabRedBinderNavigator";
 import TabSettingsNavigator from "./Tabs/TabSettingsNavigator";
 import {Navigator, Screen} from './StackNavigators';
+import * as OS from "os";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,27 +26,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+
 });
 
-const BackIcon = (props: any) => (
-    <Icon {...props} name='arrow-back'/>
-);
 
-const EditIcon = (props: any) => (
-    <Icon {...props} name='edit'/>
-);
-
-const MenuIcon = (props: any) => (
-    <Icon {...props} name='more-vertical'/>
-);
-
-const InfoIcon = (props: any) => (
-    <Icon {...props} name='info'/>
-);
-
-const LogoutIcon = (props: any) => (
-    <Icon {...props} name='log-out'/>
-);
 
 
 const HomeScreenNavigation = () => {

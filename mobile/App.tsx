@@ -12,26 +12,27 @@ import {NativeBaseProvider} from 'native-base';
 
 
 export default function App() {
+    {/*{eva.dark} for dark mode*/
+    }
     return (
-        <ApplicationProvider {...eva} theme={eva.dark}>
-            {/*{eva.dark} for dark mode*/}
-            <NativeBaseProvider>
-                <SafeAreaProvider>
-                    <NavigationContainer>
-                        <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <UserContextContainer>
-                                <MedicationContextContainer>
-                                    <ApiContextContainer>
-                                        <StoreContextContainer>
+        <SafeAreaProvider>
+            {/*<NativeBaseProvider>*/}
+                <ApplicationProvider {...eva} theme={eva.dark}>
+                    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <UserContextContainer>
+                            <MedicationContextContainer>
+                                <ApiContextContainer>
+                                    <StoreContextContainer>
+                                        <NavigationContainer>
                                             <Navigation/>
-                                        </StoreContextContainer>
-                                    </ApiContextContainer>
-                                </MedicationContextContainer>
-                            </UserContextContainer>
-                        </Layout>
-                    </NavigationContainer>
-                </SafeAreaProvider>
-            </NativeBaseProvider>
-        </ApplicationProvider>
+                                        </NavigationContainer>
+                                    </StoreContextContainer>
+                                </ApiContextContainer>
+                            </MedicationContextContainer>
+                        </UserContextContainer>
+                    </Layout>
+                </ApplicationProvider>
+            {/*</NativeBaseProvider>*/}
+        </SafeAreaProvider>
     );
 }

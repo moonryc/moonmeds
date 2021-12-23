@@ -56,25 +56,25 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
 
         <ScrollView style={{backgroundColor: '#1a2139', flex: 1, height: "100%"}}>
             <View>
-                <Menu>
+
                     {missedDosages !== undefined ? <React.Fragment>
                         <MenuItem title='Missed' activeOpacity={1}/>
+
                         <Divider/>
-                        <ListOfDosages dosagesArray={takenDosages}/>
+                        <ListOfDosages dosagesArray={takenDosages} typeOfList={"missed"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
 
                     {upcomingDosages !== undefined ? <React.Fragment>
                         <MenuItem title='Upcoming' activeOpacity={1}/>
                         <Divider/>
-                        <ListOfDosages dosagesArray={upcomingDosages}/>
+                        <ListOfDosages dosagesArray={upcomingDosages} typeOfList={"upcoming"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
 
                     {takenDosages !== undefined ? <React.Fragment>
                         <MenuItem title='Taken' activeOpacity={10}/>
                         <Divider/>
-                        <ListOfDosages dosagesArray={takenDosages}/>
+                        <ListOfDosages dosagesArray={takenDosages} typeOfList={"taken"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
-                </Menu>
             </View>
         </ScrollView>
 

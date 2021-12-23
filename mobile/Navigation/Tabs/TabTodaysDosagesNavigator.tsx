@@ -21,43 +21,9 @@ const BackIcon = (props: any) => (
 
 
 
-const MenuIcon = (props: any) => (
-    <Icon {...props} name='more-vertical'/>
-);
-
-const InfoIcon = (props: any) => (
-    <Icon {...props} name='info'/>
-);
-
-const LogoutIcon = (props: any) => (
-    <Icon {...props} name='log-out'/>
-);
 
 
 const TabTodaysDosagesNavigator = () => {
-
-    const [menuVisible, setMenuVisible] = React.useState(false);
-
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
-    };
-
-    const renderMenuAction = () => (
-        <TopNavigationAction icon={MenuIcon} onPress={toggleMenu}/>
-    );
-
-    const renderRightActions = () => (
-        <React.Fragment>
-
-            <OverflowMenu
-                anchor={renderMenuAction}
-                visible={menuVisible}
-                onBackdropPress={toggleMenu}>
-                <MenuItem accessoryLeft={InfoIcon} title='About'/>
-                <MenuItem accessoryLeft={LogoutIcon} title='Logout'/>
-            </OverflowMenu>
-        </React.Fragment>
-    );
 
     const NavigationHeader = ({navigation, back}: any) => {
         return (
@@ -65,7 +31,6 @@ const TabTodaysDosagesNavigator = () => {
                 <TopNavigation
                     alignment='center'
                     title='TODAYS DOSAGES'
-                    accessoryRight={renderRightActions}
                 />
                 <Divider/>
             </React.Fragment>
