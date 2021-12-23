@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
-import {ICalendarDay} from "../../../../../Types/CalendarType";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { ICalendarDay } from "../../../../../Types/CalendarType";
 import {
     Badge,
     Box,
@@ -32,13 +32,13 @@ import {
     parseISO,
     toDate
 } from "date-fns";
-import {CalendarContext} from "../../../Context/CalendarContext";
-import {sideBackgroundStyle, titleStyle} from "../../../Styles";
-import {AssignmentLate, Check, Face, Update, WatchLater} from "@mui/icons-material";
-import {ApiContext} from "../../../Context/ApiContext";
-import {MedicationContext} from "../../../Context/MedicationContext";
-import {IMedicationBase} from "../../../../../Types/MedicationTypes";
-import {IMedicationDosagesBase} from "../../../../../Types/MedicationDosagesTypes";
+import { CalendarContext } from "../../../Context/CalendarContext";
+import { sideBackgroundStyle, titleStyle } from "../../../Styles";
+import { Face } from "@mui/icons-material";
+import { ApiContext } from "../../../Context/ApiContext";
+import { MedicationContext } from "../../../Context/MedicationContext";
+import { IMedicationBase } from "../../../../../Types/MedicationTypes";
+import { IMedicationDosagesBase } from "../../../../../Types/MedicationDosagesTypes";
 import DatePickerForDialog from "../../MedicationDialog/DatePickerForDialog";
 
 
@@ -47,13 +47,7 @@ interface IDisplayDateDetailsProp {
 }
 
 
-const useScroll = () => {
-    const elRef = useRef(null);
-    // @ts-ignore
-    const executeScroll = () => elRef.current.scrollIntoView();
 
-    return [executeScroll, elRef];
-};
 
 /**
  * This component displays medications that need to be taken, have been taken,
@@ -61,7 +55,7 @@ const useScroll = () => {
  * @param props
  * @constructor
  */
-const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) => {
+const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({ selectedDate }) => {
 
     const date = useMemo(
         () => toDate(selectedDate.date).toDateString(),
@@ -69,14 +63,11 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     );
 
 
-    const {userMedications, userMedicationDosages} = useContext(MedicationContext)
-    const {putUpdateMedicationDosage} = useContext(ApiContext);
-    const {selectedDay} = useContext(CalendarContext);
+    const { userMedications, userMedicationDosages } = useContext(MedicationContext)
+    const { putUpdateMedicationDosage } = useContext(ApiContext);
+    const { selectedDay } = useContext(CalendarContext);
 
-    const [scrollToTaken, takenRef] = useScroll()
-    const [scrollToTake, toTakeRef] = useScroll()
-    const [scrollToMissed, missedRef] = useScroll()
-    const [scrollToRefill, refillRef] = useScroll()
+
 
     const [isRefillDialogOpen, setIsRefillDialogOpen] = useState<boolean>(false);
 
@@ -133,7 +124,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
         for (let medication of arrayOfValidFutureMedication) {
             for (let dosage of medication.dosages) {
-                let {time, customWeekDays} = dosage
+                let { time, customWeekDays } = dosage
                 let tempDosage: IMedicationDosagesBase = {
                     ...customWeekDays,
                     userId: medication.userId,
@@ -261,81 +252,10 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
 
         return (
             <>
-                <Box sx={{display: 'flex', justifyContent: 'center', mt: '6px'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: '6px' }}>
 
-
-                    <Box sx={{display: "inline", flexWrap: "wrap"}}>
-                        <Box sx={{display: "inline"}}>
-                            <Fab
-                                sx={{
-                                    margin: "5px", textAlign: "center", bgcolor: 'taken.main',
-                                    ':hover': {bgcolor: 'taken.main'}
-                                }}
-                                size={"small"}
-                                onClick={() => {
-                                    // @ts-ignore
-                                    scrollToTaken()
-                                }}>
-                                <Badge
-                                    color={'secondary'}
-                                    badgeContent={dosagesList.filter(detail => detail.hasBeenTaken).length}>
-                                    <Check fontSize={"large"}/>
-                                </Badge>
-                            </Fab>
-                            <Fab
-                                sx={{
-                                    margin: "5px", bgcolor: 'toTake.main',
-                                    '&:hover': {bgcolor: 'toTake.dark'}
-                                }}
-                                size={"small"}
-                                onClick={() => {
-                                    // @ts-ignore
-                                    scrollToTake()
-                                }}>
-                                <Badge
-                                    color={'secondary'}
-                                    badgeContent={dosagesList.filter(detail => !detail.hasBeenTaken && !detail.hasBeenMissed).length}>
-                                    <WatchLater fontSize={"large"}/>
-                                </Badge>
-                            </Fab>
-                        </Box>
-                        <Box sx={{display: "inline"}}>
-                            <Fab
-                                sx={{
-                                    margin: "5px", bgcolor: 'missed.main',
-                                    '&:hover': {bgcolor: 'missed.main'}
-                                }}
-                                size={"small"}
-                                onClick={() => {
-                                    // @ts-ignore
-                                    scrollToMissed()
-                                }}>
-                                <Badge
-                                    color={'secondary'}
-                                    badgeContent={dosagesList.filter(detail => !detail.hasBeenTaken && detail.hasBeenMissed).length}>
-                                    <AssignmentLate fontSize={"large"}/>
-                                </Badge>
-                            </Fab>
-                            <Fab
-                                sx={{
-                                    margin: "5px", bgcolor: 'refills.main',
-                                    '&:hover': {bgcolor: 'refills.dark'}
-                                }}
-                                size={"small"}
-                                onClick={() => {
-                                    // @ts-ignore
-                                    scrollToRefill()
-                                }}>
-                                <Badge
-                                    color={'secondary'}
-                                    badgeContent={filteredRefills(dosagesList).filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length}>
-                                    <Update fontSize={"large"}/>
-                                </Badge>
-                            </Fab>
-                        </Box>
-                    </Box>
                 </Box>
-                <Divider/>
+                <Divider />
 
                 <List
                     sx={{
@@ -344,115 +264,115 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         bgcolor: 'background.paper',
                         position: 'relative',
                         overflow: 'auto',
-                        '& ul': {padding: 0},
+                        '& ul': { padding: 0 },
                     }}
-                    subheader={<li/>}
+                    subheader={<li />}
                 >
                     {isFuture ?
                         <>
-                            <Box ref={takenRef}></Box>
-                            <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}>Medications
+                            
+                            <ListSubheader sx={{ fontSize: '20px', color: 'text.primary', textAlign: 'center' }}>Medications
                                 Taken</ListSubheader>
 
                             {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
                                 return medicationDosage.hasBeenTaken ? (
-                                        <>
-                                            <Divider/>
-                                            <ListItem key={index}>
-                                                <Box
-                                                    sx={{
-                                                        bgcolor: "background.paper",
-                                                        width: "100%",
-                                                        height: '100%',
-                                                        borderRadius: 2,
-                                                        position: "relative",
-                                                        display: 'flex',
-                                                        flexDirection: ['column', , , 'row'],
+                                    <>
+                                        <Divider />
+                                        <ListItem key={index}>
+                                            <Box
+                                                sx={{
+                                                    bgcolor: "background.paper",
+                                                    width: "100%",
+                                                    height: '100%',
+                                                    borderRadius: 2,
+                                                    position: "relative",
+                                                    display: 'flex',
+                                                    flexDirection: ['column', , , 'row'],
 
-                                                        alignItems: 'center',
-                                                    }}
-                                                ><Fab sx={{
-                                                    bgcolor: medicationDosage.medicationOwner.color,
-                                                    height: '35px',
-                                                    width: '35px',
-                                                    ':hover': {bgcolor: medicationDosage.medicationOwner.color},
-                                                    ':active': {transition: 'unidentified'}
-                                                }}>
+                                                    alignItems: 'center',
+                                                }}
+                                            ><Fab sx={{
+                                                bgcolor: medicationDosage.medicationOwner.color,
+                                                height: '35px',
+                                                width: '35px',
+                                                ':hover': { bgcolor: medicationDosage.medicationOwner.color },
+                                                ':active': { transition: 'unidentified' }
+                                            }}>
                                                     <Face sx={{
                                                         color: 'white',
                                                         position: 'relative',
                                                         height: '1em',
                                                         width: '1em'
-                                                    }}/></Fab>
+                                                    }} /></Fab>
+                                                <Typography
+                                                    sx={{
+                                                        marginLeft: "1vh",
+                                                        fontSize: "15px",
+                                                        top: "22.5%",
+                                                        position: "relative",
+                                                        width: '70%',
+                                                        flex: '1',
+                                                        p: '12px',
+                                                        lineHeight: '35px',
+                                                        textAlign: ['center', , , 'left']
+
+                                                    }}
+                                                >
+
+                                                    {"  "}
                                                     <Typography
-                                                        sx={{
-                                                            marginLeft: "1vh",
-                                                            fontSize: "15px",
-                                                            top: "22.5%",
-                                                            position: "relative",
-                                                            width: '70%',
-                                                            flex: '1',
-                                                            p: '12px',
-                                                            lineHeight: '35px',
-                                                            textAlign: ['center', , , 'left']
+                                                        component={'span'}
+                                                        sx={{ color: 'text.primary' }}
+                                                        //@ts-ignore
+                                                        //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}{truncateString(medicationDosage.prescriptionName)}
+                                                        title={medicationDosage.prescriptionName}
+                                                    >{truncateString(medicationDosage.prescriptionName)}</Typography>
+                                                    <Typography component={'span'} sx={{ color: 'text.primary' }}>
+                                                        {"Dosage was taken at "}
 
-                                                        }}
-                                                    >
+                                                        {format(parseISO(medicationDosage.timeTaken), "h:mmaa")}</Typography>
+                                                </Typography>
+                                                <Button
+                                                    variant={"contained"}
+                                                    sx={{
+                                                        m: '1vw', bgcolor: 'taken.main',
+                                                        width: ['100%', , , '140px'],
+                                                        '&:hover': { bgcolor: 'taken.dark' }
+                                                    }}
+                                                    onClick={() =>
+                                                        putUpdateMedicationDosage(
+                                                            medicationDosage.dosageId,
+                                                            false,
+                                                            medicationDosage.hasBeenMissed,
+                                                            new Date()
+                                                        )
+                                                    }
+                                                >
+                                                    Undo
+                                                </Button>
+                                            </Box>
 
-                                                        {"  "}
-                                                        <Typography
-                                                            component={'span'}
-                                                            sx={{color: 'text.primary'}}
-                                                            //@ts-ignore
-                                                            //label={medicationDosage.prescriptionName.slice(0,document.getElementById("box").parentElement.clientWidth/50)}{truncateString(medicationDosage.prescriptionName)}
-                                                            title={medicationDosage.prescriptionName}
-                                                        >{truncateString(medicationDosage.prescriptionName)}</Typography>
-                                                        <Typography component={'span'} sx={{color: 'text.primary'}}>
-                                                            {"Dosage was taken at "}
-
-                                                            {format(parseISO(medicationDosage.timeTaken), "h:mmaa")}</Typography>
-                                                    </Typography>
-                                                    <Button
-                                                        variant={"contained"}
-                                                        sx={{
-                                                            m: '1vw', bgcolor: 'taken.main',
-                                                            width: ['100%', , , '140px'],
-                                                            '&:hover': {bgcolor: 'taken.dark'}
-                                                        }}
-                                                        onClick={() =>
-                                                            putUpdateMedicationDosage(
-                                                                medicationDosage.dosageId,
-                                                                false,
-                                                                medicationDosage.hasBeenMissed,
-                                                                new Date()
-                                                            )
-                                                        }
-                                                    >
-                                                        Undo
-                                                    </Button>
-                                                </Box>
-
-                                                <br/>
-                                            </ListItem>
-                                        </>
-                                    ) :
+                                            <br />
+                                        </ListItem>
+                                    </>
+                                ) :
                                     (
-                                        <span/>
+                                        <span />
                                     );
                             })}
-                            <Divider/></>
+                            <Divider /></>
                         : <></>
                     }
 
-                    <Box ref={toTakeRef}></Box>
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                   
+                    <ListSubheader sx={{ fontSize: '20px', color: 'text.primary', textAlign: 'center' }}
                     >Medications
                         To Take</ListSubheader>
                     {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
                         return !medicationDosage.hasBeenTaken &&
-                        !medicationDosage.hasBeenMissed ? (
+                            !medicationDosage.hasBeenMissed ? (
                             <>
-                                <Divider/>
+                                <Divider />
                                 <ListItem key={index}>
                                     <Box
                                         sx={{
@@ -470,15 +390,15 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                         bgcolor: medicationDosage.medicationOwner.color,
                                         height: '35px',
                                         width: '35px',
-                                        ':hover': {bgcolor: medicationDosage.medicationOwner.color},
-                                        ':active': {transition: 'unidentified'}
+                                        ':hover': { bgcolor: medicationDosage.medicationOwner.color },
+                                        ':active': { transition: 'unidentified' }
                                     }}>
-                                        <Face sx={{
-                                            color: 'white',
-                                            position: 'relative',
-                                            height: '1em',
-                                            width: '1em'
-                                        }}/></Fab>
+                                            <Face sx={{
+                                                color: 'white',
+                                                position: 'relative',
+                                                height: '1em',
+                                                width: '1em'
+                                            }} /></Fab>
                                         <Typography
                                             sx={{
                                                 marginLeft: "1vh",
@@ -511,7 +431,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 sx={{
                                                     m: '1vw', bgcolor: 'toTake.main',
                                                     width: ['100%', , , '140px'],
-                                                    '&:hover': {bgcolor: 'toTake.dark'}
+                                                    '&:hover': { bgcolor: 'toTake.dark' }
                                                 }}
                                                 onClick={() =>
                                                     putUpdateMedicationDosage(
@@ -525,24 +445,24 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 Taken
                                             </Button> : <></>}
                                     </Box>
-                                    <br/>
+                                    <br />
                                 </ListItem>
                             </>
                         ) : (
-                            <span/>
+                            <span />
                         );
                     })}
-                    <Divider/>
+                    <Divider />
 
                     {isFuture ? <>
-                        <Box ref={missedRef}></Box>
-                        <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                       
+                        <ListSubheader sx={{ fontSize: '20px', color: 'text.primary', textAlign: 'center' }}
                         >Missed Medications</ListSubheader>
                         {dosagesList.map((medicationDosage: IMedicationDosagesBase, index) => {
                             return medicationDosage.hasBeenMissed &&
-                            !medicationDosage.hasBeenTaken ? (
+                                !medicationDosage.hasBeenTaken ? (
                                 <>
-                                    <Divider/>
+                                    <Divider />
                                     <ListItem key={index}>
                                         <Box
 
@@ -561,15 +481,15 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                             bgcolor: medicationDosage.medicationOwner.color,
                                             height: '35px',
                                             width: '35px',
-                                            ':hover': {bgcolor: medicationDosage.medicationOwner.color},
-                                            ':active': {transition: 'unidentified'}
+                                            ':hover': { bgcolor: medicationDosage.medicationOwner.color },
+                                            ':active': { transition: 'unidentified' }
                                         }}>
-                                            <Face sx={{
-                                                color: 'white',
-                                                position: 'relative',
-                                                height: '1em',
-                                                width: '1em'
-                                            }}/></Fab>
+                                                <Face sx={{
+                                                    color: 'white',
+                                                    position: 'relative',
+                                                    height: '1em',
+                                                    width: '1em'
+                                                }} /></Fab>
                                             <Typography
                                                 sx={{
                                                     marginLeft: "1vh",
@@ -602,7 +522,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 sx={{
                                                     m: '1vw', bgcolor: 'missed.main',
                                                     width: ['100%', , , '140px'],
-                                                    '&:hover': {bgcolor: 'missed.dark'}
+                                                    '&:hover': { bgcolor: 'missed.dark' }
                                                 }}
                                                 onClick={() =>
                                                     putUpdateMedicationDosage(
@@ -616,19 +536,19 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 Taken
                                             </Button>
                                         </Box>
-                                        <br/>
+                                        <br />
                                     </ListItem>
                                 </>
                             ) : (
-                                <span/>
+                                <span />
                             );
                         })}
-                        <Divider/>
+                        <Divider />
                     </> : <></>
                     }
 
-                    <Box ref={refillRef}></Box>
-                    <ListSubheader sx={{fontSize: '20px', color: 'text.primary', textAlign: 'center'}}
+                    
+                    <ListSubheader sx={{ fontSize: '20px', color: 'text.primary', textAlign: 'center' }}
                     >Upcoming Refills</ListSubheader>
                     {filteredRefills(dosagesList).map((medicationDosage: IMedicationDosagesBase, index) => {
                         const numberOfDaysBeforeRefill = differenceInDays(
@@ -637,7 +557,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         );
                         return (
                             <>
-                                <Divider/>
+                                <Divider />
                                 <ListItem key={index}>
                                     {numberOfDaysBeforeRefill <= 7 ? (
                                         <>
@@ -657,15 +577,15 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                 bgcolor: medicationDosage.medicationOwner.color,
                                                 height: '35px',
                                                 width: '35px',
-                                                ':hover': {bgcolor: medicationDosage.medicationOwner.color},
-                                                ':active': {transition: 'unidentified'}
+                                                ':hover': { bgcolor: medicationDosage.medicationOwner.color },
+                                                ':active': { transition: 'unidentified' }
                                             }}>
-                                                <Face sx={{
-                                                    color: 'white',
-                                                    position: 'relative',
-                                                    height: '1em',
-                                                    width: '1em'
-                                                }}/></Fab>
+                                                    <Face sx={{
+                                                        color: 'white',
+                                                        position: 'relative',
+                                                        height: '1em',
+                                                        width: '1em'
+                                                    }} /></Fab>
                                                 <Typography
                                                     sx={{
                                                         marginLeft: "1vh",
@@ -697,23 +617,23 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                                                     sx={{
                                                         m: '1vw', bgcolor: 'refills.main',
                                                         width: ['100%', , , '140px'],
-                                                        '&:hover': {bgcolor: 'refills.dark'}
+                                                        '&:hover': { bgcolor: 'refills.dark' }
                                                     }}
                                                 >
                                                     moon's reminder to fix
                                                 </Button>
                                             </Box>
-                                            <br/>
+                                            <br />
                                         </>
                                     ) : (
-                                        <span/>
+                                        <span />
                                     )}
                                 </ListItem>
                             </>
                         );
                     })}
                     {dosagesList.filter(detail => differenceInDays(new Date(detail.nextFillDay), new Date()) <= 7).length > 0 ?
-                        <Divider/> : <span/>}
+                        <Divider /> : <span />}
                 </List>
             </>
         )
@@ -722,27 +642,28 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
     return (
         <>
             <Box
-                sx={{paddingTop: "3vh", height: '100%', position: "relative",
-                ...sideBackgroundStyle}}
+                sx={{
+                    paddingTop: [undefined,"30px"], height: '100%', position: "relative",
+                    ...sideBackgroundStyle
+                }}
             >
                 <Box sx={{
                     display: 'flex',
-                    flexDirection: ['column-reverse', , , 'row'],
+                    flexDirection: 'column',
                     position: 'relative',
                     alignItems: 'center'
                 }}>
-                    <Typography variant={"h5"} sx={{
-                        width: '200px',
-                        display: "inline",
-                        position: 'relative',
-                        left: [undefined, , , 0],
-                        textAlign: 'center'
-                    }}>{date.toString()}</Typography>
-                    <Typography variant={"h4"}
-                                sx={{...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto'}}>
-                        Date Details
-                    </Typography>
-                   
+                    
+                    <Box sx={{display:'flex',flexDirection:'column' }}>
+                        <Typography variant={"h4"}
+                            sx={{ ...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto' }}>
+                            {format(selectedDay, "MMMM").toString()}
+                        </Typography>
+                        <Typography variant={"h4"}
+                            sx={{ ...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto' }}>
+                            {format(selectedDay, "yyyy").toString()}
+                        </Typography>
+                    </Box>
                 </Box>
                 {/*<br/>*/}
                 {isAfter(new Date(date), new Date()) ? DateDetailsList(filteredFutureDosages, false) : DateDetailsList(filteredSelectedDayDosages, true)}
@@ -771,7 +692,7 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({selectedDate}) =
                         isMonthly={false}
                         index={0}
                         isRefill={true}
-                        datePassed={new Date()}/>
+                        datePassed={new Date()} />
                 </DialogContent>
                 <DialogActions>
                     {/*    TODO*/}

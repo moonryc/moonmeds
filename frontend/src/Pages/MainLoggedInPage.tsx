@@ -28,7 +28,7 @@ import { makeMedication } from "../typeConstructors";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LoginButton from "../Components/Misc/LoginButton";
 import { HamburgerMenu } from "../Components/Misc/HamburgerMenu";
-import { Legend } from "../Components/Misc/Legend";
+import { Filter } from "../Components/Misc/Filter";
 
 const MainLoggedInPage = () => {
     const { fetchMedicationsAndDosagesAndPersons } = useContext(ApiContext);
@@ -45,11 +45,11 @@ const MainLoggedInPage = () => {
     }, [fetchMedicationsAndDosagesAndPersons]);
     const xs = useMediaQuery('(min-width:0px) and (max-width:1199.99px)');
     return (
-        <Box sx={{...sideBackgroundStyle, ...flexWrapperStyle, minHeight: '100vh', width: 'auto', position: 'relative' }} key={1}>
+        <Box sx={{ ...sideBackgroundStyle, ...flexWrapperStyle, minHeight: '100vh', width: 'auto', position: 'relative' }} key={1}>
 
             <Box sx={{
                 ...flex1ItemStyle, ...sideBackgroundStyle,
-                display: "flex", height: '100%', width:'auto',
+                display: "flex", height: '100%', width: 'auto',
                 flexDirection: ["column", undefined, undefined, 'row']
             }}>
                 <Box sx={{
@@ -59,22 +59,22 @@ const MainLoggedInPage = () => {
                     flexDirection: "column",
                     ...sideBackgroundStyle,
                 }}>
-                    <Box sx={{height: '50px', color: 'text.primary' }}>
+                    <Box sx={{ height: '50px', color: 'text.primary' }}>
                         <HamburgerMenu />
                     </Box>
                     {/* #region Calendar */}
-                    <Box sx={{ width: 'auto', height: '450px',}}>
+                    <Box sx={{ width: 'auto', height: '450px', }}>
                         <Paper
                             elevation={0}
                             sx={{
-                                ...sideBackgroundStyle, 
+                                ...sideBackgroundStyle,
                                 overflow: "auto",
                                 position: "relative",
                                 height: '450px'
                             }}
                         >
                             <DisplayCalendar />
-                            <Box sx={{position: "absolute", bottom: "10px", left: "10px" }}>
+                            <Box sx={{ position: "absolute", bottom: "10px", left: "10px" }}>
                                 <Fab
                                     size="small"
                                     color="secondary"
@@ -112,9 +112,9 @@ const MainLoggedInPage = () => {
                             </Box>
                         </Paper>
                     </Box>
-                    <Divider variant='middle' sx={{width:'auto'}}/>
-                    <Box sx={{color:'text.primary',marginTop:'auto', marginBottom:'35px'}}>
-                        <Legend/>
+                    <Divider variant='middle' sx={{ width: 'auto' }} />
+                    <Box sx={{ color: 'text.primary', marginTop: 'auto', marginBottom: '35px' }}>
+                        <Filter />
                     </Box>
                 </Box>
                 <Divider variant='middle' orientation="vertical" flexItem />
