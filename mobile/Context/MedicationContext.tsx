@@ -13,6 +13,9 @@ interface IMedicationContext {
     setUserMedicationDosages: (state: IMedicationDosagesBase[] | []) => void;
     upcomingRefill: IMedicationBase[],
     setUpcomingRefill: (state: IMedicationBase[] | []) => void,
+    takenDosages:IMedicationDosagesBase[]|undefined,
+    upcomingDosages:IMedicationDosagesBase[]|undefined,
+    missedDosages:IMedicationDosagesBase[]|undefined,
 }
 
 export const MedicationContext = createContext<IMedicationContext>({
@@ -22,6 +25,9 @@ export const MedicationContext = createContext<IMedicationContext>({
     setUserMedicationDosages: (state: IMedicationDosagesBase[] | []) => [],
     upcomingRefill: [],
     setUpcomingRefill: (state: IMedicationBase[] | []) => [],
+    takenDosages:undefined,
+    upcomingDosages:undefined,
+    missedDosages:undefined,
 })
 
 
@@ -29,8 +35,44 @@ const MedicationContextContainer = (props:any) => {
 
     const [userMedications, setUserMedications] = useState<IMedicationBase[] | []>([]);
     const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesBase[]>([]);
-
     const [upcomingRefill, setUpcomingRefill] = useState<IMedicationBase[]|[]>([]);
+    const [takenDosages, setTakenDosages] = useState<IMedicationDosagesBase[]|undefined>();
+    const [upcomingDosages, setUpcomingDosages] = useState<IMedicationDosagesBase[]|undefined>();
+    const [missedDosages, setMissedDosages] = useState<IMedicationDosagesBase[]|undefined>();
+
+
+    useEffect(() => {
+        let tempTaken:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
+            if (dosage.hasBeenTaken) {
+                return true
+            }
+        })
+        if(tempTaken?.length<1){
+            tempTaken = undefined
+        }
+        let tempUpcoming:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
+            if (!dosage.hasBeenTaken && !dosage.hasBeenMissed) {
+                return true
+            }
+        })
+        if(tempUpcoming?.length<1){
+            tempUpcoming = undefined
+        }
+
+        let tempMissed:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
+            if (!dosage.hasBeenTaken && dosage.hasBeenMissed) {
+                return true
+            }
+        })
+        if(tempMissed?.length<1){
+            tempUpcoming = undefined
+        }
+
+
+        setTakenDosages(tempTaken)
+        setUpcomingDosages(tempUpcoming)
+        setMissedDosages(tempMissed)
+    }, [userMedicationDosages])
 
     useEffect(() => {
         let tempUpcoming = userMedications.filter(medication=>{
@@ -43,7 +85,7 @@ const MedicationContextContainer = (props:any) => {
 
 
     return (
-        <MedicationContext.Provider value={{userMedications,setUserMedications,userMedicationDosages,setUserMedicationDosages, upcomingRefill,setUpcomingRefill}}>
+        <MedicationContext.Provider value={{userMedications,setUserMedications,userMedicationDosages,setUserMedicationDosages, upcomingRefill,setUpcomingRefill,takenDosages,upcomingDosages,missedDosages}}>
             {props.children}
         </MedicationContext.Provider>
     );

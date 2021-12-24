@@ -12,46 +12,9 @@ import ListOfDosages from "../../Components/TodaysDosagesComponents/ListOfDosage
 
 const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
 
-    const {userMedicationDosages,upcomingRefill} = useContext(MedicationContext);
+    const {userMedicationDosages,upcomingRefill,missedDosages,upcomingDosages,takenDosages} = useContext(MedicationContext);
 
-    const [takenDosages, setTakenDosages] = useState<IMedicationDosagesBase[]|undefined>();
-    const [upcomingDosages, setUpcomingDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [refillDosages, setRefillDosages] = useState<IMedicationDosagesBase[]|undefined>();
-    const [missedDosages, setMissedDosages] = useState<IMedicationDosagesBase[]|undefined>();
-
-
-    useEffect(() => {
-        let tempTaken:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
-            if (dosage.hasBeenTaken) {
-                return true
-            }
-        })
-        if(tempTaken?.length<1){
-            tempTaken = undefined
-        }
-        let tempUpcoming:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
-            if (!dosage.hasBeenTaken && !dosage.hasBeenMissed) {
-                return true
-            }
-        })
-        if(tempUpcoming?.length<1){
-            tempUpcoming = undefined
-        }
-
-        let tempMissed:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
-            if (!dosage.hasBeenTaken && dosage.hasBeenMissed) {
-                return true
-            }
-        })
-        if(tempMissed?.length<1){
-            tempUpcoming = undefined
-        }
-
-
-        setTakenDosages(tempTaken)
-        setUpcomingDosages(tempUpcoming)
-        setMissedDosages(tempMissed)
-    }, [userMedicationDosages])
 
 
     return (

@@ -36,6 +36,7 @@ const MedicationNameAutoComplete = () => {
                 medications = [...tempArray]
                 setData(tempArray)
         })
+
     }
 
 
@@ -59,15 +60,15 @@ const MedicationNameAutoComplete = () => {
 
 
     return (
-        <>
+
             <Autocomplete
-                placeholder='Place your Text'
+                placeholder='Prescription Name'
                 value={value}
                 onSelect={onSelect}
                 onChangeText={onChangeText}>
                 {data.map(renderOption)}
             </Autocomplete>
-        </>
+
     );
 };
 
