@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Calendar} from "@ui-kitten/components";
-import {isToday} from "date-fns";
+import {isSameDay, isToday} from "date-fns";
+import {MedicationContext} from "../../Context/MedicationContext";
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#1a2139',
         flex: 1,
+    },
+    missedDayContainer:{
+        backgroundColor:"#b03931",
+        flex:1
+    },
+    missedDay:{
+        flex:1,
+        backgroundColor:"#b03931",
+        justifyContent: 'center',
+        alignItems: 'center',
+        aspectRatio: 1,
+    },
+    refillDayContainer:{
+        backgroundColor:"#fde624",
+        flex:1
+    },
+    refillDay:{
+        flex:1,
+        backgroundColor:"#fbe425",
+        justifyContent: 'center',
+        alignItems: 'center',
+        aspectRatio: 1,
     },
     dayContainer: {
         flex: 1,
@@ -23,24 +46,42 @@ const styles = StyleSheet.create({
 
 const CalendarHomeScreen = () => {
 
+        const {upcomingRefill, missedDosages} = useContext(MedicationContext);
+
     const [date, setDate] = React.useState(null);
 
 
-    const DayCell = ({date}: any, style: any) => {
+    const DayCell = ({date: datePassed}: any, style: any) => {
 
+
+
+        let isMissed = false
+        let isRefill = false
+
+
+        isRefill = upcomingRefill.filter(medication => isSameDay(new Date(medication.nextFillDay), new Date(datePassed))).length>1
+        //@ts-ignore
+        isMissed = missedDosages.filter(medication => {
+            if (isSameDay(new Date(medication.timeToTake), new Date(datePassed))) {
+                return true;
+            }
+        }).length>1
 
 
         return (
             <React.Fragment>
-                {isToday(new Date(date))?
+                {isMissed ?
                     <View
-                        style={[styles.dayContainer, style.container]}>
-                        <Text style={style.text}>{`${date.getDate()}`}</Text>
+                        style={[styles.missedDay, style.missedDayContainer]}>
+                        <Text style={style.text}>{`${datePassed.getDate()}`}</Text>
+                    </View> : isRefill ? <View
+                        style={[styles.refillDay, style.refillDayContainer]}>
+                        <Text style={style.text}>{`${datePassed.getDate()}`}</Text>
                     </View>:<View
                         style={[styles.dayContainer, style.container]}>
-                        <Text style={style.text}>{`${date.getDate()}`}</Text>
+                        <Text style={style.text}>{`${datePassed.getDate()}`}</Text>
                         <Text style={[style.text, styles.value]}>
-                            {`${100 * date.getDate() + Math.pow(date.getDate(), 2)}$`}
+                            {`${isMissed} ${isRefill}`}
                         </Text>
                     </View>
                 }
@@ -61,5 +102,6 @@ const CalendarHomeScreen = () => {
         </ScrollView>
     );
 };
+
 
 export default CalendarHomeScreen;
