@@ -61,32 +61,32 @@ const CalendarBody:React.FC<ICalendarBodyProps> = ({numberOfDaysInMonth,firstDay
     <Box sx={{ overflow:'visible'}}>
       <br />
       <Grid container spacing={1} columns={7} sx={{display:'flex', alignContent:'center',justifyContent:'flex-start'}}>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Sun
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Mon
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Tues
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Wed
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Thurs
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Fri
         </Grid>
-        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle}}>
+        <Grid item xs={1} sx={{display:'flex',...centeredTextStyle, justifyContent:'center'}}>
           Sat
         </Grid>
         {arrayOfMonthDays.map(
           (day) => (
             //@ts-ignore arrayOfMonthDays.indexOf(day) % 6 ? //
             <Grid
-              sx={{ alignItems:'center', display:'flex', ...centeredTextStyle}}
+              sx={{ alignItems:'center', display:'flex', ...centeredTextStyle , justifyContent:'center'}}
               item
               xs={1}
               key={arrayOfMonthDays.indexOf(day)}
