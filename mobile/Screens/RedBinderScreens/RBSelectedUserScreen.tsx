@@ -33,9 +33,7 @@ const RBSelectedUserScreen = () => {
 
             <MenuItem style={styles.listItem} title={"Medications"}/>
             <Divider/>
-            <MenuItem style={styles.listItem} title={"Surgery History"}/>
-            <Divider/>
-            <MenuItem style={styles.listItem} title={"Medication History"}/>
+            <MenuItem style={styles.listItem} title={"Medical History"}/>
             <Divider/>
             <MenuItem style={styles.listItem} title={"Medication Interactions"}/>
             <Divider/>

@@ -4,7 +4,7 @@ import {SwipeRow} from 'react-native-swipe-list-view';
 import {MaterialIcons} from '@expo/vector-icons';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IPersonNameAndColor} from "../../../Types/UserTypes";
-import {Button, Card, Modal, Text} from "@ui-kitten/components";
+import {Button, Card, Divider, Modal, Text} from "@ui-kitten/components";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlignVertical: "center",
         minHeight: 75,
-        borderBottomColor: "#151a31",
-        borderBottomWidth: 1,
         color: "white",
     },
     standaloneRowBack: {
@@ -31,8 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 15,
         maxHeight: 75,
-        borderBottomColor: "#151a31",
-        borderBottomWidth: 1,
+        borderWidth: 0,
         color: "white",
     },
     backTextWhite: {
@@ -90,7 +87,7 @@ const RedBinderHomeScreen = ({navigation}: any) => {
                                             rowRefs[index].closeRow()
                                         }
                                     }}>
-                                    <View style={{
+                                        <View style={{
                                         ...styles.standaloneRowFront,
                                         display: "flex",
                                         flexDirection: "row",
@@ -105,6 +102,7 @@ const RedBinderHomeScreen = ({navigation}: any) => {
                                     </View>
                                     </TouchableOpacity>
                                 </SwipeRow>
+                                <Divider/>
                             </React.Fragment>
                         )
                     })}

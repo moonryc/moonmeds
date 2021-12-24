@@ -4,7 +4,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SwipeRow} from "react-native-swipe-list-view";
 import {MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
-import {Button, Card, Layout, Modal,Text} from "@ui-kitten/components";
+import {Button, Card, Divider, Layout, Modal, Text} from "@ui-kitten/components";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlignVertical: "center",
         minHeight: 75,
-        borderBottomColor: "#151a31",
-        borderBottomWidth: 1,
         color: "white",
     },
     standaloneRowBack: {
@@ -31,8 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 15,
         maxHeight: 75,
-        borderBottomColor: "#151a31",
-        borderBottomWidth: 1,
+        borderWidth:0,
         color: "white",
     },
     backTextWhite: {
@@ -116,6 +113,7 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
                                 </View>
                             </TouchableOpacity>
                         </SwipeRow>
+                        <Divider/>
                     </React.Fragment>
                 )
             })

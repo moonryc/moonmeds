@@ -15,7 +15,7 @@ export default function App() {
     {/*{eva.dark} for dark mode*/
     }
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider style={{flex:1}}>
             {/*<NativeBaseProvider>*/}
                 <ApplicationProvider {...eva} theme={eva.dark}>
                     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
