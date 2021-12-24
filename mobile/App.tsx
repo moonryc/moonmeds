@@ -6,7 +6,7 @@ import StoreContextContainer from "./Store/StoreContext";
 import {ApplicationProvider, Layout} from "@ui-kitten/components";
 import * as eva from '@eva-design/eva';
 import Navigation from "./Navigation/Navigation";
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native';
 import {NavigationContainer} from "@react-navigation/native";
 import {NativeBaseProvider} from 'native-base';
 
@@ -15,24 +15,24 @@ export default function App() {
     {/*{eva.dark} for dark mode*/
     }
     return (
-        <SafeAreaProvider style={{flex:1}}>
-            {/*<NativeBaseProvider>*/}
-                <ApplicationProvider {...eva} theme={eva.dark}>
-                    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <UserContextContainer>
-                            <MedicationContextContainer>
-                                <ApiContextContainer>
-                                    <StoreContextContainer>
-                                        <NavigationContainer>
-                                            <Navigation/>
-                                        </NavigationContainer>
-                                    </StoreContextContainer>
-                                </ApiContextContainer>
-                            </MedicationContextContainer>
-                        </UserContextContainer>
-                    </Layout>
-                </ApplicationProvider>
-            {/*</NativeBaseProvider>*/}
-        </SafeAreaProvider>
+
+        <ApplicationProvider {...eva} theme={eva.dark}>
+            <SafeAreaView style={{flex: 1, backgroundColor: "#222b45"}}>
+                <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <UserContextContainer>
+                        <MedicationContextContainer>
+                            <ApiContextContainer>
+                                <StoreContextContainer>
+                                    <NavigationContainer>
+                                        <Navigation/>
+                                    </NavigationContainer>
+                                </StoreContextContainer>
+                            </ApiContextContainer>
+                        </MedicationContextContainer>
+                    </UserContextContainer>
+                </Layout>
+            </SafeAreaView>
+        </ApplicationProvider>
+
     );
 }

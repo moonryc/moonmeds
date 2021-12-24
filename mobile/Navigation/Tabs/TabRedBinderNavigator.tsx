@@ -16,6 +16,11 @@ import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import {RedBinderStack} from '../StackNavigators';
 import RBSelectedUserScreen from "../../Screens/RedBinderScreens/RBSelectedUserScreen";
 import {useRoute} from "@react-navigation/native";
+import RBEditUser from "../../Screens/RedBinderScreens/RBEditUser";
+import RBMedicalHistory from "../../Screens/RedBinderScreens/RBMedicalHistory";
+import RBUserMedications from "../../Screens/RedBinderScreens/RBUserMedications";
+import RBMedicationInteractions from "../../Screens/RedBinderScreens/RBMedicationInteractions";
+import RBCreateMedication from "../../Screens/RedBinderScreens/RBCreateMedication";
 
 const BackIcon = (props:any) => (
     <Icon {...props} name='arrow-back'/>
@@ -54,6 +59,15 @@ const TabRedBinderNavigator = () => {
             >
                 <RedBinderStack.Screen name={"Home"} component={RedBinderHomeScreen}/>
                 <RedBinderStack.Screen name={"Selected User"} component={RBSelectedUserScreen}/>
+
+                <RedBinderStack.Screen name={"User Medications"} component={RBUserMedications}/>
+                <RedBinderStack.Screen name={"Create Medication"} component={RBCreateMedication}/>
+
+
+
+                <RedBinderStack.Screen name={"Medical History"} component={RBMedicalHistory}/>
+                <RedBinderStack.Screen name={"Medication Interaction"} component={RBMedicationInteractions}/>
+                <RedBinderStack.Screen name={"Edit User"} component={RBEditUser}/>
             </RedBinderStack.Navigator>
         </>
     );

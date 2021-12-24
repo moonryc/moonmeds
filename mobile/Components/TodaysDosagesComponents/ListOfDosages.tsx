@@ -113,7 +113,7 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
                                 </View>
                             </TouchableOpacity>
                         </SwipeRow>
-                        <Divider/>
+                        <Divider style={{borderBottomWidth:1}}/>
                     </React.Fragment>
                 )
             })

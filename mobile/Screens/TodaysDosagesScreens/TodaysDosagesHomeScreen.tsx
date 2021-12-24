@@ -12,7 +12,7 @@ import ListOfDosages from "../../Components/TodaysDosagesComponents/ListOfDosage
 
 const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
 
-    const {userMedicationDosages} = useContext(MedicationContext);
+    const {userMedicationDosages,upcomingRefill} = useContext(MedicationContext);
 
     const [takenDosages, setTakenDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [upcomingDosages, setUpcomingDosages] = useState<IMedicationDosagesBase[]|undefined>();
@@ -46,6 +46,8 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
         if(tempMissed?.length<1){
             tempUpcoming = undefined
         }
+
+
         setTakenDosages(tempTaken)
         setUpcomingDosages(tempUpcoming)
         setMissedDosages(tempMissed)
@@ -64,11 +66,12 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
                         <ListOfDosages dosagesArray={takenDosages} typeOfList={"missed"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
 
-                    {upcomingDosages !== undefined ? <React.Fragment>
-                        <MenuItem title='Upcoming' activeOpacity={1}/>
-                        <Divider/>
-                        <ListOfDosages dosagesArray={upcomingDosages} typeOfList={"upcoming"}/>
-                    </React.Fragment> : <React.Fragment></React.Fragment>}
+                    {/*TODO*/}
+                    {/*{upcomingDosages !== undefined ? <React.Fragment>*/}
+                    {/*    <MenuItem title='Upcoming' activeOpacity={1}/>*/}
+                    {/*    <Divider/>*/}
+                    {/*    <ListOfDosages dosagesArray={upcomingRefill} typeOfList={"upcoming"}/>*/}
+                    {/*</React.Fragment> : <React.Fragment></React.Fragment>}*/}
 
                     {takenDosages !== undefined ? <React.Fragment>
                         <MenuItem title='Taken' activeOpacity={10}/>

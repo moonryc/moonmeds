@@ -34,9 +34,6 @@ const Navigation = () => {
     return (
 
         <React.Fragment>
-            <View style={{height: Constants.statusBarHeight}}>
-                <StatusBar style="auto" />
-            </View>
             {isLoggedIn === null ? <LoadingScreen/>: isLoggedIn ? <HomeScreenNavigation/>:<LoginSignupNavigator/>}
         </React.Fragment>
 
