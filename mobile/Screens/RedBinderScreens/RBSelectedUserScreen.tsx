@@ -4,29 +4,23 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {Avatar, Divider, MenuItem} from "@ui-kitten/components";
 import {MaterialIcons} from "@expo/vector-icons";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
+import {CommonStyles} from "../../Styles/CommonStyles";
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#1a2139',
-        flex: 1,
-        height: "100%"
-    },
-    listItem:{
-        minHeight:75,
-    }
-})
+
 
 const RBSelectedUserScreen = () => {
 
     const navigation = useNavigation()
+    const route = useRoute()
 
     const face =()=>(
         <MaterialIcons name="face" size={100} color="white"/>
     )
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollableLayout>
             <View style={{display:"flex",alignItems:"center", margin:25}}>
             <Avatar
                 ImageComponent={face}
@@ -34,26 +28,33 @@ const RBSelectedUserScreen = () => {
             </View>
 
             <Divider style={{borderBottomWidth:1.2}}/>
-            <MenuItem style={styles.listItem} title={"Medications"} onPress={()=>{
+            <MenuItem style={CommonStyles.listItem} title={"Medications"} onPress={()=>{
                 //@ts-ignore
-                navigation.navigate("User Medications", {headerName:"Medications"})}}/>
+                navigation.navigate("User Medications", {headerName:"Medications", user: route.params.headerName})}}/>
             <Divider/>
-            <MenuItem style={styles.listItem} title={"Medical History"}  onPress={()=>{
+            <MenuItem style={CommonStyles.listItem} title={"Medical History"}  onPress={()=>{
                 //@ts-ignore
                 navigation.navigate("Medical History", {headerName:"Medication History"})
             }}/>
             <Divider/>
-            <MenuItem style={styles.listItem} title={"Medication Interactions"} onPress={()=>{
+            <MenuItem style={CommonStyles.listItem} title={"Medication Interactions"} onPress={()=>{
                 //@ts-ignore
                 navigation.navigate("Medication Interaction", {headerName:"Medication Interactions"})
             }}/>
             <Divider/>
-            <MenuItem style={styles.listItem} title={"Edit User"} onPress={()=>{
+            <MenuItem style={CommonStyles.listItem} title={"Edit User"} onPress={()=>{
                 //@ts-ignore
                 navigation.navigate("Edit User", {headerName:"Edit User"})
             }}/>
             <Divider/>
-        </ScrollView>
+
+
+            <MenuItem style={{marginTop:50}} title={"Delete User"} onPress={()=>{
+                //@ts-ignore
+                navigation.navigate("Edit User", {headerName:"Edit User"})
+            }}/>
+
+        </ScrollableLayout>
     );
 };
 

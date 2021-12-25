@@ -4,7 +4,9 @@ import {SwipeRow} from 'react-native-swipe-list-view';
 import {MaterialIcons} from '@expo/vector-icons';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IPersonNameAndColor} from "../../../Types/UserTypes";
-import {Button, Card, Divider, Modal, Text} from "@ui-kitten/components";
+import {Button, Card, Divider, Menu, MenuItem, Modal, Text} from "@ui-kitten/components";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
+import {useSetGlobalUser} from "../../Hooks/GlobalStoreHooks";
 
 const styles = StyleSheet.create({
     container: {
@@ -38,6 +40,9 @@ const styles = StyleSheet.create({
     backdrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
+    listItem: {
+        minHeight: 75,
+    }
 
 });
 
@@ -45,49 +50,19 @@ const RedBinderHomeScreen = ({navigation}: any) => {
 
     const {usersPeople} = useContext(UserContext);
 
-    const [selectedUserForDeletion, setSelectedUserForDeletion] = useState<IPersonNameAndColor>();
-    const [visible, setVisible] = useState(false);
-
-    const rowRefs = useRef([]);
-
-    const openDeleteConfirmation = (person: IPersonNameAndColor) => {
-        setVisible(true)
-        setSelectedUserForDeletion(person)
-    }
-
     return (
-        <React.Fragment>
-            <ScrollView style={styles.container}>
+        <ScrollableLayout>
                 <View>
+                    <Divider/>
                     {usersPeople.map((person, index) => {
                         return (
                             <React.Fragment key={index}>
-                                <SwipeRow
-                                    disableRightSwipe={true}
-                                    preview={true}
-                                    rightOpenValue={-75}
-                                    stopRightSwipe={-125}
-                                    closeOnRowPress={true}
-                                    ref={ref => {
-                                        // @ts-ignore
-                                        rowRefs[index] = ref
-                                    }}
-
-                                >
-                                    <View style={styles.standaloneRowBack}>
-                                        <MaterialIcons name="delete" size={24} color="white"
-                                                       onPress={() => openDeleteConfirmation(person)}/>
-                                    </View>
-                                    <TouchableOpacity style={{backgroundColor:"#222b45"}} activeOpacity={1} onPress={() => {
-                                        // @ts-ignore
-                                        if (!rowRefs[index].isOpen) {
-                                            navigation.navigate("Selected User", {headerName: person.name})
-                                        } else {
-                                            // @ts-ignore
-                                            rowRefs[index].closeRow()
-                                        }
-                                    }}>
-                                        <View style={{
+                                <TouchableOpacity activeOpacity={.2}
+                                                  onPress={() => {
+                                                      useSetGlobalUser(person)
+                                                      navigation.navigate("Selected User", {headerName: person.name})
+                                                  }}>
+                                    <View style={{
                                         ...styles.standaloneRowFront,
                                         display: "flex",
                                         flexDirection: "row",
@@ -100,38 +75,13 @@ const RedBinderHomeScreen = ({navigation}: any) => {
                                         </Text>
                                         <Text style={{...styles.backTextWhite}}>{person.name}</Text>
                                     </View>
-                                    </TouchableOpacity>
-                                </SwipeRow>
+                                </TouchableOpacity>
                                 <Divider/>
                             </React.Fragment>
                         )
                     })}
                 </View>
-            </ScrollView>
-
-            <Modal
-                visible={visible}
-                backdropStyle={styles.backdrop}
-                onBackdropPress={() => setVisible(false)}>
-                <Card disabled={true}>
-                    <Text category={"h2"}>Caution!</Text>
-                    {/*@ts-ignore*/}
-                    <Text category={"h6"}>Are you sure you wish to delete {selectedUserForDeletion?.name}? This action
-                        cannot be undone!</Text>
-                    <Text>What will I loose?</Text>
-                    <Button onPress={() => setVisible(false)}>
-                        CANCEL
-                    </Button>
-
-                    {/*@ts-ignore*/}
-                    <Button onPress={() => setVisible(false)}>
-                        {/*@ts-ignore*/}
-                        DELETE {selectedUserForDeletion?.name}
-                    </Button>
-                </Card>
-            </Modal>
-
-        </React.Fragment>
+        </ScrollableLayout>
     );
 };
 

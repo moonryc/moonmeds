@@ -4,6 +4,7 @@ import {UserContext} from "../../Context/UserContext";
 import {ApiContext} from "../../Context/ApiContext";
 import {Button, Input} from "@ui-kitten/components";
 import {useNavigation} from "@react-navigation/native";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 
 
 // @ts-ignore
@@ -15,6 +16,7 @@ const LoginScreen = ({navigation:{navigate}}) => {
     const [submitObject, setSubmitObject] = useState<{username:string,password:string}>({username:"",password:""});
 
     return (
+        <ScrollableLayout>
         <View style={{margin:60}}>
 
 
@@ -37,6 +39,7 @@ const LoginScreen = ({navigation:{navigate}}) => {
             <Button style={{marginTop:30}} onPress={() => postLogin(submitObject.username,submitObject.password)}>Login</Button>
             <Button style={{marginTop:30}} onPress={() => {navigate('Signup')}}>Signup</Button>
         </View>
+        </ScrollableLayout>
     );
 };
 

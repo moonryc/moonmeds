@@ -67,36 +67,16 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
     const [selectedDosage, setSelectedDosage] = useState<IMedicationDosagesBase|undefined>();
 
     return (
-        <View>
+        <React.Fragment>
             {dosagesArray === undefined? <View/>:
             dosagesArray.map((dosage, index) => {
                 return (
                     <React.Fragment key={index}>
-                        <SwipeRow
-                            disableRightSwipe={true}
-                            rightOpenValue={-75}
-                            preview={true}
-                            closeOnRowPress={true}
-                            ref={ref => {
-                                // @ts-ignore
-                                rowRefs[index] = ref
-                            }}
 
-                        >
-                            <View style={styles.standaloneRowBack}>
-                                <MaterialIcons name="more-horiz" size={40} color="white" onPress={() => {
-                                    setSelectedDosage(dosage)
-                                    setVisible(true)
-                                }} />
-                            </View>
+
                             <TouchableOpacity style={{backgroundColor:"#222b45"}} activeOpacity={1} onPress={() => {
-                                // @ts-ignore
-                                if (!rowRefs[index].isOpen) {
-                                    // navigation.navigate("Selected User", {headerName: medication.prescriptionName})
-                                } else {
-                                    // @ts-ignore
-                                    rowRefs[index].closeRow()
-                                }
+                                setSelectedDosage(dosage)
+                                setVisible(true)
                             }}>
                                 <View style={{
                                     ...styles.standaloneRowFront,
@@ -112,7 +92,7 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
                                     <Text style={{...styles.backTextWhite}}>{dosage.prescriptionName}</Text>
                                 </View>
                             </TouchableOpacity>
-                        </SwipeRow>
+
                         <Divider style={{borderBottomWidth:1}}/>
                     </React.Fragment>
                 )
@@ -160,7 +140,7 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
                 </Modal>
 
             </Layout>
-        </View>
+        </React.Fragment>
     );
 };
 

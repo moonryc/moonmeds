@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import {ScrollView, Text, View} from 'react-native';
 import {Button, Input} from "@ui-kitten/components";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 
 
 
@@ -29,7 +30,8 @@ const SignupScreen = () => {
 
 
     return (
-        <ScrollView style={{margin:30}}>
+        <ScrollableLayout>
+        <View style={{margin:30}}>
 
 
             <Input
@@ -74,7 +76,8 @@ const SignupScreen = () => {
 
             <Button style={{marginTop:30}}>Create account</Button>
 
-        </ScrollView>
+        </View>
+        </ScrollableLayout>
     );
 };
 

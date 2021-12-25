@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {makeMedication} from "../../typeConstructors";
 import MedicationNameAutoComplete from "../../Components/RedBinderComponents/NewMedication/MedicationNameAutoComplete";
 import {Button, ButtonGroup, Datepicker, IndexPath, Input, Layout, Select, SelectItem} from "@ui-kitten/components";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
+import {useRoute} from "@react-navigation/native";
+import {ApiContext} from "../../Context/ApiContext";
 
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#1a2139',
-        flex: 1,
-    },
     anotherContainer: {
         display: "flex",
         flex: 1,
@@ -48,8 +47,12 @@ let dosageType = ["Miligram",
 
 const RBCreateMedication = () => {
 
+    const {putNewMedication} = useContext(ApiContext);
+
+
     const [medicationObject, setMedicationObject] = useState(makeMedication);
 
+    const route = useRoute()
 
     const [text, setText] = React.useState('Press any button');
     const [value, setValue] = React.useState('');
@@ -59,8 +62,13 @@ const RBCreateMedication = () => {
     const multilineInputState = useInputState();
     const largeDatepickerState = useDatepickerState();
 
+    const saveMedication = () => {
+      putNewMedication(medicationObject).then(r=>r)
+    }
+
+
     return (
-        <ScrollView style={styles.container}>
+        <ScrollableLayout>
             <View style={styles.anotherContainer}>
                 <View style={styles.item}>
                     <MedicationNameAutoComplete/>
@@ -119,8 +127,9 @@ const RBCreateMedication = () => {
                 </View>
 
                 <Button style={styles.item}>Schedule Dosages</Button>
+                <Button style={styles.item}>Save Medication</Button>
             </View>
-        </ScrollView>
+        </ScrollableLayout>
     );
 };
 

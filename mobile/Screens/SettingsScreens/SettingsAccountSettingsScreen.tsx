@@ -1,12 +1,15 @@
 import React from 'react';
 
 import {Text, View} from 'react-native';
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 
 const SettingsAccountSettingsScreen = () => {
     return (
+        <ScrollableLayout>
         <Text>
-            Settings Screen
+            Account screen
         </Text>
+        </ScrollableLayout>
     );
 };
 

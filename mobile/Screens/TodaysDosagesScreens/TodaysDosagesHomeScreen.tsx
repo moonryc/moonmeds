@@ -8,6 +8,7 @@ import {MedicationContext} from "../../Context/MedicationContext";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
 import ListOfDosages from "../../Components/TodaysDosagesComponents/ListOfDosages";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 
 
 const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
@@ -19,7 +20,7 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
 
     return (
 
-        <ScrollView style={{backgroundColor: '#1a2139', flex: 1, height: "100%"}}>
+        <ScrollableLayout>
             <View>
 
                     {missedDosages !== undefined ? <React.Fragment>
@@ -42,9 +43,7 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
                         <ListOfDosages dosagesArray={takenDosages} typeOfList={"taken"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
             </View>
-        </ScrollView>
-
-
+        </ScrollableLayout>
     );
 };
 

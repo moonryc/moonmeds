@@ -2,6 +2,7 @@ import React from 'react';
 
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Divider, MenuItem} from "@ui-kitten/components";
+import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 
 const styles = StyleSheet.create({
     container: {
@@ -17,14 +18,14 @@ const styles = StyleSheet.create({
 
 const RBMedicalHistory = () => {
     return (
-        <ScrollView style={styles.container}>
+        <ScrollableLayout>
             <MenuItem style={styles.listItem} title={"Medical History"}/>
             <Divider/>
             <MenuItem style={styles.listItem} title={"Surgery History"}/>
             <Divider/>
             <MenuItem style={styles.listItem} title={"Medication History"}/>
             <Divider/>
-        </ScrollView>
+        </ScrollableLayout>
     );
 };
 

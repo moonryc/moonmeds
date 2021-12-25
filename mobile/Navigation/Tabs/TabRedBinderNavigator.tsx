@@ -21,6 +21,7 @@ import RBMedicalHistory from "../../Screens/RedBinderScreens/RBMedicalHistory";
 import RBUserMedications from "../../Screens/RedBinderScreens/RBUserMedications";
 import RBMedicationInteractions from "../../Screens/RedBinderScreens/RBMedicationInteractions";
 import RBCreateMedication from "../../Screens/RedBinderScreens/RBCreateMedication";
+import RBViewMedicationScreen from "../../Screens/RedBinderScreens/RBViewMedicationScreen";
 
 const BackIcon = (props:any) => (
     <Icon {...props} name='arrow-back'/>
@@ -62,6 +63,7 @@ const TabRedBinderNavigator = () => {
 
                 <RedBinderStack.Screen name={"User Medications"} component={RBUserMedications}/>
                 <RedBinderStack.Screen name={"Create Medication"} component={RBCreateMedication}/>
+                <RedBinderStack.Screen name={"View Medication"} component={RBViewMedicationScreen}/>
 
 
 

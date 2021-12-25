@@ -5,6 +5,7 @@ import {IMedicationBase} from "../../Types/MedicationTypes";
 import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import medication from "../../routes/medication";
 import {differenceInDays} from "date-fns";
+import {IPersonNameAndColor} from "../../Types/UserTypes";
 
 interface IMedicationContext {
     userMedications: IMedicationBase[] | [];
@@ -16,6 +17,7 @@ interface IMedicationContext {
     takenDosages:IMedicationDosagesBase[]|undefined,
     upcomingDosages:IMedicationDosagesBase[]|undefined,
     missedDosages:IMedicationDosagesBase[]|undefined,
+    sortedMedicationsByPerson:Map<string,IMedicationBase>|undefined
 }
 
 export const MedicationContext = createContext<IMedicationContext>({
@@ -28,6 +30,7 @@ export const MedicationContext = createContext<IMedicationContext>({
     takenDosages:undefined,
     upcomingDosages:undefined,
     missedDosages:undefined,
+    sortedMedicationsByPerson:undefined,
 })
 
 
@@ -35,12 +38,37 @@ const MedicationContextContainer = (props:any) => {
 
     const [userMedications, setUserMedications] = useState<IMedicationBase[] | []>([]);
     const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesBase[]>([]);
+
     const [upcomingRefill, setUpcomingRefill] = useState<IMedicationBase[]|[]>([]);
     const [takenDosages, setTakenDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [upcomingDosages, setUpcomingDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [missedDosages, setMissedDosages] = useState<IMedicationDosagesBase[]|undefined>();
 
 
+    const [sortedMedicationsByPerson, setSortedMedicationsByPerson] = useState<Map<string, IMedicationBase>|undefined>();
+
+    useEffect(() => {
+
+        let map = new Map()
+
+        for(let medication of userMedications){
+
+            if(!map.has(medication.medicationOwner.name)){
+                map.set(medication.medicationOwner.name,[medication])
+            }else{
+                map.set(medication.medicationOwner.name,[...map.get(medication.medicationOwner.name),medication])
+            }
+        }
+
+        setSortedMedicationsByPerson(map)
+
+    }, [userMedications]);
+
+
+
+    /**
+     * Updates the takenDosages, upcoming Dosages, and missed dosages
+     */
     useEffect(() => {
         let tempTaken:undefined|IMedicationDosagesBase[] = userMedicationDosages.filter((dosage) => {
             if (dosage.hasBeenTaken) {
@@ -74,6 +102,9 @@ const MedicationContextContainer = (props:any) => {
         setMissedDosages(tempMissed)
     }, [userMedicationDosages])
 
+    /**
+     * Updates the upcoming refill
+     */
     useEffect(() => {
         let tempUpcoming = userMedications.filter(medication=>{
             if(differenceInDays(new Date(),new Date(medication.nextFillDay))){
@@ -85,7 +116,7 @@ const MedicationContextContainer = (props:any) => {
 
 
     return (
-        <MedicationContext.Provider value={{userMedications,setUserMedications,userMedicationDosages,setUserMedicationDosages, upcomingRefill,setUpcomingRefill,takenDosages,upcomingDosages,missedDosages}}>
+        <MedicationContext.Provider value={{userMedications,setUserMedications,userMedicationDosages,setUserMedicationDosages, upcomingRefill,setUpcomingRefill,takenDosages,upcomingDosages,missedDosages, sortedMedicationsByPerson}}>
             {props.children}
         </MedicationContext.Provider>
     );
