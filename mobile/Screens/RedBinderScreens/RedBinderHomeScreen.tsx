@@ -6,7 +6,8 @@ import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IPersonNameAndColor} from "../../../Types/UserTypes";
 import {Button, Card, Divider, Menu, MenuItem, Modal, Text} from "@ui-kitten/components";
 import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
-import {useSetGlobalUser} from "../../Hooks/GlobalStoreHooks";
+import {useGlobalUser} from "../../Hooks/GlobalStoreHooks";
+
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +51,9 @@ const RedBinderHomeScreen = ({navigation}: any) => {
 
     const {usersPeople} = useContext(UserContext);
 
+    const {setGlobalUser} = useGlobalUser()
+
+
     return (
         <ScrollableLayout>
                 <View>
@@ -59,7 +63,7 @@ const RedBinderHomeScreen = ({navigation}: any) => {
                             <React.Fragment key={index}>
                                 <TouchableOpacity activeOpacity={.2}
                                                   onPress={() => {
-                                                      useSetGlobalUser(person)
+                                                      setGlobalUser(person)
                                                       navigation.navigate("Selected User", {headerName: person.name})
                                                   }}>
                                     <View style={{

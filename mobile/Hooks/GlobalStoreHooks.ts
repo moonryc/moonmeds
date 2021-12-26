@@ -2,24 +2,18 @@ import {useContext} from "react";
 import {StoreContext} from "../Store/StoreContext";
 import {IPersonNameAndColor} from "../../Types/UserTypes";
 import {IMedicationBase} from "../../Types/MedicationTypes";
+import * as SecureStore from "expo-secure-store";
 
 
-export const useGlobalMedication = ()=>{
-    const {selectedMedication} = useContext(StoreContext)
-    return selectedMedication
+export const useGlobalMedication = ():{globalMedication:IMedicationBase,setGlobalMedication:(value:IMedicationBase)=>void}=>{
+    const {selectedMedication:globalMedication,setSelectedMedication:setGlobalMedication} = useContext(StoreContext)
+    return {globalMedication, setGlobalMedication}
 }
 
-export const useSetGlobalMedication = (value:IMedicationBase)=>{
-    const {setSelectedMedication} = useContext(StoreContext)
-    setSelectedMedication(value)
+export const useGlobalUser = ():{globalUser:IPersonNameAndColor,setGlobalUser:(value:IPersonNameAndColor)=>void}=>{
+    const {selectedUser:globalUser,setSelectedUser:setGlobalUser} = useContext(StoreContext)
+    return {globalUser, setGlobalUser}
 }
 
-export const useGlobalUser = ()=>{
-    const {selectedUser} = useContext(StoreContext)
-    return selectedUser
-}
 
-export const useSetGlobalUser = (value:IPersonNameAndColor)=>{
-    const {setSelectedUser} = useContext(StoreContext)
-    setSelectedUser(value)
-}
+

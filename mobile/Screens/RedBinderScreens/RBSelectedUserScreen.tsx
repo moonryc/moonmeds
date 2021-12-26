@@ -51,7 +51,7 @@ const RBSelectedUserScreen = () => {
 
             <MenuItem style={{marginTop:50}} title={"Delete User"} onPress={()=>{
                 //@ts-ignore
-                navigation.navigate("Edit User", {headerName:"Edit User"})
+                navigation.navigate("Delete User", {headerName:"Edit User"})
             }}/>
 
         </ScrollableLayout>

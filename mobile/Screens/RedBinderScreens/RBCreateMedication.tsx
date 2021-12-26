@@ -6,6 +6,8 @@ import {Button, ButtonGroup, Datepicker, IndexPath, Input, Layout, Select, Selec
 import ScrollableLayout from "../../Components/Misc/ScrollableLayout";
 import {useRoute} from "@react-navigation/native";
 import {ApiContext} from "../../Context/ApiContext";
+import {useOnMount} from "../../Hooks/MiscHooks";
+import {IMedicationBase} from "../../../Types/MedicationTypes";
 
 
 const styles = StyleSheet.create({
@@ -50,7 +52,7 @@ const RBCreateMedication = () => {
     const {putNewMedication} = useContext(ApiContext);
 
 
-    const [medicationObject, setMedicationObject] = useState(makeMedication);
+    const [medicationObject, setMedicationObject] = useState<IMedicationBase>(makeMedication);
 
     const route = useRoute()
 
@@ -65,6 +67,10 @@ const RBCreateMedication = () => {
     const saveMedication = () => {
       putNewMedication(medicationObject).then(r=>r)
     }
+
+    useOnMount(()=>{
+        setMedicationObject(prevState => ({...prevState}))
+    })
 
 
     return (

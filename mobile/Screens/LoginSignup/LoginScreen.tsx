@@ -27,12 +27,12 @@ const LoginScreen = ({navigation:{navigate}}) => {
             </View>
 
 
-            <Input style={{marginTop:30}} label={"Username"} value={submitObject.username} onChangeText={(value) => {
+            <Input autoCapitalize={"none"} style={{marginTop:30}} label={"Username"} value={submitObject.username} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, username: value}))
             }}/>
 
-            <Input style={{marginTop:30}} label={"Username"} value={submitObject.password} onChangeText={(value) => {
+            <Input autoCapitalize={"none"} secureTextEntry={true} style={{marginTop:30}} label={"Username"} value={submitObject.password} onChangeText={(value) => {
                 setSubmitObject((prevState)=>({
                     ...prevState, password: value}))
             }}/>
