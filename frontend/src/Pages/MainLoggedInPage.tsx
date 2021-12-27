@@ -29,6 +29,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LoginButton from "../Components/Misc/LoginButton";
 import { HamburgerMenu } from "../Components/Misc/HamburgerMenu";
 import { Filter } from "../Components/Misc/Filter";
+import { FilterMenu } from "../Components/Misc/FilterMenu";
 
 const MainLoggedInPage = () => {
     const { fetchMedicationsAndDosagesAndPersons } = useContext(ApiContext);
@@ -113,8 +114,13 @@ const MainLoggedInPage = () => {
                         </Paper>
                     </Box>
                     <Divider variant='middle' sx={{ width: 'auto' }} />
-                    <Box sx={{ color: 'text.primary', marginTop: 'auto', marginBottom: '35px' }}>
-                        <Filter />
+                    <Box>
+                        <Box sx={{ color: 'text.primary', marginTop: 'auto', marginBottom: '35px', display:['none','inline'] }}>
+                            <Filter />
+                        </Box>
+                        <Box sx={{position:'absolute', right:'0px', zIndex:'300'}}>
+                            <FilterMenu />
+                        </Box>
                     </Box>
                 </Box>
                 <Divider variant='middle' orientation="vertical" flexItem />

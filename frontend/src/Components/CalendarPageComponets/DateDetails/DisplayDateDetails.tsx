@@ -40,6 +40,7 @@ import { MedicationContext } from "../../../Context/MedicationContext";
 import { IMedicationBase } from "../../../../../Types/MedicationTypes";
 import { IMedicationDosagesBase } from "../../../../../Types/MedicationDosagesTypes";
 import DatePickerForDialog from "../../MedicationDialog/DatePickerForDialog";
+import { FilterMenu } from "../../Misc/FilterMenu";
 
 
 interface IDisplayDateDetailsProp {
@@ -659,10 +660,13 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({ selectedDate })
                             sx={{ ...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto' }}>
                             {format(selectedDay, "MMMM").toString()}
                         </Typography>
-                        <Typography variant={"h4"}
-                            sx={{ ...titleStyle, position: 'relative', left: 0, right: 0, margin: 'auto' }}>
-                            {format(selectedDay, "yyyy").toString()}
-                        </Typography>
+                        <Box sx={{display:'flex', flexDirection:'row', width:'auto', justifyContent:'center', alignItems:'center'}}>
+                            <Typography variant={"h4"}
+                                sx={{ ...titleStyle, position: 'relative', left: 0, right: 0,}}>
+                                {format(selectedDay, "yyyy").toString()}
+                            </Typography>
+                            
+                        </Box>
                     </Box>
                 </Box>
                 {/*<br/>*/}
