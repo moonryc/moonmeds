@@ -33,7 +33,7 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     })
 })
 
-router.get('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
+router.put('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
 
     console.log(req.user._id)
     console.log(req.body.startDate)
