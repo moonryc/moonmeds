@@ -11,14 +11,14 @@ import {useGlobalUser} from "../../Hooks/GlobalStoreHooks";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#1a2139',
+        // backgroundColor: '#1a2139',
         flex: 1,
         height: "100%"
     },
     standaloneRowFront: {
         paddingLeft: 15,
         alignItems: 'flex-start',
-        backgroundColor: '#222b45',
+        // backgroundColor: '#222b45',
         justifyContent: 'center',
         textAlignVertical: "center",
         minHeight: 75,

@@ -6,13 +6,17 @@ import {CommonStyles} from "../../Styles/CommonStyles";
 
 const ScrollableLayout = (props: any) => {
     return (
-        <Layout style={{flex: 1}}>
-            <ScrollView style={{flex: 1}}>
-                <Layout style={CommonStyles.scrollViewContainer}>
+        <View style={{flex:1}}>
+         <Layout style={{flex:1}}>
+             <ScrollView style={{flex:1, ...CommonStyles.scrollViewContainer}}>
+                 <Layout style={{flex:1}}>
+                 <View style={{flex:1}}>
                     {props.children}
-                </Layout>
+                 </View>
+                 </Layout>
             </ScrollView>
-        </Layout>
+         </Layout>
+         </View>
     );
 };
 

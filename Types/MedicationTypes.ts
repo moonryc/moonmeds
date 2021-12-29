@@ -35,6 +35,7 @@ export interface IMedicationBase {
  @property customWeekDays: IWeekdays
  */
 export interface IDosagesDetails {
+    dosageIdentifier: string,
     amount: number,
     amountDosageType: string
     time: Date,

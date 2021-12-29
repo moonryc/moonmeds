@@ -2,6 +2,7 @@ import express =require('express')
 import passport =require("passport");
 import MedicationDosageModel from "../Schemas/MedicationDosageSchema";
 import {IApiResponse} from "../Types/ApiResponse";
+import DosageModel from "../Schemas/DosagesSchema";
 
 const router = express.Router()
 
@@ -33,12 +34,12 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     })
 })
 
-router.put('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
+router.put('/medicationDosageDateRange', JwtAuthenticate, async (req:any,res,next)=>{
 
     console.log(req.user._id)
     console.log(req.body.startDate)
     console.log(req.body.endDate)
-    MedicationDosageModel.find({ timeToTake:{$gte:new Date(req.body.startDate), $lte:new Date(req.body.endDate)}, userId:req.user._id},(err,doc)=>{
+    DosageModel.find({ date:{$gte:new Date(req.body.startDate), $lte:new Date(req.body.endDate)}, userId:req.user._id},(err,doc)=>{
         if(err){
             apiResponse.error = true
             apiResponse.errorMessage = "damn something went wrong getting the data"

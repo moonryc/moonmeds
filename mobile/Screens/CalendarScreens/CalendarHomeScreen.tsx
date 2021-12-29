@@ -55,8 +55,10 @@ const CalendarHomeScreen = () => {
         let isMissed = false
         let isRefill = false
 
+        if(upcomingRefill !== undefined){
+            isRefill = upcomingRefill.filter(medication => isSameDay(new Date(medication.nextFillDay), new Date(datePassed))).length > 1
+        }
 
-        isRefill = upcomingRefill.filter(medication => isSameDay(new Date(medication.nextFillDay), new Date(datePassed))).length > 1
         //@ts-ignore
         isMissed = missedDosages.filter(medication => {
             if (isSameDay(new Date(medication.timeToTake), new Date(datePassed))) {

@@ -24,18 +24,19 @@ const TodaysDosagesHomeScreen = ({navigation, route}: any) => {
             <View>
 
                     {missedDosages !== undefined ? <React.Fragment>
+                        <Divider/>
                         <MenuItem title='Missed' activeOpacity={1}/>
 
                         <Divider/>
-                        <ListOfDosages dosagesArray={takenDosages} typeOfList={"missed"}/>
+                        <ListOfDosages dosagesArray={missedDosages} typeOfList={"missed"}/>
                     </React.Fragment> : <React.Fragment></React.Fragment>}
 
                     {/*TODO*/}
-                    {/*{upcomingDosages !== undefined ? <React.Fragment>*/}
-                    {/*    <MenuItem title='Upcoming' activeOpacity={1}/>*/}
-                    {/*    <Divider/>*/}
-                    {/*    <ListOfDosages dosagesArray={upcomingRefill} typeOfList={"upcoming"}/>*/}
-                    {/*</React.Fragment> : <React.Fragment></React.Fragment>}*/}
+                    {upcomingDosages !== undefined ? <React.Fragment>
+                        <MenuItem title='Upcoming' activeOpacity={1}/>
+                        <Divider/>
+                        <ListOfDosages dosagesArray={upcomingDosages} typeOfList={"upcoming"}/>
+                    </React.Fragment> : <React.Fragment></React.Fragment>}
 
                     {takenDosages !== undefined ? <React.Fragment>
                         <MenuItem title='Taken' activeOpacity={10}/>

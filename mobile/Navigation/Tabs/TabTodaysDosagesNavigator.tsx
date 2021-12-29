@@ -32,7 +32,6 @@ const TabTodaysDosagesNavigator = () => {
                     alignment='center'
                     title='TODAYS DOSAGES'
                 />
-                <Divider/>
             </React.Fragment>
 
         )

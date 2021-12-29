@@ -1,6 +1,8 @@
 import cron = require('node-cron');
 import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
 
+//TODO THIS NEEDS TO BE UPATED
+
 /**
  *  # ┌────────────── second (optional)
  # │ ┌──────────── minute
@@ -19,20 +21,20 @@ import MedicationDosageModel from "../../Schemas/MedicationDosageSchema";
  */
 cron.schedule('* * * * *', async () => {
 
-    let missedMedications = await MedicationDosageModel.find({
-        hasBeenTaken: false,
-        hasBeenMissed: false,
-        timeToTake: {$lt: new Date()}
-    })
-
-    for (let index = 0; index < missedMedications.length; index++) {
-        missedMedications[index].hasBeenMissed = true
-        MedicationDosageModel.findByIdAndUpdate(missedMedications[index]._id, missedMedications[index], {new: true}, (error, doc) => {
-            if (error) {
-                return error
-            }
-        })
-    }
+    // let missedMedications = await MedicationDosageModel.find({
+    //     hasBeenTaken: false,
+    //     hasBeenMissed: false,
+    //     timeToTake: {$lt: new Date()}
+    // })
+    //
+    // for (let index = 0; index < missedMedications.length; index++) {
+    //     missedMedications[index].hasBeenMissed = true
+    //     MedicationDosageModel.findByIdAndUpdate(missedMedications[index]._id, missedMedications[index], {new: true}, (error, doc) => {
+    //         if (error) {
+    //             return error
+    //         }
+    //     })
+    // }
 })
 
 

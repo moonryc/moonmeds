@@ -6,6 +6,8 @@ import {IMedicationDosagesBase} from "../../Types/MedicationDosagesTypes";
 import medication from "../../routes/medication";
 import {differenceInDays} from "date-fns";
 import {IPersonNameAndColor} from "../../Types/UserTypes";
+import {useQuery} from "react-query";
+import * as SecureStore from "expo-secure-store";
 
 interface IMedicationContext {
     userMedications: IMedicationBase[] | [];
@@ -39,12 +41,49 @@ const MedicationContextContainer = (props:any) => {
     const [userMedications, setUserMedications] = useState<IMedicationBase[] | []>([]);
     const [userMedicationDosages, setUserMedicationDosages] = useState<IMedicationDosagesBase[]>([]);
 
+
+    /**
+     * For the calendar
+     */
     const [upcomingRefill, setUpcomingRefill] = useState<IMedicationBase[]|[]>([]);
     const [takenDosages, setTakenDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [upcomingDosages, setUpcomingDosages] = useState<IMedicationDosagesBase[]|undefined>();
     const [missedDosages, setMissedDosages] = useState<IMedicationDosagesBase[]|undefined>();
 
+    /**
+     * Todays dosages
+     */
+    const [todaysDosages,setTodaysDosages] = useState<any>()
 
+
+    const {refetch:getTodaysDosage, data} = useQuery("getTodayDosages",()=>{
+        console.log("getting Todays Dosages")
+        SecureStore.getItemAsync("moonmeds-JWT").then(authKey => {
+            if (authKey) {
+                fetch('https://moonmeds.herokuapp.com/medicationDosages/medicationDosageDateRange', {
+                    method: "PUT", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: "same-origin", // include, *same-origin, omit
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        Authorization: authKey,
+                    },
+                    body:JSON.stringify({startDate:new Date().toString(),endDate:new Date().toString()})
+                }).then(response=>response.json)
+            }})
+    })
+
+    useEffect(() => {
+        console.log(data)
+            setTodaysDosages(data)
+    }, [data]);
+
+
+    /**
+     * A Map where the keys are the persons and the value is an array of the persons medications
+     */
     const [sortedMedicationsByPerson, setSortedMedicationsByPerson] = useState<Map<string, IMedicationBase>|undefined>();
 
     useEffect(() => {
@@ -61,7 +100,7 @@ const MedicationContextContainer = (props:any) => {
         }
 
         setSortedMedicationsByPerson(map)
-
+        getTodaysDosage().then(r=>r)
     }, [userMedications]);
 
 

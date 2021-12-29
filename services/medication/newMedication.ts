@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
 import MedicationModel from "../../Schemas/MedicationSchema";
-import createDosages from "../medicationDosages/createDosages";
+
 
 /**
  * creates a new medication if the medication is not a duplicate
@@ -28,7 +28,6 @@ const createNewMedication = async (req: any, res: any) => {
                 .catch((error: any) => {
                     throw error
                 })
-            createDosages(req.body, true)
         }
     })
 

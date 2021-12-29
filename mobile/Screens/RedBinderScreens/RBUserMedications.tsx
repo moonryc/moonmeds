@@ -25,6 +25,7 @@ const RBUserMedications = () => {
 
     useEffect(() => {
 
+        // @ts-ignore
         setArrayOfSelectedUserMedications(sortedMedicationsByPerson.get(route.params.user))
 
     }, [sortedMedicationsByPerson,route]);

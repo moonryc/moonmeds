@@ -1,6 +1,8 @@
 import cron = require('node-cron');
 import MedicationModel from "../../Schemas/MedicationSchema";
-import createDosages from "../../services/medicationDosages/createDosages";
+import UserModel from "../../Schemas/UserSchema";
+import {createTomorrowsDosages} from "../../services/dosages/createTomorrowsDosages";
+
 
 
 /**
@@ -21,13 +23,13 @@ import createDosages from "../../services/medicationDosages/createDosages";
  */
 cron.schedule('0 19 * * *', async () => {
 
-    MedicationModel.find({$or:[{inDefinite:true},{endDate:{$gt:new Date()}}]},(err,arrayOfMedications)=>{
-        if(err){
-            console.log(err)
+    UserModel.find((error,doc)=>{
+        if(error){
+            console.log(error)
         }else{
-            //loop through all medications
-            for(let medication of arrayOfMedications){
-                createDosages(medication,false)
+
+            for(let user of doc){
+                createTomorrowsDosages(user._id)
             }
         }
     })

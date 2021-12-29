@@ -44,6 +44,7 @@ require("./middleware/requestLimiter")
 require('./middleware/timedMiddleware/markMissedMedications')
 require('./middleware/timedMiddleware/createDosageEveryTwentyFourHours')
 require('./middleware/passport')
+require('./services/dosages/addNewDosage')
 //Passport
 app.use(passport.initialize());
 

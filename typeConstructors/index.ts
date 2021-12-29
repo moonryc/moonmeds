@@ -1,6 +1,6 @@
 import {IDosagesDetails, IMedicationBase} from "../Types/MedicationTypes";
 import {IPersonNameAndColor} from "../Types/UserTypes";
-
+import {Types} from "mongoose";
 
 export const makeMedication = () => ({
     medicationId: "",
@@ -23,6 +23,7 @@ export const makePersonNameAndColor = () => ({
 } as IPersonNameAndColor)
 
 export const makeDosageDetails = () => ({
+    dosageIdentifier: new Types.ObjectId().toString(),
     amount: 0,
     amountDosageType: "Milligram",
     time: new Date(),

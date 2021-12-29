@@ -42,3 +42,9 @@ export interface IUpdateDosage {
     hasBeenMissed: boolean
     timeTaken: Date|null
 }
+
+export interface IDosages {
+    userId:string,
+    date:Date,
+    dosages:IMedicationDosagesBase[]
+}

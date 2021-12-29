@@ -15,16 +15,37 @@ import {View} from "react-native";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import {RedBinderStack} from '../StackNavigators';
 import RBSelectedUserScreen from "../../Screens/RedBinderScreens/RBSelectedUserScreen";
-import {useRoute} from "@react-navigation/native";
+import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native";
 import RBEditUser from "../../Screens/RedBinderScreens/RBEditUser";
 import RBMedicalHistory from "../../Screens/RedBinderScreens/RBMedicalHistory";
 import RBUserMedications from "../../Screens/RedBinderScreens/RBUserMedications";
 import RBMedicationInteractions from "../../Screens/RedBinderScreens/RBMedicationInteractions";
 import RBCreateMedication from "../../Screens/RedBinderScreens/RBCreateMedication";
 import RBViewMedicationScreen from "../../Screens/RedBinderScreens/RBViewMedicationScreen";
+import {MaterialIcons} from "@expo/vector-icons";
 
-const BackIcon = (props:any) => (
+
+export const useRedBinderNavigation = (destination: "Home" | "Selected User" | "User Medications" | "Create Medication" |
+                                    "View Medication" | "Medical History" | "Medication Interaction" | "Edit User",
+                                headerName: string) => {
+
+    const navigation = useNavigation()
+
+    const navigateToScreen = () => {
+        // @ts-ignore
+        navigation.navigate(destination,{headerName:headerName})
+    }
+
+    return navigateToScreen()
+}
+
+
+const BackIcon = (props: any) => (
     <Icon {...props} name='arrow-back'/>
+);
+
+const PlusIcon = (props: any) => (
+    <Icon {...props} name='plus'/>
 );
 
 
@@ -43,8 +64,8 @@ const TabRedBinderNavigator = () => {
                     title={route.name === "Home" ? "Red Binder" : customHeaderName()}
                     accessoryLeft={back ? <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()}/> :
                         <View/>}
+                    accessoryRight = {back? <View/>:<TopNavigationAction icon={PlusIcon} onPress={()=>{}}/> }
                 />
-                <Divider/>
             </React.Fragment>
 
         )
@@ -64,7 +85,6 @@ const TabRedBinderNavigator = () => {
                 <RedBinderStack.Screen name={"User Medications"} component={RBUserMedications}/>
                 <RedBinderStack.Screen name={"Create Medication"} component={RBCreateMedication}/>
                 <RedBinderStack.Screen name={"View Medication"} component={RBViewMedicationScreen}/>
-
 
 
                 <RedBinderStack.Screen name={"Medical History"} component={RBMedicalHistory}/>

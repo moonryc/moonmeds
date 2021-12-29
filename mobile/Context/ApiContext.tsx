@@ -7,13 +7,12 @@ import {IMedicationBase} from "../../Types/MedicationTypes";
 interface IApiContext {
     postLogin: (username: string, password: string) => void,
     fetchMedicationsDosagesPersons: () => void,
-    putNewMedication: (medicationObject: IMedicationBase) => Promise<any>;
+
 }
 
 export const ApiContext = createContext<IApiContext>({
     postLogin: (username: string, password: string) => {},
     fetchMedicationsDosagesPersons: () => {},
-    putNewMedication: async (medicationObject: IMedicationBase) => Promise,
 });
 
 const ApiContextContainer = (props: any) => {
@@ -37,7 +36,6 @@ const ApiContextContainer = (props: any) => {
                 },
                 body: JSON.stringify({userName: username, password: password}), // body data type must match "Content-Type" header
             }).then(response => {
-                console.log(`Response status: ${response.status}`)
                 if (response.ok) {
                     response.json().then(data => {
                         SecureStore.setItemAsync("moonmeds-JWT", data.payload.token)
@@ -67,7 +65,6 @@ const ApiContextContainer = (props: any) => {
                         },
                     })
                         .then((response) => {
-                            console.log(`Response status: ${response.status}`)
                             if (response.ok) {
                                 return response.json()
                             } else {
@@ -89,46 +86,8 @@ const ApiContextContainer = (props: any) => {
         }, [setUserMedicationDosages, setUserMedications, setUsersPeople]);
 
 
-    const putNewMedication = async (medicationObject: IMedicationBase): Promise<any> => {
-        let url = "/medication/newMedication";
-        await SecureStore.getItemAsync("moonmeds-JWT").then(authKey=>{
-            if(authKey) {
-                fetch(url, {
-                    method: "PUT", // *GET, POST, PUT, DELETE, etc.
-                    mode: "cors", // no-cors, *cors, same-origin
-                    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-                    credentials: "same-origin", // include, *same-origin, omit
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        Authorization: authKey,
-                    },
-                    body: JSON.stringify(medicationObject), // body data type must match "Content-Type" header
-                })
-                    .then((response) => {
-                        if (response.ok) {
-                            return response.json()
-                        } else {
-                            throw "Error creating a new medication"
-                        }
-                    })
-                    .then((apiResponse) => {
-                        if (apiResponse.error) {
-                            throw apiResponse.errorMessage;
-                        } else {
-                            fetchMedicationsDosagesPersons()
-                        }
-                    })
-                    .catch((error) => {
-                        //TODO
-                    });
-            }
-        })
-
-    };
-
         return (
-            <ApiContext.Provider value={{postLogin, fetchMedicationsDosagesPersons,putNewMedication}}>
+            <ApiContext.Provider value={{postLogin, fetchMedicationsDosagesPersons}}>
                 {props.children}
             </ApiContext.Provider>
         );

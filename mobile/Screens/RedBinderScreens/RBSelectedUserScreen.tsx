@@ -49,10 +49,7 @@ const RBSelectedUserScreen = () => {
             <Divider/>
 
 
-            <MenuItem style={{marginTop:50}} title={"Delete User"} onPress={()=>{
-                //@ts-ignore
-                navigation.navigate("Delete User", {headerName:"Edit User"})
-            }}/>
+
 
         </ScrollableLayout>
     );

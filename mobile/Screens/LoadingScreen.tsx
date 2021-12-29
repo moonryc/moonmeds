@@ -6,7 +6,7 @@ import {Spinner} from "@ui-kitten/components";
 const LoadingScreen = () => {
     return (
         <View>
-            <Spinner/>
+            <Spinner size={"giant"}/>
         </View>
     );
 };

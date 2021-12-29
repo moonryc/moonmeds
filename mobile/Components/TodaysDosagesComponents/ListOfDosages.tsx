@@ -4,18 +4,19 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SwipeRow} from "react-native-swipe-list-view";
 import {MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 import {IMedicationDosagesBase} from "../../../Types/MedicationDosagesTypes";
-import {Button, Card, Divider, Layout, Modal, Text} from "@ui-kitten/components";
+import {Button, Card, Divider, Layout, MenuItem, Modal, Text} from "@ui-kitten/components";
+import {CommonStyles} from "../../Styles/CommonStyles";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#1a2139',
+        // backgroundColor: '#1a2139',
         flex: 1,
         height: "100%"
     },
     standaloneRowFront: {
         paddingLeft: 15,
         alignItems: 'flex-start',
-        backgroundColor: '#222b45',
+        // backgroundColor: '#222b45',
         justifyContent: 'center',
         textAlignVertical: "center",
         minHeight: 75,
@@ -61,7 +62,6 @@ interface IListOfDosages {
 
 const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
 
-    const rowRefs = useRef([]);
 
     const [visible, setVisible] = useState(false);
     const [selectedDosage, setSelectedDosage] = useState<IMedicationDosagesBase|undefined>();
@@ -72,28 +72,16 @@ const ListOfDosages:React.FC<IListOfDosages> = ({dosagesArray,typeOfList}) => {
             dosagesArray.map((dosage, index) => {
                 return (
                     <React.Fragment key={index}>
-
-
-                            <TouchableOpacity style={{backgroundColor:"#222b45"}} activeOpacity={1} onPress={() => {
+                        <MenuItem
+                            title={dosage.prescriptionName}
+                            style={CommonStyles.listItem}
+                            accessoryLeft={<MaterialCommunityIcons name="pill" size={22} color={dosage.medicationOwner.color} />}
+                            onPress={() => {
                                 setSelectedDosage(dosage)
                                 setVisible(true)
-                            }}>
-                                <View style={{
-                                    ...styles.standaloneRowFront,
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "flex-start",
-                                    alignItems: "center",
-                                    alignContent: "center"
-                                }}>
-                                    <Text style={{justifyContent: 'flex-start', alignItems: 'center'}}>
-                                        <MaterialCommunityIcons name="pill" size={24} color={dosage.medicationOwner.color} />
-                                    </Text>
-                                    <Text style={{...styles.backTextWhite}}>{dosage.prescriptionName}</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                        <Divider style={{borderBottomWidth:1}}/>
+                            }}
+                        />
+                        <Divider />
                     </React.Fragment>
                 )
             })
