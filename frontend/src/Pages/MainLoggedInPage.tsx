@@ -33,6 +33,7 @@ import { FilterMenu } from "../Components/Misc/FilterMenu";
 
 const MainLoggedInPage = () => {
     const { fetchMedicationsAndDosagesAndPersons } = useContext(ApiContext);
+    const { getDosagesBetweenTwoDates, dosageObject } = useContext(ApiContext);
     const { setSelectedDay, selectedDay } = useContext(CalendarContext);
 
     const [isMakingNewMedication, setIsMakingNewMedication] = useState(false);
@@ -47,7 +48,7 @@ const MainLoggedInPage = () => {
     const xs = useMediaQuery('(min-width:0px) and (max-width:1199.99px)');
     return (
         <Box sx={{ ...sideBackgroundStyle, ...flexWrapperStyle, minHeight: '100vh', width: 'auto', position: 'relative' }} key={1}>
-
+            
             <Box sx={{
                 ...flex1ItemStyle, ...sideBackgroundStyle,
                 display: "flex", height: '100%', width: 'auto',
@@ -65,6 +66,10 @@ const MainLoggedInPage = () => {
                     </Box>
                     {/* #region Calendar */}
                     <Box sx={{ width: 'auto', height: '450px', }}>
+                        {/* test buttons */}
+                            <Button onClick={()=> getDosagesBetweenTwoDates(new Date(), selectedDay)}>set dosage dates</Button>
+                            <Button onClick={()=> console.log(dosageObject)}>Log dosage</Button>
+                        {/* end test buttons */}
                         <Paper
                             elevation={0}
                             sx={{
@@ -114,7 +119,7 @@ const MainLoggedInPage = () => {
                         </Paper>
                     </Box>
                     <Divider variant='middle' sx={{ width: 'auto' }} />
-                    <Box>
+                    <Box sx={{marginTop:'auto'}}>
                         <Box sx={{ color: 'text.primary', marginTop: 'auto', marginBottom: '35px', display:['none','inline'] }}>
                             <Filter />
                         </Box>

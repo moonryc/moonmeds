@@ -182,8 +182,6 @@ const DisplayDateDetails: React.FC<IDisplayDateDetailsProp> = ({ selectedDate })
                 }
             }
         }
-
-        console.log(arrayOfValidDosages)
         setFilteredFutureDosages([...arrayOfValidDosages])
     }
 

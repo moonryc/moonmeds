@@ -33,9 +33,10 @@ router.put('/update',JwtAuthenticate,(req,res,next)=>{
     })
 })
 
-router.get('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
+router.post('/medicationDosageDateRange',JwtAuthenticate, async (req:any,res,next)=>{
 
     console.log(req.user._id)
+    console.log(req.body)
     console.log(req.body.startDate)
     console.log(req.body.endDate)
     MedicationDosageModel.find({ timeToTake:{$gte:new Date(req.body.startDate), $lte:new Date(req.body.endDate)}, userId:req.user._id},(err,doc)=>{

@@ -12,6 +12,7 @@ export interface IApiContextState {
     setNumberOfCurrentApiCalls: (state: number) => void;
     loadingBar: boolean;
     setLoadingBar: (state: boolean) => void;
+    
 
     checkIfJWTTokenIsValid: () => Promise<any>;
     postLogin: (userName: string, password: string) => Promise<any>;
@@ -39,6 +40,7 @@ export interface IApiContextState {
     putAddPerson: (newPerson: IPersonNameAndColor) => Promise<any>;
     putRemovePerson: (removePerson: IPersonNameAndColor) => Promise<any>;
     getDosagesBetweenTwoDates: (dateStart:Date, dateEnd:Date) => Promise<any>;
+    dosageObject: object;
 }
 
 export const ApiContext = createContext<IApiContextState>({
@@ -74,6 +76,7 @@ export const ApiContext = createContext<IApiContextState>({
     putAddPerson: async (newPerson: IPersonNameAndColor) => Promise,
     putRemovePerson: async (removePerson: IPersonNameAndColor) => Promise,
     getDosagesBetweenTwoDates: async (dateStart:Date,dateEnd:Date) => Promise,
+    dosageObject: {}
 });
 
 export const ApiContainer = (props: any) => {
@@ -86,6 +89,7 @@ export const ApiContainer = (props: any) => {
     const [numberOfCurrentApiCalls, setNumberOfCurrentApiCalls] =
         useState<number>(0);
     const [loadingBar, setLoadingBar] = useState<boolean>(false);
+    const [dosageObject, setDosageObject] = useState<object>({});
 
     useEffect(() => {
         if (numberOfCurrentApiCalls < 1) {
@@ -284,7 +288,7 @@ export const ApiContainer = (props: any) => {
             handleLoadingBarTurnOn();
             let url = "/medicationDosages/medicationDosageDateRange";
             await fetch(url, {
-                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "cors", // no-cors, *cors, same-origin
                 cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: "same-origin", // include, *same-origin, omit
@@ -296,13 +300,14 @@ export const ApiContainer = (props: any) => {
                 body: JSON.stringify({dateStart:dateStart, dateEnd:dateEnd}), // body data type must match "Content-Type" header
             })
                 .then((response) => {
+                    console.log("made it here")
                     return checkResponseCodes(response);
                 })
                 .then((apiResponse) => {
                     if (apiResponse.error) {
                         throw apiResponse.errorMessage;
                     } else {
-                        //TODO TRAVIS STORE THIS DATA SOMEWHERE
+                        setDosageObject(apiResponse.payload)
                         console.log(apiResponse.payload)
                         newNotification("Grabbed medication between the 2 selected days", "success");
                     }
@@ -573,7 +578,8 @@ export const ApiContainer = (props: any) => {
                 putUpdateMedicationDosage,
                 putAddPerson,
                 putRemovePerson,
-                getDosagesBetweenTwoDates
+                getDosagesBetweenTwoDates,
+                dosageObject
             }}
         >
             {children}
