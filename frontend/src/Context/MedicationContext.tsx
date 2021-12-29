@@ -36,7 +36,7 @@ export const MedicationContainer = (props: any) => {
     IMedicationDosagesBase[]
   >([]);
 
-    const [todaysDosages, setTodaysDosages] = useState();
+    const [todaysDosages, setTodaysDosages] = useState<IMedicationDosagesBase[]>();
 
 
     useEffect(() => {
@@ -124,7 +124,7 @@ export const MedicationContainer = (props: any) => {
             }
 
         }
-        setTodaysDosages(todaysDosages)
+        setTodaysDosages(tempNewMedicationDosages)
     }, [userMedications]);
     
 
