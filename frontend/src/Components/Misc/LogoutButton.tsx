@@ -7,7 +7,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 const LogoutButton = () => {
   const handleClick = () => {
     reactLocalStorage.set("JWTToken", "");
-    window.location.href = "/";
+    window.location.href = `${process.env.PUBLIC_URL}/`;
   };
   return (
     <div>

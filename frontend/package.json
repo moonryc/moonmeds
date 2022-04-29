@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "/medication-tracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -62,7 +63,5 @@
     ]
   },
   "proxy": "http://localhost:3001/",
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }

@@ -25,7 +25,10 @@ const NotificationsParent = () => {
     useState<IAlerts | null>(null);
 
   const handleClose = (
-    event: React.SyntheticEvent | React.MouseEvent,
+    event:
+      | Event
+      | React.SyntheticEvent<any, Event>
+      | React.MouseEvent<any, Event>,
     reason?: string
   ) => {
     if (reason === "clickaway") {
